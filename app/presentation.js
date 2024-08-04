@@ -1,5 +1,5 @@
-var p_text1_arr = new Array();
-var p_text2_arr = new Array();
+var p_text1_arr = [];
+var p_text2_arr = [];
 var p_text1_font = "";
 var p_text2_font = "";
 var p_title = "";
@@ -21,7 +21,6 @@ var p_rightMargin = 50;
 var p_align = "left";
 var p_maxFontSize = 100;
 var p_enableTransition = true;
-var p_showTitle = true;
 var p_enableShadow = true;
 var p_ver1ScaleFactor = 1;
 var p_ver2ScaleFactor = 1;
@@ -29,7 +28,6 @@ var p_bkgnd_color = "000000";
 var p_bkgnd_color1 = "00ffa0";
 var p_bkgnd_color2 = "FacFFF";
 var p_bkgnd_grad_orient = 1;
-var p_motion_bkgnd_filename = "motion_bkg/greencandles.swf";
 var p_bkgnd_type = 3;
 var p_text_orientation = "0";
 var p_logo = "";
@@ -46,8 +44,7 @@ var motionFlagState = false;
 var outlineThickness = 3;
 var initialRenderDelay = 100;
 var showingtheme = false;
-var specialFontList = new Array(
-  "JC_Malayalam",
+var specialFontList = ["JC_Malayalam",
   "JC_Hindi",
   "Malayalam",
   "ML-TTKarthika",
@@ -60,8 +57,7 @@ var specialFontList = new Array(
   "Shusha",
   "kambar",
   "tamil",
-  "Kerala"
-);
+  "Kerala"];
 var firstTime = true;
 var presentDebug = false;
 function initPresentation() {
@@ -109,7 +105,6 @@ function clearPresenter() {
 }
 var canvas_top, canvas_left, canvas_height, canvas_width;
 var title_top, title_left, title_height, title_width;
-var c_top, c_left, c_height, c_width;
 var c1_top, c1_left, c1_height, c1_width;
 var c2_top, c2_left, c2_height, c2_width;
 var f_top, f_left, f_height, f_width;

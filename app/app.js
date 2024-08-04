@@ -1,10 +1,12 @@
 var bookIndex = 0;
 var chapterIndex = 0;
 var verseIndex = 0;
-var bible = new Array();
-var content1 = new Array();
-var content2 = new Array();
-var numofch = new Array(
+
+var bible = [];
+var content1 = [];
+var content2 = [];
+
+var numofch = [
   [0],
   [
     50, 31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33,
@@ -156,9 +158,8 @@ var numofch = new Array(
   [
     22, 20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24,
     21, 15, 27, 21,
-  ]
-);
-colorChart = [
+  ]];
+var colorChart = [
   "FFFFFF",
   "800000",
   "A52A2A",
@@ -242,11 +243,10 @@ colorChart = [
   "FFFFFF",
   "26FF2A",
 ];
+
 var themeState = false;
-var enterPressed = false;
-var searchFocus = false;
-var verseFocus = false;
-var systemFontList = new Array(
+
+var systemFontList = [
   "Impact",
   "Tahoma",
   "Helvetica",
@@ -283,9 +283,8 @@ var systemFontList = new Array(
   "Kambar",
   "Lohit Malayalam",
   "Meera Malayalam",
-  "Tenali Telugu"
-);
-var specialFontList = new Array(
+  "Tenali Telugu"];
+var specialFontList = [
   "JC_Malayalam",
   "JC_Hindi",
   "Malayalam",
@@ -300,8 +299,11 @@ var specialFontList = new Array(
   "kambar",
   "tamil",
   "Kerala"
-);
-var tabViewN = null;
+];
+
+var leftTabView = null;
+var rightTabView = null;
+
 var searchObj = null;
 var notesObj = null;
 var notesManageObj = null;
@@ -321,11 +323,8 @@ var chordsDatabaseObj = null;
 var chordsImportExportObj = null;
 var songNavObj = null;
 var helpObj = null;
-var audioObj = null;
-var vvMonitor = null;
 var bibleVersionSelObj = null;
 var remoteVV_UI_Obj = null;
-var setup_present_UI_Obj = null;
 var updateVV_UI_Obj = null;
 var editVerse_UI_Obj = null;
 var newUpdateObj = null;
@@ -342,19 +341,14 @@ var vvConfigObj = null;
 var previousSelVerse = 0;
 var presentationContent = "";
 var highlightColor = "#BAD0EF";
-var oAC = null;
-var tabView;
 var scroll_to_view = false;
 var songDBVersion;
 var bibleDBVersion;
-var systemOS = "";
-var airVersion = 3;
-var dataSizeOK = false;
 var navWindowHeight = 1000;
 var navWindowWidth = 1000;
 var learner = null;
 var wordbrain = null;
-var testTAB = false;
+
 function getBookValue() {
   return document.getElementById("bookList").selectedIndex;
 }
@@ -662,9 +656,9 @@ function updateVerseContainer_continue() {
   }
   n = n + "</table>";
   document.getElementById("verseTab").innerHTML = n;
-  var o = new Array();
-  var c = new Array();
-  var b = new Array();
+  var o = [];
+  var c = [];
+  var b = [];
   for (i = 0; i < p; i++) {
     var m = "VC1_" + i;
     var g = "VC2_" + i;
@@ -693,19 +687,22 @@ function updateVerseContainer_continue() {
 }
 function vvinit() {
   splash(true);
-  setAIRversion();
-  var a = firstTimeCheck();
-  if (!a) {
+
+  if (!firstTimeCheck()) {
     vvDialog(
       "VerseVIEW",
       "Error loading database. Please contact verseview@yahoo.com"
     );
   }
+
   tabFrame();
   tabFrameVerse();
+
   vvConfigObj = new vvConfigClass();
   vvConfigObj.load();
+
   learner = new wordlearner();
+
   wordbrain = new vvbrain();
   wordbrain.init();
 }
@@ -819,6 +816,9 @@ function setupTheme() {
     default:
   }
 }
+
+var testTAB = false;
+
 function generateTabContent() {
   promptInit();
   readContentFile2Var("./content/setup_biblesel.txt");
@@ -1150,30 +1150,30 @@ function fillNav() {
   recent.init();
 }
 function tabFrame() {
-  tabView = new YAHOO.widget.TabView({ orientation: "top" });
-  tabView.addTab(
+  leftTabView = new YAHOO.widget.TabView({ orientation: "top" });
+  leftTabView.addTab(
     new YAHOO.widget.Tab({
       label: " Bible ",
       content: '<div id="navTab">Bible</div>',
       active: true,
     })
   );
-  tabView.addTab(
+  leftTabView.addTab(
     new YAHOO.widget.Tab({
       label: " Songs ",
       content: '<div id="songNavTab">Songs</div>',
     })
   );
-  tabView.appendTo("container");
-  tabView.addListener("activeTabChange", a);
+  leftTabView.appendTo("container");
+  leftTabView.addListener("activeTabChange", a);
   function a() {
-    var b = tabView.get("activeTab");
+    var b = leftTabView.get("activeTab");
     var c = b.get("label");
     if (c == " Bible ") {
-      tabViewN.selectTab(0);
+      rightTabView.selectTab(0);
     }
     if (c == " Songs ") {
-      tabViewN.selectTab(1);
+      rightTabView.selectTab(1);
     }
   }
 }
@@ -1248,7 +1248,7 @@ function tabFrameVerse() {
   if (!testTAB) {
     b.removeTab(b.getTab(7));
   }
-  tabViewN = b;
+  rightTabView = b;
 }
 var splashWindow;
 function splash(g) {
@@ -1358,8 +1358,9 @@ function setupVBkgnd() {
   }
   return a;
 }
-function mainWindowKey(a) {
-  key = a.keyCode;
+// body: onkeyup
+function mainWindowKey(evt) {
+  key = evt.keyCode;
   var b = $(":focus").attr("id");
   switch (key) {
     case 13:
@@ -1414,24 +1415,13 @@ function setupVConfig() {
   }
   return a;
 }
-function searchFocusChange() {
-  searchKeyword();
-}
 function processFontSizeChange() {
   updateVerseContainer();
   searchObj.setFontSize(vvConfigObj.get_navFontSize());
   scheduleObj.changeFontsizeScheduleTab();
 }
-function setAIRversion() {
-  var a = air.NativeApplication.nativeApplication.runtimeVersion;
-  a = a.split(".");
-  airVersion = a[0];
-  if (airVersion < 4) {
-    dataSizeOK = true;
-  }
-}
 function getActiveTabLabel() {
-  var a = tabView.get("activeTab");
+  var a = leftTabView.get("activeTab");
   var b = a.get("label");
   var c = "";
   if (b == " Bible ") {
@@ -1441,19 +1431,4 @@ function getActiveTabLabel() {
     c = "Songs";
   }
   return c;
-}
-function printStatus(a, b) {}
-function roll_over(b, a) {
-  document.getElementById(b).src = a;
-}
-function msg() {
-  alert("clicked...");
-}
-function test() {
-  function b() {
-    alert("m1");
-  }
-  function a() {
-    alert("m2");
-  }
 }

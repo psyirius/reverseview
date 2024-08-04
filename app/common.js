@@ -118,13 +118,6 @@ function extractFileName(d) {
   var a = b.length;
   return b[a - 1];
 }
-function withinMax(b, a) {
-  if (a > 0 && a <= b) {
-    return true;
-  } else {
-    return false;
-  }
-}
 function withinRange(b, c, a) {
   if (a >= b && a <= c) {
     return true;
@@ -644,11 +637,6 @@ function blankSlide() {
     }
   }
   presentationContent = "";
-}
-function roundSearchBox_org(a) {
-  a.style.borderRadius = "10px";
-  a.style.padding = "0px 0px 0px 5px";
-  a.style.backgroundColor = highlightColor;
 }
 function roundSearchBox(a) {
   a.style.borderRadius = "4px";

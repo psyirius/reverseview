@@ -31,40 +31,6 @@ function bibleVersionSelClass() {
     c.hide();
   }
 }
-function setup_present_UI_Class() {
-  this.init = g;
-  this.show = a;
-  this.hide = c;
-  var b = null;
-  var f = null;
-  function g(h) {
-    f = h;
-    e();
-    d();
-  }
-  function e() {
-    b = new YAHOO.widget.Panel("panelObj4", {
-      width: "300px",
-      fixedcenter: true,
-      modal: true,
-      visible: false,
-      constraintoviewport: true,
-    });
-    b.render(document.body);
-    b.setHeader("Presentation Setup");
-    b.setBody(f);
-    b.hide();
-    b.bringToTop();
-  }
-  function d() {}
-  function a() {
-    b.show();
-    b.bringToTop();
-  }
-  function c() {
-    b.hide();
-  }
-}
 function updateVV_UI_Class() {
   this.init = g;
   this.show = a;

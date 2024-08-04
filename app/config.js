@@ -129,7 +129,7 @@ function vvConfigClass() {
     F = "#FFFFFF";
     E = "#000000";
     b = "#000000";
-    P_bkgnd_color2 = "#FFFFFF";
+    a = "#FFFFFF";
     ac = 0;
     D = 0;
     aB = 1;
@@ -138,7 +138,7 @@ function vvConfigClass() {
     l = 0;
     V = true;
     aq = true;
-    P_showCustomLogo = false;
+    m = false;
     ao = "";
     am = "";
     av = "";
@@ -198,7 +198,7 @@ function vvConfigClass() {
     } else {
       z = z.textContent;
     }
-    stageScreenStyleValue = j.getElementsByTagName("stagescreenstyle")[0];
+    var stageScreenStyleValue = j.getElementsByTagName("stagescreenstyle")[0];
     if (stageScreenStyleValue == null) {
       U = 0;
     } else {
@@ -1260,8 +1260,8 @@ function setupStageViewOptions() {
   }
 }
 function stageShowTimeChangeEvent() {}
-var portNumber = 50000;
-var IPList = null;
+// var portNumber = 50000;
+// var IPList = null;
 function configInit() {
   document
     .getElementById("navDualLanguageID")

@@ -1,5 +1,4 @@
-var booknames = new Array(
-  "Genesis",
+var booknames = ["Genesis",
   "Exodus",
   "Leviticus",
   "Numbers",
@@ -64,10 +63,8 @@ var booknames = new Array(
   "2 John",
   "3 John",
   "Jude",
-  "Revelation"
-);
-var malayalam_booknames = new Array(
-  "ഉല്പത്തി",
+  "Revelation"];
+var malayalam_booknames = ["ഉല്പത്തി",
   "പുറപ്പാടു്",
   "ലേവ്യപുസ്തകം",
   "സംഖ്യാപുസ്തകം",
@@ -132,10 +129,8 @@ var malayalam_booknames = new Array(
   "2 യോഹന്നാൻ",
   "3 യോഹന്നാൻ",
   "യൂദാ",
-  "വെളിപ്പാടു"
-);
-var hindi_booknames = new Array(
-  "उत्पत्ति",
+  "വെളിപ്പാടു"];
+var hindi_booknames = ["उत्पत्ति",
   "निर्गमन",
   "लैव्यवस्था",
   "गिनती",
@@ -200,10 +195,8 @@ var hindi_booknames = new Array(
   "2 यूहन्ना",
   "3 यूहन्ना",
   "यहूदा",
-  "प्रकाशित वाक्य"
-);
-var tamil_booknames = new Array(
-  "ஆதியாகமம்",
+  "प्रकाशित वाक्य"];
+var tamil_booknames = ["ஆதியாகமம்",
   "யாத்திராகமம்",
   "லேவியராகமம்",
   "எண்ணாகமம்",
@@ -268,10 +261,8 @@ var tamil_booknames = new Array(
   "2 யோவான்",
   "3 யோவான்",
   "யூதா",
-  "வெளிப்படுத்தின விசேஷம்"
-);
-var telugu_booknames = new Array(
-  "ఆదికాండము",
+  "வெளிப்படுத்தின விசேஷம்"];
+var telugu_booknames = ["ఆదికాండము",
   "నిర్గమకాండము",
   "లేవీయకాండము",
   "సంఖ్యాకాండము",
@@ -336,10 +327,8 @@ var telugu_booknames = new Array(
   "2 యోహాను",
   "3 యోహాను",
   "యూదా",
-  "ప్రకటన గ్రంథము"
-);
-var spanish_booknames = new Array(
-  "Génesis",
+  "ప్రకటన గ్రంథము"];
+var spanish_booknames = ["Génesis",
   "Exodo",
   "Levitivo",
   "Números",
@@ -404,10 +393,8 @@ var spanish_booknames = new Array(
   "2 Juan",
   "3 Juan",
   "Judas",
-  "Apocalipsis"
-);
-var default_booknames = new Array(
-  "Genesis",
+  "Apocalipsis"];
+var default_booknames = ["Genesis",
   "Exodus",
   "Leviticus",
   "Numbers",
@@ -472,77 +459,7 @@ var default_booknames = new Array(
   "2 John",
   "3 John",
   "Jude",
-  "Revelation"
-);
-function setPrimaryBooknames_org() {
-  var d = bibleVersionArray[vvConfigObj.get_version1()][0];
-  var c = bibleVersionArray[vvConfigObj.get_version2()][0];
-  var b = null;
-  var e = null;
-  var a = d.toLowerCase();
-  if (a.indexOf("hindi") != -1) {
-    a = "Hindi";
-  }
-  if (a.indexOf("malayalam") != -1) {
-    a = "Malayalam";
-  }
-  if (a.indexOf("tamil") != -1) {
-    a = "Tamil";
-  }
-  if (a.indexOf("telugu") != -1) {
-    a = "Telugu";
-  }
-  if (a.indexOf("spanish") != -1) {
-    a = "Spanish";
-  }
-  switch (a) {
-    case "Hindi":
-      b = hindi_booknames;
-      break;
-    case "Malayalam":
-      b = malayalam_booknames;
-      break;
-    case "Malayalam Unicode":
-      b = malayalam_booknames;
-      break;
-    case "Tamil":
-      b = tamil_booknames;
-      break;
-    case "Telugu":
-      b = telugu_booknames;
-      break;
-    case "Spanish":
-      b = spanish_booknames;
-      break;
-    default:
-      b = default_booknames;
-      break;
-  }
-  switch (c) {
-    case "Hindi":
-      e = hindi_booknames;
-      break;
-    case "Malayalam":
-      e = malayalam_booknames;
-      break;
-    case "Malayalam Unicode":
-      e = malayalam_booknames;
-      break;
-    case "Tamil":
-      e = tamil_booknames;
-      break;
-    case "Telugu":
-      e = telugu_booknames;
-      break;
-    case "Spanish":
-      e = spanish_booknames;
-      break;
-    default:
-      e = default_booknames;
-      break;
-  }
-  booknames = b;
-}
+  "Revelation"];
 function setPrimaryBooknames() {
   booknames = new Array();
   var e = parseInt(vvConfigObj.get_booknamestyle());

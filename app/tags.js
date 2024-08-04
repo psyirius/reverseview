@@ -1,4 +1,4 @@
-var tags = new Array();
+var tags = [];
 function removeTag(a) {
   var b = a.split("%");
   b = b[1];

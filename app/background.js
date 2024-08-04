@@ -1,7 +1,4 @@
-var bkgndFile = null;
 var textColorHEX = 16777215;
-var addBkgndIcon;
-var delBkgndIcon;
 bkgnd = {
   selectedIndex: 0,
   newSelectedIndex: -1,

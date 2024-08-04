@@ -9,7 +9,6 @@ var stageView = false;
 var stageViewScreenIndex = 2;
 var newWindow = null;
 var newStageWindow = null;
-var presentationContentObj = null;
 var index_for_presentationContent = 0;
 function getCurrentScreen() {
   var b;

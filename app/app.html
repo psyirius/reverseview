@@ -1,7 +1,11 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 strictl//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
     <title>ReVerseVIEW</title>
+
     <!-- Standard reset and fonts -->
     <link
       rel="stylesheet"
@@ -58,10 +62,10 @@
       type="text/javascript"
       src="./lib/YahooUI/yahoo/yahoo-min.js"
     ></script>
-    <script
-      type="text/javascript"
-      src="./lib/YahooUI/cookie/cookie-beta-min.js"
-    ></script>
+<!--    <script-->
+<!--      type="text/javascript"-->
+<!--      src="./lib/YahooUI/cookie/cookie-beta-min.js"-->
+<!--    ></script>-->
 
     <script
       type="text/javascript"
@@ -155,8 +159,8 @@
       src="./lib/YahooUI/animation/animation-min.js"
     ></script>
 
-    <script src="./lib/YahooUI/yahoo/yahoo-min.js"></script>
-    <script src="./lib/YahooUI/event/event-min.js"></script>
+    <script type="text/javascript" src="./lib/YahooUI/yahoo/yahoo-min.js"></script>
+    <script type="text/javascript" src="./lib/YahooUI/event/event-min.js"></script>
 
     <script
       type="text/javascript"
@@ -188,10 +192,12 @@
 	<link rel="stylesheet" type="text/css" href="./lib/jquery2017/jquery.mobile-1.4.5.css">
 	<link rel="stylesheet" type="text/css" href="./lib/jquery2017/jquery.mobile.theme-1.4.5.css"> -->
 
-    <!-- VerseVIEW 2.0 library -->
+    <!-- Air Support libraries -->
     <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
     <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
     <script type="text/javascript" src="lib/air/AIRMenuBuilder.js"></script>
+
+    <!-- ReVerseVIEW library -->
     <script type="text/javascript" src="const.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="navigation.js"></script>
@@ -213,7 +219,7 @@
     <script type="text/javascript" src="graphics_class/solidbkgnd.js"></script>
     <script type="text/javascript" src="graphics_class/gradbkgnd.js"></script>
     <script type="text/javascript" src="graphics_class/stillbkgnd.js"></script>
-    <script type="text/javascript" src="graphics_class/motionbkgnd.js"></script>
+<!--    <script type="text/javascript" src="graphics_class/motionbkgnd.js"></script>-->
 
     <script type="text/javascript" src="p_window.js"></script>
     <script type="text/javascript" src="recent.js"></script>
@@ -224,8 +230,8 @@
     <script type="text/javascript" src="search.js"></script>
     <script type="text/javascript" src="notes.js"></script>
     <script type="text/javascript" src="notesmanage.js"></script>
-    <script type="text/javascript" src="test.js"></script>
-    <script type="text/javascript" src="test2.js"></script>
+<!--    <script type="text/javascript" src="test.js"></script>-->
+<!--    <script type="text/javascript" src="test2.js"></script>-->
     <script type="text/javascript" src="update.js"></script>
     <script type="text/javascript" src="schedule.js"></script>
     <script type="text/javascript" src="help.js"></script>
@@ -287,7 +293,7 @@
     <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css" />
     <!--<link rel="stylesheet" href="./lib/fontawesome/all.css">-->
     <!--<script src="./lib/popper/popper.min.js" ></script>-->
-    <script src="./lib/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.js"></script>
 
     <link
       rel="stylesheet"
@@ -295,14 +301,14 @@
       href="./lib/semantic/semantic.min.css"
     />
     <!--<script src="./lib/jquery/jquery-3.3.1.min.js"></script>-->
-    <script src="./lib/semantic/semantic.min.js"></script>
+    <script type="text/javascript" src="./lib/semantic/semantic.min.js"></script>
 
-    <script src="./lib/markjs/jquery.mark.js"></script>
+    <script type="text/javascript" src="./lib/markjs/jquery.mark.js"></script>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script> -->
 
     <link rel="stylesheet" type="text/css" href="./lib/range/range.css" />
-    <script src="./lib/range/range.js"></script>
+    <script type="text/javascript" src="./lib/range/range.js"></script>
 
     <!-- <script type="text/javascript" src="qrcode/jquery.qrcode.js"></script> -->
     <script type="text/javascript" src="./lib/qrcode/qrcode.min.js"></script>
@@ -356,7 +362,7 @@
           data-position="right center"
         >
           <!-- <i class="gamepad icon"></i> -->
-          <img src="./icons/images/32/present.png" />
+          <img src="./icons/images/32/present.png" alt=""/>
         </a>
         <a
           id="icon_blank"
@@ -364,7 +370,7 @@
           data-tooltip="Blank Presentation"
           data-position="right center"
         >
-          <img src="./icons/images/32/blank.png" />
+          <img src="./icons/images/32/blank.png" alt=""/>
         </a>
         <a
           id="icon_theme"
@@ -372,7 +378,7 @@
           data-tooltip="Show Theme"
           data-position="right center"
         >
-          <img src="./icons/images/32/theme.png" />
+          <img src="./icons/images/32/theme.png" alt=""/>
         </a>
         <a
           id="icon_logo"
@@ -380,7 +386,7 @@
           data-tooltip="Show Logo"
           data-position="right center"
         >
-          <img src="./icons/images/32/logo.png" />
+          <img src="./icons/images/32/logo.png" alt=""/>
         </a>
         <a
           id="icon_close"
@@ -388,7 +394,7 @@
           data-tooltip="Close Presentation"
           data-position="right center"
         >
-          <img src="./icons/images/32/close.png" />
+          <img src="./icons/images/32/close.png" alt=""/>
         </a>
         <a
           id="icon_prev"
@@ -396,7 +402,7 @@
           data-tooltip="Previous Slide"
           data-position="right center"
         >
-          <img src="./icons/images/32/left.png" />
+          <img src="./icons/images/32/left.png" alt=""/>
         </a>
         <a
           id="icon_next"
@@ -404,7 +410,7 @@
           data-tooltip="Next Slide"
           data-position="right center"
         >
-          <img src="./icons/images/32/right.png" />
+          <img src="./icons/images/32/right.png" alt=""/>
         </a>
 
         <div id="verses_menu" class="menu">

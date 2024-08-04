@@ -1,6 +1,3 @@
-var prevIcon;
-var nextIcon;
-var closeIcon;
 function getNumofVerses() {
   return numofch[bookIndex + 1][chapterIndex + 1];
 }
@@ -82,7 +79,4 @@ function nav_addVerse2Schedule() {
   var a = getChapterValue();
   var c = getVerseValue();
   scheduleObj.processAddVerse(b, a, c);
-}
-function testxxx(a) {
-  air.trace("X : " + a);
 }

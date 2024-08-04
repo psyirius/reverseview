@@ -1,13 +1,13 @@
 var indexConn = null;
 var insertStmt = null;
-var insertStmtArr = new Array();
 var count = 0;
 var startTime, endTime;
 var dbFile = null;
-var wordA = new Array();
-var bookA = new Array();
-var chapterA = new Array();
-var verseA = new Array();
+var wordA = [];
+var bookA = [];
+var chapterA = [];
+var verseA = [];
+
 function cleanWord(d) {
   var c = d.toLowerCase();
   var b = c.split("");
