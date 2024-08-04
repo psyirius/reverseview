@@ -1,0 +1,14 @@
+{
+  "name": "reverseview",
+  "version": "8.5.0",
+  "description": "",
+  "private": true,
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "debug": "adl ./application.xml ./app",
+    "start": "adl -nodebug ./application.xml ./app"
+  }
+}
