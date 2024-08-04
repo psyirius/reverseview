@@ -6,205 +6,68 @@
 
     <title>ReVerseVIEW</title>
 
-    <!-- Standard reset and fonts -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/reset/reset-min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/fonts/fonts-min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/autocomplete/assets/skins/sam/autocomplete.css"
-    />
+    <!-- YUI2 standard reset and fonts -->
+    <link rel="stylesheet" type="text/css" href="lib/yui2/reset/reset-min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/yui2/fonts/fonts-min.css"/>
 
-    <script type="text/javascript" src="./lib/jscolor/jscolor.js"></script>
+    <!-- YUI2 module themes -->
+    <link rel="stylesheet" type="text/css" href="lib/yui2/button/assets/skins/sam/button.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/yui2/editor/assets/skins/sam/editor.css" />
+    <link rel="stylesheet" type="text/css" href="lib/yui2/slider/assets/skins/sam/slider.css" />
+    <link rel="stylesheet" type="text/css" href="lib/yui2/tabview/assets/skins/sam/tabview.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/yui2/container/assets/skins/sam/container.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/yui2/datatable/assets/skins/sam/datatable.css" />
+    <link rel="stylesheet" type="text/css" href="lib/yui2/paginator/assets/skins/sam/paginator.css" />
+    <link rel="stylesheet" type="text/css" href="lib/yui2/colorpicker/assets/skins/sam/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="lib/yui2/autocomplete/assets/skins/sam/autocomplete.css"/>
 
-    <!-- utilities includes all dependencies for this example -->
-    <script
-      type="text/javascript"
-      src="lib/yui2/utilities/utilities.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/tabview/tabview-min.js"
-    ></script>
-    <!-- Need for tabview with js -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/fonts/fonts-min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/tabview/assets/skins/sam/tabview.css"
-    />
-    <script
-      type="text/javascript"
-      src="lib/yui2/yahoo-dom-event/yahoo-dom-event.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/element/element-min.js"
-    ></script>
-
-    <script
-      type="text/javascript"
-      src="lib/yui2/yahoo/yahoo-min.js"
-    ></script>
-<!--    <script-->
-<!--      type="text/javascript"-->
-<!--      src="./lib/yui2/cookie/cookie-beta-min.js"-->
-<!--    ></script>-->
-
-    <script
-      type="text/javascript"
-      src="lib/yui2/yahoo-dom-event/yahoo-dom-event.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/animation/animation-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/datasource/datasource-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/autocomplete/autocomplete-min.js"
-    ></script>
-
-    <!-- Needed for Dialog box -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/button/assets/skins/sam/button.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/container/assets/skins/sam/container.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/editor/assets/skins/sam/editor.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/slider/assets/skins/sam/slider.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/colorpicker/assets/skins/sam/colorpicker.css"
-    />
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="lib/yui2/datatable/assets/skins/sam/datatable.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="lib/yui2/paginator/assets/skins/sam/paginator.css"
-    />
-
-    <script
-      type="text/javascript"
-      src="lib/yui2/utilities/utilities.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/button/button-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/container/container-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/menu/menu-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/editor/editor-min.js"
-    ></script>
-
-    <script
-      type="text/javascript"
-      src="lib/yui2/dragdrop/dragdrop-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/slider/slider-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/colorpicker/colorpicker-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/animation/animation-min.js"
-    ></script>
-
+    <!-- YUI2 modules -->
+    <script type="text/javascript" src="lib/yui2/yahoo/yahoo-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/utilities/utilities.js"></script>
+    <script type="text/javascript" src="lib/yui2/tabview/tabview-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="lib/yui2/element/element-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="lib/yui2/animation/animation-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/datasource/datasource-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/autocomplete/autocomplete-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/utilities/utilities.js"></script>
+    <script type="text/javascript" src="lib/yui2/button/button-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/container/container-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/menu/menu-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/editor/editor-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/dragdrop/dragdrop-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/slider/slider-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/colorpicker/colorpicker-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/animation/animation-min.js"></script>
     <script type="text/javascript" src="lib/yui2/yahoo/yahoo-min.js"></script>
     <script type="text/javascript" src="lib/yui2/event/event-min.js"></script>
-
-    <script
-      type="text/javascript"
-      src="lib/yui2/dragdrop/dragdrop-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/element/element-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/datasource/datasource-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/datatable/datatable-min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="lib/yui2/paginator/paginator-min.js"
-    ></script>
-
-    <!--  jQuery Library -->
-    <script
-      type="text/javascript"
-      src="./lib/jquery/jquery-3.7.1.min.js"
-    ></script>
+    <script type="text/javascript" src="lib/yui2/dragdrop/dragdrop-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/element/element-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/datasource/datasource-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/datatable/datatable-min.js"></script>
+    <script type="text/javascript" src="lib/yui2/paginator/paginator-min.js"></script>
 
     <!-- Air Support libraries -->
     <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
     <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
     <script type="text/javascript" src="lib/air/AIRMenuBuilder.js"></script>
 
+    <!--  jQuery Library -->
+    <script type="text/javascript" src="./lib/jquery/jquery-3.7.1.min.js"></script>
+
     <!-- ReVerseVIEW library -->
-    <script type="text/javascript" src="js/const.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/const.js"></script>
     <script type="text/javascript" src="js/navigation.js"></script>
     <script type="text/javascript" src="js/version.js"></script>
     <script type="text/javascript" src="js/versionupdate.js"></script>
     <script type="text/javascript" src="js/presentation.js"></script>
     <script type="text/javascript" src="js/background.js"></script>
 
-    <script type="text/javascript" src="js/bibledb_class/bibledb_edit.js"></script>
     <script type="text/javascript" src="js/bibledb_class/bibledb.js"></script>
-    <script
-      type="text/javascript"
-      src="js/bibledb_class/bibledb_manager.js"
-    ></script>
+    <script type="text/javascript" src="js/bibledb_class/bibledb_edit.js"></script>
+    <script type="text/javascript" src="js/bibledb_class/bibledb_manager.js"></script>
 
     <script type="text/javascript" src="graphics_class/graphics.js"></script>
     <script type="text/javascript" src="graphics_class/colorpicker.js"></script>
@@ -223,8 +86,6 @@
     <script type="text/javascript" src="js/search.js"></script>
     <script type="text/javascript" src="js/notes.js"></script>
     <script type="text/javascript" src="js/notesmanage.js"></script>
-<!--    <script type="text/javascript" src="test.js"></script>-->
-<!--    <script type="text/javascript" src="test2.js"></script>-->
     <script type="text/javascript" src="js/update.js"></script>
     <script type="text/javascript" src="js/schedule.js"></script>
     <script type="text/javascript" src="js/help.js"></script>
@@ -261,51 +122,35 @@
     <script type="text/javascript" src="chords/chords_navigation.js"></script>
     <script type="text/javascript" src="chords/chords_edit.js"></script>
     <script type="text/javascript" src="chords/chords_object.js"></script>
-    <script
-      type="text/javascript"
-      src="chords/chords_import_export.js"
-    ></script>
+    <script type="text/javascript" src="chords/chords_import_export.js"></script>
     <script type="text/javascript" src="chords/chords_webinterface.js"></script>
-    <script
-      type="text/javascript"
-      src="chords/chords_virtualkeyboard.js"
-    ></script>
+    <script type="text/javascript" src="chords/chords_virtualkeyboard.js"></script>
 
     <script type="text/javascript" src="menu/menu.js"></script>
 
-    <!-- <script type="text/javascript" src="monitor.js"></script> -->
-
+    <!-- ReVerseVIEW styles & fonts -->
     <link rel="stylesheet" type="text/css" href="app.css" />
     <link rel="stylesheet" type="text/css" href="./fonts.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="./graphics_class/graphics.css"
-    />
-
+    <link rel="stylesheet" type="text/css" href="./graphics_class/graphics.css" />
     <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css" />
-    <!--<link rel="stylesheet" href="./lib/fontawesome/all.css">-->
-    <!--<script src="./lib/popper/popper.min.js" ></script>-->
+
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.js"></script>
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="./lib/semantic/semantic.min.css"
-    />
+    <!-- jscolor -->
+    <script type="text/javascript" src="./lib/jscolor/jscolor.js"></script>
+
+    <!-- Semantic UI -->
+    <link rel="stylesheet" type="text/css" href="./lib/semantic/semantic.min.css" />
     <script type="text/javascript" src="./lib/semantic/semantic.min.js"></script>
 
+    <!-- jquery plugin: mark -->
     <script type="text/javascript" src="./lib/markjs/jquery.mark.js"></script>
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script> -->
 
     <link rel="stylesheet" type="text/css" href="./lib/range/range.css" />
     <script type="text/javascript" src="./lib/range/range.js"></script>
 
-    <!-- <script type="text/javascript" src="qrcode/jquery.qrcode.js"></script> -->
     <script type="text/javascript" src="./lib/qrcode/qrcode.min.js"></script>
   </head>
-  <!-- <body class="yui-skin-sam" id="bodyID" onkeyup="mainWindowKey(event)" onLoad="vvinit()" >-->
 
   <body
     class="yui-skin-sam"
