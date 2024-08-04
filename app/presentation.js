@@ -904,6 +904,6 @@ function invert_hex_color(d) {
 }
 function debugPrintPresent(a) {
   if (presentDebug) {
-    air.trace("[presentation3.js]: " + a);
+    air.trace("[presentation.js]: " + a);
   }
 }

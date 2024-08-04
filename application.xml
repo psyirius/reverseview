@@ -7,7 +7,7 @@
 	<copyright>Copyright (c) 2024 ReVerseVIEW</copyright>
 	<programMenuFolder>ReVerseVIEW</programMenuFolder>
 	<initialWindow>
-	    <content>verseview2.html</content>
+	    <content>app.html</content>
 	    <systemChrome>standard</systemChrome>
 	    <transparent>false</transparent>
 	    <visible>false</visible>
