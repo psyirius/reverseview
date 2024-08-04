@@ -7,6 +7,7 @@
 		http://www.verseview.info/ <br>
 		Jan 31, 2023<br>
 		<div id="airVersionID"></div>
+		<div id="webkitVersionID"></div>
 		<br>
 		The VERSEVIEW software is available for free. No part of the code should be modified.
 		Register with your email on the website for notices of future releases and support for VerseVIEW.<br>

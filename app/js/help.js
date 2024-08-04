@@ -6,10 +6,8 @@ function vvhelpClass() {
   function f(g) {
     c = g;
     e();
-    $("#airVersionID").html(
-      "Adobe AIR Version " +
-        air.NativeApplication.nativeApplication.runtimeVersion
-    );
+    $("#airVersionID").html("Adobe AIR Version " + air.NativeApplication.nativeApplication.runtimeVersion);
+    $("#webkitVersionID").html("UserAgent " + window.htmlLoader.userAgent);
   }
   function e() {
     a = new YAHOO.widget.Panel("panelObjh", {
