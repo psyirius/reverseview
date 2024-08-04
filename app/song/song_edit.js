@@ -498,10 +498,12 @@ function songEditClass() {
     ac.render(document.body);
     ac.setHeader("Generate Slides");
     ac.setBody(ak);
-    var ai = $(window).height();
-    ai = ai * 0.8;
-    $("#se_quickSlideID").height(ai);
-    $("#se_quickSlideID_2").height(ai);
+
+    var windowHeight = $(window).height();
+    windowHeight = windowHeight * 0.8;
+    $("#se_quickSlideID").height(windowHeight);
+    $("#se_quickSlideID_2").height(windowHeight);
+
     document
       .getElementById("se_generateID")
       .addEventListener("click", ao, false);
@@ -517,17 +519,21 @@ function songEditClass() {
     var al = document.getElementById("se_fontID2_2").selectedIndex;
     var ad = document.getElementById("se_fontID2_2").options[al].text;
     document.getElementById("se_quickSlideID_2").style.fontFamily = ad;
-    var an = I.get("tabs").length;
-    var ag = "";
-    var ae = "";
-    for (var aq = 1; aq <= an; aq++) {
-      var am = "slide" + aq;
-      var aj = "slide" + aq + "_2";
-      ag += document.getElementById(am).value + "\n\n\n";
-      ae += document.getElementById(aj).value + "\n\n\n";
+    
+    var numSlides = I.get("tabs").length;
+
+    var primarySlidesList = [];
+    var secondarySlidesList = [];
+
+    for (var slideIndex = 1; slideIndex <= numSlides; slideIndex++) {
+      primarySlidesList.push(document.getElementById("slide" + slideIndex).value);
+      secondarySlidesList.push(document.getElementById("slide" + slideIndex + "_2").value);
     }
-    document.getElementById("se_quickSlideID").value = ag.slice(0, -3);
-    document.getElementById("se_quickSlideID_2").value = ae.slice(0, -3);
+
+    // write content to the textarea (primary and secondary)
+    document.getElementById("se_quickSlideID").value = primarySlidesList.join("\n\n\n").trim();
+    document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join("\n\n\n").trim();
+
     ac.show();
     ac.bringToTop();
     function ao() {
