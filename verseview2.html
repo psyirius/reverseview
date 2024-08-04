@@ -1,0 +1,331 @@
+<html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>VerseVIEW 8.4.0</title>
+	<!-- Standard reset and fonts -->
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/reset/reset.css">
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/fonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/autocomplete/assets/skins/sam/autocomplete.css">
+
+	<script type="text/javascript" src="./lib/jscolor/jscolor.js"></script>
+
+	<!-- utilities includes all dependencies for this example -->
+	<script type="text/javascript" src="./lib/YahooUI/utilities/utilities.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/tabview/tabview.js"></script>
+	<!-- Need for tabview with js -->
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/fonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/tabview/assets/skins/sam/tabview.css" />
+	<script type="text/javascript" src="./lib/YahooUI/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/element/element-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/tabview/tabview.js"></script>
+
+	<script type="text/javascript" src="./lib/YahooUI/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/cookie/cookie-beta-min.js"></script>
+
+	<script type="text/javascript" src="./lib/YahooUI/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/animation/animation-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/datasource/datasource-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/autocomplete/autocomplete.js"></script>
+
+	<!-- Needed for Dialog box -->
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/button/assets/skins/sam/button.css" />
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/container/assets/skins/sam/container.css" />
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/editor/assets/skins/sam/editor.css" />
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/slider/assets/skins/sam/slider.css" />
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/colorpicker/assets/skins/sam/colorpicker.css" />
+	<link type="text/css" rel="stylesheet" href="./lib/YahooUI/datatable/assets/skins/sam/datatable.css">
+	<link rel="stylesheet" type="text/css" href="./lib/YahooUI/paginator/assets/skins/sam/paginator.css">
+
+
+	<script type="text/javascript" src="./lib/YahooUI/utilities/utilities.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/button/button-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/container/container-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/menu/menu-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/editor/editor.js"></script>
+
+	<script type="text/javascript" src="./lib/YahooUI/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/slider/slider.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/colorpicker/colorpicker-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/animation/animation-min.js"></script>
+
+	<script src="./lib/YahooUI/yahoo/yahoo-min.js"></script>
+	<script src="./lib/YahooUI/event/event-min.js"></script>
+
+	<script type="text/javascript" src="./lib/YahooUI/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/element/element-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/datasource/datasource-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/datatable/datatable-min.js"></script>
+	<script type="text/javascript" src="./lib/YahooUI/paginator/paginator-min.js"></script>
+
+	<!--  JQUERY 2.1.1 Library -->
+	<script type="text/javascript" src="./lib/jquery/jquery_2_1_1_min.js"></script>
+	<!-- <script type="text/javascript" src="./lib/jquery2017/jquery.mobile-1.4.5.js"></script>
+	<link rel="stylesheet" type="text/css" href="./lib/jquery2017/jquery.mobile-1.4.5.css">
+	<link rel="stylesheet" type="text/css" href="./lib/jquery2017/jquery.mobile.theme-1.4.5.css"> -->
+
+	<!-- VerseVIEW 2.0 library -->
+	<script type="text/javascript" src="AIRAliases.js"></script>
+	<script type="text/javascript" src="AIRIntrospector.js"></script>
+	<script type="text/javascript" src="AIRMenuBuilder.js"></script>
+	<script type="text/javascript" src="const.js"></script>
+	<script type="text/javascript" src="verseview.js"></script>
+	<script type="text/javascript" src="navigation.js"></script>
+	<script type="text/javascript" src="version.js"></script>
+	<script type="text/javascript" src="versionupdate.js"></script>
+	<script type="text/javascript" src="presentation3.js"></script>
+	<script type="text/javascript" src="background.js"></script>
+
+	<script type="text/javascript" src="bibledb_class/bibledb_edit.js"></script>
+	<script type="text/javascript" src="bibledb_class/bibledb.js"></script>
+	<script type="text/javascript" src="bibledb_class/bibledb_manager.js"></script>
+	
+
+	<script type="text/javascript" src="graphics_class/graphics.js"></script>
+	<script type="text/javascript" src="graphics_class/colorpicker.js"></script>
+	<script type="text/javascript" src="graphics_class/textcolor.js"></script>
+	<script type="text/javascript" src="graphics_class/solidbkgnd.js"></script>
+	<script type="text/javascript" src="graphics_class/gradbkgnd.js"></script>
+	<script type="text/javascript" src="graphics_class/stillbkgnd.js"></script>
+	<script type="text/javascript" src="graphics_class/motionbkgnd.js"></script>
+
+	<script type="text/javascript" src="p_window.js"></script>
+	<script type="text/javascript" src="recent.js"></script>
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript" src="tags.js"></script>
+	<script type="text/javascript" src="config.js"></script>
+	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript" src="search.js"></script>
+	<script type="text/javascript" src="notes.js"></script>
+	<script type="text/javascript" src="notesmanage.js"></script>
+	<script type="text/javascript" src="test.js"></script>
+	<script type="text/javascript" src="test2.js"></script>
+	<script type="text/javascript" src="update.js"></script>
+	<script type="text/javascript" src="schedule.js"></script>
+	<script type="text/javascript" src="help.js"></script>
+	<script type="text/javascript" src="setup.js"></script>
+	<script type="text/javascript" src="fonts.js"></script>
+	<script type="text/javascript" src="booknames.js"></script>
+
+	<script type="text/javascript" src="munglish.js"></script>
+
+	<script type="text/javascript" src="checkupdate.js"></script>
+
+	<script type="text/javascript" src="words/wordlearner.js"></script>
+    <script type="text/javascript" src="words/vvbrain.js"></script>
+
+	<script type="text/javascript" src="network/setup.js"></script>
+	<script type="text/javascript" src="network/vvchatq.js"></script>
+	<script type="text/javascript" src="network/webserver.js"></script>
+	<script type="text/javascript" src="network/vvwebengine.js"></script>
+	<script type="text/javascript" src="network/support.js"></script>
+	<script type="text/javascript" src="song/song_edit.js"></script>
+	<script type="text/javascript" src="song/song_nav.js"></script>
+	<script type="text/javascript" src="song/song_manager.js"></script>
+	<script type="text/javascript" src="song/song_present.js"></script>
+	<script type="text/javascript" src="song/songobj.js"></script>
+	<script type="text/javascript" src="song/song_lyrics.js"></script>
+	<script type="text/javascript" src="song/song_port_xml.js"></script>
+	<script type="text/javascript" src="song/song_import.js"></script>
+	<script type="text/javascript" src="song/song_updatedb.js"></script>
+	<script type="text/javascript" src="song/song_number.js"></script>
+
+	<script type="text/javascript" src="./lib/music/teoria.js"></script>
+	<script type="text/javascript" src="chords/chords_database.js"></script>
+	<script type="text/javascript" src="chords/chords_manager.js"></script>
+	<script type="text/javascript" src="chords/chords_navigation.js"></script>
+	<script type="text/javascript" src="chords/chords_edit.js"></script>
+	<script type="text/javascript" src="chords/chords_object.js"></script>
+	<script type="text/javascript" src="chords/chords_import_export.js"></script>
+	<script type="text/javascript" src="chords/chords_webinterface.js"></script>
+	<script type="text/javascript" src="chords/chords_virtualkeyboard.js"></script>
+
+	<script type="text/javascript" src="menu/menu.js"></script>
+
+
+	<!-- <script type="text/javascript" src="monitor.js"></script> -->
+
+	<link rel="stylesheet" type="text/css" href="./verseview.css">
+	<link rel="stylesheet" type="text/css" href="./fonts.css">
+	<link rel="stylesheet" type="text/css" href="./graphics_class/graphics.css">
+
+
+	<link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+	<!--<link rel="stylesheet" href="./lib/fontawesome/all.css">-->
+	<!--<script src="./lib/popper/popper.min.js" ></script>-->
+	<script src="./lib/bootstrap/js/bootstrap.js"></script>
+
+
+
+
+	<link rel="stylesheet" type="text/css" href="./lib/semantic/semantic.min.css">
+	<!--<script src="./lib/jquery/jquery-3.3.1.min.js"></script>-->
+	<script src="./lib/semantic/semantic.min.js"></script>
+
+	<script src="./lib/markjs/jquery.mark.js"></script>
+
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script> -->
+
+	<link rel="stylesheet" type="text/css" href="./lib/range/range.css">
+	<script src="./lib/range/range.js"></script>
+
+	<!-- <script type="text/javascript" src="qrcode/jquery.qrcode.js"></script> -->
+	<script type="text/javascript" src="./lib/qrcode/qrcode.min.js"></script>
+
+</head>
+<!-- <body class="yui-skin-sam" id="bodyID" onkeyup="mainWindowKey(event)" onLoad="vvinit()" >-->
+
+<body class="yui-skin-sam" id="bodyID" onkeyup="mainWindowKey(event)" onLoad="vvinit()">
+
+	<!--<div class="ui mini modal">
+			<div class="header"><div id="dialogHeader"></div></div>
+			<div class="description"><div id="dialogMsg"style="padding:20px">Message</div></div>
+			<div class="actions">
+				<div class="ui black deny button">OK</div>
+			</div>
+		</div>-->
+	<div class="modal" tabindex="-1" role="dialog" id="message">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="dialogHeader"></h4>
+					<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>-->
+				</div>
+				<div class="modal-body">
+					<div id="dialogMsg" style="padding:20px">Message</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="menubar" style="width:100%;">
+		<div class="ui compact mini menu">
+			<a id="icon_present" class="item" data-tooltip="Presentation" data-position="right center">
+				<!-- <i class="gamepad icon"></i> -->
+				<img src="./icons/images/32/present.png">
+			</a>
+			<a id="icon_blank" class="item" data-tooltip="Blank Presentation" data-position="right center">
+				<img src="./icons/images/32/blank.png">
+			</a>
+			<a id="icon_theme" class="item" data-tooltip="Show Theme" data-position="right center">
+				<img src="./icons/images/32/theme.png">
+			</a>
+			<a id="icon_logo" class="item" data-tooltip="Show Logo" data-position="right center">
+				<img src="./icons/images/32/logo.png">
+			</a>
+			<a id="icon_close" class="item" data-tooltip="Close Presentation" data-position="right center">
+				<img src="./icons/images/32/close.png">
+			</a>
+			<a id="icon_prev" class="item" data-tooltip="Previous Slide" data-position="right center">
+				<img src="./icons/images/32/left.png">
+			</a>
+			<a id="icon_next" class="item" data-tooltip="Next Slide" data-position="right center">
+				<img src="./icons/images/32/right.png">
+			</a>
+
+			<div id="verses_menu" class="menu">
+				<div id="book_name" class="item">
+					Bible book Name
+				</div>
+
+				<div class="item">
+					<a id="bibleAddScheduleButton" class="item" data-tooltip="Add to Schedule"
+						data-position="left center">
+						<i class="add icon"></i>
+					</a>
+				</div>
+			</div>
+
+
+			<div id="lyrics_menu" class="menu">
+				<div class="item">
+					<div id="ytubeid" class="item" data-tooltip="YouTube" data-position="left center">
+						<i class="video icon"></i>
+					</div>
+					<div id="songAddScheduleButton" class="item" data-tooltip="Add to Schedule"
+						data-position="left center">
+						<i class="add icon"></i>
+					</div>
+				</div>
+			</div>
+
+			<div id="notificationMenu" class="item"></div>
+
+		</div>
+	</div>
+
+	<div id="wrapper">
+		<div id="container" class="tabContainer"></div>
+		<div id="container2" class="verseContainer"></div>
+		<div id="cleared"></div>
+	</div>
+
+
+	<!-- Dialog box for Version Management -->
+	<div id="versionManageDialog">
+		<div class="hd"></div>
+		<div class="bd"></div>
+	</div>
+
+	<!-- Container for Notes -->
+	<div id="notesPanelID"></div>
+
+	<!-- Dialog box for YES NO Prompt -->
+	<div id="promptDialog">
+		<div class="hd"></div>
+		<div class="bd"></div>
+	</div>
+
+	<!-- Dialog box for Song Edit -->
+	<div id="panelObj">
+		<div class="hd"></div>
+		<div class="bd"></div>
+	</div>
+
+
+	<!-- MESSAGE BOX -->
+	<div id="somemessage" class="ui black large compact message">
+		<i class="close icon"></i>
+		<div id="vvdialog_header" class="header">
+
+		</div>
+		<p><span id="vvdialog_message"></span><br>
+			<button id="vvdialog_close" class="mini ui button">
+				CLOSE
+			</button>
+			<br>
+		</p>
+		<br>
+	</div>
+
+	<!-- CONFIRM BOX -->
+	<div class="ui modal" id="vvConfirm_main">
+		<div class="header" id="vvConfirm_header"></div>
+		<div class="content">
+			<div class="description" id="vvConfirm_message"></div>
+		</div>
+		<div class="actions">
+			<div class="ui button" id="vvConfirm_yes">YES</div>
+			<div class="ui button" id="vvConfirm_no">NO</div>
+		</div>
+	</div>
+
+	<!-- PANEL BOX -->
+	<div class="ui modal" id="vvPanel_main">
+		<div class="header" id="vvPanel_header"></div>
+
+		<div class="content">
+			<div class="description" id="vvPanel_message"></div>
+
+			<div class="ui button" id="vvPanel_close">CLOSE</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

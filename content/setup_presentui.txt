@@ -1,0 +1,64 @@
+<div class="generalPanelDIV">
+	<div class="generalheading2">Presentation Setup</div><br>
+	<div class="style2">
+		Presentation Screen<br>
+		<select id="selectScreenID" class="selectboxStyle">
+        <option value=1>Screen 1</option>
+    	</select> <br><br>
+		
+		Margins<br>
+		<table width="90%" border="0" cellspacing="0" cellpadding="0">
+  			<tr>
+	   			<td width="15%">TOP </td>
+	    		<td width="20%"><input name="presentConfigMarginTop" type="text" id="presentConfigMarginTop" value="50" size="6"></td>
+	    		<td width="15%">LEFT </td>
+	    		<td width="20%"><input name="presentConfigMarginLeft" type="text" id="presentConfigMarginLeft" value="50" size="6"></td>
+  			</tr>
+  			<tr>
+				<td>BOTTOM </td>
+	    		<td><input name="presentConfigMarginBottom" type="text" id="presentConfigMarginBottom" value="50" size="6"></td>
+				<td>RIGHT </td>
+	    		<td><input name="presentConfigMarginRight" type="text" id="presentConfigMarginRight" value="50" size="6"></td>
+  			</tr>
+		</table>
+		<br>
+		Maximum Font Size <input type="text" id="presentConfigMaxFontSize" value="150" size="6"> px (30px to 200px)<br>
+		<br>
+		Justification : 
+		<input type="radio" name="justify" id="justify_left" value="Left"> Left 
+		<input type="radio" name="justify" id="justify_center" value="Center" CHECKED > Center 
+		<input type="radio" name="justify" id="justify_right" value="Right"> Right
+		<br><br>
+		
+		
+		<input type="checkbox" id="presentConfigEnableTransition"> Enable Transition<br>
+		<input type="checkbox" id="presentConfigEnableShadow"> Enable Outline<br><br><br>
+		
+		<input type="checkbox" id="presentConfigShowDateTime"> Show Date and Time<br>
+		<input type="checkbox" id="presentConfigShowVVLogo"> Show VerseVIEW Logo<br>
+		<input type="checkbox" id="presentConfigShowCustomLogo"> Show Custom Logo<br>
+		<input name="customLogoText1" type="text" id="customLogoText1" size="40"><br>
+		<input name="customLogoText2" type="text" id="customLogoText2" size="40"><br><br>
+		
+		
+		VERSE<br>
+		Verse Presentaton Style : 
+		<input type="radio" name="p_orient" id="porient_hori" value="Horizontal"> Horizontal 
+		<input type="radio" name="p_orient" id="porient_vert" value="Vertical" CHECKED > Vertical 
+		<br><br>
+
+		SONG LYRICS <br>
+		<input type="checkbox" id="presentConfigEnableSongTitle"> Show Song Title<br>
+		<input type="checkbox" id="showPrimaryFont"> Show lyrics in primary language<br>
+		Lyrics Presentaton Style : 
+		<input type="radio" name="p_orient_song" id="porient_song_hori" value="Horizontal"> Horizontal 
+		<input type="radio" name="p_orient_song" id="porient_song_vert" value="Vertical" CHECKED > Vertical 
+		<br><br>
+
+	<br>
+		<p>
+  		<input name="presentConfigSaveButton" type="button" id="presentConfigSaveButton" value=" SAVE ">
+		</p>
+		<br>
+	</div>
+</div>

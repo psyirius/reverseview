@@ -1,0 +1,10 @@
+<!-- <div class="ui left labeled sticky button" tabindex="0">
+  <a id="book_name" class="ui basic label">
+    Bible book Name
+  </a>
+  <div id="bibleAddScheduleButton" class="ui  button">Add to Schedule</div>
+</div> -->
+
+
+
+<div id="verseTab" class="tabSubContainer" >Loading Bible Database ... </div>

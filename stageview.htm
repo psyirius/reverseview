@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>StageView Window</title>
+		
+		<script type="text/javascript" src="stageview.js"></script>
+		<script type="text/javascript" src="AIRAliases.js"></script>
+		<link rel="stylesheet" type="text/css" href="./fonts.css" />
+		<link rel="stylesheet" type="text/css" href="./stageview.css" />
+		
+		<script type="text/javascript" src="./lib/jquery/jquery_2_1_1_min.js"></script>
+		
+		<script>
+			function init(){
+				$("#backgroundLayer").css("background-color", "#01541f");	//June 28, 2020 - Show black screen for 250ms before switching to green to avoid green sceen flash
+				setTimeout(initStageView,250);
+			}
+		</script>	
+	
+	</head>
+	
+<body id="p_body" bgcolor="#00b140" text="#FFFFFF" onkeyup="findKey(event)" style="overflow:hidden" onLoad="init()">
+
+	<div id="backgroundLayer">
+	</div>
+	
+	<div id="backgroundLayer3rd">
+	</div>
+	
+	<div id="backgroundLayer3rdBorder">
+	</div>
+	
+		<div align="center" id="presentationTitle" class="titleStyle"></div>
+		<div align="center" id="presentationTitle2" class="titleStyle"></div>
+		
+		<div id="content1Container">
+			<div id="content1"></div>
+		</div>
+		
+		<div id="content2Container">
+			<div id="content2"></div>
+		</div>
+		
+		<div align="left" id="footer" class="footer_style"></div>		
+		<div align="left" id="footerL" class="footer_style"></div>		
+		<div align="left" id="footerR" class="footer_style"></div>		
+	
+	
+	
+
+</body>
+</html>

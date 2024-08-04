@@ -1,0 +1,717 @@
+
+
+a:link {
+	color: #000000;
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+	color: #000000;
+}
+
+a:hover {
+	text-decoration: none;
+	color: blue;
+}
+
+a:active {
+	text-decoration: none;
+	COLOR:#000000;
+}
+
+body {
+	background-color: black;
+	background-image: url(graphics/background2.png);
+	background-repeat: repeat-x;
+	/*COLOR:#000000; */
+	overflow: auto;
+}
+
+
+
+.mala {font-family:"JC_Malayalam"; font-size: 30px;}
+
+.style2 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 11px;
+}
+
+.style3 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	padding: 20px 20px;
+}
+
+.lyInfo {
+	/*float: right;*/
+	top: 20px;
+	left: 20px;
+	width: 350px;
+	border: 3px solid #cccccc;
+}
+
+.iframestyle {
+	position:absolute;
+	top: 20px;
+	left: 400px;
+	padding: 23px;
+}
+
+.ly_slide_classxx {
+	float: left;
+	width: 500px;
+}
+
+.style4 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	padding: 5px 5px;
+	vertical-align: top;
+	background-color: #BAD0EF;
+}
+
+.textareaStyle {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	width: 290px;
+	height:150px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-size: 14px;
+}
+
+.textareaStyle4songslide {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	width: 370px;
+	height:350px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-size: 14px;
+}
+
+.textareaStyle4note {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	width: 290px;
+	height:50px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-size: 14px;
+}
+
+.vcClass {
+	/*font-family: Arial, Helvetica, sans-serif; */
+	color: #000000;
+	font-size: 11px;
+	text-align: left;
+}
+
+.vcClassIcon{
+	text-align: center;
+	height: 16;
+	width: 16;
+	display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td.navtd {
+	padding: 10px;
+	/*font-size: 11px;*/
+	vertical-align: top;
+	}
+
+.tabSubContainer{
+	/*font-color:#00ddcc;
+	background-color: #0df500; */
+	z-index:0;
+	/* border: medium double #cccccc; */
+	/* height:100%; */
+	overflow:auto;
+}
+
+.notesTabSubContainer{
+	/*font-color:#00ddcc;
+	background-color: #0df500; */
+	z-index:0;
+	/* height:100%; */
+	overflow:hidden;
+}
+.searchFieldContainer {
+	font-color:#0000cc;
+}
+
+.searchResultContainer {
+	border: medium double #cccccc;
+	font-color:#0000cc;
+	height:600px;
+	overflow: auto;
+}
+
+#wrapper_x {
+    width: 99%;
+    /* border: 1px solid black; */
+
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#container_x {
+    width: 390px;
+    float:left; /* add this */
+	padding: 10px;
+    /* border: 1px solid red; */
+}
+#container2_X {
+    /* border: 1px solid green; */
+	padding: 10px;
+	width: 99%;
+	float: left; /* add this */
+    /* overflow: hidden; */ /* if you don't want #second to wrap below #first */
+}
+
+
+#wrapper {
+  margin-left: 300px;
+  padding:10px;
+  border:1px;
+}
+#container2 {
+  float: right;
+  width: 100%;
+  /* background-color: #CCF; */
+}
+#container {
+  float: left;
+  width: 300px;
+  margin-left: -300px;
+  /* background-color: #FFA; */
+}
+#cleared {
+  clear: both;
+}
+
+
+
+
+
+
+
+.tabContainer2 {
+	position:absolute;
+	left:30px;
+	/* top:30px;  */
+	margin-top:130px;
+	width:390px;
+	/* height:600px; */
+	z-index:0;
+	background-color: #edf5ff;
+	layer-background-color: #edf5ff;
+	border: medium double #cccccc;
+	font-color:#0000cc;
+	overflow: auto;
+	float:left;
+	/*overflow: hidden;*/
+}
+
+.verseContainer3{
+/* 	position:absolute;
+	left:360px; /*used to be 460*/
+	/* top:30px; */
+	/* margin-top:130px;
+	width:500px;
+	height:400px;
+	z-index:0;
+	background-color: #edf5ff;
+	layer-background-color: #edf5ff;
+	border: medium double #cccccc;
+	overflow: auto;
+	font-color:#0000cc; */
+	padding-left: 0px;
+	float:left;
+}
+
+.verseContainer2 {
+	position:absolute;
+	left:360px; /*used to be 460*/
+	/* top:30px; */
+	margin-top:130px;
+	width:500px;
+	height:400px;
+	z-index:0;
+	background-color: #edf5ff;
+	layer-background-color: #edf5ff;
+	border: medium double #cccccc;
+	overflow: auto;
+	font-color:#0000cc;
+	padding-left: 0px;
+	float:right;
+}
+
+
+
+.statusContainer {
+	position:absolute;
+	left:400px;
+	top:650px;
+	width:390px;
+	height:20px;
+	z-index:0;
+	background-color: #edf5ff;
+	layer-background-color: #edf5ff;
+	border: 2px none #000000;
+	overflow: auto;
+	font-color:#000000;
+	border: medium double #cccccc;
+	font-size: 11px;
+}
+
+.bkgndDIV {
+	height:200px;
+	overflow: auto;
+	background-color: #edf5ff;
+}
+
+.generalDIV {
+	height:350px;
+	overflow: auto;
+	background-color: #edf5ff;
+	border: medium double #cccccc;
+	padding: 6px;
+}
+
+.generalPanelDIV {
+	overflow: hidden;
+	/* height: 530px; */
+	background-color: #edf5ff;
+	border: medium double #cccccc;
+	padding: 6px;
+	padding-left: 20px;
+}
+
+.notesResultDIV{
+	height:100%;
+	overflow: auto;
+	background-color: #edf5ff;
+	border: medium double #cccccc;
+}
+
+.versionDIV {
+	height:150px;
+	overflow: auto;
+	background-color: #edf5FF;
+	/*background-color: #0000FF;*/
+}
+
+
+.remoteVVDIV {
+	height:550px;
+	overflow: auto;
+	background-color: #edf5FF;
+	/*background-color: #0000FF;*/
+}
+
+.bibleEditDIV {
+	height:400px;
+	overflow: auto;
+	background-color: #edf5FF;
+	/*background-color: #0000FF;*/
+}
+
+/* Yahoo YUI - Tabs*/
+.yui-navset-left .yui-nav { width:auto; }
+.yui-navset-left { padding:0 0 0 7.5em; }
+
+.yui-skin-sam .yui-dt-liner { white-space:nowrap; }
+
+/*General Text Style*/
+.generaltext {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 11px;
+}
+
+.tab_nav {
+	line-height:30px;
+    /*height:300px;*/
+    width:300px;
+    float:left;
+    padding:5px;
+}
+
+.tab_content {
+	float:left;
+	overflow:auto;
+}
+
+.scheduletext {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	/*font-size: 14px;*/
+	padding: 10px;
+	vertical-align: top;
+	/*width:300px;*/
+	height:470px;
+	overflow:auto;
+}
+
+.highlighttext {
+	color: red;
+	font-weight: bold;
+}
+
+.generalheading2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+	color: #000000;
+}
+
+.navListStyle{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background-color: #FFFFFF;
+	background-position: center;
+	height: auto;
+	width: 120px;
+	text-align: center;
+}
+
+.recentListStyle{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background-color: #FFFFFF;
+	background-position: center;
+	height: auto;
+	width: 210px;
+	text-align: center;
+}
+
+.updateListStyle{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background-color: #FFFFFF;
+	background-position: center;
+	height: 80px;
+	width: 120px;
+	text-align: center;
+}
+
+.updateStatusClass{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background-color: #FFFFFF;
+	width: 140px;
+	height: 80px;
+	border: medium double #cccccc;
+}
+
+#graphicsDiv{
+	padding: 10px;
+	overflow: auto;
+}
+
+.selectboxStyle{
+	width: 150px;
+	font-size: 11px;
+}
+
+.wideselectboxStyle{
+	width: 270px;
+	font-size: 11px;
+}
+
+.colorPickerStyle{
+	position: relative;
+	padding: 6px;
+	background-color: #edf5FF;
+	width: 400px;
+	height:180px;
+}
+
+.iconImageStyle{
+	padding: 0px;
+	width: 38px;
+	height:38px;
+}
+
+#bookAutoComplete {
+    width:100px; /* set width here or else widget will expand to fit its container */
+    padding-bottom:0em;
+}
+
+.tempList {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 10px;
+	text-align: left;
+}
+
+.notes_css {
+	margin: 0 20px;
+	color: #000000;
+	vertical-align: text-top;
+	/*background-color:#000000;*/
+}
+
+.notes_verse_css {
+	margin: 0 10px;
+	color: #000000;
+	/*background-color:#000000;*/
+}
+
+.notes_box_css {
+	/*background-color:#000000;*/
+	width:100%;
+}
+
+/*Bible Manager CSS*/
+.bibleMngContainerLeft {
+	position:relative;
+	/*left:360px;*/ /*used to be 460*/
+	/*top:30px;*/
+	width:250px;
+	height:auto;
+	z-index:0;
+	background-color: #edf5ff;
+	layer-background-color: #edf5ff;
+	border: none;
+	overflow: auto;
+	font-color:#000000;
+	padding-left: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 11px;
+	border: 2px none #0000cc;
+}
+
+
+.bibleMngContainerRight {
+	position:absolute;
+	/*left:560px;*/ /*used to be 460*/
+	top:40px;
+	width:200px;
+	height:auto;
+	z-index:0;
+	background-color: #edf5ff;
+	layer-background-color: #edf5ff;
+	border: none;
+	overflow: auto;
+	font-color:#000000;
+	padding-left: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 11px;
+	border: 2px none #000000;
+}
+
+#myAutoComplete {
+    width:10em; /* set width here or else widget will expand to fit its container */
+    padding-bottom:2em;
+}
+
+#scheduleTab {
+	overflow:auto;
+}
+
+#screenTab {
+	overflow:auto;
+}
+
+#graphicsDivxx {
+	overflow:auto;
+}
+
+
+.nm_text {
+	margin: 0 20px;
+	overflow: auto;
+}
+
+.scheduletable {
+	width:80%;
+}
+
+.formTextEntry{
+    position: relative;
+    left: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.formTextEntryleft {
+    width: 20%;
+    float: left;
+    margin-top:6px;
+    text-align: right;
+}
+.formTextEntryright {
+    width: 75%;
+    margin-left: 10px;
+    margin-top:5px;
+    float:left;
+}
+
+.formTextEntryRounded {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 3px #666;
+    padding: 4px 7px;
+}
+
+
+/* styles for entire widget */
+.yui-skin-sam .yui-ac {
+    position:relative;font-family:arial;font-size:11px;
+}
+
+/*Rounded corner*/
+/* set millions of background images */
+.rbroundbox { background: url(./graphics/round/nt.gif) repeat; }
+.rbtop div { background: url(./graphics/round/tl.gif) no-repeat top left; }
+.rbtop { background: url(./graphics/round/tr.gif) no-repeat top right; }
+.rbbot div { background: url(./graphics/round/bl.gif) no-repeat bottom left; }
+.rbbot { background: url(./graphics/round/br.gif) no-repeat bottom right; }
+
+/* height and width stuff, width not really nessisary. */
+.rbtop div, .rbtop, .rbbot div, .rbbot {
+width: 100%;
+height: 7px;
+font-size: 1px;
+}
+.rbcontent { margin: 0 7px; }
+.rbroundbox { width: 100%; margin: 1em auto; }
+
+#sliderbg {
+    background:url(./lib/YahooUI/slider/assets/bg-fader.gif) 5px 0 no-repeat;
+}
+
+
+/*  For configuration */
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 20%;
+    padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.padded {
+	padding-left: 20px;
+}
+
+
+.vvrow {
+	height: 60px;
+}
+
+.vvrow30 {
+	height: 30px;
+}
+
+.vvrow40 {
+	height: 40px;
+}
+
+#ly_name2 {
+	font-family: Baloo Chettan;
+}
+
+.results {
+	font-size: 12px;
+	overflow:auto;
+}
+
+
+
+/* FOR CHORDS */
+.chords_chords{
+	font-family: 'Courier New, Courier, monospace';
+	font-size: 14px;
+	color: #FF0000;
+	/*background-color: #000000;*/
+}
+
+.chords_lyrics{
+	font-family: 'Courier New, Courier, monospace';
+	font-size: 14px;
+	color: #000000;
+	/*background-color: #FFFFFF;*/
+}
+
+.chords_div_box{
+	height: 550px;
+	border: 2px solid #cccccc;
+	padding-left: 10px;
+	overflow: auto;
+}
+
+.chords_edit_div_box{
+	height: 220px;
+	border: 2px solid #cccccc;
+	padding-left: 10px;
+	overflow: auto;
+}
+
+
+
+.chords_disclaimer{
+	font-size: 10px;
+	padding: 20px;
+	color: black;
+}
+
+
+.chordsedit_chords{
+	color: #FF0000;
+	vertical-align: super;
+	top:-0.9em;
+	font-weight: bold;
+}
+
+.chordsedit_lyrics{
+	color: #000000;
+}
+
+
+.chunk {
+	float: left;
+  }
+
+
+.navListStyleNew{
+	border: 0;
+	/*font-family: Baloo Chettan;*/
+	font-size: 11px;
+	color: #FF0000;
+	background-color: #FFFFFF;
+	background-position: center;
+	height: auto;
+	width: 120px;
+	text-align: center;
+	/*overflow-y: scroll;*/
+}
+
+.cardstyle{
+	width: 200px;
+}
+
+
+.mainrow {
+	/*overflow-y:auto;*/
+}
+
+.testfont{
+	font-family: Baloo Chettan;
+}

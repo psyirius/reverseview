@@ -1,0 +1,59 @@
+<div class="ui form">
+	<div id="versionDivID" class="ui grid">
+		<div class="six wide column">
+			<select size="10" class="form-control" id="selectVersionList">
+				<option value="0">English KJV</option>
+			</select>
+		</div>
+
+		<div class="ten wide column">
+			<div class="form-group row">
+				<label for="versionVersionTextbox" class="col-sm col-form-label">Version</label>
+				<div class="col-sm">
+					<input type="text" class="form-control form-control-sm" id="versionVersionTextbox">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="fontVersionList" class="col-sm col-form-label">Font</label>
+				<div class="col-sm">
+					<div class="ui grid">
+						<div class="six wide column">
+							<select name="select" class="form-control" id="fontVersionList">
+								<option value="0">Times New Roman</option>
+							</select>
+						</div>
+						<div class="six wide column">
+							<button class="ui  button" id="addFontVersionButton">+</button>
+							<input type="text" class="form-control form-control-sm" id="addFontVersionTextbox"	placeholder="New font name">
+						</div>
+						<!--
+						<div class="four wide column">
+							<input type="text" class="form-control form-control-sm" id="addFontVersionTextbox"	placeholder="New font name">
+						</div>
+						-->
+						<div class="two wide column">
+							<button class="ui  button" id="okFontVersionButton">ADD</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="copyrightVersionTextarea" class="col-sm col-form-label">Copyright</label>
+				<div class="col-sm">
+					<input type="text" class="form-control form-control-sm" id="copyrightVersionTextarea">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui grid">
+		<div class="sixteen wide column">
+			<button class="ui  button" id="browseVersionButton">ADD BIBLE</button>
+			<button class="ui  button" id="deleteVersionButton">DELETE BIBLE</button>
+			<button class="ui  button" id="saveVersionButton">SAVE</button>
+			<button class="ui  button" id="closeVersionButton">CLOSE</button>
+		</div>
+	</div>
+</div>

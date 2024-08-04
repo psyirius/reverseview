@@ -1,0 +1,12 @@
+<b>Presentation Screen</b> <br>
+<div id="monitorDiv" class="monitorClass"></div>
+
+<br><br><hr>
+<b>Presentation Controls</b> <br><br>
+
+
+<span class="iconImageStyle"><img id="mon_prevBut"></span>
+<span class="iconImageStyle"><img id="mon_nextBut"></span>
+<span class="iconImageStyle"><img id="mon_themeBut"></span>
+<span class="iconImageStyle"><img id="mon_blankBut"></span>
+<span class="iconImageStyle"><img id="mon_closeBut"></span>

@@ -1,0 +1,19 @@
+<div class="generalPanelDIV">
+	<div class="generalheading2">Bible Update</div><br>
+	<div class="style2">
+	<table id="updateTableID" border="0">
+		<tr height="100px">
+			<td>
+				<select size="5" id="updateListID" class="updateListStyle"></select><br>
+			</td>
+			<td>
+				<div id="updateStatusID" class="updateStatusClass"></div>
+			</td>
+		</tr>
+		<tr><td>
+			<input type="button" id="checkUpdateBut" value=" CHECK "> | 
+			<input type="button" id="loadSelectedBut" value=" LOAD ">
+		</td></tr>
+	</table>
+	</div>
+</div>

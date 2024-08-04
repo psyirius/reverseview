@@ -1,0 +1,176 @@
+<!-- **** Build with Semanitc UI **** -->
+
+
+<form class="ui form">
+  <!-- **** NAME KEY **** -->
+  <div class="ui grid">
+    <div class="ten wide column">
+      <div class="form-group row">
+        <label for="ch_name" class="col-sm col-form-label">Title</label>
+        <div class="col-sm">
+          <input type="text" class="form-control form-control-sm" id="ch_name" placeholder="Song Title" disabled="">
+        </div>
+      </div>
+    </div>
+    <div class="four wide column">
+      <div class="form-group row">
+        <label for="ch_author" class="col-sm col-form-label">Chords Author</label>
+        <div class="col-sm">
+          <input type="text" class="form-control form-control-sm" id="ch_author" placeholder="Chords by" disabled="">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+
+
+<div class="ui grid mainrow">
+  <div class="eight wide column">
+    <div id="chordsId" class="chords_div_box">This song does not have any chords added. Click NEW to add chords.
+    </div>
+  </div>
+  <div class="eight wide column">
+    <!-- **** TABS Build with Semantic UI **** -->
+    <div class="ui top attached tabular menu">
+      <a class="item active" data-tab="first">Versions</a>
+      <!--<a class="item" data-tab="second">Edit</a>-->
+      <a class="item" data-tab="third">Piano</a>
+      <a class="item" data-tab="fourth">Guitar</a>
+    </div>
+    <div class="ui bottom attached tab segment active chords_div_box" data-tab="first">
+      <!-- **** CHORDS, VERSION LIST **** -->
+      <div class="ui form">
+        <div class="ui grid form small">
+
+          <div class="ten wide column">
+            <div class="form-group row">
+              <!--<label for="ch_versions" class="col-sm col-form-label">Versions</label>-->
+              <div class="col-sm">
+                <select class="form-control" id="ch_versions">
+                  <option value=1>Version 1</option>
+                  <option value=2>Version 2</option>
+                  <option value=3>Version 3</option>
+                  <option value=4>Version 4</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="four wide column">
+            <button class="ui tiny button" id="ch_complexity">Advanced</button>
+          </div>
+        </div>
+
+
+        <!-- **** KEY, TIME SIGNATURE, TEMPO **** -->
+        <div class="ui grid">
+          <div class="ten wide column">
+            <div class="form-group row">
+              <!--<label for="ch_key" class="col-sm col-form-label">Key</label>-->
+              <div class="col-sm">
+                <select class="form-control" id="ch_key">
+                  <!--
+                  <option value="C">C</option>
+                  <option value="C#">C#</option>
+                  <option value="Db">Db</option>
+                  <option value="D">D</option>
+                  <option value="D#">D#</option>
+                  <option value="Eb">Eb</option>
+                  <option value="E">E</option>
+                  <option value="F">F</option>
+                  <option value="F#">F#</option>
+                  <option value="Gb">Gb</option>
+                  <option value="G">G</option>
+                  <option value="G#">G#</option>
+                  <option value="Ab">Ab</option>
+                  <option value="A">A</option>
+                  <option value="A#">A#</option>
+                  <option value="Bb">Bb</option>
+                  <option value="B">B</option>
+                  -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="four wide column">
+            <button class="ui green tiny button" id="ch_majorminor">MAJOR</button>
+          </div>
+        </div>
+
+
+
+        <div class="ui grid">
+          <div class="five wide column">
+            <div class="form-group row">
+              <label for="ch_signature" class="col-sm col-form-label">Time Signature</label>
+              <div class="col-sm">
+                <input type="text" class="form-control form-control-sm" id="ch_signature" placeholder="" disabled="">
+              </div>
+            </div>
+          </div>
+          <div class="four wide column">
+            <div class="form-group row">
+              <label for="ch_tempo" class="col-sm col-form-label">Tempo (BPM)</label>
+              <div class="col-sm">
+                <input type="text" class="form-control form-control-sm" id="ch_tempo" placeholder="" disabled="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui grid">
+          <div class="fourteen wide column">
+            <div class="form-group row">
+              <label for="ch_rhythm" class="col-sm col-form-label">Rhythm Suggestions</label>
+              <div class="col-sm">
+                <input type="text" class="form-control form-control-sm" id="ch_rhythm" placeholder="" disabled="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui grid">
+          <div class="fourteen wide column">
+            <div class="form-group row">
+              <label for="ch_notes" class="col-sm col-form-label">Notes</label>
+              <div class="col-sm">
+                <textarea class="form-control form-control-sm" id="ch_notes" rows="1" disabled=""></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- **** BUTTONS **** -->
+      <div class="ui grid">
+        <div class="sixteen wide column">
+          <div class="form-group">
+            <button class="ui button" id="ch_new">NEW</button>
+            <button class="ui button" id="ch_edit">EDIT</button>
+            <!-- <button class="ui button" id="ch_save">SAVE</button>
+                    <button class="ui button" id="ch_saveas">SAVE AS</button> -->
+            <button class="ui button" id="ch_delete">DELETE</button>
+            <button class="ui primary button" id="ch_cancel">CLOSE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui bottom attached tab segment" data-tab="third">
+      <div id="ch_piano">Piano</div>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="fourth">
+      <div id="ch_guitar">Guitar</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ui grid mainrow">
+  <div id="ch_disclaimer" class="chords_disclaimer"></div>
+</div>

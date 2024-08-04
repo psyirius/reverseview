@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<!--
+	VERSEVIEW FOR LOWER THIRD VIEW
+	May 21, 2020
+
+	Copyright (c) 2020 VerseVIEW
+	
+	Disclaimer: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+-->
+
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>VerseVIEW Remote 8.0.0</title>
+	
+	<link rel="stylesheet" href="./jslib/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="vv.css">
+	<link rel="stylesheet" href="fonts.css">
+	<script src="./jslib/jquery.js"></script>
+	<script src="./jslib/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" src="bible_present.js"></script>
+	
+</head>
+<body>
+<div data-role="page">
+		<div data-role="tabs">
+		
+			<div data-role="navbar">
+				<ul>
+			      <li><a href="#one" data-theme="a" data-ajax="false">Bible</a></li>
+			      <!-- <li><a href="#two" data-theme="a" data-ajax="false">Songs</a></li> -->
+			      <li><a href="#three" data-theme="a" data-ajax="false">Schedule</a></li>
+			    </ul>
+			</div>
+
+			<div id="one" class="ui-content">
+				<h1>Bible</h1>
+
+				<label for="remote_bibleRefID">Reference</label>
+				<div data-role="controlgroup" data-type="horizontal">
+					<input type="text" id="remote_bibleRefID" data-wrapper-class="controlgroup-textinput ui-btn">
+				</div>
+				
+				<div data-role="controlgroup" data-type="horizontal">
+					<button onClick="getVerses()">GET</button>
+					<button onClick="getBibleRef()">PRESENT</button>
+				</div>
+				
+				<div data-role="controlgroup" data-type="horizontal">
+					<button onClick="getPrevBibleRef()"><img src="./images/left.png"></button>
+					<button onClick="getNextBibleRef()"><img src="./images/right.png"></button>
+				</div>
+				
+				<div data-role="controlgroup" data-type="horizontal">
+					<button onClick="blankPresentWindow()"><img src="./images/blank.png"></button>
+					<button onClick="themePresentWindow()"><img src="./images/theme.png"></button>
+					<button onClick="logoPresentWindow()"><img src="./images/logo.png"></button>
+					<button onClick="closePresentWindow()"><img src="./images/close.png"></button>
+				</div>
+				
+				
+				<div id="resultID" class="verseStyle"></div>
+			</div>
+			
+
+			
+			<div id="three" class="ui-content">
+				<h1>Schedule</h1>
+				<select name="schID" id="schID" data-native-menu="true" data-inline="false"></select>
+
+				<div data-role="controlgroup" data-type="horizontal">
+					<button onClick="getSch()">GET SCHEDULE</button>
+					<button onClick="getSchContent()">GET</button>
+					<button onClick="presentSch()">PRESENT</button>
+				</div>
+				
+				<div data-role="controlgroup" data-type="horizontal">
+					<button onClick="getPrevBibleRef()"><img src="./images/left.png"></button>
+					<button onClick="getNextBibleRef()"><img src="./images/right.png"></button>
+				</div>
+				
+				<div data-role="controlgroup" data-type="horizontal">
+					<button onClick="blankPresentWindow()"><img src="./images/blank.png"></button>
+					<button onClick="themePresentWindow()"><img src="./images/theme.png"></button>
+					<button onClick="logoPresentWindow()"><img src="./images/logo.png"></button>
+					<button onClick="closePresentWindow()"><img src="./images/close.png"></button>
+				</div>
+				<form>
+				    <label>
+				        <input type="checkbox" id="singleLine">Single Line
+				    </label>
+				</form>
+				
+				<!--
+				<div id="resultSongID" class="verseStyleLeft"></div>
+				<div id="resultSongID2" class="verseStyleRight"></div>
+				-->
+				<div id="resultSongtitleID"></div>
+				
+				<div class="row">
+				  <div id="resultSongID" class="column"></div>
+				  <div id="resultSongID2" class="column"></div>
+				</div>
+
+			</div>
+			
+		</div>
+		
+		<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
+			<p>VerseVIEW Remote 8.0.0</p>
+		</div><!-- /footer -->
+</div><!-- /page -->
+</body>
+</html>

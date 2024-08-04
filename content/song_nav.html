@@ -1,0 +1,58 @@
+<!-- **** CATEGORY TAGS **** -->
+<div class="ui grid ">
+  <div class="eight wide column">
+    <label for="songnav_category" class="col-form-label form-control-sm">Category</label>
+    <select class="form-control-sm col-sm-10" id="songnav_category"></select>
+  </div>
+  <div class="eight wide column">
+    <label for="songnav_tags" class="col-form-label form-control-sm">Tags</label>
+    <select class="form-control-sm col-sm-10" id="songnav_tags">
+      <option>WORSHIP</option>
+    </select>
+  </div>
+
+</div>
+
+
+<!-- **** TITLE SEQUENCE **** -->
+<div class="ui grid vvrow40">
+  <div class="nine wide column">
+    <div class="ui search songsearch">
+      <div class="ui icon input">
+        <input class="prompt" type="text" size="14" id="songnav_editbox" placeholder="Search">
+      </div>
+      <div class="results"></div>
+    </div>
+  </div>
+
+
+  <div class="one wide column">
+    <span class="iconImageStyle"><img id="songnav_searchbutton"></span>
+  </div>
+  <div class="one wide column">
+    <span class="iconImageStyle"><img id="songnav_searchauthorbutton"></span>
+  </div>
+  <div class="one wide column">
+    <span class="iconImageStyle"><img id="songnav_clearbutton"></span>
+  </div>
+  <div class="one wide column">
+    <span class="iconImageStyle"><img id="songnav_suggestbutton"></span>
+  </div>
+</div>
+
+
+<!-- **** ERROR Notification and word suggestions **** -->
+<div class="ui grid vvrow40">
+  <div class="ten wide column">
+    <div class="col-form-label form-control-sm" id="search_error_notification"></div>
+  </div>
+</div>
+
+
+
+<div class="style2">
+  <!-- <b>Song Title</b><br> -->
+  <input type="text" id="songnav_filterbox" size="30"><br>
+  <div id="songnav_songlistnew" class="yui-skin-sam"></div>
+</div>
+<!-- <input type="text" class="form-control form-control-sm" id="songnav_editbox_hold" placeholder="Search"> -->

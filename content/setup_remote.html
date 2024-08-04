@@ -1,0 +1,138 @@
+<!-- **** Build with Semanitc UI **** -->
+
+<div class="ui form container segment">
+
+
+
+	<div id="generalPanelDIV_delete" class="ui grid remoteVVDIV">
+		<!-- LEFT COLUMN -->
+		<div class="seven wide column">
+			<div class="form-group row field">
+				<label>IP Address</label>
+				<select name="select" class="form-control" id="configIPaddr">
+				</select>
+			</div>
+
+			<div class="form-group row field">
+				<label>Port</label>
+				<div class="ui grid">
+					<div class="six wide column" data-tooltip="Select Port (49152 to 65535)"
+						data-position="right center" data-variation="basic small">
+
+						<input type="text" class="form-control form-control-sm" id="configRemotePort" value="50000"
+							placeholder="Enter Port Number">
+
+					</div>
+					<div class="ten wide column">
+						<button class="ui primary button" id="saveRemoteVVSettings" data-tooltip="Enable/Disable Remote"
+							data-position="right center" data-variation="basic small">ENABLE</button>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="form-group row field">
+				<label>Enter Hostname</label>
+				<div class="ui grid" data-tooltip="Enter hostname of the computer" data-position="right center" data-variation="basic small">
+					<div class="six wide column">
+
+
+						<input type="text" class="form-control form-control-sm" id="configRemoteHostname">
+
+					</div>
+					<div class="ten wide column field">
+						<div class="inline field">
+							<div class="ui toggle checkbox">
+								<input type="checkbox" tabindex="0" id="remoteVVUseHostname"> 
+								<label>Use Hostname</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form-group row field">
+				<button class="ui secondary button" id="remoteVVShowKeywords">Show Messenger Keywords</button>
+				<div id="fixedWordListDiv" data-tooltip="Add or Delete Keywords for Messenger"
+					data-position="right center" data-variation="basic small">
+					<div class="ui form">
+						<div class="field">
+							<label>Messenger Keywords</label>
+							<textarea rows="3"
+								id="fixedWordList">piano,drums,guitar,violin,bass,kick,snare,monitor,sound,up,down,yes,no,key,off,floor monitor</textarea>
+						</div>
+					</div>
+
+
+					<button class="ui secondary button" id="updateFixedWords">Update Keywords</button>
+					
+				</div>
+			</div>
+
+
+			<div class="form-group row field">
+				<label>More Information</label>
+				<span id="remoteVVHint">Panel to control Remote VerseVIEW Settings</span>
+			</div>
+		</div>
+
+
+		<div class="two wide column"></div>
+
+
+		<!-- RIGHT COLUMN -->
+		<div class="seven wide column">
+			<div class="form-group row field">
+				<span id="remoteVVStatus">Remote VerseVIEW Disabled</span>
+			</div>
+
+
+			<div class="form-group row field" id="remoteLinkList">
+				<label>Remote Link</label>
+				<div data-tooltip="Select the remote function for the corresponding QR code and link"
+					data-position="bottom right" data-variation="basic small">
+					<select name="select" class="form-control" id="remoteVVRemoteFunc">
+						<option value=1>Control</option>
+						<option value=2>Stageview 1</option>
+						<option value=3>Stageview 2</option>
+						<option value=4>Lower Third A</option>
+						<option value=5>Lower Third B</option>
+						<option value=6>Lower Third C</option>
+						<option value=7>Lower Third D</option>
+						<option value=8>Lower Third E</option>
+						<option value=9>Lower Third E2</option>
+						<option value=10>Lower Third G</option>
+						<option value=11>Chords</option>
+					</select>
+				</div>
+			</div>
+
+
+			<div class="form-group row field">
+				<div id="qrcode"></div>
+			</div>
+
+			<div class="form-group row field">
+				<div class="ui grid">
+					<div class="ten wide column">
+						<input type="text" class="form-control form-control-sm" id="configRemoteLink" value=""
+							placeholder="Link to remote">
+					</div>
+					<div class="four wide column">
+						<button class="ui primary button" id="configRemoteCopy"
+							data-tooltip="Copy remote link to clipboard" data-position="left center"
+							data-variation="basic small">COPY</button>
+					</div>
+				</div>
+
+			</div>
+
+			
+		</div>
+
+	</div>
+
+</div>

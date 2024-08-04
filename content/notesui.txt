@@ -1,0 +1,11 @@
+<div class="rbroundbox">
+	<div class="rbtop"><div></div></div>
+		<div class="rbcontent">
+			<p class="tempList" id="notesVerse"></p>
+		</div><!-- /rbcontent -->
+	<div class="rbbot"><div></div></div>
+</div><!-- /rbroundbox -->
+
+<textarea id="notes_rte" rows="10" style="width: 480px"></textarea><br>
+<input type="button" id="notesSaveButton" value=" SAVE " class="tempList"> | 
+<input type="button" id="notesCancelButton" value=" CLOSE " class="tempList"> 

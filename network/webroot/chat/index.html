@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<!--
+	VERSEVIEW FOR LOWER THIRD VIEW
+	May 21, 2020
+
+	Copyright (c) 2020 VerseVIEW
+	
+	Disclaimer: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+-->
+
+
+<html>
+
+<head>
+	<link rel="stylesheet" href="../jslib/onsen/onsenui.min.css">
+	<link rel="stylesheet" href="../jslib/onsen/onsen-css-components.min.css">
+
+	<script language="javascript" src="../jslib/jquery.js"></script>
+
+	<script src="../jslib/onsen/onsenui.min.js"></script>
+	<script language="javascript" src="chat.js"></script>
+	<link rel="stylesheet" type="text/css" href="vv.css">
+
+
+
+</head>
+
+<body>
+	<ons-tabbar swipeable position="auto">
+		<ons-tab page="chat.html" label="VerseVIEW Messenger" material:md-home" active>
+		</ons-tab>
+		<!-- <ons-tab page="stageview.html" label="Stageview" icon="md-settings" active-icon="md-face">
+		</ons-tab> -->
+	</ons-tabbar>
+	</ons-page>
+
+	<template id="chat.html">
+		<ons-page id="page1">
+			<ons-toolbar>
+				<div class="center">VerseVIEW Messenger</div>
+			</ons-toolbar>
+			<ons-fab position="bottom right">
+				<ons-icon icon="md-plus"></ons-icon>
+			</ons-fab>
+			<div style="height: 40%;  overflow: auto; padding: 1px 0 0 0;">
+				<div class="card">
+					<div class="card__content" id="resultID"></div>
+				</div>
+			</div>
+
+
+			<!-- <div style="height: 20%; width: 90%; padding: 10px 0 0 20px;">
+		  <div><input style="width: 50%;" class="text-input text-input--material" placeholder="name" id="msgS" type="text" required></div>
+		  <br />
+		  <div><input style="width: 90%;" class="text-input text-input--material" placeholder="message" id="msgM" type="text" required></div>
+		  <ons-button id="addMsgID" >Send</ons-button>
+		</div> -->
+
+
+			<ons-row>
+				<ons-col width="90%">
+					<div style="height: 20%; width: 90%; padding: 10px 0 0 20px;">
+						<div><input style="width: 50%;" class="text-input text-input--material" placeholder="name"
+								id="msgS" type="text" required></div>
+						<br />
+						<div><input style="width: 90%;" class="text-input text-input--material" placeholder="message"
+								id="msgM" type="text" required></div>
+					</div>
+				</ons-col>
+
+				<ons-col>
+					<ons-button id="addMsgID">Send</ons-button>
+				</ons-col>
+			</ons-row>
+
+
+
+
+			<div style="height: 40%; padding: 1px 0 0 0;">
+				<div class="card">
+					<div class="card__content" id="fixedWordID"></div>
+				</div>
+			</div>
+		</ons-page>
+	</template>
+
+	<template id="stageview.html">
+		<ons-page id="settings">
+			<ons-toolbar>
+				<div class="left">
+					<ons-back-button>Page 1</ons-back-button>
+				</div>
+				<div class="center">SETTINGS</div>
+			</ons-toolbar>
+
+			<p>Settings</p>
+			<p>
+				<ons-button>Save</ons-button>
+				<ons-button>Close</ons-button>
+			</p>
+
+			<ons-list>
+				<ons-list-header>Translations</ons-list-header>
+				<ons-list-item tappable>
+					<label class="left">
+						<ons-radio name="color" input-id="radio-1" checked></ons-radio>
+					</label>
+					<label for="radio-1" class="center">
+						Primary Language
+					</label>
+				</ons-list-item>
+				<ons-list-item tappable>
+					<label class="left">
+						<ons-radio name="color" input-id="radio-2"></ons-radio>
+					</label>
+					<label for="radio-2" class="center">
+						English Transliteration
+					</label>
+				</ons-list-item>
+				<ons-list-item tappable>
+					<label class="left">
+						<ons-radio name="color" input-id="radio-2"></ons-radio>
+					</label>
+					<label for="radio-2" class="center">
+						Combo
+					</label>
+				</ons-list-item>
+			</ons-list>
+
+			<ons-list>
+				<ons-list-header>Options</ons-list-header>
+				<ons-list-item>
+					<div class="center">
+						Sort Schedule
+					</div>
+					<div class="right">
+						<ons-switch checked></ons-switch>
+					</div>
+				</ons-list-item>
+			</ons-list>
+
+			<p>
+				<ons-list-header>Song Database</ons-list-header>
+				<ons-select id="choose-sel" onchange="editSelects(event)">
+					<option value="basic">Malayalam</option>
+					<option value="material">Hindi</option>
+					<option value="underbar">Tamil</option>
+				</ons-select>
+			</p>
+
+			<p>
+				<ons-list-header>Font Size</ons-list-header>
+				<ons-row>
+					<ons-col width="40px" style="text-align: center; line-height: 31px;">
+						<ons-icon icon="md-volume-down"></ons-icon>
+					</ons-col>
+					<ons-col>
+						<ons-range style="width: 100%;" value="25"></ons-range>
+					</ons-col>
+					<ons-col width="40px" style="text-align: center; line-height: 31px;">
+						<ons-icon icon="md-volume-up"></ons-icon>
+					</ons-col>
+				</ons-row>
+			</p>
+
+		</ons-page>
+	</template>
+	<script>
+		document.addEventListener('init', function (event) {
+			//alert("pageinit");
+			init();
+		});
+	</script>
+
+</body>
+
+</html>

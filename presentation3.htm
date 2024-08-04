@@ -1,0 +1,61 @@
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Presentation Window 3</title>
+
+
+	<script type="text/javascript" src="presentation3.js"></script>
+	<script type="text/javascript" src="AIRAliases.js"></script>
+	<link rel="stylesheet" type="text/css" href="./fonts.css" />
+	<link rel="stylesheet" type="text/css" href="./presentation3.css" />
+
+	<script type="text/javascript" src="./lib/jquery/jquery_2_1_1_min.js"></script>
+
+
+	<script type="text/javascript" src="./lib/jquery/touchswipe.js"></script>
+
+	<script type="text/javascript" src="./lib/crossfade/crossfade.js"></script>
+
+	<script type="text/javascript" src="./lib/textfit/textFit.min.js"></script>
+
+
+</head>
+
+<body id="p_body"  onkeyup="findKey(event)" style="overflow:hidden" >
+
+	<!-- MAIN BACKGROUND -->
+	<div id="backgroundLayer" style="position:absolute; left:0px; top:0px;  z-index:1;  border: 0px none #000000;">
+		<img id="backgroundImage">
+	</div>
+
+
+	<!-- TEXTURE/MASK BACKGROUND -->
+	<!--
+	<div id="backgroundLayer2" style="position:absolute; left:0px; top:0px;  z-index:2;  border: 0px none #000000;">
+		<img id="backgroundImage2">
+	</div>
+	-->
+
+
+	<div id="semitransparentLayer" class="abspos">xxxxxxxxxx</div>
+
+	<div align="center" id="presentationTitle" class="titleStyle abspos box3"></div>
+
+	<div id="presentationContent" class="">
+		<div id="content1" class="abspos box1"></div>
+		<div id="content2" class="abspos box2"></div>
+	</div>
+
+	<div align="center" id="footnote" class="footerStyle abspos"></div>
+	<div align="right" id="footer_vv" class="footer_vv_style abspos"></div>
+	<div align="right" id="footer_date" class="footer_date_style abspos"></div>
+	<!--<div id="contentLayer" class="absposx">
+	</div>-->
+
+	<script>
+		initPresentation();
+	</script>
+</body>
+
+</html>

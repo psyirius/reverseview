@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<menu label="VerseVIEW">
+		<!-- <menuItem label="Presentation Setup" onSelect="show_present_setup_UI" /> -->
+		<menuItem label="Remote VerseVIEW" onSelect="remoteVV_UI" />
+		<menuItem label="Check for Updates" onSelect="show_updateVV_UI" /> 
+		<menuItem type="separator" />
+ 		<menuItem label="Exit" onSelect="verseviewExit" />
+	</menu>
+	<menu label="Bible">
+		<menuItem label="Add Version" onSelect="add_bible_version" />
+		<menuItem label="Select Version" onSelect="setup_bible_version" />
+		<menuItem label="Manage Version" onSelect="show_bible_manage" />
+		<!--<menuItem type="separator" />
+		<menuItem label="Edit Verse" onSelect="show_editVerse_UI" /> -->
+	</menu>
+	<menu label="Song">
+		<menuItem label="New" onSelect="song_new_menu" />
+		<menuItem label="Edit" onSelect="song_edit_menu" />
+		<menu label="Delete">
+			<menuItem label="Selected Song" onSelect="song_delete_menu" />
+			<menuItem label="Song Category" onSelect="song_delete_cat_menu" />
+		</menu>
+		<menuItem type="separator" />
+		<menu label="Export Lyrics">
+			<menuItem label="All Categories" onSelect="songDB_Export_all_xml" />
+			<menuItem label="Selected Category" onSelect="songDB_Export_cat_xml" />
+		</menu>
+		<menuItem label="Import Lyrics" onSelect="songDB_Import_xml" />
+		<menuItem type="separator" />
+		<menuItem label="Export Chords" onSelect="exportchords" />
+		<menuItem label="Import Chords" onSelect="importchords" />
+	</menu>
+	<menu label="Help">
+		<menuItem label="VerseVIEW Help" onSelect="showHelp_menu" />
+	</menu>
+</root>

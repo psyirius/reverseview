@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+	VERSEVIEW FOR LOWER THIRD VIEW
+	May 21, 2020
+
+	Copyright (c) 2020 VerseVIEW
+	
+	Disclaimer: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+-->
+<html>
+<head>
+	<title>Lower 3rd View</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	
+	<!-- CSS only -->
+	<link rel="stylesheet" href="./lib/bootstrap.min.css">
+	<link rel="stylesheet" href="../fonts.css">
+	<link rel="stylesheet" href="./stageview.css">
+
+	<!-- JS, Popper.js, and jQuery -->
+	<script src="./lib/jquery-3.5.1.min.js"></script>
+	<script src="./lib/textFit.min.js"></script>
+	<script src="./lib/popper.min.js"></script>
+	<script src="./lib/bootstrap.min.js"></script>
+	
+	<script src="./stageview.js"></script>
+	
+	
+
+</head>
+	<body onload="startTimer()" class="greenScreenColor">
+
+		<div class="container-fluid fixed-bottom containerWidth" id="mainContainer">	
+		  
+		  <div class="row align-items-end  text-white theme1 m">
+			<!-- ADD THIS CODE TO ADD YOUR CUSTOM LOGO ON THE LEFT -->
+			
+			<!--
+			<div class="col-1 logo align-self-center">
+			  <img src="./img/logo.png" class="logo" width=100>
+			</div>
+		-->
+	
+			<!-- SECTION FOR THE TEXT -->
+			<div class="col">
+			  <div id="resultID_DIV" class="align-self-center">
+				<div id="resultID" class="textStyle  box "></div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="row align-items-end text-white theme1">
+		  </div>
+		</div>
+
+	</body>
+</html>
+

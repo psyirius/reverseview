@@ -1,0 +1,239 @@
+@font-face {
+	font-family: JC_Malayalam;
+	src: url('./font/JC_Malayalam.ttf');
+}
+
+@font-face {
+	font-family: JC_Hindi;
+	src: url('./font/JC_Hindi.ttf');
+}
+
+@font-face {
+	font-family: AnjaliOldLipi;
+	src: url('./font/AnjaliOldLipi.ttf');
+}
+
+@font-face {
+	font-family: Thiruvachanam;
+	src: url('./font/thiruvachanam.ttf');
+}
+
+@font-face {
+	font-family: Ramaraja;
+	src: url('./font/ramaraja.ttf');
+}
+
+@font-face {
+	font-family: Manjari;
+	src: url('./font/manjaribold.ttf');
+}
+
+
+@font-face {
+	font-family: Sree Krushnadevaraya;
+	src: url('./font/SreeKrushnadevaraya.ttf');
+}
+
+@font-face {
+	font-family: Tenali Ramakrishna;
+	src: url('./font/TenaliRamakrishna.ttf');
+}
+
+@font-face {
+	font-family: PadaukOT;
+	src: url('./font/PadaukOT.ttf');
+}
+
+@font-face {
+	font-family: Baloo Chettan;
+	src: url('./font/BalooChettan-Regular.ttf');
+}
+@font-face {
+	font-family: Baloo;
+	src: url('./font/Baloo-Regular.ttf');
+}
+@font-face {
+	font-family: Baloo Tammudu;
+	src: url('./font/BalooTammudu-Regular.ttf');
+}
+@font-face {
+	font-family: Baloo Thambi;
+	src: url('./font/BalooThambi-Regular.ttf');
+}
+
+@font-face {
+	font-family: Malayalam;
+	src: url('./font/malayalam.ttf');
+}
+
+@font-face {
+	font-family: ML-TTKarthika;
+	src: url('./font/Mlkr0ntt.ttf');
+}
+
+@font-face {
+	font-family: kruti;
+	src: url('./font/krdv016.ttf');
+	/*src: url('./font/krutidev440.ttf');*/
+}
+
+@font-face {
+	font-family: kannadanudi;
+	src: url('./font/nudi.ttf');
+}
+
+@font-face {
+	font-family: baloo;
+	src: url('./font/baloo.ttf');
+}
+
+@font-face {
+	font-family: Kambar;
+	src: url('./font/kambar.ttf');
+}
+
+@font-face {
+	font-family: tamil;
+	src: url('./font/tam.ttf');
+}
+
+@font-face {
+	font-family: Aruna;
+	src: url('./font/aruna.ttf');
+}
+
+@font-face {
+	font-family: Kerala;
+	src: url('./font/kera.ttf');
+}
+
+@font-face {
+	font-family: ML-Keraleeyam1;
+	src: url('./font/keraleeyam1.ttf');
+}
+
+@font-face {
+	font-family: TanmatraRajanigandhaNormal;
+	src: url('fonts/trajani.ttf');
+}
+
+
+/*
+@font-face {
+	font-family: Shusha;
+	src: url('./font/shusha.ttf');
+}
+*/
+
+
+@font-face {
+	font-family: Shusha;
+	src:url("fonts/shusha.woff") format("woff"),
+	url("fonts/shusha.svg#Shusha") format("svg"),
+	url('./font/shusha.ttf') format("ttf");
+}
+
+
+/* Arabic fonts */
+@font-face {
+	font-family: Jomhuria Arabic;
+	src: url('./font/jomhuria.ttf');
+}
+@font-face {
+	font-family: Lalezra Arabic;
+	src: url('./font/lalezra.ttf');
+}
+	
+
+@font-face {
+	font-family: Tamil Bible;
+	src: url('./font/tamilbible.ttf');
+}
+
+@font-face {
+	font-family: ML-TTRevathi;
+	src: url('./font/ML-TTRevathi.ttf');
+}
+
+/* Google fonts */
+@font-face {
+	font-family: Cabin;
+	src: url('./font/cabin.ttf');
+}
+
+@font-face {
+	font-family: Patua One;
+	src: url('./font/patuaone.ttf');
+}
+
+@font-face {
+	font-family: Rancho;
+	src: url('./font/rancho.ttf');
+}
+
+@font-face {
+	font-family:Roboto Slab;
+	src: url('./font/robotoslab.ttf');
+}
+
+@font-face {
+	font-family: Alegreya Sans;
+	src: url('./font/alegreyasans.ttf');
+}
+
+@font-face {
+	font-family: Bitter;
+	src: url('./font/bitter.ttf');
+}
+
+
+@font-face {
+	font-family: Montserrat;
+	src: url('./font/MontserratBold.ttf');
+}
+
+
+@font-face {
+	font-family: Chilanka Malayalam;
+	src: url('./font/Chilanka-Regular.ttf');
+}
+@font-face {
+	font-family: Gayathri Malayalam;
+	src: url('./font/Gayathri-Bold.ttf');
+}
+@font-face {
+	font-family: Manjari Malayalam;
+	src: url('./font/Manjari-Bold.ttf');
+}
+@font-face {
+	font-family: MeeraInimai Tamil;
+	src: url('./font/MeeraInimai-Regular.ttf');
+}
+@font-face {
+	font-family: NotoSans Hindi;
+	src: url('./font/NotoSans-Bold.ttf');
+}
+@font-face {
+	font-family: Ramabhadra Telugu;
+	src: url('./font/Ramabhadra-Regular.ttf');
+}
+@font-face {
+	font-family: Suranna Telugu;
+	src: url('./font/Suranna-Regular.ttf');
+}
+@font-face {
+	font-family: Lohit Malayalam;
+	src: url('./font/lohit.ttf');
+}
+@font-face {
+	font-family: Meera Malayalam;
+	src: url('./font/meera.ttf');
+}
+@font-face {
+	font-family: NTR Telugu;
+	src: url('./font/NTR-Regular.ttf');
+}
+@font-face {
+	font-family: Tenali Telugu;
+	src: url('./font/TenaliRamakrishna.ttf');
+}

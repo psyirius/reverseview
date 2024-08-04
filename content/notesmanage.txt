@@ -1,0 +1,49 @@
+<div class="generalheading2">Bible Notes Manager</div>
+<table border="0"><tr height="100px"><td>
+<div class="bibleMngContainerLeft">
+	<b>Notes File</b> <br>
+	<input type="button" id="nm_newID" value=" NEW "> | 
+	<input type="button" id="nm_add_buttonID" value=" LOAD ">
+	<br><br>
+	
+	<b>Select Notes</b> <br>
+	<select id="nm_selectID" class="selectboxStyle">
+        <option value=1>Default Notes</option>
+    </select> <br> 
+    
+    <input type="button" id="nm_sel_buttonID" value=" SELECT "> |  
+	<input type="button" id="nm_deleteID" value=" DELETE "> | 
+	<input type="button" id="nm_save_file_buttonID" value=" SAVE "><br><br>
+	
+	<b>Notes Type</b> 
+	 <input type="radio" name="nm_note_type" id="nm_note_type1" value="1" checked="checked">Chapter &nbsp;&nbsp; 
+	<input type="radio" name="nm_note_type" id="nm_note_type2" value="2">Topic
+	<!-- <input type="button" id="nm_helpID" value=" HELP ">--> <br><br>
+	
+	
+</div></td>
+<td>	
+<div id="nm_new_promptID" class="bibleMngContainerRight">
+	
+	<b>Name</b> <br><input type="text" id="nm_name_promptID" size="25"><br>
+	<b>Description</b> <br><textarea id="nm_description_promptID" rows="4" cols="25"></textarea>
+    <input type="button" id="nm_save_promptID" value=" SAVE "> | 
+    <input type="button" id="nm_cancel_promptID" value=" CANCEL ">
+</div>
+
+<div id="nm_sel_dataID" class="bibleMngContainerRight">
+	<!-- <input type="text" id="nm_filenameID" size="30">-->
+	
+	<b>Name</b> <br><div id="nm_nameID" class="nm_text"></div><br>
+	<b>Description</b> <br><div id="nm_descriptionID" class="nm_text"></div>
+    <!-- input type="button" id="nm_debugID" value=" DEBUG "><br> -->
+</div>
+
+ 
+<!-- <div class="bibleMngContainerRight">Right DIV area</div> -->
+</td></tr></table>
+
+<hr>
+<div class="generalheading2">Notes</div>
+<div id="notesResultsID" class="notesResultDIV"></div>
+

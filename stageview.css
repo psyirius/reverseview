@@ -1,0 +1,138 @@
+
+
+#backgroundLayer {
+	/*background-color: #00b140;*/   /*June 28, 2020 - Removed to avoid green flash when using black screen*/
+	
+	width: 100%;
+	height: 100%;
+	position:absolute; 
+	left:0px; 
+	top:0px;  
+	z-index:1;  
+	border: 0px none #000000;
+}
+
+#backgroundLayer3rd {
+	/* background-color: green; */
+	position:absolute; 
+	/*
+	background-image: url("background/bx.png");
+	border-radius: 25px;
+  border: 2px solid #73AD21;
+  margin-right: 20px;
+  margin-left: -20px;
+  */
+	z-index:2; 
+}
+
+.textCenter{
+	text-align: center;
+}
+
+.textLeft{
+	text-align: left;
+}
+
+.textRight{
+	text-align: right;
+}
+
+#content1Container{
+	position: absolute;
+	overflow:hidden;
+	z-index:5;
+	/* padding:10px; */
+	font-weight:bold;
+	/*text-align: center;*/
+	/* border: 2px none blue;  */
+}
+
+
+#content2Container{
+	position: absolute;
+	overflow:hidden;
+	z-index:5;
+	/* padding:10px; */
+	font-weight:bold;
+	/*text-align: center;*/
+}
+
+
+.contentTextShadow {
+	
+	text-shadow:
+	   3px 3px 10px rgb(43, 43, 43),
+	   3px -3px 10px rgb(43, 43, 43),
+	   -3px 3px 10px rgb(43, 43, 43),
+		3px 3px 10px rgb(43, 43, 43);
+		 
+}
+
+.contentTextOutline {
+	-webkit-text-stroke: 1px rgb(0, 0, 0);	 
+}
+
+.contentTextOutlineSmall {
+	-webkit-text-stroke: 0.5px rgb(0, 0, 0);	 
+}
+
+mark {
+	background-color: yellow;
+	color: black;
+  }
+
+
+
+#content1 {
+	padding-top:10px;
+	padding-bottom:5px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+#content2 {
+	padding-top:5px;
+	padding-bottom:10px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.titleStyle {
+	font-family: Arial, Helvetica, sans-serif; 
+	color: #FFFFFF;
+	font-size: 60px;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 5px;
+	/*background-color: #edf5ff;
+	border: 2px solid red;*/
+	/*background-image: url("background/bx.png");*/
+	z-index:5;
+}
+
+.footerStyle {
+	font-family: Arial, Helvetica, sans-serif; 
+	color: #FFFFFF;
+	font-size: 16px;
+	font-weight: bold;
+	z-index:5;
+}
+
+.contentStyle {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-align: center;
+	overflow: hidden;
+}
+
+
+.footer_style{
+	position: absolute;
+	font-family: Arial, Helvetica, sans-serif; 
+	color: #FFFFFF;
+	font-size: 16px;
+	text-align: left;
+	font-weight: bold;
+	z-index:5;
+}
+

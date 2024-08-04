@@ -1,0 +1,325 @@
+Version 6 Beta 1
+3/16/2012 - Only for testing songs that show two translations
+
+Version 6 Beta 4
+4/25/2012 - Fixed bugs, motion graphics, import songs
+
+Version 6 Beta 6
+6/13/2012 - Fixed bugs on presentation, avoid multiple events on presentation, auto complete
+
+Version 6 Beta 7
+6/19/2012 - Completed network features and fixed bugs from beta 6
+
+Version 6 Build 6.0.8
+6/22/2012 - Released version of VerseVIEW 6.0
+
+Version 6 Build 6.0.9
+6/25/2012 - Released version of VerseVIEW 6.0
+1) Fixed the bug where the songs shows with mixed second translation when keyword is searched
+
+Version 6.1 Build 6.1.0
+12/22/2012 - Fixed for MAC mountain lion (ISO to UTF-8)
+
+Version 6.2 Build 6.2.0
+9/3/2014 	- Added swipe strokes on the presentation window to do next/prev/close of slides
+			- Fixed bug for transition and bug where the upper translation jumps up when slides change
+			- Added check for AIR version before loading database over 10MB
+			- Preloads with the latest database for songs and Bible
+			- Fixed issue on the remote VerseVIEW
+
+Version 6.5 Build 6.5.0
+10/7/2014	- Fixed formating issues where schedule screen is not used to full height
+			- Now notes and schedule screen uses the same font size as set for verses
+			- Schedule screen shows both translations
+			- Feature to import Zefania XML Bible and database from other sources
+
+Version 6.6 Build 6.6.0
+11/26/2015
+	- Change version number
+	- Fix font size calculation for larger screen resolutions
+4/23/2016
+	- Update to fix the font size
+
+Version 6.6.1 Build 1
+8/26/2016
+	- Trial build to make sure build is working
+	- Random background option
+	- Added Baloo tamil font for Bible and others
+	- Transition by default
+	- Changed fist slide time delay and fixed screen flash
+
+Version 6.7.1 Build 1
+10/18/2016
+	- Ribbon menu
+	- Buttons for blank, logo, theme presentation
+	- Improved UI to scale windows correctly
+
+Version 6.7.2 Build 2
+11/6/2016
+	- Improved setting of the background as logo and background
+	- Increased the font size of the book and chapter name on the top
+	- Added space between two translations
+	- Search of songs also searches in the title
+
+Version 6.7.3 Build 1
+1/24/2017
+	- Fixed the background selection
+	- Added feature to have shading on presentation
+	- Added feature to get song lyrics from Schedule to remote VerseVIEW
+
+Version 6.8.0 Build 1
+4/29/2017
+	- Feature to use system fonts
+	- Two colors for the veres and second translation
+	- Optimized space when showing song lyrics
+
+Version 6.8.1 Build 1
+5/6/2017
+	- Added transparent background
+
+Version 7.0.0 Test 1
+3/9/2018
+	- Converted the Bible database to SQL database
+
+Version 7.0.2 Beta
+3/23/2018
+	- Added feature for second output for stageview
+
+Version 7.0.3 Beta
+4/7/2018
+	- Added feature to save second screen value
+	- Added feature to show second presentation screen output in 1/3rd and vertical
+	- Added support for ultrawide screen
+
+Version 7.0.4 Beta
+5/26/2018
+	- Fixed margin for stage view
+	- Fixed the display of slides with one translation
+
+
+Version 7.0.5 Beta
+8/25/2018
+	- Improved algorithm to fill the presentation screen with text
+	- Automatic outline if text is too small
+	- Book names in primary language
+
+Version 7.0.6 Beta
+9/14/2018
+	- Improved UI for songs and schedule
+	- Improved UI for icon menu
+	- Fixed close issue with 2nd presentation screen
+	- Fixed the method to read in Bible data
+	- Added Malayalam Unicode Bible
+
+Version 7.0.7 Beta
+12/6/2018
+	- Improved remote VerseVIEW
+	- Added save restore feature for the stageview
+	- Adjustable size of the 1/3rd view
+	- Fixed bugs in verse presentation and Bible reference search
+
+Version 7.0.7.1
+1/5/2019
+	- Fixed font for remote VV
+	- Updated the way book names show by adding the language in the title
+	- Fixed the scroll issue
+	- Fixed the issue of LT with only one translation
+	- Closing one window closes both stageview and presentation
+
+Version 7.1.0 (1)
+5/9/2019
+	- Integrated with Unicode Malayalam Bible
+	- Added prototype for VerseVIEW Messenger
+	- Improved reading from Bible database with additional information. New database loaded
+	- Fixed issue on song title showing incorrectly
+	- Feature to select how the book names are displayed
+	- Option to keep presentation window on top
+
+
+Version 7.1.0 (2)
+5/12/2019
+	- Fixed bug on populating the chapter list and verse list after changing the Bible configuration
+	- Fixed the JC_Hindi font to be an exception.
+
+
+Version 7.1.1 (1)
+8/3/2019
+	- Fixed issue with importing Bible database on Mac.
+	- Fixed issue on exporting specific category
+	- Updated database
+
+
+Version 7.2.0 (1)
+9/25/2019
+	- Added new fields for tags, second titles
+	- New software to manage tags
+	- Provision to show slides as 2 lines per slide
+	- Improved song search as one text box instead of two
+	- Highlight the text that has been searched
+	- Add, Edit songs in two translations and add slides
+		
+Version 7.2.0.1
+9/28/2019
+	- Fixed issue when updating from 7.1.0 to 7.2.0
+	- Added disclaimer on the the exported song database 
+	- Removed null on tags when exporting
+
+
+Version 7.2.0.2
+12/19/2019
+	- Quick update for schedule with a box for someone doing video messages
+
+Version 7.2.1.0
+2/1/2020
+	- Fixed the typo of version number on about screen
+	- Improved the stage view with option for windowed stageview or full screen
+	- Added configuration for 1/3rd view with bakcground color and moved it away from bottom edge
+	- Added localhost to the web interface
+	- Added the test for stageview web interface
+	- Added resolution when selecting the screen selection
+
+Version 7.2.1.1
+3/3/2020
+	- Fixed the issue that shows incorrect second translation during search
+	- Added word suggestions as we search for songs
+	- Fixed the window close issue between stageview and presentation window
+	- Updated to the latest Malayalam song database
+
+
+Version 7.2.1.2
+3/5/2020
+	- Fixed the issue of word suggestion showing No match when two words and space after first word
+	- Fixed the bug on Reference search by pressing enter after entering the reference.
+
+Version 7.2.2.1 
+5/7/2020
+	- Fixed the issue of stageview screen if the second screen is removed after setting it 
+	- Added 3 fonts for Telugu Bible and updated fonts in Telugu Bible
+	- Added outline and shadow features for the stage view
+	- Added feature to show green screen or black screen in stage view
+	- Fixed the blank slide to blank the stage view too.
+	- Fixed error cases of stageview window not active but events triggered.
+	- Updated song database for Hindi and Malayalam
+	- Added left align, center align, no stanza number, 2 lines per slide
+
+Version 7.2.2.2
+5/15/2020
+	- Stageview settings take effect without closing the window
+	- Added Horizontal mode for lower third view
+	- Bible reference search box is now working for other languages
+	- Right to left with number on right for Arabic
+	- Added better fonts for Arabic
+	- Lower third to show primary or secondary translations alone
+	- Fixed margin on vertical orientation
+
+
+Version 7.3.0.0
+5/29/2020
+	- Added feature to create custom web interface to create lower third view for live stream
+	- Hide the main presentation window if it is not needed
+	- Fixed https in youtube link 
+	- Fixed the hide stanza number logic
+	- Updated database
+
+
+Version 7.3.1.0
+6/30/2020
+	- Use stageview screen resolution and adjust the resolution of the window view. 
+	- Improved the right verse being highlighted when selected and not jumping
+	- New song database and set for update flag for songs and network files
+	- Shusha font needs to be installed by the users
+	- Remote lower third view uses <newelement> for data seperation
+	- Updated remote themes with more graphics and configure file for easy configuration
+	- Removed green screen flash when launching the lower third view
+	
+
+Version 7.3.2.0
+10/28/2020
+	- Fixed bugs on the verse selection and Highlight
+	- Updated remote lower third themes
+	- Updated song database
+	- Added more default fonts
+	- Save presentation enable disable
+	- Improve auto save implementation
+	- Improved outline of presentation
+
+
+Version 7.3.2.1
+11/7/2020
+	- Fixed bug on the outline of the reference showing with font size is small
+	- Minimize and maximize does not change the position of selected song
+	- Show logo or a blank slide will remove the theme6 just like blank presentation
+	- Reference find and present will highlight the verse
+	- Added small outline on stageview/lowerthrid output even in auto mode
+
+
+Version 8.0.0.3
+5/7/2021
+	- Added new feature to enter chords and display it as part of remote stageview
+	- Fixed font issue of the book names when using Bible in Tamil, Hindi
+	- Fixed the issue of correct verse not coming in view when switching chapter
+	- The song remains in the lyrics windows after editing
+	- Expanded the box for schedule
+	- Recent verses will not repeat by clicking on the same verse
+	- Added transliteration feature for Malayalam song
+	- Fixed the update feature to ensure users gets the latest database
+	- Updated the song database
+	- Updated chords database
+
+
+Version 8.0.1.1
+6/17/2021
+	- Improved the Interface for the Remote VerseVIEW setup
+	- Improved various themes for Remote lower thirds and stageview
+	- Bug fixes from 8.0.0 release
+
+Version 8.0.2
+Build 1 
+8/18/2021
+	- Fixed storage
+	- New song database
+	- Fixed line wrap
+	- Updated lower third themes
+
+Version 8.1.0
+Build 2 
+12/3/2021
+	- Song Chords Database update
+	- Added song number and search
+	- Removed border on the presentation window
+
+Version 8.2.0
+Build 1
+12/30/2021
+	- Improved search with predictive output
+	- Updated Database
+	- Feature to check for updates
+
+
+Version 8.3.0
+Build 1
+2/21/2022
+	- Improved chords entry
+	- Updated song, chords and Bible database
+	- Bug fixes
+
+Version 8.3.0
+Build 2
+5/20/2022
+	- Fixed the auto closing of word suggestions
+	- Updated song, chords and Bible database
+
+
+Version 8.4.0
+Build 1
+1/27/2023
+	- Auto close and button to toggle the suggestion box when searching for song lyrics
+	- Added a shade of green for green screen chroma key
+	- Updated database for songs, chords and Bible
+	- Fixed issue of the tooltip showing after opening the remote
+	- Refined the screens tab
+
+Version 8.4.0
+Build 3
+1/31/2023
+	- Updated database and fixed the update db issue with new VV installation

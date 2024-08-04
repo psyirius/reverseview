@@ -1,0 +1,130 @@
+<!-- **** Build with Semanitc UI **** -->
+
+<div class="ui form container segment">
+
+	<div id="testtabcontent" class="ui grid">
+		<!-- LEFT COLUMN -->
+		<div class="seven wide column">
+			<input type="button" value="Compare Version 1 and 2 Bible DB Text" id="compare_bible_db_button">
+			<br>
+			<input type="button" value="Create Song DB from TXT" id="createdb_button">
+			<br>
+
+			<input type="button" value="Create Bible Dictionary" id="dictonary_button">
+			<input type="button" value="Generate Manglish XML" id="use_dictonary_button">
+			<br>
+
+			<input type="button" value="READ TXT FILE" id="test2_readtxtfile_button">
+			<input type="button" value="COMPARE CHORDS to SONGS" id="chords_song_compare_button">
+
+
+			<input type="button" value="Update Chords info from Wilson" id="wilson_update_button">
+
+
+			<br>
+			<input type="button" value="Send Web Message" id="command18"><br>
+
+			<input id="mergeVersionButton" type="button" value=" MERGE VERSIONS "><br>
+			<input id="validiateVersionButton" type="button" value=" VALIDATE VERSIONS "><br>
+
+			<input type="text" size="20" id="split_file_ID">
+			<input id="createJSdbButton" type="button" value=" Create Split DB "><br><br>
+
+			<input id="EasislidesID" type="button" value=" Convert Easislides database ">
+			<input id="openLPid" type="button" value=" Convert open LP database "><br><br>
+
+			<input type="text" size="20" id="wp_file_ID"><br>
+			<textarea rows="4" cols="50" id="wp_header_ID"></textarea><br>
+			<input id="wordproject2xml_id" type="button" value=" Wordproject db 2 XML "><br>
+
+			<input type="text" size="20" id="bibleRefID">
+			<input type="button" value="PRESENT" id="bibleRefButtonID">
+
+			<input type="button" value="RESTART" id="vvRestartID">
+
+			<div id="texttest"></div>
+
+
+		</div>
+
+
+		<div class="two wide column"></div>
+
+
+		<!-- RIGHT COLUMN -->
+		<div class="seven wide column">
+			TEST Chat Q<br>
+			<div id="chatlogdiv"></div>
+			<br>
+			Sender <input type="text" size="20" id="msgS"><br>
+			Message <input type="text" size="50" id="msgM"><br>
+			<input type="button" value="Add Message" id="addMsgID"><br>
+			<br>ID to Get message
+			<input type="text" size="20" id="msgID">
+			<input type="button" value="Get Message" id="getMsgID">
+			<hr>
+
+			<!-- <input type="button" id="indexButtonID" value=" Index "><br> -->
+			<br>
+			<br>
+			Server Socket Close Time (ms): <input type="text" size="20" id="serverSocketCloseTime">
+			<br>
+			<hr>
+
+			<!-- Compares two song db xml and generates an array that maps the old to new -->
+			<div>
+				<h4>Generate array to map old song database to new</h4>
+				<input type="button" value="LOAD OLD NEW NAME" id="test2_readnamefile_button"><br>
+				Old database file name:
+				<input type="text" size="20" id="songdb_old_filename"><br>
+				New database file name:
+				<input type="text" size="20" id="songdb_new_filename"><br>
+				<input type="button" value="GENERATE" id="songdb_mapping_button"><br>
+				<div id="songdb_mapping_list">aaaaa</div>
+			</div>
+
+
+			<br>
+			<hr>
+
+			<!-- Button to read text file of song and process it  -->
+			<div>
+				<h4>Generate Song database from text file</h4>
+				<pre>The text file has songs with a song number and song with stanza number or ch:
+		Split as slides for each stanza or chorus and make XML file
+		</pre>
+				<input type="button" value="GENERATE Song DB from TXT" id="test2_gensongfromtxt_button"><br>
+			</div>
+
+			<hr>
+			<!-- Sort verses in a book in order -->
+			<div>
+				<h4>Generate Verses in order</h4>
+				Book index:
+				<input type="text" size="20" id="test2_bookindex"><br>
+				<input type="button" value="GENERATE" id="test2_bookindex_button"><br>
+				<div id="test2_list"></div>
+			</div>
+			<div id="fontList">Fonts goes here...............</div>
+
+			<!--   CHORDS TEST -->
+			<div>
+				<input type="button" value="Import Chords Original" id="test2_importchords_button">
+				<input type="button" value="Import Chords" id="test2_importchordsnew_button">
+				<input type="button" value="Export Chords" id="test2_exportchordsnew_button">
+			</div>
+
+			<!--   TITLE2 EXTRACT -->
+			<div>
+				<input type="button" value="Load mapping of titles" id="test2_loadingtitlemap_button">
+			</div>
+
+
+
+
+
+		</div>
+
+	</div>
+
+</div>

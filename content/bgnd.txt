@@ -1,0 +1,39 @@
+<table width="100%" border="0" align="center">
+  <tr>
+    <td width="300px">
+    	<div class="generalheading2">Selected Background</div>
+    	<table id="bkgndSelected" width="100%" border="0" cellspacing="0" cellpadding="0" align="left" valign="top">
+  			<tr>
+    			<td height="200"></td>
+  			</tr>
+		</table>
+    </td>
+    <td>
+    	<div class="generalheading2" style="vertical-align:top;">Text Color</div><br>
+    	<div id="colorPickerID" class="colorPickerStyle">
+    		<!-- Color Picker -->
+    	</div>
+    	<div class="style2">
+    		<input id="cp_reset_id" type="button" value=" RESET "> | 
+			<input id="cp_save_id" type="button" value=" SAVE ">
+		</div>
+    </td>
+    </tr><tr>
+    
+  </tr>
+</table>
+<hr>
+<div class="generalheading2">Background Selection</div><br>
+<div id="bkgndDivId" class="bkgndDIV">
+<table id="bkgndList" width="100%" border="1" cellspacing="-" cellpadding="0">
+</table>
+
+<div class="style2">
+<br>
+<span class="iconImageStyle"><img id="addBkgndButton"></span>
+<span class="iconImageStyle"><img id="delBkgndButton"></span>
+</div>
+
+</div>
+
+
