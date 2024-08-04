@@ -1255,8 +1255,8 @@ function splash(g) {
   if (g) {
     var a = air.Screen.mainScreen;
     var d = a.visibleBounds;
-    var f = 500;
-    var e = 195;
+    var f = 540;
+    var e = 140;
     var c = new air.Rectangle(
       (d.left + d.right - f) / 2,
       (d.top + d.bottom - e) / 2,
