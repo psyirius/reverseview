@@ -121,7 +121,7 @@ function presentation() {
     );
     newWindow.window.nativeWindow.alwaysInFront =
       vvConfigObj.get_presentationOnTop();
-    newWindow.window.nativeWindow.stage.frameRate = 10;
+    newWindow.window.nativeWindow.stage.frameRate = 30;
     newWindow.load(new air.URLRequest("presentation.htm"));
     newWindow.window.iamclosingStage = function () {
       if (stageView && newStageWindow != null) {
@@ -178,7 +178,7 @@ function presentation() {
         closePresentWindowMain
       );
       newStageWindow.window.nativeWindow.alwaysInFront = false;
-      newStageWindow.window.nativeWindow.stage.frameRate = 10;
+      newStageWindow.window.nativeWindow.stage.frameRate = 30;
       newStageWindow.load(new air.URLRequest("stageview.htm"));
       newStageWindow.window.iamclosingPresentation = function () {
         if (newWindow != null) {
