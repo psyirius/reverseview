@@ -599,7 +599,7 @@ td.navtd {
 }
 
 #sliderbg {
-  background: url(./lib/YahooUI/slider/assets/bg-fader.gif) 5px 0 no-repeat;
+  background: url(lib/yui2/slider/assets/bg-fader.gif) 5px 0 no-repeat;
 }
 
 /*  For configuration */
