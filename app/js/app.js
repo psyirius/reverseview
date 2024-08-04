@@ -632,7 +632,7 @@ function updateVerseContainer_continue() {
         n +
         '<div class="vcClassIcon" id="' +
         h +
-        '"><img class="vcClassIcon" src="graphics/icon/notes_s.png"></div>';
+        '"><img class="vcClassIcon" src="../graphics/icon/notes_s.png"></div>';
       n = n + '</td><td class="navtd" width="48%">';
       var h = "VC1_" + i;
       n = n + '<div class="vcClass" id="' + h + '">a</div>';
@@ -647,7 +647,7 @@ function updateVerseContainer_continue() {
         n +
         '<div class="vcClassIcon" id="' +
         h +
-        '"><img class="vcClassIcon" src="graphics/icon/notes_s.png"></div>';
+        '"><img class="vcClassIcon" src="../graphics/icon/notes_s.png"></div>';
       n = n + '</td><td class="navtd" width="96%">';
       var h = "VC1_" + i;
       n = n + '<div class="vcClass" id="' + h + '">x</div>';
