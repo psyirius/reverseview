@@ -476,7 +476,7 @@ function songManagerClass() {
     t("Error message:" + aN.error.message);
     t("Details (create DB):" + aN.error.details);
     ax = false;
-    vvDialog(
+    rvw.ui.Dialog.show(
       "Song Database",
       "Error opening Song Database : " + aN.error.message
     );
@@ -594,12 +594,12 @@ function songManagerClass() {
       if (aR) {
         if (T == 0) {
           aH.hide();
-          vvDialog(
+          rvw.ui.Dialog.show(
             "Song Database",
             "Song Lyrics imported to the Song Database complete."
           );
           if (!isUpToDate()) {
-            vvDialog("Songs", "Imported song database");
+            rvw.ui.Dialog.show("Songs", "Imported song database");
             task1Complete();
             checkVerUpdateFlags();
           }
@@ -617,12 +617,12 @@ function songManagerClass() {
         F();
         at();
         if (aR) {
-          vvDialog(
+          rvw.ui.Dialog.show(
             "Song Database",
             "Song Lyrics imported to the Song Database"
           );
         } else {
-          vvDialog(
+          rvw.ui.Dialog.show(
             "Song Database",
             'Song "' + m + '" added to the Song Database.'
           );
@@ -637,7 +637,7 @@ function songManagerClass() {
       T--;
       aP.removeEventListener(air.SQLEvent.RESULT, aO);
       aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-      vvDialog(
+      rvw.ui.Dialog.show(
         "ADD EDIT Song",
         "Failed to update song database.  Error message:" + aU.error.message
       );
@@ -646,7 +646,7 @@ function songManagerClass() {
         if (aT == 2) {
           vvConfigObj.set_songDBVersion(1);
           vvConfigObj.save();
-          vvDialog(
+          rvw.ui.Dialog.show(
             "ADD EDIT Song",
             "Failed to update song database. Please restart VerseVIEW Error message:" +
               aU.error.message
@@ -692,7 +692,7 @@ function songManagerClass() {
       C();
       F();
       at();
-      vvDialog("Song Database", 'Song "' + m + '" updated.');
+      rvw.ui.Dialog.show("Song Database", 'Song "' + m + '" updated.');
     }
     function aQ(aS) {
       aO.removeEventListener(air.SQLEvent.RESULT, aP);
@@ -815,7 +815,7 @@ function songManagerClass() {
       al = aR.getResult();
       if (aQ == SEARCH_TAGS && al.data == null) {
         removeTag(aP);
-        vvDialog("Song Tag Search", "No matching tag");
+        rvw.ui.Dialog.show("Song Tag Search", "No matching tag");
       } else {
         if (aP.length > 2) {
           wordbrain.findRecordBy_wordin(aP);
@@ -944,7 +944,7 @@ function songManagerClass() {
     function aO(aR) {
       t("Succesfuly got all data from Original Song DB and inserted");
       if (!isUpToDate()) {
-        vvDialog("Songs", "Updated song database");
+        rvw.ui.Dialog.show("Songs", "Updated song database");
         task1Complete();
         checkVerUpdateFlags();
       }
@@ -957,7 +957,7 @@ function songManagerClass() {
       t("UPDATE error:" + aR.error);
       t("event.error.code:" + aR.error.code);
       t("event.error.message:" + aR.error.message);
-      vvDialog("Song Manager", "Song DB updater data error...");
+      rvw.ui.Dialog.show("Song Manager", "Song DB updater data error...");
     }
   }
   function ag() {

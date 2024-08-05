@@ -127,7 +127,7 @@ function chordsNavClass() {
   function t() {
     var ap = "Chords";
     var aq = "Are you sure you want to delete this version?";
-    vvConfirm(ap, aq, g);
+    rvw.ui.Confirm.exec(ap, aq, g);
   }
   function g() {
     y("Delete chords...");
@@ -143,7 +143,7 @@ function chordsNavClass() {
         var aq = ap[ad - 1].id;
         chordsManagerObj.deleteChords(aq);
       } else {
-        vvDialog("Chords", "Can not be deleted..");
+        rvw.ui.Dialog.show("Chords", "Can not be deleted..");
       }
     }
   }
@@ -438,7 +438,7 @@ function chordsNavClass() {
           av++;
           break;
         default:
-          vvDialog(
+          rvw.ui.Dialog.show(
             "Chords",
             'Invalid Chord: "' + aC[av],
             '". Please edit chords in this version.'
@@ -619,7 +619,7 @@ function chordsNavClass() {
               av++;
               break;
             default:
-              vvDialog(
+              rvw.ui.Dialog.show(
                 "Chords",
                 'Invalid Chord: "' + aE[az][av],
                 '". Please edit chords in this version.'

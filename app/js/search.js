@@ -94,7 +94,7 @@ function vvsearch(O) {
       " Details:" +
       Y.error.details +
       "Error opening connection Contact verseview@yahoo.com with this error message";
-    vvDialog("Searh", X);
+    rvw.ui.Dialog.show("Searh", X);
   }
   function W() {
     N = new air.SQLStatement();
@@ -366,7 +366,7 @@ function vvsearch(O) {
       " Details:" +
       Y.error.details +
       "Error handling results Contact verseview@yahoo.com with this error message";
-    vvDialog("Bible Search", X);
+    rvw.ui.Dialog.show("Bible Search", X);
   }
   function p() {
     var X = j(0);
@@ -403,12 +403,12 @@ function vvsearch(O) {
     E = E.trim();
     var Z = E.replace(/ /g, "");
     if (Z == null) {
-      vvDialog("Bible Search", "Invalid Search Entry");
+      rvw.ui.Dialog.show("Bible Search", "Invalid Search Entry");
       return false;
     }
     var X = Z.split("");
     if (X.length < 3) {
-      vvDialog("Bible Search", "Invalid or Small word for search");
+      rvw.ui.Dialog.show("Bible Search", "Invalid or Small word for search");
       return false;
     }
     return true;

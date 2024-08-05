@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    /* Language and Environment */
+    "ignoreDeprecations": "5.0",
+
+    "target": "ES3",
+//    "jsx": "react-jsx",
+//    "jsxImportSource": "@lib/zrx",
+
+    /* Modules */
+    "module": "AMD",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "moduleResolution": "node",
+//    "paths": {
+//      "@lib/*": ["lib/*"],
+//      "@app/*": ["app/*"]
+//    },
+    "typeRoots": [
+      "./types",
+      "node_modules/@types"
+    ],
+//    "allowUmdGlobalAccess": true,
+
+    /* JavaScript Support */
+    "allowJs": true,
+
+    /* Emit */
+    "outDir": "./app/js",
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.js",
+    "./src/**/*.tsx",
+    "./src/**/*.jsx",
+  ],
+  "exclude": ["node_modules"]
+}

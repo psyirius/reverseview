@@ -1,35 +1,4 @@
-var promptDialog;
 var genericPanelObj = null;
-function promptInit() {
-  promptDialog = new YAHOO.widget.Panel("promptDialog", {
-    width: "400px",
-    fixedcenter: true,
-    modal: true,
-    visible: false,
-    constraintoviewport: true,
-  });
-  promptDialog.render();
-}
-function deletePromptShow() {
-  var a =
-    'Are you sure you want to delete version? <br><br> <input id="yesButton" type="button" value=" YES "><input id="noButton" type="button" value=" NO "> ';
-  promptDialog.setHeader("Delete Version");
-  promptDialog.setBody(a);
-  promptDialog.show();
-  document
-    .getElementById("yesButton")
-    .addEventListener("click", processYes, false);
-  document
-    .getElementById("noButton")
-    .addEventListener("click", processNo, false);
-}
-function processNo() {
-  promptDialog.hide();
-}
-function processYes() {
-  promptDialog.hide();
-  deleteVersion();
-}
 function save2file(c, d, a) {
   var b = air.File.applicationStorageDirectory;
   b = b.resolvePath(d);
@@ -94,14 +63,14 @@ function backupWebroot() {
         c.moveTo(a, true);
         return true;
       } catch (b) {
-        vvDialog(
+        rvw.ui.Dialog.show(
           "Creating Webroot Backup",
           b.message + " Files in use by another application"
         );
         return false;
       }
     } else {
-      vvDialog("Creating Webroot Backup", "Backup already exists.");
+      rvw.ui.Dialog.show("Creating Webroot Backup", "Backup already exists.");
       return true;
     }
   } else {
@@ -510,76 +479,6 @@ function invert_hex_color(d) {
     return newColor;
   }
   return a(d);
-}
-function vvDialog_hold(b, a) {
-  $("#dialogHeader").html(b);
-  $("#dialogMsg").html(a);
-  $("#message").modal("show");
-}
-function vvDialogSetup() {
-  $("#vvdialog_close").click(function () {
-    $("#somemessage").hide();
-  });
-  $("#somemessage").css({ marginTop: "-=60px" });
-  $("#somemessage").hide();
-}
-function vvDialog(b, a) {
-  $("#vvdialog_header").html(b);
-  $("#vvdialog_message").html(a);
-  $("#somemessage").show();
-  setTimeout(function () {
-    $("#somemessage").hide();
-  }, 8000);
-}
-function vvPanelSetup() {
-  $("#vvPanel_close").click(function () {
-    $("#vvPanel_main").hide();
-  });
-  $("#vvPanel_main").css({
-    top: "400px",
-    left: "350px",
-    width: "400px",
-    height: "300px",
-  });
-  $("#vvPanel_main").hide();
-}
-function vvPanel(b, a) {
-  $("#vvPanel_header").html(b);
-  $("#vvPanel_message").html(a);
-  $("#vvPanel_main").show();
-  if (b == "Suggestions") {
-    setTimeout(function () {
-      $("#vvPanel_main").hide();
-    }, 6000);
-  }
-}
-function vvPanelClose() {
-  $("#vvPanel_main").hide();
-}
-function vvPanelToggle() {
-  $("#vvPanel_main").toggle();
-}
-function vvConfirmSetup() {
-  $("#vvConfirm_main").hide();
-  $("#vvConfirm_main").css({ height: "200px" });
-  $("#vvConfirm_main").css({ width: "400px" });
-}
-function vvConfirm(d, c, a, b) {
-  $("#vvConfirm_yes").one("click", function () {
-    if (a != null) {
-      a();
-    }
-    $("#vvConfirm_main").hide();
-  });
-  $("#vvConfirm_no").one("click", function () {
-    if (b != null) {
-      b();
-    }
-    $("#vvConfirm_main").hide();
-  });
-  $("#vvConfirm_header").html(d);
-  $("#vvConfirm_message").html(c);
-  $("#vvConfirm_main").show();
 }
 function generateGenericPanel() {
   genericPanelObj = new YAHOO.widget.Panel("genericPanelObj", {

@@ -95,7 +95,7 @@ function vvConfigClass() {
           c();
           vvinit_continue();
         } else {
-          vvDialog(
+          rvw.ui.Dialog.show(
             "VerseVIEW",
             "Error loading VerseVIEW database. Please restart VerseVIEW."
           );

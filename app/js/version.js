@@ -264,7 +264,7 @@ function deleteVersion() {
     c.deleteFile();
   } catch (f) {
     g = false;
-    vvDialog(
+    rvw.ui.Dialog.show(
       "Bible Version",
       "Database in use. Please restart VerseVIEW and try deleting again."
     );
@@ -302,12 +302,20 @@ function deleteVersionConfirm() {
   var a = document.getElementById("selectVersionList").selectedIndex;
   var b = document.getElementById("selectVersionList").options[a].value;
   if (b == vvConfigObj.get_version1() || b == vvConfigObj.get_version2()) {
-    vvDialog(
+    rvw.ui.Dialog.show(
       "Manage Bible Database",
       "Can not delete the primary and seconday version."
     );
   } else {
-    deletePromptShow();
+    rvw.ui.Prompt.exec(
+      "Delete Version",
+      "Are you sure you want to delete version?",
+      {
+        onYes: function () {
+          deleteVersion();
+        }
+      }
+    );
   }
 }
 function saveVersion() {
@@ -337,18 +345,18 @@ function loadVersion(d) {
   var b = new air.File(d);
   var c = b.extension.toLowerCase();
   if (c != "db") {
-    vvDialog("Bible Database", "Invalid VerseVIEW file.");
+    rvw.ui.Dialog.show("Bible Database", "Invalid VerseVIEW file.");
     return false;
   }
   var k = b.exists;
   if (!k) {
-    vvDialog("Bible Database", "File does not exists.");
+    rvw.ui.Dialog.show("Bible Database", "File does not exists.");
     return false;
   }
   var a = bibleVersionArray[vvConfigObj.get_version1()][1];
   var f = bibleVersionArray[vvConfigObj.get_version2()][1];
   if (e == a || e == f) {
-    vvDialog(
+    rvw.ui.Dialog.show(
       "Manage Bible Database",
       "Bible database in use. Can not UPDATE the primary and seconday version. <br> Go to Bible > Select Version and select another Bible database and then update " +
         e +
@@ -374,7 +382,7 @@ function loadVersion(d) {
         }
       }, 200);
     } else {
-      vvDialog("Bible Database", "File not VerseVIEW database");
+      rvw.ui.Dialog.show("Bible Database", "File not VerseVIEW database");
     }
   }
 }
@@ -534,10 +542,10 @@ function addFontVersionBibleOK() {
   var a = bibleVersionArray[g][2].split(",");
   var f = $.inArray(b, a);
   if (f == -1) {
-    vvDialog("Adding new font: " + b);
+    rvw.ui.Dialog.show("Adding new font: " + b);
     bibleVersionArray[g][2] = bibleVersionArray[g][2] + "," + b;
   } else {
-    vvDialog("Font " + b + " already available");
+    rvw.ui.Dialog.show("Font " + b + " already available");
   }
   updateVersionDetails();
   hideFontVersionBox();

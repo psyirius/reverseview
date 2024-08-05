@@ -129,7 +129,7 @@ function songNavClass() {
   }
   function F() {
     learner.finishLearning();
-    vvPanelClose();
+    rvw.ui.Panel.close();
     songNavObj.sn_add2schedule();
     showNotification("Added to schedule");
   }
@@ -251,19 +251,19 @@ function songNavClass() {
         }
         ap = ap + ao + " | ";
       }
-      vvPanel("Suggestions", ap);
+      rvw.ui.Panel.show("Suggestions", ap);
       $(".hintwords").each(function () {
         var ar = $(this);
         ar.on("click", function () {
           var at = $(this).data("evalz");
           $("#songnav_editbox").val(at);
-          vvPanelClose();
+          rvw.ui.Panel.close();
           P = true;
           songNavObj.sn_searchSong();
         });
       });
     } else {
-      vvPanelClose();
+      rvw.ui.Panel.close();
     }
   }
   function ae(ap, am, at) {
@@ -377,7 +377,7 @@ function songNavClass() {
   function w() {
     var al = "Song Database";
     var an = 'Do you want to delete "' + b + '" ?';
-    vvConfirm(al, an, am);
+    rvw.ui.Confirm.exec(al, an, am);
     function am() {
       var ao = a;
       if (a != 0) {
@@ -392,9 +392,9 @@ function songNavClass() {
     if (an != "_ALL") {
       var am = "Song Database";
       var ap = 'Do you want to delete ALL songs from "' + an + '" category?';
-      vvConfirm(am, ap, al);
+      rvw.ui.Confirm.exec(am, ap, al);
     } else {
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Song Database",
         "Can not delete the _ALL category. Please select a specific category."
       );
@@ -441,7 +441,7 @@ function songNavClass() {
     R();
   }
   function Y() {
-    vvPanelToggle();
+    rvw.ui.Panel.toggle();
   }
   function J(at) {
     var az = vvConfigObj.get_navFontSize() + "px";
@@ -630,13 +630,13 @@ function songNavClass() {
     am.addEventListener(air.IOErrorEvent.IO_ERROR, ao);
     am.copyToAsync(al, true);
     function an(ar) {
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Song Database",
         'Song database saved to Desktop under the "vvexport" folder'
       );
     }
     function ao(ar) {
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Song Database",
         "Unable to save the song database to the Desktop"
       );

@@ -152,7 +152,7 @@ function schedule() {
     A("About to delete ALL Records from Selected DB. New confirm");
     var X = "SCHEDULE";
     var Y = "Are you sure you want to delete ALL schedule entries?";
-    vvConfirm(X, Y, n);
+    rvw.ui.Confirm.exec(X, Y, n);
   }
   function p() {
     M = document.getElementById("sch_selectID").selectedIndex;

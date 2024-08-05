@@ -57,7 +57,16 @@
     <script type="text/javascript" src="lib/jquery/jquery-3.7.1.min.js"></script>
 
     <!-- ReVerseVIEW library -->
+    <script type="text/javascript" src="js/__preload__.js"></script>
+
+    <script type="text/javascript" src="js/app.splash.js"></script>
+    <script type="text/javascript" src="js/app.dialog.js"></script>
+    <script type="text/javascript" src="js/app.confirm.js"></script>
+    <script type="text/javascript" src="js/app.prompt.js"></script>
+    <script type="text/javascript" src="js/app.panel.js"></script>
+
     <script type="text/javascript" src="js/app.js"></script>
+
     <script type="text/javascript" src="js/const.js"></script>
     <script type="text/javascript" src="js/navigation.js"></script>
     <script type="text/javascript" src="js/version.js"></script>
@@ -338,7 +347,7 @@
       <div class="bd"></div>
     </div>
 
-    <!-- MESSAGE BOX -->
+    <!-- Modal::Dialog::Begin -->
     <div id="somemessage" class="ui black large compact message">
       <i class="close icon"></i>
       <div id="vvdialog_header" class="header"></div>
@@ -349,8 +358,9 @@
       </p>
       <br />
     </div>
+    <!-- Modal::Dialog::Begin -->
 
-    <!-- CONFIRM BOX -->
+    <!-- Modal::Confirm::Begin -->
     <div class="ui modal" id="vvConfirm_main">
       <div class="header" id="vvConfirm_header"></div>
       <div class="content">
@@ -361,8 +371,9 @@
         <div class="ui button" id="vvConfirm_no">NO</div>
       </div>
     </div>
+    <!-- Modal::Confirm::End -->
 
-    <!-- PANEL BOX -->
+    <!-- Modal::Panel::Begin -->
     <div class="ui modal" id="vvPanel_main">
       <div class="header" id="vvPanel_header"></div>
 
@@ -372,5 +383,6 @@
         <div class="ui button" id="vvPanel_close">CLOSE</div>
       </div>
     </div>
+    <!-- Modal::Panel::End -->
   </body>
 </html>

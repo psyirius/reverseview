@@ -351,7 +351,7 @@ function songEditClass() {
   function a() {
     var ad = document.getElementById("se_catTextID").value;
     if (specialCategory(ad)) {
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Add Edit Song",
         "Category name starting with 'vv' are reserved."
       );
@@ -590,7 +590,7 @@ function songEditClass() {
       }
       av = null;
       document.getElementById("se_quickSlideID_2").value = aw;
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Lyrics Transliteration",
         "Transliteration is only valid for Malayalam and it is not 100% accurate."
       );
@@ -613,7 +613,7 @@ function songEditClass() {
       }
       n--;
     } else {
-      vvDialog("Add Edit Songs", "Can not delete the last Slide");
+      rvw.ui.Dialog.show("Add Edit Songs", "Can not delete the last Slide");
     }
   }
   function N() {
@@ -628,7 +628,7 @@ function songEditClass() {
     ao = ao.replace(/^\s+|\s+$/g, "");
     ao = ao.replace(/\s\s+/g, " ");
     if (ao == "") {
-      vvDialog("Add Edit Songs", "Enter a valid Song Name");
+      rvw.ui.Dialog.show("Add Edit Songs", "Enter a valid Song Name");
       return false;
     } else {
       var ak = new songObj();
@@ -663,7 +663,7 @@ function songEditClass() {
       if (am) {
         ak.yvideo = ag;
       } else {
-        vvDialog("Add Edit Songs", "Enter valid You Tube video link.");
+        rvw.ui.Dialog.show("Add Edit Songs", "Enter valid You Tube video link.");
         return false;
       }
       var ai = document.getElementById("songnav_category2").selectedIndex;
@@ -764,7 +764,7 @@ function songEditClass() {
   function C() {
     var ac = "Song Add/Edit";
     var ad = "Do you want to CANCEL from Add/Edit Song panel?";
-    vvConfirm(ac, ad, l);
+    rvw.ui.Confirm.exec(ac, ad, l);
   }
   function l() {
     i.hide();

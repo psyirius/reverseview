@@ -71,7 +71,7 @@ function songPortXML() {
       return false;
     }
     if (specialCategory(m)) {
-      vvDialog("Song Database", "Only user added lyrics can be exported");
+      rvw.ui.Dialog.show("Song Database", "Only user added lyrics can be exported");
       return false;
     }
     var z = new songObj();
@@ -124,7 +124,7 @@ function songPortXML() {
     }
     v = v + "</songDB>\n";
     if (r) {
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Song Database",
         "Database contains invalid Category. Contact VerseVIEW"
       );
@@ -161,19 +161,19 @@ function songPortXML() {
           if (u == "XMLsong") {
             o(v);
           } else {
-            vvDialog(
+            rvw.ui.Dialog.show(
               "Song Database",
               "Invalid database for VerseVIEW Songs in XML format. (Wrong type field)"
             );
           }
         } else {
-          vvDialog(
+          rvw.ui.Dialog.show(
             "Song Database",
             "Invalid database for VerseVIEW Songs in XML format. (Type field not present)"
           );
         }
       } else {
-        vvDialog(
+        rvw.ui.Dialog.show(
           "Song Database",
           "Invalid database for VerseVIEW Songs in XML format. (Invalid XML format)"
         );
@@ -256,7 +256,7 @@ function songPortXML() {
     u.writeMultiByte(s, "utf-8");
     u.close();
     function v() {
-      vvDialog(
+      rvw.ui.Dialog.show(
         "Song Database",
         "Exported to " + w + " under vvexport folder on the Desktop."
       );
@@ -351,7 +351,7 @@ function songPortXML() {
       }
     }
     if (x) {
-      vvDialog("No New Songs to add.");
+      rvw.ui.Dialog.show("No New Songs to add.");
     } else {
       fillTagList();
     }

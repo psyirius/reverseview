@@ -5,7 +5,7 @@ function loadSQLBible(c, b) {
   var a = null;
   if (bibleVersionArray[c] == null) {
     c = 1;
-    vvDialog("Bible Database", "Please select the Bible translation of choice");
+    rvw.ui.Dialog.show("Bible Database", "Please select the Bible translation of choice");
     if (b == 1) {
       vvConfigObj.set_version1(1);
     } else {

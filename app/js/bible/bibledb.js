@@ -327,7 +327,7 @@ function bibledb() {
       ak.removeEventListener(air.SQLErrorEvent.ERROR, am);
       var aq = getVerseFromArray(ai, ap, aj);
       q[aq - 1] = aj + " " + ao;
-      vvDialog("Bible Verse Update", "Verse Updated");
+      rvw.ui.Dialog.show("Bible Verse Update", "Verse Updated");
     }
     function am(aq) {
       ak.removeEventListener(air.SQLEvent.RESULT, al);
@@ -339,7 +339,7 @@ function bibledb() {
         aq.error.code +
         " | " +
         aq.error.message;
-      vvDialog("Bible Verse Update", ar);
+      rvw.ui.Dialog.show("Bible Verse Update", ar);
     }
   }
 }

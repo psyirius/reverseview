@@ -17,3 +17,7 @@ yarn-error.log*
 # Artifact files
 dist/
 !dist/.gitkeep
+
+# compiled js files (wip)
+/app/js/app.*js
+/app/js/__*.js
