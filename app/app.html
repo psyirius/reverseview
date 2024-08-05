@@ -6,6 +6,18 @@
 
     <title>ReVerseVIEW</title>
 
+    <!-- YUI3 -->
+    <script type="text/javascript" src="lib/yui3/3.18.1/yui/yui-min.js"></script>
+
+    <script type="text/javascript">
+      YUI({
+        debug: true,
+        combine: false,
+      }).use('node', 'panel', 'tabview', function(Y) {
+        window.$Y = Y;
+      });
+    </script>
+
     <!-- YUI2 standard reset and fonts -->
     <link rel="stylesheet" type="text/css" href="lib/yui2/reset/reset-min.css"/>
     <link rel="stylesheet" type="text/css" href="lib/yui2/fonts/fonts-min.css"/>
@@ -114,16 +126,16 @@
     <script type="text/javascript" src="network/vvwebengine.js"></script>
     <script type="text/javascript" src="network/support.js"></script>
 
-    <script type="text/javascript" src="song/song_edit.js"></script>
-    <script type="text/javascript" src="song/song_nav.js"></script>
-    <script type="text/javascript" src="song/song_manager.js"></script>
-    <script type="text/javascript" src="song/song_present.js"></script>
-    <script type="text/javascript" src="song/songobj.js"></script>
-    <script type="text/javascript" src="song/song_lyrics.js"></script>
-    <script type="text/javascript" src="song/song_port_xml.js"></script>
-    <script type="text/javascript" src="song/song_import.js"></script>
-    <script type="text/javascript" src="song/song_updatedb.js"></script>
-    <script type="text/javascript" src="song/song_number.js"></script>
+    <script type="text/javascript" src="js/song/song_edit.js"></script>
+    <script type="text/javascript" src="js/song/song_nav.js"></script>
+    <script type="text/javascript" src="js/song/song_manager.js"></script>
+    <script type="text/javascript" src="js/song/song_present.js"></script>
+    <script type="text/javascript" src="js/song/songobj.js"></script>
+    <script type="text/javascript" src="js/song/song_lyrics.js"></script>
+    <script type="text/javascript" src="js/song/song_port_xml.js"></script>
+    <script type="text/javascript" src="js/song/song_import.js"></script>
+    <script type="text/javascript" src="js/song/song_updatedb.js"></script>
+    <script type="text/javascript" src="js/song/song_number.js"></script>
 
     <script type="text/javascript" src="chords/chords_database.js"></script>
     <script type="text/javascript" src="chords/chords_manager.js"></script>

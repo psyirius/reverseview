@@ -310,10 +310,8 @@ function deleteVersionConfirm() {
     rvw.ui.Prompt.exec(
       "Delete Version",
       "Are you sure you want to delete version?",
-      {
-        onYes: function () {
-          deleteVersion();
-        }
+      function () {
+        deleteVersion();
       }
     );
   }

@@ -667,15 +667,15 @@ function schedule() {
         var aa = songManagerObj.getSongObjWithID(ab);
         $("#songnav_editbox").val(aa.name);
         songNavObj.sn_searchSong();
-        leftTabView.selectTab(1);
-        rightTabView.selectTab(1);
+        leftTabView.selectChild(1);
+        rightTabView.selectChild(1);
       } else {
         $("#nav_bibleRefID").val(
           booknames[X.book] + " " + (X.ch + 1) + " " + (X.ver + 1)
         );
         processNavBibleRefFind();
-        leftTabView.selectTab(0);
-        rightTabView.selectTab(0);
+        leftTabView.selectChild(0);
+        rightTabView.selectChild(0);
       }
     }
   }

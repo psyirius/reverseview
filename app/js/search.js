@@ -146,7 +146,7 @@ function vvsearch(O) {
     R = 0;
     L = 50;
     Q();
-    rightTabView.selectTab(3);
+    rightTabView.selectChild(3);
   }
   function Q() {
     if (I.data == null) {

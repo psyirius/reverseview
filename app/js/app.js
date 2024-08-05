@@ -848,7 +848,7 @@ function generateTabContent() {
     songNumberObj = new songNumber();
     songManagerObj = new songManagerClass();
     songManagerObj.init(true, true);
-    songEditObj = new songEditClass();
+    songEditObj = new SongEdit();
     songEditObj.init(songEditUI);
     songNavObj = new songNavClass();
     songNavObj.init();
@@ -1096,102 +1096,113 @@ function fillNav() {
     recent.init();
 }
 function setupLeftTabFrame() {
-    var _a = YAHOO.widget, TabView = _a.TabView, Tab = _a.Tab;
     var tabs = [
         {
             label: " Bible ",
-            content: '<div id="navTab">Bible</div>',
-            active: true
+            content: '<div id="navTab">Bible</div>'
         },
         {
             label: " Songs ",
             content: '<div id="songNavTab">Songs</div>'
         },
     ];
-    // construct
-    var tabView = new TabView({ orientation: "top" });
-    // add tabs
-    tabs.forEach(function (tab) {
-        tabView.addTab(new Tab(tab));
+    var TabView = $Y.TabView, Tab = $Y.Tab;
+    var tabview = new TabView();
+    tabs.forEach(function (tabMeta, index) {
+        var tab = new Tab(tabMeta);
+        tabview.add(tab, index);
     });
-    // mount to DOM
-    tabView.appendTo("container");
-    // attach event listeners
-    tabView.addListener("activeTabChange", function () {
-        var b = tabView.get("activeTab");
-        var c = b.get("label");
-        if (c === " Bible ") {
-            rightTabView.selectTab(0);
-        }
-        if (c === " Songs ") {
-            rightTabView.selectTab(1);
+    tabview.render('#container');
+    // tabview.selectChild(0);
+    tabview.after('selectionChange', function (e) {
+        var currentTab = e.newVal;
+        // FIXME: find store base tab sync
+        switch (currentTab.get('index')) {
+            case 0: {
+                rightTabView.selectChild(0);
+                break;
+            }
+            case 1: {
+                rightTabView.selectChild(1);
+                break;
+            }
         }
     });
-    leftTabView = tabView;
+    leftTabView = tabview;
 }
 function setupRightTabFrame() {
-    var _a = YAHOO.widget, TabView = _a.TabView, Tab = _a.Tab;
     var tabs = [
         {
-            label: " Verses ",
-            content: '<div id="bibleverseTab" class="tabSubContainer" >Loading Bible Database ... </div>',
-            active: true
+            label: "Verses",
+            content: '<div id="bibleverseTab" class="tabSubContainer" >Loading Bible Database ... </div>'
         },
         {
-            label: " Lyrics ",
+            label: "Lyrics",
             content: '<div id="lyricsTab" class="tabSubContainer" >Lyrics</div>'
         },
         {
-            label: " Notes",
+            label: "Notes",
             content: '<div id="notesTab" class="notesTabSubContainer">Notes</div>'
         },
         {
-            label: " Search",
+            label: "Search",
             content: '<div id="searchTab"><div id="searchField" class="searchFieldContainer">Search Field</div></div>'
         },
         {
-            label: " Schedule ",
+            label: "Schedule",
             content: '<div id="scheduleTab">Schedule</div>'
         },
         {
-            label: " Graphics ",
+            label: "Graphics",
             content: '<div id="graphicsTab">Graphics</div>'
         },
         {
-            label: " Screens ",
+            label: "Screens",
             content: '<div id="screenTab">Screens</div>'
         },
     ];
-    // construct
-    var tabView = new TabView({ orientation: "top" });
-    // add tabs
-    tabs.forEach(function (tab) {
-        tabView.addTab(new Tab(tab));
+    var TabView = $Y.TabView, Tab = $Y.Tab;
+    var tabview = new TabView();
+    tabs.forEach(function (tabMeta, index) {
+        var tab = new Tab(tabMeta);
+        tabview.add(tab, index);
     });
     if (testTAB) {
-        tabView.addTab(new Tab({
-            label: " Test ",
+        tabview.add(new Tab({
+            label: "Test",
             content: '<div id="testTab"></div>'
         }));
     }
-    // mount to DOM
-    tabView.appendTo("container2");
-    // attach event listeners
-    onActiveTabChanged();
-    tabView.addListener("activeTabChange", onActiveTabChanged);
-    function onActiveTabChanged() {
-        var c = tabView.get("activeTab");
-        var d = c.get("label");
-        $("#verses_menu").hide();
-        $("#lyrics_menu").hide();
-        if (d == " Verses ") {
-            $("#verses_menu").show();
+    tabview.render('#container2');
+    // tabview.selectChild(0);
+    tabview.after('selectionChange', function (e) {
+        var currentTab = e.newVal;
+        // // for some perf fix
+        // switch (currentTab.get('index')) {
+        //   case 0: {
+        //     $("#lyrics_menu").hide();
+        //     $("#verses_menu").show();
+        //     break;
+        //   }
+        //   case 1: {
+        //     $("#verses_menu").hide();
+        //     $("#lyrics_menu").show();
+        //     break;
+        //   }
+        // }
+        // TODO: figure out store base tab sync
+        switch (currentTab.get('index')) {
+            case 0: {
+                leftTabView.selectChild(0);
+                break;
+            }
+            case 1: {
+                leftTabView.selectChild(1);
+                break;
+            }
         }
-        if (d == " Lyrics ") {
-            $("#lyrics_menu").show();
-        }
-    }
-    rightTabView = tabView;
+    });
+    rightTabView = tabview;
 }
 function processExit() {
     if (presentWindowOpen) {
@@ -1326,14 +1337,11 @@ function processFontSizeChange() {
     scheduleObj.changeFontsizeScheduleTab();
 }
 function getActiveTabLabel() {
-    var a = leftTabView.get("activeTab");
-    var b = a.get("label");
-    var c = "";
-    if (b == " Bible ") {
-        c = "Bible";
+    var b = leftTabView.get('selection').get('label');
+    if (b === "Bible") {
+        return "Bible";
     }
-    if (b == " Songs ") {
-        c = "Songs";
+    if (b === "Songs") {
+        return "Songs";
     }
-    return c;
 }

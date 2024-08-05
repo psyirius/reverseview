@@ -872,7 +872,7 @@ function generateTabContent() {
   songNumberObj = new songNumber();
   songManagerObj = new songManagerClass();
   songManagerObj.init(true, true);
-  songEditObj = new songEditClass();
+  songEditObj = new SongEdit();
   songEditObj.init(songEditUI);
   songNavObj = new songNavClass();
   songNavObj.init();
@@ -1159,13 +1159,10 @@ function fillNav() {
 }
 
 function setupLeftTabFrame() {
-  const { TabView, Tab } = YAHOO.widget;
-
   const tabs = [
     {
       label: " Bible ",
       content: '<div id="navTab">Bible</div>',
-      active: true,
     },
     {
       label: " Songs ",
@@ -1173,107 +1170,122 @@ function setupLeftTabFrame() {
     },
   ];
 
-  // construct
-  const tabView = new TabView({ orientation: "top" });
+  const { TabView, Tab } = $Y;
 
-  // add tabs
-  tabs.forEach(tab => {
-    tabView.addTab(
-      new Tab(tab)
-    );
+  const tabview = new TabView();
+
+  tabs.forEach((tabMeta, index) => {
+    const tab = new Tab(tabMeta);
+    tabview.add(tab, index);
   });
 
-  // mount to DOM
-  tabView.appendTo("container");
+  tabview.render('#container');
 
-  // attach event listeners
-  tabView.addListener("activeTabChange", () => {
-    const b = tabView.get("activeTab");
-    const c = b.get("label");
-    if (c === " Bible ") {
-      rightTabView.selectTab(0);
-    }
-    if (c === " Songs ") {
-      rightTabView.selectTab(1);
+  // tabview.selectChild(0);
+
+  tabview.after('selectionChange', (e) => {
+    const currentTab = e.newVal;
+
+    // FIXME: find store base tab sync
+    switch (currentTab.get('index')) {
+      case 0: {
+        rightTabView.selectChild(0);
+        break;
+      }
+      case 1: {
+        rightTabView.selectChild(1);
+        break;
+      }
     }
   });
 
-  leftTabView = tabView;
+  leftTabView = tabview;
 }
 function setupRightTabFrame() {
-  const { TabView, Tab } = YAHOO.widget;
-
   const tabs = [
     {
-      label: " Verses ",
+      label: "Verses",
       content: '<div id="bibleverseTab" class="tabSubContainer" >Loading Bible Database ... </div>',
-      active: true,
     },
     {
-      label: " Lyrics ",
+      label: "Lyrics",
       content: '<div id="lyricsTab" class="tabSubContainer" >Lyrics</div>',
     },
     {
-      label: " Notes",
+      label: "Notes",
       content: '<div id="notesTab" class="notesTabSubContainer">Notes</div>',
     },
     {
-      label: " Search",
+      label: "Search",
       content: '<div id="searchTab"><div id="searchField" class="searchFieldContainer">Search Field</div></div>',
     },
     {
-      label: " Schedule ",
+      label: "Schedule",
       content: '<div id="scheduleTab">Schedule</div>',
     },
     {
-      label: " Graphics ",
+      label: "Graphics",
       content: '<div id="graphicsTab">Graphics</div>',
     },
     {
-      label: " Screens ",
+      label: "Screens",
       content: '<div id="screenTab">Screens</div>',
     },
   ];
 
-  // construct
-  const tabView = new TabView({orientation: "top"});
+  const { TabView, Tab } = $Y;
 
-  // add tabs
-  tabs.forEach(tab => {
-    tabView.addTab(
-      new Tab(tab)
-    );
+  const tabview = new TabView();
+
+  tabs.forEach((tabMeta, index) => {
+    const tab = new Tab(tabMeta);
+    tabview.add(tab, index);
   });
 
   if (testTAB) {
-    tabView.addTab(
+    tabview.add(
       new Tab({
-        label: " Test ",
+        label: "Test",
         content: '<div id="testTab"></div>',
       })
     );
   }
 
-  // mount to DOM
-  tabView.appendTo("container2");
+  tabview.render('#container2');
 
-  // attach event listeners
-  onActiveTabChanged();
-  tabView.addListener("activeTabChange", onActiveTabChanged);
-  function onActiveTabChanged() {
-    var c = tabView.get("activeTab");
-    var d = c.get("label");
-    $("#verses_menu").hide();
-    $("#lyrics_menu").hide();
-    if (d == " Verses ") {
-      $("#verses_menu").show();
-    }
-    if (d == " Lyrics ") {
-      $("#lyrics_menu").show();
-    }
-  }
+  // tabview.selectChild(0);
 
-  rightTabView = tabView;
+  tabview.after('selectionChange', (e) => {
+    const currentTab = e.newVal;
+
+    // // for some perf fix
+    // switch (currentTab.get('index')) {
+    //   case 0: {
+    //     $("#lyrics_menu").hide();
+    //     $("#verses_menu").show();
+    //     break;
+    //   }
+    //   case 1: {
+    //     $("#verses_menu").hide();
+    //     $("#lyrics_menu").show();
+    //     break;
+    //   }
+    // }
+
+    // TODO: figure out store base tab sync
+    switch (currentTab.get('index')) {
+      case 0: {
+        leftTabView.selectChild(0);
+        break;
+      }
+      case 1: {
+        leftTabView.selectChild(1);
+        break;
+      }
+    }
+  });
+
+  rightTabView = tabview;
 }
 
 function processExit() {
@@ -1417,14 +1429,11 @@ function processFontSizeChange() {
   scheduleObj.changeFontsizeScheduleTab();
 }
 function getActiveTabLabel() {
-  var a = leftTabView.get("activeTab");
-  var b = a.get("label");
-  var c = "";
-  if (b == " Bible ") {
-    c = "Bible";
+  const b = leftTabView.get('selection').get('label');
+  if (b === "Bible") {
+    return "Bible";
   }
-  if (b == " Songs ") {
-    c = "Songs";
+  if (b === "Songs") {
+    return "Songs";
   }
-  return c;
 }
