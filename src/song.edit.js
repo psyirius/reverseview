@@ -66,7 +66,7 @@ class SongEdit {
           .addEventListener("click", onClick_moveSlideLeftButtonID, false);
       document
           .getElementById("songEdit_moveSlideRightButtonID")
-          .addEventListener("click", onClick_moveSlideRightButtonID, false);
+          .addEventListener("click", moveCurrentSlideRight, false);
       document
           .getElementById("songEdit_addSlideButtonID")
           .addEventListener("click", onClick_addSlideButtonID, false);
@@ -75,7 +75,7 @@ class SongEdit {
           .addEventListener("click", onClick_dupSlideButtonID, false);
       document
           .getElementById("songEdit_deleteSlideButtonID")
-          .addEventListener("click", onClick_deleteSlideButtonID, false);
+          .addEventListener("click", deleteCurrentSlide, false);
       document
           .getElementById("songEdit_createSlidesButtonID")
           .addEventListener("click", onClick_createSlidesButtonID, false);
@@ -121,21 +121,32 @@ class SongEdit {
     function _setupSlides() {
       _debug("Init Slide Tabs");
 
-      _slidesTabView = new YAHOO.widget.TabView();
-      _slidesTabView.addTab(
-        new YAHOO.widget.Tab({
-          label: "1",
-          content: '<textarea id="slide1" style="width: 284px" class="textareaStyle"></textarea><textarea id="slide1_2" style="width: 284px" class="textareaStyle"></textarea>',
-          active: true,
-        })
-      );
-      _slidesTabView.addTab(
-        new YAHOO.widget.Tab({
-          label: "2",
-          content: '<textarea id="slide2" style="width: 284px" class="textareaStyle"></textarea><textarea id="slide2_2" style="width: 284px" class="textareaStyle"></textarea>',
-        })
-      );
-      _slidesTabView.appendTo("se_slides");
+      {
+        const { Tab, TabView } = $Y;
+
+        const tabs = [
+          {
+            label: "1",
+            content: '<textarea id="slide1" style="width: 284px" class="textareaStyle"></textarea><textarea id="slide1_2" style="width: 284px" class="textareaStyle"></textarea>',
+          },
+          {
+            label: "2",
+            content: '<textarea id="slide2" style="width: 284px" class="textareaStyle"></textarea><textarea id="slide2_2" style="width: 284px" class="textareaStyle"></textarea>',
+          }
+        ];
+
+        const tabview = new TabView();
+
+        tabs.forEach((tabMeta, index) => {
+          tabview.add(new Tab(tabMeta), index);
+        });
+
+        tabview.selectChild(0);
+
+        tabview.render('#se_slides');
+
+        _slidesTabView = tabview;
+      }
 
       {
         let ac = document.getElementById("se_fontID2").selectedIndex;
@@ -152,12 +163,7 @@ class SongEdit {
       }
     }
     function _clear_all_slides() {
-      const i = 0;
-      let st = _slidesTabView.getTab(i);
-      while (st != null) {
-        _slidesTabView.removeTab(st);
-        st = _slidesTabView.getTab(i);
-      }
+      _slidesTabView.removeAll();
       _current_slide_num = 1;
     }
     function _setup_song_categories(ac) {
@@ -278,31 +284,33 @@ class SongEdit {
         _loadUsedFonts(ad, null);
       }
     }
+
     function onChange_se_fontID2() {
       var ag = document.getElementById("se_fontID2").selectedIndex;
       var af = document.getElementById("se_fontID2").options[ag].text;
       var ae = "";
       var ac = 0;
-      var ad = _slidesTabView.getTab(ac);
+      var ad = _slidesTabView.item(ac);
       while (ad != null) {
         ae = G(ad.get("content"));
         document.getElementById(ae).style.fontFamily = af;
         ac++;
-        ad = _slidesTabView.getTab(ac);
+        ad = _slidesTabView.item(ac);
       }
     }
+
     function onChange_se_fontID2_2() {
       var ag = document.getElementById("se_fontID2_2").selectedIndex;
       var af = document.getElementById("se_fontID2_2").options[ag].text;
       var ae = "";
       var ac = 0;
-      var ad = _slidesTabView.getTab(ac);
+      var ad = _slidesTabView.item(ac);
       while (ad != null) {
         ae = G(ad.get("content"));
         ae = ae + "_2";
         document.getElementById(ae).style.fontFamily = af;
         ac++;
-        ad = _slidesTabView.getTab(ac);
+        ad = _slidesTabView.item(ac);
       }
     }
     function _validate_font_name(ac) {
@@ -355,6 +363,7 @@ class SongEdit {
         _append_Slide();
         _append_Slide();
       }
+      _slidesTabView.selectChild(0);
     }
     function onClick_addCatButtonID() {
       document.getElementById("se_catTextID").value = "";
@@ -381,55 +390,81 @@ class SongEdit {
       }
     }
     function onClick_moveSlideLeftButtonID() {
-      M();
-      var ad = _slidesTabView.get("activeIndex");
-      if (ad != 0) {
-        var ai = ad - 1;
-        var ag = "slide" + (ad + 1);
-        var ae = "slide" + (ai + 1);
-        var aj = "slide" + (ad + 1) + "_2";
-        var af = "slide" + (ai + 1) + "_2";
-        var ah = document.getElementById(ag).value;
-        document.getElementById(ag).value = document.getElementById(ae).value;
-        document.getElementById(ae).value = ah;
-        var ac = document.getElementById(aj).value;
-        document.getElementById(aj).value = document.getElementById(af).value;
-        document.getElementById(af).value = ac;
-        _slidesTabView.set("activeIndex", ai);
+      _reset_seq_id();
+
+      const currIndex = _slidesTabView.get("selection").get('index');
+
+      if (currIndex > 0) {
+        const prevIndex = currIndex - 1;
+
+        {
+          const lx = "slide" + (currIndex + 1);
+          const rx = "slide" + (prevIndex + 1);
+
+          const tmp = document.getElementById(lx).value;
+          document.getElementById(lx).value = document.getElementById(rx).value;
+          document.getElementById(rx).value = tmp;
+        }
+
+        {
+          const lx = "slide" + (currIndex + 1) + "_2";
+          const rx = "slide" + (prevIndex + 1) + "_2";
+
+          const tmp = document.getElementById(lx).value;
+          document.getElementById(lx).value = document.getElementById(rx).value;
+          document.getElementById(rx).value = tmp;
+        }
+
+        _slidesTabView.selectChild(prevIndex);
       }
     }
-    function onClick_moveSlideRightButtonID() {
-      M();
-      var ah = _slidesTabView.get("tabs").length;
-      var ag = _slidesTabView.get("activeIndex");
-      _debug(ag + "  " + ah);
-      if (ag < ah - 1) {
-        var aj = parseInt(ag) + 1;
-        var af = "slide" + (ag + 1);
-        var ai = "slide" + (aj + 1);
-        var ac = "slide" + (ag + 1) + "_2";
-        var ad = "slide" + (aj + 1) + "_2";
-        var ae = document.getElementById(af).value;
-        document.getElementById(af).value = document.getElementById(ai).value;
-        document.getElementById(ai).value = ae;
-        var ak = document.getElementById(ac).value;
-        document.getElementById(ac).value = document.getElementById(ad).value;
-        document.getElementById(ad).value = ak;
-        _slidesTabView.set("activeIndex", aj);
+    function moveCurrentSlideRight() {
+      _reset_seq_id();
+
+      const currIndex = _slidesTabView.get("selection").get('index');
+      const numTabs = _slidesTabView.size();
+
+      if (currIndex < numTabs - 1) {
+        const nextIndex = currIndex + 1;
+
+        {
+          const lx = "slide" + (currIndex + 1);
+          const rx = "slide" + (nextIndex + 1);
+
+          const tmp = document.getElementById(lx).value;
+          document.getElementById(lx).value = document.getElementById(rx).value;
+          document.getElementById(rx).value = tmp;
+        }
+
+        {
+          const lx = "slide" + (currIndex + 1) + "_2";
+          const rx = "slide" + (nextIndex + 1) + "_2";
+
+          const tmp = document.getElementById(lx).value;
+          document.getElementById(lx).value = document.getElementById(rx).value;
+          document.getElementById(rx).value = tmp;
+        }
+
+        _slidesTabView.selectChild(nextIndex);
       }
     }
     function onClick_dupSlideButtonID() {
-      M();
-      var ag = _slidesTabView.get("activeIndex") + 1;
-      _debug("Active tab Index: " + ag);
-      var ac = "slide" + ag;
-      var af = "slide" + ag + "_2";
-      var ae = document.getElementById(ac).value;
-      var ad = document.getElementById(af).value;
-      _append_Slide(ae, ad);
+      _reset_seq_id();
+
+      const currIndex = _slidesTabView.get("selection").get('index');
+
+      _debug("Active tab Index: " + currIndex);
+
+      const ac = "slide" + (currIndex + 1);
+      const af = "slide" + (currIndex + 1) + "_2";
+
+      const s1 = document.getElementById(ac).value;
+      const s2 = document.getElementById(af).value;
+
+      _append_Slide(s1, s2);
     }
     function onClick_addSlideButtonID() {
-      M();
+      _reset_seq_id();
       var ad = null;
       var ac = null;
       _append_Slide(ad, ac);
@@ -438,22 +473,20 @@ class SongEdit {
       const slide1_id = `slide${_current_slide_num}`;
       const slide2_id = `slide${_current_slide_num}_2`;
       _debug("Slide ID: " + slide1_id);
-      if (_current_slide_num === 1) {
-        _slidesTabView.addTab(
-          new YAHOO.widget.Tab({
-            label: _current_slide_num,
-            content: `<textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea><textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>`,
-            active: true,
-          })
-        );
-      } else {
-        _slidesTabView.addTab(
-          new YAHOO.widget.Tab({
-            label: _current_slide_num,
-            content: `<textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea><textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>`,
-          })
-        );
-      }
+
+      const { Tab } = $Y;
+
+      _slidesTabView.add(
+        new Tab({
+          label: _current_slide_num,
+          content: `
+            <textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea>
+            <textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>
+          `,
+        })
+      );
+
+      _current_slide_num++;
 
       {
         const ae = document.getElementById("se_fontID2").selectedIndex;
@@ -478,12 +511,11 @@ class SongEdit {
       } else {
         document.getElementById(slide2_id).value = "";
       }
-
-      _current_slide_num++;
     }
     function onClick_createSlidesButtonID() {
-      M();
-      var ak = "";
+      _reset_seq_id();
+
+      let ak = "";
       ak = ak + '<div class="style2">';
       ak =
         ak +
@@ -501,44 +533,51 @@ class SongEdit {
       ak =
         ak +
         '<input type="button" id="se_generateCancelID" value=" CANCEL "></DIV>';
-      var ac = new YAHOO.widget.Panel("gpanelObj", {
+
+      const _createPanel = new YAHOO.widget.Panel("gpanelObj", {
         width: "800px",
         fixedcenter: true,
         modal: true,
         visible: false,
         constraintoviewport: true,
       });
-      ac.render(document.body);
-      ac.setHeader("Generate Slides");
-      ac.setBody(ak);
+      _createPanel.render(document.body);
+      _createPanel.setHeader("Generate Slides");
+      _createPanel.setBody(ak);
 
-      var windowHeight = $(window).height();
+      let windowHeight = $(window).height();
       windowHeight = windowHeight * 0.8;
       $("#se_quickSlideID").height(windowHeight);
       $("#se_quickSlideID_2").height(windowHeight);
 
       document
         .getElementById("se_generateID")
-        .addEventListener("click", ao, false);
+        .addEventListener("click", onClick_se_generateID, false);
       document
         .getElementById("se_generateMunglishID")
-        .addEventListener("click", ap, false);
+        .addEventListener("click", onClick_se_generateMunglishID, false);
       document
         .getElementById("se_generateCancelID")
-        .addEventListener("click", ah, false);
-      var al = document.getElementById("se_fontID2").selectedIndex;
-      var ad = document.getElementById("se_fontID2").options[al].text;
-      document.getElementById("se_quickSlideID").style.fontFamily = ad;
-      var al = document.getElementById("se_fontID2_2").selectedIndex;
-      var ad = document.getElementById("se_fontID2_2").options[al].text;
-      document.getElementById("se_quickSlideID_2").style.fontFamily = ad;
+        .addEventListener("click", onClick_se_generateCancelID, false);
 
-      var numSlides = _slidesTabView.get("tabs").length;
+      {
+        const al = document.getElementById("se_fontID2").selectedIndex;
+        const ad = document.getElementById("se_fontID2").options[al].text;
+        document.getElementById("se_quickSlideID").style.fontFamily = ad;
+      }
 
-      var primarySlidesList = [];
-      var secondarySlidesList = [];
+      {
+        const al = document.getElementById("se_fontID2_2").selectedIndex;
+        const ad = document.getElementById("se_fontID2_2").options[al].text;
+        document.getElementById("se_quickSlideID_2").style.fontFamily = ad;
+      }
 
-      for (var slideIndex = 1; slideIndex <= numSlides; slideIndex++) {
+      const numSlides = _slidesTabView.size();
+
+      const primarySlidesList = [];
+      const secondarySlidesList = [];
+
+      for (let slideIndex = 1; slideIndex <= numSlides; slideIndex++) {
         primarySlidesList.push(document.getElementById("slide" + slideIndex).value);
         secondarySlidesList.push(document.getElementById("slide" + slideIndex + "_2").value);
       }
@@ -547,52 +586,64 @@ class SongEdit {
       document.getElementById("se_quickSlideID").value = primarySlidesList.join("\n\n\n").trim();
       document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join("\n\n\n").trim();
 
-      ac.show();
-      ac.bringToTop();
-      function ao() {
+      _createPanel.show();
+      _createPanel.bringToTop();
+
+      function onClick_se_generateID() {
         _current_slide_num = 1;
-        var av = document.getElementById("se_quickSlideID").value;
-        var az = av.split("\n\n\n");
-        var ar = az.length;
-        var au = document.getElementById("se_quickSlideID_2").value;
-        var at = au.split("\n\n\n");
-        var ay = at.length;
+
+        const av = document.getElementById("se_quickSlideID").value;
+        const az = av.split("\n\n\n");
+        const ar = az.length;
+
+        const au = document.getElementById("se_quickSlideID_2").value;
+        const at = au.split("\n\n\n");
+        const ay = at.length;
+
         if (at[0] != null) {
           _append_Slide(az[0], at[0]);
         } else {
           _append_Slide(az[0], null);
         }
-        var aw = _slidesTabView.getTab(1);
+
+        var aw = _slidesTabView.item(1);
         while (aw != null) {
-          _slidesTabView.removeTab(_slidesTabView.get("activeTab"));
-          aw = _slidesTabView.getTab(1);
+          _slidesTabView.remove(aw.get("index"));
+          aw = _slidesTabView.item(1);
         }
+
         _current_slide_num = 2;
-        for (var ax = 1; ax < ar; ax++) {
+
+        for (let ax = 1; ax < ar; ax++) {
           if (at[ax] != null) {
             _append_Slide(az[ax], at[ax]);
           } else {
             _append_Slide(az[ax], null);
           }
         }
-        ah();
+
+        onClick_se_generateCancelID();
       }
-      function ah() {
-        af();
-        ac.hide();
+      function onClick_se_generateCancelID() {
+        _setup_clickHandlers();
+        _createPanel.hide();
       }
-      function af() {
+
+      function _setup_clickHandlers() {
         document
           .getElementById("se_generateID")
-          .removeEventListener("click", ao, false);
+          .removeEventListener("click", onClick_se_generateID, false);
+
         document
           .getElementById("se_generateMunglishID")
-          .removeEventListener("click", ap, false);
+          .removeEventListener("click", onClick_se_generateMunglishID, false);
+
         document
           .getElementById("se_generateCancelID")
-          .removeEventListener("click", ah, false);
+          .removeEventListener("click", onClick_se_generateCancelID, false);
       }
-      function ap() {
+
+      function onClick_se_generateMunglishID() {
         var at = document.getElementById("se_quickSlideID").value;
         var ax = at.split("\n");
         var ar = ax.length;
@@ -609,24 +660,31 @@ class SongEdit {
         );
       }
     }
-    function onClick_deleteSlideButtonID() {
-      M();
-      var af = _slidesTabView.get("activeIndex");
-      var ac = _slidesTabView.get("tabs").length;
-      for (var ae = 0; ae < ac; ae++) {
-        onClick_moveSlideRightButtonID();
+
+    function deleteCurrentSlide() {
+      _reset_seq_id();
+
+      // TODO: make the ui more obvious which slide is being deleted
+
+      const currentIndex = _slidesTabView.get("selection").get('index');
+      const numSlides = _slidesTabView.size();
+
+      // move the slides to the right most
+      for (let i = currentIndex; i < numSlides; ++i) {
+        moveCurrentSlideRight();
       }
-      var ad = _slidesTabView.getTab(1);
-      if (ad != null) {
-        _slidesTabView.removeTab(_slidesTabView.get("activeTab"));
-        if (ac - 1 == af) {
-          _slidesTabView.set("activeIndex", af - 1);
-        } else {
-          _slidesTabView.set("activeIndex", af);
-        }
-        _current_slide_num--;
-      } else {
-        rvw.ui.Dialog.show("Add Edit Songs", "Can not delete the last Slide");
+
+      const lastSlideIndex = numSlides - 1;
+      _slidesTabView.remove(lastSlideIndex);
+      _current_slide_num--;
+
+      // select the previous slide
+      _slidesTabView.selectChild(
+          Math.min(currentIndex, _slidesTabView.size() - 1)
+      );
+
+      if (_current_slide_num === 0) {
+        _append_Slide();
       }
     }
     function onClick_addFontButtonID2() {
@@ -652,79 +710,97 @@ class SongEdit {
         ao = ao.replace(/^\s+|\s+$/g, "");
         ao = ao.replace(/\s\s+/g, " ");
         sngObj.name2 = ao;
-        var ae = [];
-        var ah = [];
-        var ac = "";
-        var ad = 0;
-        let slideTab = _slidesTabView.getTab(ad);
-        while (slideTab != null) {
-          ac = G(slideTab.get("content"));
 
-          const anx = document.getElementById(ac).value;
-          ae[ad] = anx.replace(/\n/g, "<BR>");
-          ac = ac + "_2";
+        const _slides = [];
+        const _slides2 = [];
 
-          var any = document.getElementById(ac).value;
-          ah[ad] = any.replace(/\n/g, "<BR>");
-          if (isBlank(ah[ad])) {
-            ah[ad] = "";
+        _slidesTabView.each((slideTab, index) => {
+          const slideContent = slideTab.get("content");
+          const slideId = G(slideContent);
+
+          let ac = document.getElementById(slideId).value;
+          _slides[index] = ac.replace(/\n/g, "<BR>");
+
+          ac = slideId + "_2";
+          ac = document.getElementById(ac).value;
+          _slides2[index] = ac.replace(/\n/g, "<BR>");
+
+          if (isBlank(_slides2[index])) {
+              _slides2[index] = "";
           }
+        });
 
-          ad++;
-          slideTab = _slidesTabView.getTab(ad);
-        }
-        sngObj.slides = ae;
-        sngObj.slides2 = ah;
+        sngObj.slides = _slides;
+        sngObj.slides2 = _slides2;
+
         sngObj.copyright = document.getElementById("se_copyrightID").value;
-        var ag = document.getElementById("se_yvideoID").value;
-        var am = x(ag);
+
+        const ag = document.getElementById("se_yvideoID").value;
+
+        const am = _parse_yt_videoID(ag);
+
         if (am) {
           sngObj.yvideo = ag;
         } else {
-          rvw.ui.Dialog.show("Add Edit Songs", "Enter valid You Tube video link.");
+          rvw.ui.Dialog.show("Add Edit Songs", "Enter valid YouTube video link.");
           return false;
         }
-        var ai = document.getElementById("songnav_category2").selectedIndex;
-        sngObj.catIndex =
-          document.getElementById("songnav_category2").options[ai].text;
-        sngObj.subcat = "";
+
+        {
+          const ai = document.getElementById("songnav_category2").selectedIndex;
+          sngObj.catIndex = document.getElementById("songnav_category2").options[ai].text;
+          sngObj.subcat = "";
+        }
+
         if (!specialCategory(sngObj.catIndex)) {
-          if (sngObj.catIndex == "VV Malayalam 2021" ||
-            sngObj.catIndex == "VV Hindi 2021") {
-            var af = document.getElementById("songEdit_SongNumberID").value;
-            if (af == "" || af == null) {
+          if (sngObj.catIndex === "VV Malayalam 2021" || sngObj.catIndex === "VV Hindi 2021") {
+            const af = document.getElementById("songEdit_SongNumberID").value;
+            if (af === "" || af == null) {
               sngObj.subcat = songNumberObj.assignSongNumber(sngObj.catIndex);
             } else {
               sngObj.subcat = af;
             }
           }
         }
-        var al = document.getElementById("se_fontID2").selectedIndex;
-        sngObj.font = document.getElementById("se_fontID2").options[al].text;
-        var al = document.getElementById("se_fontID2_2").selectedIndex;
-        sngObj.font2 = document.getElementById("se_fontID2_2").options[al].text;
+
+        {
+          const al = document.getElementById("se_fontID2").selectedIndex;
+          sngObj.font = document.getElementById("se_fontID2").options[al].text;
+        }
+        {
+          const al = document.getElementById("se_fontID2_2").selectedIndex;
+          sngObj.font2 = document.getElementById("se_fontID2_2").options[al].text;
+        }
+
         sngObj.timestamp = h();
         sngObj.key = document.getElementById("se_keyID").value;
         sngObj.notes = document.getElementById("se_notesID").value;
         sngObj.rating = 5;
-        var ap = document.getElementById("se_sequenceID").value;
-        sngObj.slideseq = ap;
-        var aq = document.getElementById("se_tagID").value;
-        sngObj.tags = aq.toUpperCase();
+
+        {
+          sngObj.slideseq = document.getElementById("se_sequenceID").value;
+        }
+        {
+          const aq = document.getElementById("se_tagID").value;
+          sngObj.tags = aq.toUpperCase();
+        }
+
         addTagList(sngObj.tags);
         fillTagList();
+
         return sngObj;
       }
     }
     function onClick_se_presentID() {
       _debug("Process Present button");
-      var ac = _slidesTabView.get("activeIndex");
-      var ae = new songObj();
-      ae = _dumpSong();
-      if (ae != false) {
-        var ad = new songPresentObj();
-        ad.init(ae);
-        ad.present(ac);
+
+      const currentIndex = _slidesTabView.get("selection").get('index');
+
+      const ae = _dumpSong();
+      if (ae !== false) {
+        const sp = new songPresentObj();
+        sp.init(ae);
+        sp.present(currentIndex);
       }
     }
     function onClick_songEdit_saveButtonID() {
@@ -783,10 +859,10 @@ class SongEdit {
         return false;
       }
     }
-    function M() {
+    function _reset_seq_id() {
       document.getElementById("se_sequenceID").value = "";
     }
-    function x(af) {
+    function _parse_yt_videoID(af) {
       var ae = af.replace(/ /gi, "");
       if (ae == "") {
         document.getElementById("se_yvideoID").value = "";
