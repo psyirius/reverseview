@@ -711,29 +711,46 @@ function loadPreferences(callback) {
 
 function activateMainWindow() {
   // load saved window state
-  {
-    const { nativeWindow } = window;
+  const { nativeWindow } = window;
 
-    const windowState = rvwPreferences.get("app.state.window");
-    if (windowState) {
-      const { bounds, maximized } = windowState;
-      const { NativeWindowDisplayState } = air;
+  const windowState = rvwPreferences.get("app.state.window");
+  if (windowState) {
+    const { bounds, maximized } = windowState;
+    const { NativeWindowDisplayState } = air;
 
-      nativeWindow.x = bounds.x;
-      nativeWindow.y = bounds.y;
-      nativeWindow.width = bounds.width;
-      nativeWindow.height = bounds.height;
+    nativeWindow.x = bounds.x;
+    nativeWindow.y = bounds.y;
+    nativeWindow.width = bounds.width;
+    nativeWindow.height = bounds.height;
 
-      if ((maximized === true) && (nativeWindow.displayState !== NativeWindowDisplayState.MAXIMIZED)) {
-        nativeWindow.maximize();
-      } else {
-        nativeWindow.restore();
-      }
+    if ((maximized === true) && (nativeWindow.displayState !== NativeWindowDisplayState.MAXIMIZED)) {
+      nativeWindow.maximize();
+    } else {
+      nativeWindow.restore();
     }
-
-    nativeWindow.visible = true;
-    nativeWindow.activate();
   }
+
+  nativeWindow.visible = true;
+  nativeWindow.activate();
+}
+
+function loadInstalledFonts() {
+  const { Array } = window.runtime;
+  const { Font } = window.runtime.flash.text;
+
+  const allFonts = Font.enumerateFonts(
+      /* enumerateDeviceFonts: boolean */ true
+  );
+  allFonts.sortOn("fontName", Array.CASEINSENSITIVE);
+
+  // const embeddedFonts = Font.enumerateFonts(
+  //     /* enumerateDeviceFonts: boolean */ false
+  // );
+  // embeddedFonts.sortOn("fontName", Array.CASEINSENSITIVE);
+
+  allFonts.forEach((font) => {
+    air.trace(font.fontName);
+  });
 }
 
 // body: onLoad
