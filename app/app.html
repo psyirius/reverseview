@@ -6,21 +6,37 @@
 
     <title>ReVerseVIEW</title>
 
+    <!-- YUI3 reset and fonts -->
+    <link rel="stylesheet" type="text/css" href="lib/yui3/3.18.1/cssreset/cssreset-min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/yui3/3.18.1/cssfonts/cssfonts-min.css"/>
+
     <!-- YUI3 -->
     <script type="text/javascript" src="lib/yui3/3.18.1/yui/yui-min.js"></script>
 
     <script type="text/javascript">
-      YUI({
-        debug: true,
-        combine: false,
-      }).use('node', 'panel', 'tabview', function(Y) {
-        window.$Y = Y;
-      });
+      window.$YUI3_MODULES = [
+        // app
+        'app',
+
+        // dom
+        'node',
+
+        // ui
+        'panel',
+        'tabview',
+
+        // serialization/deserialization
+        'json',
+        'datatype-xml',
+
+        // io
+        'io',
+      ]
     </script>
 
     <!-- YUI2 standard reset and fonts -->
-    <link rel="stylesheet" type="text/css" href="lib/yui2/reset/reset-min.css"/>
-    <link rel="stylesheet" type="text/css" href="lib/yui2/fonts/fonts-min.css"/>
+<!--    <link rel="stylesheet" type="text/css" href="lib/yui2/reset/reset-min.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="lib/yui2/fonts/fonts-min.css"/>-->
 
     <!-- YUI2 module themes -->
     <link rel="stylesheet" type="text/css" href="lib/yui2/button/assets/skins/sam/button.css"/>
@@ -71,6 +87,7 @@
     <!-- ReVerseVIEW library -->
     <script type="text/javascript" src="js/__preload__.js"></script>
 
+    <script type="text/javascript" src="js/app.preferences.js"></script>
     <script type="text/javascript" src="js/app.splash.js"></script>
     <script type="text/javascript" src="js/app.dialog.js"></script>
     <script type="text/javascript" src="js/app.confirm.js"></script>
@@ -179,10 +196,10 @@
   </head>
 
   <body
-    class="yui-skin-sam"
+    class="yui3-skin-sam"
     id="bodyID"
     onkeyup="mainWindowKey(event)"
-    onLoad="vvinit()"
+    onLoad="vvInit()"
   >
     <!--<div class="ui mini modal">
 			<div class="header"><div id="dialogHeader"></div></div>

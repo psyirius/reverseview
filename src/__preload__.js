@@ -15,9 +15,7 @@ window.global = new Function("return this;").apply(null);
 
         let parent = global;
 
-        for (let i = 0; i < nsl.length; ++i) {
-            const nsk = nsl[i];
-
+        for (const nsk of nsl) {
             switch (typeof parent[nsk]) {
                 case "object":
                 case "function": {
@@ -37,3 +35,14 @@ window.global = new Function("return this;").apply(null);
     // create the root namespace with the provider function
     provide("rvw").provide = provide;
 })();
+
+// init YUI 3
+((YUI, modules) => {
+    YUI({
+        debug: true,
+        combine: false,
+        // skin: 'night',
+    }).use(...modules, function(Y) {
+        global.$Y = Y;
+    });
+})(YUI, global['$YUI3_MODULES'] || []);

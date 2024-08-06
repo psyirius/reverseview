@@ -339,6 +339,7 @@ var enterForSearchActive = true;
 var enterForBibleRef = false;
 var vvMenu = null;
 var vvConfigObj = null;
+var rvwPreferences= null;
 var previousSelVerse = 0;
 var presentationContent = "";
 var highlightColor = "#BAD0EF";
@@ -687,27 +688,50 @@ function updateVerseContainer_continue() {
   highlightVerse(d);
 }
 
+function loadPreferences(callback) {
+  const appStorageDir = air.File.applicationStorageDirectory;
+  const prefsFile = appStorageDir.resolvePath("preferences.json");
+
+  const _cb = (e, store) => {
+    if (e) {
+      alert(e);
+      return;
+    }
+
+    rvwPreferences = store;
+    callback(store);
+  }
+
+  if (!prefsFile.exists || prefsFile.isDirectory) {
+    rvw.store.Preferences.init(prefsFile, _cb);
+  } else {
+    rvw.store.Preferences.load(prefsFile, _cb);
+  }
+}
+
 // body: onLoad
-function vvinit() {
+function vvInit() {
   rvw.window.Splash.show();
 
   if (!firstTimeCheck()) {
     rvw.ui.Dialog.show(
       "ReVerseVIEW",
-      "Error loading database!"
+      "Error first init!"
     );
   }
 
-  setupLeftTabFrame();
-  setupRightTabFrame();
+  loadPreferences(() => {
+    setupLeftTabFrame();
+    setupRightTabFrame();
 
-  vvConfigObj = new vvConfigClass();
-  vvConfigObj.load();
+    vvConfigObj = new RvwConfig();
+    vvConfigObj.load(vvinit_continue);
 
-  learner = new wordlearner();
+    learner = new wordlearner();
 
-  wordbrain = new vvbrain();
-  wordbrain.init();
+    wordbrain = new vvbrain();
+    wordbrain.init();
+  });
 }
 
 function vvinit_continue() {
@@ -1181,7 +1205,8 @@ function setupLeftTabFrame() {
 
   tabview.render('#container');
 
-  // tabview.selectChild(0);
+  const lti = rvwPreferences.get('app.state.leftTabActiveIndex', 0);
+  tabview.selectChild(lti);
 
   tabview.after('selectionChange', (e) => {
     const currentTab = e.newVal;
@@ -1253,7 +1278,8 @@ function setupRightTabFrame() {
 
   tabview.render('#container2');
 
-  // tabview.selectChild(0);
+  const rti = rvwPreferences.get('app.state.rightTabActiveIndex', 0);
+  tabview.selectChild(rti);
 
   tabview.after('selectionChange', (e) => {
     const currentTab = e.newVal;
@@ -1289,6 +1315,19 @@ function setupRightTabFrame() {
 }
 
 function processExit() {
+  air.trace('Exit process');
+
+  // save app state
+  {
+    const lti = leftTabView.get('selection').get('index');
+    rvwPreferences.set('app.state.leftTabActiveIndex', lti);
+
+    const rti = rightTabView.get('selection').get('index');
+    rvwPreferences.set('app.state.rightTabActiveIndex', rti);
+
+    rvwPreferences.commit();
+  }
+
   if (presentWindowOpen) {
     newWindow.window.nativeWindow.removeEventListener(
       air.Event.CLOSE,

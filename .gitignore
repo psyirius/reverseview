@@ -22,6 +22,7 @@ dist/
 /app/js/app.js
 /app/js/app.*.js
 /app/js/__*.js
+/app/js/config.js
 /app/js/song/song_edit.js
 
 # downloadable libs
