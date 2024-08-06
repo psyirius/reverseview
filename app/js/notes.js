@@ -1,4 +1,4 @@
-function notes() {
+function notes(notesUI) {
   this.init = M;
   this.showNotesPanel = J;
   this.hideNotesPanel = C;

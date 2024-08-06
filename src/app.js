@@ -329,10 +329,6 @@ var remoteVV_UI_Obj = null;
 var updateVV_UI_Obj = null;
 var editVerse_UI_Obj = null;
 var newUpdateObj = null;
-var varID = "";
-var notesUI = "";
-var songEditUI = "";
-var helpContent = "";
 var cpObj = null;
 var firstTimeFlag = false;
 var enterForSearchActive = true;
@@ -341,7 +337,6 @@ var vvMenu = null;
 var vvConfigObj = null;
 var rvwPreferences= null;
 var previousSelVerse = 0;
-var presentationContent = "";
 var highlightColor = "#BAD0EF";
 var scroll_to_view = false;
 var songDBVersion;
@@ -367,8 +362,8 @@ function launch(g) {
   if (c) {
     e = 2;
   }
-  var b = new Array();
-  var a = new Array();
+  var b;
+  var a;
   p_last_index = content1.length - 1;
   var h = 0;
   h = p_last_index + 1;
@@ -903,69 +898,65 @@ function setupTheme() {
   }
 }
 
-var testTAB = false;
-
 function generateTabContent() {
-  readContentFile2Var("./content/setup_biblesel.txt");
   bibleVersionSelObj = new bibleVersionSelClass();
-  bibleVersionSelObj.init(varID);
-  readContentFile2Var("./content/setup_remote.html");
+  bibleVersionSelObj.init(loadTemplate("./content/setup_biblesel.txt"));
+
   remoteVV_UI_Obj = new remoteVV_UI_Class();
-  remoteVV_UI_Obj.init(varID);
+  remoteVV_UI_Obj.init(loadTemplate("./content/setup_remote.html"));
+
   readTabContentFile("./content/bible_verses.txt", "bibleverseTab");
   readTabContentFile("./content/screens.html", "screenTab");
-  readContentFile2Var("./content/setup_update.txt");
+
   updateVV_UI_Obj = new updateVV_UI_Class();
-  updateVV_UI_Obj.init(varID);
+  updateVV_UI_Obj.init(loadTemplate("./content/setup_update.txt"));
+
   readTabContentFile("./content/config.txt", "configTab");
   readTabContentFile("./content/nav.html", "navTab");
   readTabContentFile("./content/search.txt", "searchField");
   readTabContentFile("./content/notesmanage.txt", "notesTab");
   readTabContentFile("./content/schedule.txt", "scheduleTab");
   readTabContentFile("./content/song_nav.html", "songNavTab");
-  readContentFile2Var("./content/help.txt");
-  helpContent = varID;
-  readContentFile2Var("./content/song_edit.html");
-  songEditUI = varID;
   readTabContentFile("./content/song_lyrics.html", "lyricsTab");
-  if (testTAB) {
-    readTabContentFile("./content/test.html", "testTab");
-  }
-  readContentFile2Var("./content/notesui.txt");
-  notesUI = varID;
+
   notesManageObj = new manageNotes();
-  notesObj = new notes();
-  notesObj.setNotesContainerID("notesPanelID");
   notesManageObj.init(firstTimeFlag);
-  var a = "./bible/" + getVersion1Filename();
-  searchObj = new vvsearch(a);
+
+  notesObj = new notes(loadTemplate("./content/notesui.txt"));
+  notesObj.setNotesContainerID("notesPanelID");
+
+  searchObj = new vvsearch("./bible/" + getVersion1Filename());
   searchObj.init();
+
   webServerObj = new vvWebServer();
   webEngineObj = new vvWebEngine();
   vvchatQObj = new chatQ();
-  if (testTAB) {
-  }
   bibleRefObj = new BibleReference();
   songNumberObj = new songNumber();
+
   songManagerObj = new songManagerClass();
   songManagerObj.init(true, true);
-  songEditObj = new SongEdit(songEditUI);
+
+  songEditObj = new SongEdit(loadTemplate("./content/song_edit.html"));
+
   songNavObj = new songNavClass();
   songNavObj.init();
+
   helpObj = new vvhelpClass();
-  helpObj.init(helpContent);
-  readContentFile2Var("./content/graphics.html");
+  helpObj.init(loadTemplate("./content/help.txt"));
+
   graphicsObj = new graphicsClass();
-  graphicsObj.init(varID);
-  readContentFile2Var("./content/chords.html");
+  graphicsObj.init(loadTemplate("./content/graphics.html"));
+
   chordsNavObj = new chordsNavClass();
-  chordsNavObj.init(varID);
-  readContentFile2Var("./content/chords_edit.html");
+  chordsNavObj.init(loadTemplate("./content/chords.html"));
+
   chordsEditObj = new chordsEditClass();
-  chordsEditObj.init(varID);
-  readContentFile2Var("./content/chords_keyboard.html");
+  chordsEditObj.init(loadTemplate("./content/chords_edit.html"));
+
   chordsKeyboard = new chordsVirtualKeyboard();
-  chordsKeyboard.init(varID);
+  chordsKeyboard.init(loadTemplate("./content/chords_keyboard.html"));
+
   if (!isUpToDate() && task2Status() == false) {
     air.trace("About to copy webroot files...");
     var b = backupWebroot();
@@ -976,19 +967,21 @@ function generateTabContent() {
     checkVerUpdateFlags();
   }
 }
-function readContentFile2Var(a) {
-  var b;
-  b = new XMLHttpRequest();
-  b.onreadystatechange = function () {
-    if (b.readyState < 4) {
-    }
-    if (b.readyState == 4) {
-      varID = b.responseText;
-    }
-  };
-  b.open("GET", a, false);
-  b.send(null);
+
+function loadTemplate(path) {
+  const { File, FileStream, FileMode } = air;
+  const { applicationDirectory: appDir } = File;
+
+  const file = appDir.resolvePath(path);
+
+  const prefsFS = new FileStream();
+  prefsFS.open(file, FileMode.READ);
+  const data = prefsFS.readMultiByte(prefsFS.bytesAvailable, 'utf-8');
+  prefsFS.close();
+
+  return data;
 }
+
 function readTabContentFile(a, b) {
   var c;
   c = new XMLHttpRequest();
@@ -1017,9 +1010,6 @@ function fillTabs(a) {
     scheduleObj = new schedule();
   }
   if (a == "graphicsTab") {
-  }
-  if (a == "testTab") {
-    initTestEvents();
   }
   if (a == "searchField") {
     roundSearchBox(document.getElementById("adSearch"));
@@ -1318,15 +1308,6 @@ function setupRightTabFrame() {
     const tab = new Tab(tabMeta);
     tabview.add(tab, index);
   });
-
-  if (testTAB) {
-    tabview.add(
-      new Tab({
-        label: "Test",
-        content: '<div id="testTab"></div>',
-      })
-    );
-  }
 
   tabview.render('#container2');
 
