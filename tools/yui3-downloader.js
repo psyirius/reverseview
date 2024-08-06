@@ -154,6 +154,7 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'querystring-stringify-simple',
             'intl',
             'console',
+            'dd-plugin',
         ];
 
         for (const moduleName of modules) {

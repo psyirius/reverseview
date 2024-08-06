@@ -949,8 +949,7 @@ function generateTabContent() {
   songNumberObj = new songNumber();
   songManagerObj = new songManagerClass();
   songManagerObj.init(true, true);
-  songEditObj = new SongEdit();
-  songEditObj.init(songEditUI);
+  songEditObj = new SongEdit(songEditUI);
   songNavObj = new songNavClass();
   songNavObj.init();
   helpObj = new vvhelpClass();

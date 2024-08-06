@@ -1,141 +1,167 @@
 class SongEdit {
-  constructor() {
-    this.init = X;
-    this.showEditPanel = m;
-    this.setEditPrimaryKey = J;
-    var b = false;
-    var v = -1;
-    var q = -1;
-    var Z = false;
-    var y = false;
-    var f = "";
-    var i = null;
-    var I;
-    var u = "";
-    var A = 0;
-    var D = "";
-    var d = 0;
-    var e = new Array();
-    var n = 1;
-    function X(ac) {
-      E("Initialize Song Edit Panel");
-      e = ["Arial", "Times New Roman", "Calibri"];
-      f = ac;
-      R();
-      p();
-      P();
-      ab();
+  constructor(bodyContent) {
+    const _isDebug = true;
+
+    let b = false;
+    let v = -1;
+    let _primaryKey = -1;
+    let Z = false;
+    let _bodyContent = "";
+    let _panel = null;
+    let _slidesTabView;
+    let u = "";
+    let A = 0;
+    let _fontsList = [];
+    let _current_slide_num = 1;
+
+    this.init = function(bodyContent) {
+      _debug("Initialize Song Edit Panel");
+
+      _fontsList = ["Arial", "Times New Roman", "Calibri"];
+
+      _bodyContent = bodyContent;
+
+      _setupPanel();
+      _loadUsedFonts();
+      _setupSlides();
+      _setupEvents();
     }
-    function R() {
-      E("Generating Panel");
-      i = new YAHOO.widget.Panel("panelObj", {
+
+    this.setEditPrimaryKey = function (value) {
+      _primaryKey = value;
+    }
+
+    this.showEditPanel = function(songObj, ad, ae, af) {
+      b = ad;
+      v = ae;
+      _primaryKey = null;
+      Z = af;
+      if (af == null) {
+        Z = false;
+      }
+      _loadSong(songObj);
+      _panel.show();
+    }
+
+    function _setupPanel() {
+      _debug("Generating Panel");
+
+      _panel = new YAHOO.widget.Panel("panelObj", {
         width: "600px",
         fixedcenter: true,
         modal: true,
         visible: false,
         constraintoviewport: true,
       });
-      i.render(document.body);
-      i.setHeader("Song ADD / EDIT");
-      i.setBody(f);
-      i.hide();
+      _panel.render(document.body);
+      _panel.setHeader("Song ADD / EDIT");
+      _panel.setBody(_bodyContent);
+      _panel.hide();
     }
-    function ab() {
-      E("Generating Events");
+    function _setupEvents() {
+      _debug("Generating Events");
+
       document
-        .getElementById("songEdit_moveSlideLeftButtonID")
-        .addEventListener("click", Y, false);
+          .getElementById("songEdit_moveSlideLeftButtonID")
+          .addEventListener("click", onClick_moveSlideLeftButtonID, false);
       document
-        .getElementById("songEdit_moveSlideRightButtonID")
-        .addEventListener("click", V, false);
+          .getElementById("songEdit_moveSlideRightButtonID")
+          .addEventListener("click", onClick_moveSlideRightButtonID, false);
       document
-        .getElementById("songEdit_addSlideButtonID")
-        .addEventListener("click", O, false);
+          .getElementById("songEdit_addSlideButtonID")
+          .addEventListener("click", onClick_addSlideButtonID, false);
       document
-        .getElementById("songEdit_dupSlideButtonID")
-        .addEventListener("click", t, false);
+          .getElementById("songEdit_dupSlideButtonID")
+          .addEventListener("click", onClick_dupSlideButtonID, false);
       document
-        .getElementById("songEdit_deleteSlideButtonID")
-        .addEventListener("click", K, false);
+          .getElementById("songEdit_deleteSlideButtonID")
+          .addEventListener("click", onClick_deleteSlideButtonID, false);
       document
-        .getElementById("songEdit_createSlidesButtonID")
-        .addEventListener("click", H, false);
+          .getElementById("songEdit_createSlidesButtonID")
+          .addEventListener("click", onClick_createSlidesButtonID, false);
       document
-        .getElementById("songEdit_addCatButtonID")
-        .addEventListener("click", z, false);
+          .getElementById("songEdit_addCatButtonID")
+          .addEventListener("click", onClick_addCatButtonID, false);
       document
-        .getElementById("se_submitCatButtonID2")
-        .addEventListener("click", a, false);
+          .getElementById("se_submitCatButtonID2")
+          .addEventListener("click", onClick_submitCatButtonID2, false);
       document
-        .getElementById("songnav_category2")
-        .addEventListener("click", s, false);
+          .getElementById("songnav_category2")
+          .addEventListener("click", onClick_category2, false);
       document
-        .getElementById("se_addFontButtonID2")
-        .addEventListener("click", N, false);
+          .getElementById("se_addFontButtonID2")
+          .addEventListener("click", onClick_addFontButtonID2, false);
       document
-        .getElementById("se_submitFontButtonID2")
-        .addEventListener("click", L, false);
-      document.getElementById("se_fontID2").addEventListener("change", w, false);
+          .getElementById("se_submitFontButtonID2")
+          .addEventListener("click", onClick_submitFontButtonID2, false);
       document
-        .getElementById("se_fontID2_2")
-        .addEventListener("change", Q, false);
-      document.getElementById("se_presentID").addEventListener("click", g, false);
+          .getElementById("se_fontID2")
+          .addEventListener("change", onChange_se_fontID2, false);
       document
-        .getElementById("songEdit_saveButtonID")
-        .addEventListener("click", U, false);
+          .getElementById("se_fontID2_2")
+          .addEventListener("change", onChange_se_fontID2_2, false);
       document
-        .getElementById("songAsNewEdit_saveButtonID")
-        .addEventListener("click", k, false);
+          .getElementById("se_presentID")
+          .addEventListener("click", onClick_se_presentID, false);
       document
-        .getElementById("songEdit_cancelButtonID")
-        .addEventListener("click", C, false);
+          .getElementById("songEdit_saveButtonID")
+          .addEventListener("click", onClick_songEdit_saveButtonID, false);
+      document
+          .getElementById("songAsNewEdit_saveButtonID")
+          .addEventListener("click", onClick_songAsNewEdit_saveButtonID, false);
+      document
+          .getElementById("songEdit_cancelButtonID")
+          .addEventListener("click", onClick_cancelButtonID, false);
+
       document.getElementById("se_catTextID").style.visibility = "hidden";
-      document.getElementById("se_submitCatButtonID2").style.visibility =
-        "hidden";
+      document.getElementById("se_submitCatButtonID2").style.visibility = "hidden";
       document.getElementById("se_fontTextID").style.visibility = "hidden";
-      document.getElementById("se_submitFontButtonID2").style.visibility =
-        "hidden";
+      document.getElementById("se_submitFontButtonID2").style.visibility = "hidden";
     }
-    function J(ac) {
-      q = ac;
-    }
-    function P() {
-      E("Init Slide Tabs");
-      I = new YAHOO.widget.TabView();
-      I.addTab(
+    function _setupSlides() {
+      _debug("Init Slide Tabs");
+
+      _slidesTabView = new YAHOO.widget.TabView();
+      _slidesTabView.addTab(
         new YAHOO.widget.Tab({
           label: "1",
           content: '<textarea id="slide1" style="width: 284px" class="textareaStyle"></textarea><textarea id="slide1_2" style="width: 284px" class="textareaStyle"></textarea>',
           active: true,
         })
       );
-      I.addTab(
+      _slidesTabView.addTab(
         new YAHOO.widget.Tab({
           label: "2",
           content: '<textarea id="slide2" style="width: 284px" class="textareaStyle"></textarea><textarea id="slide2_2" style="width: 284px" class="textareaStyle"></textarea>',
         })
       );
-      I.appendTo("se_slides");
-      var ac = document.getElementById("se_fontID2").selectedIndex;
-      var tempFont = document.getElementById("se_fontID2").options[ac].text;
-      document.getElementById("slide1").style.fontFamily = tempFont;
-      document.getElementById("slide2").style.fontFamily = tempFont;
-      var ac = document.getElementById("se_fontID2_2").selectedIndex;
-      var tempFont = document.getElementById("se_fontID2_2").options[ac].text;
-      document.getElementById("slide1_2").style.fontFamily = tempFont;
-      document.getElementById("slide2_2").style.fontFamily = tempFont;
-    }
-    function T() {
-      var ac = 0;
-      var ad = I.getTab(ac);
-      while (ad != null) {
-        I.removeTab(ad);
-        ad = I.getTab(ac);
+      _slidesTabView.appendTo("se_slides");
+
+      {
+        let ac = document.getElementById("se_fontID2").selectedIndex;
+        let tempFont = document.getElementById("se_fontID2").options[ac].text;
+        document.getElementById("slide1").style.fontFamily = tempFont;
+        document.getElementById("slide2").style.fontFamily = tempFont;
       }
-      n = 1;
+
+      {
+        let ac = document.getElementById("se_fontID2_2").selectedIndex;
+        let tempFont = document.getElementById("se_fontID2_2").options[ac].text;
+        document.getElementById("slide1_2").style.fontFamily = tempFont;
+        document.getElementById("slide2_2").style.fontFamily = tempFont;
+      }
     }
-    function aa(ac) {
-      var ak = new Array();
+    function _clear_all_slides() {
+      const i = 0;
+      let st = _slidesTabView.getTab(i);
+      while (st != null) {
+        _slidesTabView.removeTab(st);
+        st = _slidesTabView.getTab(i);
+      }
+      _current_slide_num = 1;
+    }
+    function _setup_song_categories(ac) {
+      var ak = [];
       ak.push("My Songs");
       var af = false;
       if (ac != null) {
@@ -192,36 +218,35 @@ class SongEdit {
       u = "";
       document.getElementById("songnav_category2").selectedIndex = A;
     }
-    function p(ad, ak) {
-      var al = songManagerObj.getFontList();
-      var ao = new Array();
-      var af = null;
-      var ap = 0;
-      var an = 0;
+    function _loadUsedFonts(ad, ak) {
+      const al = songManagerObj.getFontList();
+      let ao;
+      let af = null;
+      let ap = 0;
+      let an = 0;
       if (al != null) {
-        var am = e.length;
-        for (var ah = am - 1; ah >= 0; ah--) {
-          var at = al.length;
-          af = al.indexOf(e[ah]);
-          if (af != -1) {
-            e.splice(ah, 1);
+        const am = _fontsList.length;
+        for (let ah = am - 1; ah >= 0; ah--) {
+          af = al.indexOf(_fontsList[ah]);
+          if (af !== -1) {
+            _fontsList.splice(ah, 1);
           }
         }
-        ao = e.concat(al);
+        ao = _fontsList.concat(al);
       } else {
-        ao = e;
+        ao = _fontsList;
       }
       ao = ao.concat(systemFontList);
       ao.sort();
-      var ac = ao.length;
+      const ac = ao.length;
       clearSelectList("se_fontID2");
       clearSelectList("se_fontID2_2");
-      var aj = document.createDocumentFragment();
-      var ai = document.createDocumentFragment();
-      var ag = document.getElementById("se_fontID2");
-      var ae = document.getElementById("se_fontID2_2");
-      for (var ah = 0; ah < ac; ah++) {
-        var ar = document.createElement("option");
+      const aj = document.createDocumentFragment();
+      const ai = document.createDocumentFragment();
+      const ag = document.getElementById("se_fontID2");
+      const ae = document.getElementById("se_fontID2_2");
+      for (let ah = 0; ah < ac; ah++) {
+        const ar = document.createElement("option");
         ar.innerHTML = ao[ah];
         ar.value = ah;
         aj.appendChild(ar);
@@ -243,111 +268,101 @@ class SongEdit {
         document.getElementById("se_fontID2_2").selectedIndex = an;
       }
     }
-    function L() {
-      var ad = document.getElementById("se_fontTextID").value;
-      var ac = F(ad);
+    function onClick_submitFontButtonID2() {
+      const ad = document.getElementById("se_fontTextID").value;
+      const ac = _validate_font_name(ad);
       if (ac) {
         document.getElementById("se_fontTextID").style.visibility = "hidden";
-        document.getElementById("se_submitFontButtonID2").style.visibility =
-          "hidden";
-        e.push(ad);
-        p(ad, null);
+        document.getElementById("se_submitFontButtonID2").style.visibility = "hidden";
+        _fontsList.push(ad);
+        _loadUsedFonts(ad, null);
       }
     }
-    function w() {
+    function onChange_se_fontID2() {
       var ag = document.getElementById("se_fontID2").selectedIndex;
       var af = document.getElementById("se_fontID2").options[ag].text;
       var ae = "";
       var ac = 0;
-      var ad = I.getTab(ac);
+      var ad = _slidesTabView.getTab(ac);
       while (ad != null) {
         ae = G(ad.get("content"));
         document.getElementById(ae).style.fontFamily = af;
         ac++;
-        ad = I.getTab(ac);
+        ad = _slidesTabView.getTab(ac);
       }
     }
-    function Q() {
+    function onChange_se_fontID2_2() {
       var ag = document.getElementById("se_fontID2_2").selectedIndex;
       var af = document.getElementById("se_fontID2_2").options[ag].text;
       var ae = "";
       var ac = 0;
-      var ad = I.getTab(ac);
+      var ad = _slidesTabView.getTab(ac);
       while (ad != null) {
         ae = G(ad.get("content"));
         ae = ae + "_2";
         document.getElementById(ae).style.fontFamily = af;
         ac++;
-        ad = I.getTab(ac);
+        ad = _slidesTabView.getTab(ac);
       }
     }
-    function F(ac) {
+    function _validate_font_name(ac) {
       return true;
     }
-    function c(ac) {
-      if (ac != null) {
-        document.getElementById("songEdit_NameID").value = ac.name;
-        document.getElementById("se_copyrightID").value = ac.copyright;
-        document.getElementById("se_yvideoID").value = ac.yvideo;
-        if (specialCategory(ac.catIndex)) {
+    function _loadSong(sngObj) {
+      if (sngObj != null) { // if edit mode
+        document.getElementById("songEdit_NameID").value = sngObj.name;
+        document.getElementById("se_copyrightID").value = sngObj.copyright;
+        document.getElementById("se_yvideoID").value = sngObj.yvideo;
+        if (specialCategory(sngObj.catIndex)) {
           $("#songEdit_saveButtonID").hide();
         } else {
           $("#songEdit_saveButtonID").show();
         }
-        aa(ac.catIndex);
-        p(ac.font, ac.font2);
-        document.getElementById("se_keyID").value = ac.key;
-        document.getElementById("se_notesID").value = ac.notes;
-        document.getElementById("songEdit_Name2ID").value = ac.name2;
-        document.getElementById("songEdit_SongNumberID").value = ac.subcat;
-        document.getElementById("se_tagID").value = ac.tags;
-        document.getElementById("se_sequenceID").value = ac.slideseq;
-        T();
-        var ag = ac.slides.length;
-        E("number of slides in preload: " + ag);
-        for (var af = 0; af < ag; af++) {
-          var ae = ac.slides[af].replace(/<BR>|<br>/g, "\n");
-          var ad = ac.slides2[af];
+        _setup_song_categories(sngObj.catIndex);
+        _loadUsedFonts(sngObj.font, sngObj.font2);
+        document.getElementById("se_keyID").value = sngObj.key;
+        document.getElementById("se_notesID").value = sngObj.notes;
+        document.getElementById("songEdit_Name2ID").value = sngObj.name2;
+        document.getElementById("songEdit_SongNumberID").value = sngObj.subcat;
+        document.getElementById("se_tagID").value = sngObj.tags;
+        document.getElementById("se_sequenceID").value = sngObj.slideseq;
+        _clear_all_slides();
+
+        const numSlides = sngObj.slides.length;
+        _debug("number of slides in preload: " + numSlides);
+        for (let af = 0; af < numSlides; af++) {
+          const ae = sngObj.slides[af].replace(/<BR>|<br>/g, "\n");
+          let ad = sngObj.slides2[af];
           if (ad != null) {
             ad = ad.replace(/<BR>|<br>/g, "\n");
           }
-          W(ae, ad);
+          _append_Slide(ae, ad);
         }
-      } else {
+      } else { // if add mode
         document.getElementById("songEdit_NameID").value = "";
         document.getElementById("se_copyrightID").value = "";
         document.getElementById("se_yvideoID").value = "";
-        aa(null);
-        p(null, null);
+        _setup_song_categories(null);
+        _loadUsedFonts(null, null);
         document.getElementById("se_keyID").value = "";
         document.getElementById("se_notesID").value = "";
         document.getElementById("songEdit_Name2ID").value = "";
         document.getElementById("songEdit_SongNumberID").value = "";
         document.getElementById("se_tagID").value = "";
         document.getElementById("se_sequenceID").value = "";
-        T();
-        W();
-        W();
+        _clear_all_slides();
+
+        _append_Slide();
+        _append_Slide();
       }
     }
-    function m(ac, ad, ae, af) {
-      b = ad;
-      v = ae;
-      q = null;
-      Z = af;
-      if (af == null) {
-        Z = false;
-      }
-      c(ac);
-      i.show();
-    }
-    function z() {
+    function onClick_addCatButtonID() {
       document.getElementById("se_catTextID").value = "";
       document.getElementById("se_catTextID").style.visibility = "visible";
       document.getElementById("se_submitCatButtonID2").style.visibility =
         "visible";
     }
-    function a() {
+    function onClick_submitCatButtonID2() {
       var ad = document.getElementById("se_catTextID").value;
       if (specialCategory(ad)) {
         rvw.ui.Dialog.show(
@@ -356,18 +371,18 @@ class SongEdit {
         );
         return false;
       }
-      var ac = B(ad);
+      var ac = _is_valid_category(ad);
       if (ac) {
         document.getElementById("se_catTextID").style.visibility = "hidden";
         document.getElementById("se_submitCatButtonID2").style.visibility =
           "hidden";
         u = ad;
-        aa(null);
+        _setup_song_categories(null);
       }
     }
-    function Y() {
+    function onClick_moveSlideLeftButtonID() {
       M();
-      var ad = I.get("activeIndex");
+      var ad = _slidesTabView.get("activeIndex");
       if (ad != 0) {
         var ai = ad - 1;
         var ag = "slide" + (ad + 1);
@@ -380,14 +395,14 @@ class SongEdit {
         var ac = document.getElementById(aj).value;
         document.getElementById(aj).value = document.getElementById(af).value;
         document.getElementById(af).value = ac;
-        I.set("activeIndex", ai);
+        _slidesTabView.set("activeIndex", ai);
       }
     }
-    function V() {
+    function onClick_moveSlideRightButtonID() {
       M();
-      var ah = I.get("tabs").length;
-      var ag = I.get("activeIndex");
-      E(ag + "  " + ah);
+      var ah = _slidesTabView.get("tabs").length;
+      var ag = _slidesTabView.get("activeIndex");
+      _debug(ag + "  " + ah);
       if (ag < ah - 1) {
         var aj = parseInt(ag) + 1;
         var af = "slide" + (ag + 1);
@@ -400,72 +415,73 @@ class SongEdit {
         var ak = document.getElementById(ac).value;
         document.getElementById(ac).value = document.getElementById(ad).value;
         document.getElementById(ad).value = ak;
-        I.set("activeIndex", aj);
+        _slidesTabView.set("activeIndex", aj);
       }
     }
-    function t() {
+    function onClick_dupSlideButtonID() {
       M();
-      var ag = I.get("activeIndex") + 1;
-      E("Active tab Index: " + ag);
+      var ag = _slidesTabView.get("activeIndex") + 1;
+      _debug("Active tab Index: " + ag);
       var ac = "slide" + ag;
       var af = "slide" + ag + "_2";
       var ae = document.getElementById(ac).value;
       var ad = document.getElementById(af).value;
-      W(ae, ad);
+      _append_Slide(ae, ad);
     }
-    function O() {
+    function onClick_addSlideButtonID() {
       M();
       var ad = null;
       var ac = null;
-      W(ad, ac);
+      _append_Slide(ad, ac);
     }
-    function W(af, ac) {
-      var ad = "slide" + n;
-      var ag = "slide" + n + "_2";
-      E("Slide ID: " + ad);
-      if (n == 1) {
-        I.addTab(
+    function _append_Slide(slide1, slide2) {
+      const slide1_id = `slide${_current_slide_num}`;
+      const slide2_id = `slide${_current_slide_num}_2`;
+      _debug("Slide ID: " + slide1_id);
+      if (_current_slide_num === 1) {
+        _slidesTabView.addTab(
           new YAHOO.widget.Tab({
-            label: n,
-            content: '<textarea id="' +
-              ad +
-              '" style="width: 284px" class="textareaStyle"></textarea><textarea id="' +
-              ag +
-              '" style="width: 284px" class="textareaStyle"></textarea>',
+            label: _current_slide_num,
+            content: `<textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea><textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>`,
             active: true,
           })
         );
       } else {
-        I.addTab(
+        _slidesTabView.addTab(
           new YAHOO.widget.Tab({
-            label: n,
-            content: '<textarea id="' +
-              ad +
-              '" style="width: 284px" class="textareaStyle"></textarea><textarea id="' +
-              ag +
-              '" style="width: 284px" class="textareaStyle"></textarea>',
+            label: _current_slide_num,
+            content: `<textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea><textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>`,
           })
         );
       }
-      var ae = document.getElementById("se_fontID2").selectedIndex;
-      var tempFont = document.getElementById("se_fontID2").options[ae].text;
-      document.getElementById(ad).style.fontFamily = tempFont;
-      var ae = document.getElementById("se_fontID2_2").selectedIndex;
-      var tempFont = document.getElementById("se_fontID2_2").options[ae].text;
-      document.getElementById(ag).style.fontFamily = tempFont;
-      if (af != null) {
-        document.getElementById(ad).value = af;
-      } else {
-        document.getElementById(ad).value = "";
+
+      {
+        const ae = document.getElementById("se_fontID2").selectedIndex;
+        document.getElementById(slide1_id).style.fontFamily =
+            document.getElementById("se_fontID2").options[ae].text;
       }
-      if (ac != null) {
-        document.getElementById(ag).value = ac;
-      } else {
-        document.getElementById(ag).value = "";
+
+      {
+        const ae = document.getElementById("se_fontID2_2").selectedIndex;
+        document.getElementById(slide2_id).style.fontFamily =
+            document.getElementById("se_fontID2_2").options[ae].text;
       }
-      n++;
+
+      if (slide1 != null) {
+        document.getElementById(slide1_id).value = slide1;
+      } else {
+        document.getElementById(slide1_id).value = "";
+      }
+
+      if (slide2 != null) {
+        document.getElementById(slide2_id).value = slide2;
+      } else {
+        document.getElementById(slide2_id).value = "";
+      }
+
+      _current_slide_num++;
     }
-    function H() {
+    function onClick_createSlidesButtonID() {
       M();
       var ak = "";
       ak = ak + '<div class="style2">';
@@ -517,7 +533,7 @@ class SongEdit {
       var ad = document.getElementById("se_fontID2_2").options[al].text;
       document.getElementById("se_quickSlideID_2").style.fontFamily = ad;
 
-      var numSlides = I.get("tabs").length;
+      var numSlides = _slidesTabView.get("tabs").length;
 
       var primarySlidesList = [];
       var secondarySlidesList = [];
@@ -534,7 +550,7 @@ class SongEdit {
       ac.show();
       ac.bringToTop();
       function ao() {
-        n = 1;
+        _current_slide_num = 1;
         var av = document.getElementById("se_quickSlideID").value;
         var az = av.split("\n\n\n");
         var ar = az.length;
@@ -542,21 +558,21 @@ class SongEdit {
         var at = au.split("\n\n\n");
         var ay = at.length;
         if (at[0] != null) {
-          W(az[0], at[0]);
+          _append_Slide(az[0], at[0]);
         } else {
-          W(az[0], null);
+          _append_Slide(az[0], null);
         }
-        var aw = I.getTab(1);
+        var aw = _slidesTabView.getTab(1);
         while (aw != null) {
-          I.removeTab(I.get("activeTab"));
-          aw = I.getTab(1);
+          _slidesTabView.removeTab(_slidesTabView.get("activeTab"));
+          aw = _slidesTabView.getTab(1);
         }
-        n = 2;
+        _current_slide_num = 2;
         for (var ax = 1; ax < ar; ax++) {
           if (at[ax] != null) {
-            W(az[ax], at[ax]);
+            _append_Slide(az[ax], at[ax]);
           } else {
-            W(az[ax], null);
+            _append_Slide(az[ax], null);
           }
         }
         ah();
@@ -593,162 +609,152 @@ class SongEdit {
         );
       }
     }
-    function K() {
+    function onClick_deleteSlideButtonID() {
       M();
-      var af = I.get("activeIndex");
-      var ac = I.get("tabs").length;
+      var af = _slidesTabView.get("activeIndex");
+      var ac = _slidesTabView.get("tabs").length;
       for (var ae = 0; ae < ac; ae++) {
-        V();
+        onClick_moveSlideRightButtonID();
       }
-      var ad = I.getTab(1);
+      var ad = _slidesTabView.getTab(1);
       if (ad != null) {
-        I.removeTab(I.get("activeTab"));
+        _slidesTabView.removeTab(_slidesTabView.get("activeTab"));
         if (ac - 1 == af) {
-          I.set("activeIndex", af - 1);
+          _slidesTabView.set("activeIndex", af - 1);
         } else {
-          I.set("activeIndex", af);
+          _slidesTabView.set("activeIndex", af);
         }
-        n--;
+        _current_slide_num--;
       } else {
         rvw.ui.Dialog.show("Add Edit Songs", "Can not delete the last Slide");
       }
     }
-    function N() {
+    function onClick_addFontButtonID2() {
       document.getElementById("se_fontTextID").value = "";
       document.getElementById("se_fontTextID").style.visibility = "visible";
       document.getElementById("se_submitFontButtonID2").style.visibility =
         "visible";
     }
-    function S() {
-      E("Extract data from Form");
-      var ao = document.getElementById("songEdit_NameID").value;
+    function _dumpSong() {
+      _debug("Extract data from Form");
+
+      let ao = document.getElementById("songEdit_NameID").value;
       ao = ao.replace(/^\s+|\s+$/g, "");
       ao = ao.replace(/\s\s+/g, " ");
-      if (ao == "") {
+
+      if (ao === "") {
         rvw.ui.Dialog.show("Add Edit Songs", "Enter a valid Song Name");
         return false;
       } else {
-        var ak = new songObj();
-        ak.name = ao;
+        const sngObj = new songObj();
+        sngObj.name = ao;
         ao = document.getElementById("songEdit_Name2ID").value;
         ao = ao.replace(/^\s+|\s+$/g, "");
         ao = ao.replace(/\s\s+/g, " ");
-        ak.name2 = ao;
-        var ae = new Array();
-        var ah = new Array();
+        sngObj.name2 = ao;
+        var ae = [];
+        var ah = [];
         var ac = "";
         var ad = 0;
-        var aj = I.getTab(ad);
-        while (aj != null) {
-          ac = G(aj.get("content"));
-          var an = document.getElementById(ac).value;
-          ae[ad] = an.replace(/\n/g, "<BR>");
+        let slideTab = _slidesTabView.getTab(ad);
+        while (slideTab != null) {
+          ac = G(slideTab.get("content"));
+
+          const anx = document.getElementById(ac).value;
+          ae[ad] = anx.replace(/\n/g, "<BR>");
           ac = ac + "_2";
-          var an = document.getElementById(ac).value;
-          ah[ad] = an.replace(/\n/g, "<BR>");
+
+          var any = document.getElementById(ac).value;
+          ah[ad] = any.replace(/\n/g, "<BR>");
           if (isBlank(ah[ad])) {
             ah[ad] = "";
           }
+
           ad++;
-          aj = I.getTab(ad);
+          slideTab = _slidesTabView.getTab(ad);
         }
-        ak.slides = ae;
-        ak.slides2 = ah;
-        ak.copyright = document.getElementById("se_copyrightID").value;
+        sngObj.slides = ae;
+        sngObj.slides2 = ah;
+        sngObj.copyright = document.getElementById("se_copyrightID").value;
         var ag = document.getElementById("se_yvideoID").value;
         var am = x(ag);
         if (am) {
-          ak.yvideo = ag;
+          sngObj.yvideo = ag;
         } else {
           rvw.ui.Dialog.show("Add Edit Songs", "Enter valid You Tube video link.");
           return false;
         }
         var ai = document.getElementById("songnav_category2").selectedIndex;
-        ak.catIndex =
+        sngObj.catIndex =
           document.getElementById("songnav_category2").options[ai].text;
-        ak.subcat = "";
-        if (!specialCategory(ak.catIndex)) {
-          if (ak.catIndex == "VV Malayalam 2021" ||
-            ak.catIndex == "VV Hindi 2021") {
+        sngObj.subcat = "";
+        if (!specialCategory(sngObj.catIndex)) {
+          if (sngObj.catIndex == "VV Malayalam 2021" ||
+            sngObj.catIndex == "VV Hindi 2021") {
             var af = document.getElementById("songEdit_SongNumberID").value;
             if (af == "" || af == null) {
-              ak.subcat = songNumberObj.assignSongNumber(ak.catIndex);
+              sngObj.subcat = songNumberObj.assignSongNumber(sngObj.catIndex);
             } else {
-              ak.subcat = af;
+              sngObj.subcat = af;
             }
           }
         }
         var al = document.getElementById("se_fontID2").selectedIndex;
-        ak.font = document.getElementById("se_fontID2").options[al].text;
+        sngObj.font = document.getElementById("se_fontID2").options[al].text;
         var al = document.getElementById("se_fontID2_2").selectedIndex;
-        ak.font2 = document.getElementById("se_fontID2_2").options[al].text;
-        ak.timestamp = h();
-        ak.key = document.getElementById("se_keyID").value;
-        ak.notes = document.getElementById("se_notesID").value;
-        ak.rating = 5;
+        sngObj.font2 = document.getElementById("se_fontID2_2").options[al].text;
+        sngObj.timestamp = h();
+        sngObj.key = document.getElementById("se_keyID").value;
+        sngObj.notes = document.getElementById("se_notesID").value;
+        sngObj.rating = 5;
         var ap = document.getElementById("se_sequenceID").value;
-        ak.slideseq = ap;
+        sngObj.slideseq = ap;
         var aq = document.getElementById("se_tagID").value;
-        ak.tags = aq.toUpperCase();
-        addTagList(ak.tags);
+        sngObj.tags = aq.toUpperCase();
+        addTagList(sngObj.tags);
         fillTagList();
-        return ak;
+        return sngObj;
       }
     }
-    function g() {
-      E("Process Present button");
-      var ac = I.get("activeIndex");
+    function onClick_se_presentID() {
+      _debug("Process Present button");
+      var ac = _slidesTabView.get("activeIndex");
       var ae = new songObj();
-      ae = S();
+      ae = _dumpSong();
       if (ae != false) {
         var ad = new songPresentObj();
         ad.init(ae);
         ad.present(ac);
       }
     }
-    function U() {
-      E("Process Save button");
+    function onClick_songEdit_saveButtonID() {
+      _debug("Process Save button");
       var ac = new songObj();
-      ac = S();
+      ac = _dumpSong();
       if (ac != false) {
         if (!b) {
-          E("Adding song..");
+          _debug("Adding song..");
           songManagerObj.addSong(ac, true, false);
           b = true;
         } else {
-          E("Updating song..");
-          songManagerObj.updateSong(ac, v, q, Z);
+          _debug("Updating song..");
+          songManagerObj.updateSong(ac, v, _primaryKey, Z);
         }
-        i.hide();
+        _panel.hide();
         return true;
       } else {
-        E("Extract Data failed");
+        _debug("Extract Data failed");
         return false;
       }
     }
-    function k() {
+    function onClick_songAsNewEdit_saveButtonID() {
       var ac = b;
       b = false;
-      if (!U()) {
+      if (!onClick_songEdit_saveButtonID()) {
         b = ac;
       }
     }
-    function j() {
-      var ad = new songObj();
-      ad = S();
-      if (ad != false) {
-        for (var ac = 0; ac < 200; ac++) {
-          ad.name = "Test Song_" + ac;
-          if (!b) {
-            songManagerObj.addSong(ad, false, false);
-            b = true;
-          } else {
-            songManagerObj.updateSong(ad, v, q);
-          }
-        }
-      }
-    }
-    function s() {
+    function onClick_category2() {
       var ac = $("#songnav_category2 option:selected").text();
       if (specialCategory(ac)) {
         $("#songEdit_saveButtonID").hide();
@@ -756,35 +762,26 @@ class SongEdit {
         $("#songEdit_saveButtonID").show();
       }
     }
-    function C() {
+    function onClick_cancelButtonID() {
       var ac = "Song Add/Edit";
       var ad = "Do you want to CANCEL from Add/Edit Song panel?";
-      rvw.ui.Confirm.exec(ac, ad, l);
+      rvw.ui.Confirm.exec(ac, ad, _close_panel);
     }
-    function l() {
-      i.hide();
+
+    function _close_panel() {
+      _panel.hide();
     }
     function G(ad) {
-      var ac = ad.split('"');
+      const ac = ad.split('"');
       return ac[1];
     }
-    function B(ac) {
-      if (ac != "_ALL") {
+    function _is_valid_category(ac) {
+      if (ac !== "_ALL") {
         return true;
       } else {
         alert("_ALL is reserved Category");
         return false;
       }
-    }
-    function o(ac) {
-      if (ac <= 5 && ac >= 1) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    function r(ac) {
-      return true;
     }
     function M() {
       document.getElementById("se_sequenceID").value = "";
@@ -814,13 +811,16 @@ class SongEdit {
       var ad = ai.getHours();
       var ag = ai.getMinutes();
       var ah = ac + "/" + ae + "/" + af + "  " + ad + ":" + ag;
-      E("Timestamp: " + ah);
+      _debug("Timestamp: " + ah);
       return ah;
     }
-    function E(ac) {
-      if (y) {
+
+    function _debug(ac) {
+      if (_isDebug) {
         air.trace("[SongEdit]...." + ac);
       }
     }
+
+    this.init(bodyContent);
   }
 }
