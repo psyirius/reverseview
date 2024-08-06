@@ -1429,11 +1429,5 @@ function processFontSizeChange() {
   scheduleObj.changeFontsizeScheduleTab();
 }
 function getActiveTabLabel() {
-  const b = leftTabView.get('selection').get('label');
-  if (b === "Bible") {
-    return "Bible";
-  }
-  if (b === "Songs") {
-    return "Songs";
-  }
+  return leftTabView.get('selection').get('label')
 }
