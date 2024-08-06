@@ -709,6 +709,33 @@ function loadPreferences(callback) {
   }
 }
 
+function activateMainWindow() {
+  // load saved window state
+  {
+    const { nativeWindow } = window;
+
+    const windowState = rvwPreferences.get("app.state.window");
+    if (windowState) {
+      const { bounds, maximized } = windowState;
+      const { NativeWindowDisplayState } = air;
+
+      nativeWindow.x = bounds.x;
+      nativeWindow.y = bounds.y;
+      nativeWindow.width = bounds.width;
+      nativeWindow.height = bounds.height;
+
+      if ((maximized === true) && (nativeWindow.displayState !== NativeWindowDisplayState.MAXIMIZED)) {
+        nativeWindow.maximize();
+      } else {
+        nativeWindow.restore();
+      }
+    }
+
+    nativeWindow.visible = true;
+    nativeWindow.activate();
+  }
+}
+
 // body: onLoad
 function vvInit() {
   rvw.window.Splash.show();
@@ -775,15 +802,11 @@ function vvinit_continue() {
     loadBibleVersion();
     loadSQLBible(vvConfigObj.get_version1(), 1);
     loadSQLBible(vvConfigObj.get_version2(), 2);
-    nativeWindow.maximize();
     generateTabContent();
-
-    air.trace(`AIR Runtime Version: ${air.NativeApplication.nativeApplication.runtimeVersion}`);
 
     rvw.window.Splash.close();
 
-    nativeWindow.visible = true;
-    nativeWindow.activate();
+    activateMainWindow();
 
     setupNavWindow();
     loadBookNames(vvConfigObj.get_version1());
@@ -792,9 +815,11 @@ function vvinit_continue() {
     air.ui.Menu.setAsMenu(vvMenu);
     nativeWindow.addEventListener("resize", setupNavWindow);
     nativeWindow.addEventListener("close", processExit);
+    nativeWindow.addEventListener("closing", beforeExit);
     newUpdateObj = new checkForNewVersion();
     newUpdateObj.init();
   }, 500);
+
   setTimeout(function () {
     window.scroll(0, 0);
   }, 3000);
@@ -1314,9 +1339,7 @@ function setupRightTabFrame() {
   rightTabView = tabview;
 }
 
-function processExit() {
-  air.trace('Exit process');
-
+function beforeExit() {
   // save app state
   {
     const lti = leftTabView.get('selection').get('index');
@@ -1324,9 +1347,30 @@ function processExit() {
 
     const rti = rightTabView.get('selection').get('index');
     rvwPreferences.set('app.state.rightTabActiveIndex', rti);
-
-    rvwPreferences.commit();
   }
+
+  // main window state
+  {
+    const { NativeWindowDisplayState } = air;
+
+    const windowState = {
+      bounds: {
+        x: nativeWindow.x,
+        y: nativeWindow.y,
+        width: nativeWindow.width,
+        height: nativeWindow.height,
+      },
+      maximized: nativeWindow.displayState === NativeWindowDisplayState.MAXIMIZED,
+    }
+
+    rvwPreferences.set('app.state.window', windowState);
+  }
+
+  rvwPreferences.commit();
+}
+
+function processExit() {
+  air.trace('Exit process');
 
   if (presentWindowOpen) {
     newWindow.window.nativeWindow.removeEventListener(
