@@ -152,6 +152,8 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'json-parse',
             'array-invoke',
             'querystring-stringify-simple',
+            'intl',
+            'console',
         ];
 
         for (const moduleName of modules) {
@@ -181,10 +183,24 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
     {
         const modules = [
             ['widget-base', 'assets/skins/sam/widget-base.css'],
+            ['widget-base', 'assets/skins/night/widget-base.css'],
+
             ['tabview', 'assets/skins/sam/tabview.css'],
+            ['tabview', 'assets/skins/night/tabview.css'],
+
             ['widget-modality', 'assets/skins/sam/widget-modality.css'],
+            ['widget-modality', 'assets/skins/night/widget-modality.css'],
+
             ['widget-stack', 'assets/skins/sam/widget-stack.css'],
+            ['widget-stack', 'assets/skins/night/widget-stack.css'],
+
             ['panel', 'assets/skins/sam/panel.css'],
+            ['panel', 'assets/skins/night/panel.css'],
+
+            ['console', 'assets/skins/sam/console.css'],
+            // ['console', 'assets/skins/night/console.css'],
+
+            ['console', 'lang/console_en.js'],
         ];
 
         for (const [moduleName, filename] of modules) {

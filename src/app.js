@@ -778,7 +778,18 @@ function vvInit() {
   });
 }
 
+function setupConsole() {
+  // new $Y.Console({
+  //   logSource: $Y.Global,
+  //   style: 'block',
+  //   newestOnTop: false,
+  //   width: "250px"
+  // }).render("#yconsole");
+}
+
 function vvinit_continue() {
+  setupConsole();
+
   rvw.ui.Dialog.setup();
   rvw.ui.Panel.setup();
   rvw.ui.Prompt.setup();

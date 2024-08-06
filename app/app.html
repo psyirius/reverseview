@@ -14,9 +14,15 @@
     <script type="text/javascript" src="lib/yui3/3.18.1/yui/yui-min.js"></script>
 
     <script type="text/javascript">
+      window.$YUI3_CONFIG = {
+        debug: true,
+        combine: false,
+        // skin: 'night',
+      };
       window.$YUI3_MODULES = [
         // app
         'app',
+        'console',
 
         // dom
         'node',
@@ -201,6 +207,8 @@
     onkeyup="mainWindowKey(event)"
     onLoad="vvInit()"
   >
+    <div id="yconsole"></div>
+
     <!--<div class="ui mini modal">
 			<div class="header"><div id="dialogHeader"></div></div>
 			<div class="description"><div id="dialogMsg"style="padding:20px">Message</div></div>

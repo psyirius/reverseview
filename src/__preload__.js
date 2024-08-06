@@ -37,12 +37,8 @@ window.global = new Function("return this;").apply(null);
 })();
 
 // init YUI 3
-((YUI, modules) => {
-    YUI({
-        debug: true,
-        combine: false,
-        // skin: 'night',
-    }).use(...modules, function(Y) {
+((YUI, config, modules) => {
+    YUI(config).use(...modules, function(Y) {
         global.$Y = Y;
     });
-})(YUI, global['$YUI3_MODULES'] || []);
+})(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
