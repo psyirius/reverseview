@@ -689,7 +689,7 @@ function loadPreferences(callback) {
 
   const _cb = (e, store) => {
     if (e) {
-      alert(e);
+      alert("[!] LoadPreferences: " + e);
       return;
     }
 
@@ -786,9 +786,9 @@ function vvinit_continue() {
   setupConsole();
 
   rvw.ui.Dialog.setup();
-  rvw.ui.Panel.setup();
   rvw.ui.Prompt.setup();
-  rvw.ui.Confirm.setup();
+  
+  // rvw.ui.Overlay.setup();
 
   setTimeout(function () {
     var b = vvConfigObj.get_chordsDBVersion() * 1;

@@ -1,13 +1,14 @@
 function vvbrain() {
-  this.init = x;
-  this.addRecord = w;
-  this.addRecordBy_wordin_wordout = u;
-  this.findRecordBy_wordin = B;
-  this.getSuggestions = i;
-  var g = null;
+  this.init = init;
+  this.addRecord = addRecord;
+  this.addRecordBy_wordin_wordout = addRecordBy_wordin_wordout;
+  this.findRecordBy_wordin = findRecordBy_wordin;
+  this.getSuggestions = getSuggestions;
+
+  var m_sqlConn = null;
   var a = false;
   var k = null;
-  var y = null;
+  var m_sqlQuery = null;
   var q = "./song/words.db";
   var z = new Array();
   var c = "";
@@ -16,16 +17,16 @@ function vvbrain() {
   var s;
   var m = null;
   var v = false;
-  function x() {
+  function init() {
     a = false;
     d();
   }
   function d() {
-    g = new air.SQLConnection();
-    g.addEventListener(air.SQLEvent.OPEN, p);
-    g.addEventListener(air.SQLErrorEvent.ERROR, t);
+    m_sqlConn = new air.SQLConnection();
+    m_sqlConn.addEventListener(air.SQLEvent.OPEN, p);
+    m_sqlConn.addEventListener(air.SQLErrorEvent.ERROR, t);
     var D = air.File.applicationStorageDirectory.resolvePath(q);
-    g.openAsync(D);
+    m_sqlConn.openAsync(D);
   }
   function p(D) {
     r("Brain DB was created successfully");
@@ -40,7 +41,7 @@ function vvbrain() {
   function f() {
     r(" Creating song table...");
     k = new air.SQLStatement();
-    k.sqlConnection = g;
+    k.sqlConnection = m_sqlConn;
     var D =
       "CREATE TABLE IF NOT EXISTS wordbrain (id INTEGER PRIMARY KEY AUTOINCREMENT, wordin TEXT, wordout TEXT, count INTEGER )";
     k.text = D;
@@ -62,9 +63,9 @@ function vvbrain() {
   function o() {
     a = false;
   }
-  function w(G, I) {
+  function addRecord(G, I) {
     var E = new air.SQLStatement();
-    E.sqlConnection = g;
+    E.sqlConnection = m_sqlConn;
     var H = "";
     H +=
       "INSERT INTO wordbrain (wordin, wordout, count) VALUES (:w_in, :w_out, :w_count);";
@@ -90,7 +91,7 @@ function vvbrain() {
   }
   function h(H) {
     var F = new air.SQLStatement();
-    F.sqlConnection = g;
+    F.sqlConnection = m_sqlConn;
     F.addEventListener(air.SQLEvent.RESULT, D);
     F.addEventListener(air.SQLErrorEvent.ERROR, E);
     var G = "UPDATE wordbrain SET count = count + 1 WHERE id = :param1";
@@ -111,10 +112,10 @@ function vvbrain() {
     }
   }
   function n(D) {}
-  function u(G, I) {
+  function addRecordBy_wordin_wordout(G, I) {
     r("Adding Record by looking at word in and word out....");
     var F = new air.SQLStatement();
-    F.sqlConnection = g;
+    F.sqlConnection = m_sqlConn;
     F.addEventListener(air.SQLEvent.RESULT, D);
     F.addEventListener(air.SQLErrorEvent.ERROR, E);
     var H =
@@ -133,7 +134,7 @@ function vvbrain() {
         h(J);
       } else {
         r("No record found... going to add new");
-        w(G, I);
+        addRecord(G, I);
       }
     }
     function E(J) {
@@ -144,19 +145,17 @@ function vvbrain() {
       r("Details (Get Word IN/OUT data):" + J.error.details);
     }
   }
-  function B(D) {
-    y = new air.SQLStatement();
-    y.sqlConnection = g;
-    y.addEventListener(air.SQLEvent.RESULT, A);
-    y.addEventListener(air.SQLErrorEvent.ERROR, j);
-    var E =
-      "SELECT * FROM wordbrain WHERE wordin LIKE :param1 ORDER BY count DESC";
-    y.parameters[":param1"] = D;
-    y.text = E;
-    y.execute();
+  function findRecordBy_wordin(qwrd) {
+    m_sqlQuery = new air.SQLStatement();
+    m_sqlQuery.sqlConnection = m_sqlConn;
+    m_sqlQuery.addEventListener(air.SQLEvent.RESULT, _onSqlResult);
+    m_sqlQuery.addEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
+    m_sqlQuery.parameters[":param1"] = qwrd;
+    m_sqlQuery.text = "SELECT * FROM wordbrain WHERE wordin LIKE :param1 ORDER BY count DESC";
+    m_sqlQuery.execute();
   }
-  function A(G) {
-    var H = y.getResult();
+  function _onSqlResult(G) {
+    var H = m_sqlQuery.getResult();
     if (H.data != null) {
       var D = H.data.length;
       r(D);
@@ -171,12 +170,12 @@ function vvbrain() {
       songNavObj.showSuggestedList();
     }
   }
-  function j(D) {
+  function _onSqlError(D) {
     r("VV Word Brain search data error...");
     r("Error message:" + D.error.message);
     r("Details (Get Word brain data):" + D.error.details);
   }
-  function i() {
+  function getSuggestions() {
     return z;
   }
   function r(D) {

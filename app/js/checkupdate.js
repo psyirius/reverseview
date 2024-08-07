@@ -81,14 +81,14 @@ function checkForNewVersion() {
       "Version " +
       o +
       " is now available for download from the VerseVIEW website.";
-    rvw.ui.Panel.show("New Version Available", p);
+    air.trace("New Version Available: " + p);
   }
   function i() {
     var p = "Please check VerseVIEW website for updates.";
-    rvw.ui.Panel.show("VerseVIEW Update", p);
+    air.trace("VerseVIEW Update: " + p);
   }
   function e() {
     var p = "No new updates are available. You have the latest version.";
-    rvw.ui.Panel.show("VerseVIEW Update", p);
+    air.trace("VerseVIEW Update: " + p);
   }
 }

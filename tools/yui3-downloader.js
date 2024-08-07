@@ -90,6 +90,7 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'attribute-base',
             'paginator-core',
             'paginator',
+            'overlay',
             'dom-style',
             'node-base',
             'event-delegate',
@@ -155,6 +156,29 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'intl',
             'console',
             'dd-plugin',
+            'color-base',
+            'anim-base',
+            'anim-color',
+            'anim-xy',
+            'anim-curve',
+            'anim-easing',
+            'anim-node-plugin',
+            'anim-scroll',
+            'autocomplete-list',
+            'autocomplete-list-keys',
+            'shim-plugin',
+            'autocomplete-base',
+            'event-valuechange',
+            'autocomplete-sources',
+            'selector-css3',
+            'array-extras',
+            'autocomplete-plugin',
+            'text-data-wordbreak',
+            'text-wordbreak',
+            'autocomplete-filters',
+            'autocomplete-filters',
+            'highlight-base',
+            'autocomplete-highlighters',
         ];
 
         for (const moduleName of modules) {
@@ -198,10 +222,17 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             ['panel', 'assets/skins/sam/panel.css'],
             ['panel', 'assets/skins/night/panel.css'],
 
+            ['overlay', 'assets/skins/sam/overlay.css'],
+            ['overlay', 'assets/skins/night/overlay.css'],
+
+            ['autocomplete-list', 'assets/skins/sam/autocomplete-list.css'],
+            ['autocomplete-list', 'assets/skins/night/autocomplete-list.css'],
+
             ['console', 'assets/skins/sam/console.css'],
             // ['console', 'assets/skins/night/console.css'],
 
             ['console', 'lang/console_en.js'],
+            ['autocomplete-list', 'lang/autocomplete-list_en.js'],
         ];
 
         for (const [moduleName, filename] of modules) {

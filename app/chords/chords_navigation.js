@@ -440,8 +440,7 @@ function chordsNavClass() {
         default:
           rvw.ui.Dialog.show(
             "Chords",
-            'Invalid Chord: "' + aC[av],
-            '". Please edit chords in this version.'
+            'Invalid Chord: "' + aC[av]
           );
           aC[av] = " ";
           av++;
@@ -621,8 +620,7 @@ function chordsNavClass() {
             default:
               rvw.ui.Dialog.show(
                 "Chords",
-                'Invalid Chord: "' + aE[az][av],
-                '". Please edit chords in this version.'
+                'Invalid Chord: "' + aE[az][av]
               );
               av++;
           }

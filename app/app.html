@@ -28,8 +28,14 @@
         'node',
 
         // ui
+        'anim',
         'panel',
         'tabview',
+        // 'overlay',
+        'transition',
+        'autocomplete',
+        'autocomplete-filters',
+        'autocomplete-highlighters',
 
         // serialization/deserialization
         'json',
@@ -38,7 +44,14 @@
         // io
         'io',
 
+        // async
+        'promise',
+
+        // util
+        'escape',
+
         // plugin
+        'plugin',
         'dd-plugin',
       ]
     </script>
@@ -90,9 +103,8 @@
     <script type="text/javascript" src="js/app.preferences.js"></script>
     <script type="text/javascript" src="js/app.splash.js"></script>
     <script type="text/javascript" src="js/app.dialog.js"></script>
-    <script type="text/javascript" src="js/app.confirm.js"></script>
     <script type="text/javascript" src="js/app.prompt.js"></script>
-    <script type="text/javascript" src="js/app.panel.js"></script>
+    <!--    <script type="text/javascript" src="js/app.overlay.js"></script>-->
 
     <script type="text/javascript" src="js/app.js"></script>
 
@@ -144,8 +156,8 @@
     <script type="text/javascript" src="network/support.js"></script>
 
     <script type="text/javascript" src="js/song.edit.js"></script>
-    <script type="text/javascript" src="js/song/song_nav.js"></script>
-    <script type="text/javascript" src="js/song/song_manager.js"></script>
+    <script type="text/javascript" src="js/song.nav.js"></script>
+    <script type="text/javascript" src="js/song.manager.js"></script>
     <script type="text/javascript" src="js/song/song_present.js"></script>
     <script type="text/javascript" src="js/song/songobj.js"></script>
     <script type="text/javascript" src="js/song/song_lyrics.js"></script>
@@ -392,28 +404,11 @@
     <!-- Modal::Dialog::Begin -->
 
     <!-- Modal::Confirm::Begin -->
-    <div class="ui modal" id="vvConfirm_main">
-      <div class="header" id="vvConfirm_header"></div>
-      <div class="content">
-        <div class="description" id="vvConfirm_message"></div>
-      </div>
-      <div class="actions">
-        <div class="ui button" id="vvConfirm_yes">YES</div>
-        <div class="ui button" id="vvConfirm_no">NO</div>
-      </div>
-    </div>
+    <div id="confirm-panel"></div>
     <!-- Modal::Confirm::End -->
 
-    <!-- Modal::Panel::Begin -->
-    <div class="ui modal" id="vvPanel_main">
-      <div class="header" id="vvPanel_header"></div>
-
-      <div class="content">
-        <div class="description" id="vvPanel_message"></div>
-
-        <div class="ui button" id="vvPanel_close">CLOSE</div>
-      </div>
-    </div>
-    <!-- Modal::Panel::End -->
+    <!-- Modal::Overlay::Begin -->
+    <div id="overlay"></div>
+    <!-- Modal::Overlay::End -->
   </body>
 </html>

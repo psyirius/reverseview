@@ -13,7 +13,7 @@ var format;
 var bibleDB;
 var dbFilename_hold = "";
 var verFile = null;
-var vdebug = false;
+var vdebug = true;
 function loadBibleVersion() {
   var c;
   var b = "xml/version.xml";
@@ -94,8 +94,8 @@ function saveVersionSelection() {
   var e = vvConfigObj.get_version2();
   var b = document.getElementById("version1Menu").selectedIndex;
   var g = document.getElementById("version2Menu").selectedIndex;
-  versionDebug("****************" + b + "  " + g);
-  versionDebug(
+  __versionDbg("****************" + b + "  " + g);
+  __versionDbg(
     "****************" +
       vvConfigObj.get_version1() +
       "  " +
@@ -113,7 +113,7 @@ function saveVersionSelection() {
   }
   if (b != f) {
     var a = "./bible/" + bibleVersionArray[b][1];
-    versionDebug("             Search file...." + a);
+    __versionDbg("             Search file...." + a);
     if (searchObj != null) {
       searchObj.close();
       searchObj = null;
@@ -132,7 +132,7 @@ function saveVersionSelection() {
   vvConfigObj.set_version2(g);
   var d = $("#booknameStyle option:selected").val();
   var c = $("#englishList").is(":checked");
-  versionDebug(d + "  " + c);
+  __versionDbg(d + "  " + c);
   vvConfigObj.set_booknamestyle(d);
   vvConfigObj.set_listinenglish(c);
   loadBookNames();
@@ -199,7 +199,7 @@ function loadVersionList() {
     );
   }
   document.getElementById("selectVersionList").selectedIndex = 0;
-  versionDebug("About to update version details....");
+  __versionDbg("About to update version details....");
   updateVersionDetails();
 }
 function updateVersionDetails() {
@@ -247,7 +247,7 @@ function toggleSaveButton() {
   }
 }
 function toggleLoadButton() {
-  versionDebug("Activating Load button....");
+  __versionDbg("Activating Load button....");
 }
 function deleteVersion() {
   var e = air.File.applicationStorageDirectory;
@@ -591,7 +591,7 @@ function updateVersionXML() {
   var a = "./xml/version.xml";
   save2file(b, a, false);
 }
-function versionDebug(a) {
+function __versionDbg(a) {
   if (vdebug) {
     air.trace("[Version.js].... " + a);
   }

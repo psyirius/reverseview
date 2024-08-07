@@ -1,3 +1,6 @@
+// TODO: yui-migrate
+// - YAHOO.widget.Panel
+
 class SongEdit {
   constructor(bodyContent) {
     const _isDebug = true;
@@ -841,7 +844,7 @@ class SongEdit {
     function onClick_cancelButtonID() {
       var ac = "Song Add/Edit";
       var ad = "Do you want to CANCEL from Add/Edit Song panel?";
-      rvw.ui.Confirm.exec(ac, ad, _close_panel);
+      rvw.ui.Prompt.exec(ac, ad, _close_panel);
     }
 
     function _close_panel() {
