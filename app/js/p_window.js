@@ -257,7 +257,7 @@ function passVariable(o) {
   this.p_bkgnd_color = vvConfigObj.get_p_solidBkgndColor();
   this.p_font_color = p_font_color;
   this.p_font_color2 = p_font_color2;
-  this.p_format.mutipleLines = vvConfigObj.get_pformat_multiplelines();
+  this.p_format_multiplelines = vvConfigObj.get_pformat_multiplelines();
   if (o == 1) {
     var f = $("#thirdview_fcolor").val();
     this.p_font_color = colorChart[f];
