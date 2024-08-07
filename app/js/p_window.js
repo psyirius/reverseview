@@ -330,7 +330,7 @@ function passVariable(o) {
   this.p_enableShadow = vvConfigObj.get_p_enableShadow();
   this.p_align = vvConfigObj.get_p_align();
   if (vvConfigObj.get_showVVLogo()) {
-    this.p_logo = "VerseVIEW<br>www.verseview.info";
+    this.p_logo = "ReVerseVIEW<br>reverseview.github.io";
   } else {
     this.p_logo =
       vvConfigObj.get_logoText1() + "<br>" + vvConfigObj.get_logoText2();

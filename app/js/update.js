@@ -29,7 +29,7 @@ function vvupdate() {
   }
   function b() {
     var p = new air.URLRequest(
-      "http://www.verseview.info/download/bible/version_server.txt"
+      "http://reverseview.github.io/download/bible/version_server.txt"
     );
     var m = new air.URLLoader();
     m.addEventListener(air.Event.COMPLETE, o);

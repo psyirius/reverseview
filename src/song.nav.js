@@ -107,21 +107,21 @@ class songNavClass {
       s = true;
     }
     function Z() {
-      var al = new icon(
+      var al = new ImageIcon(
         "songnav_searchbutton",
         " SEARCH Song Lyrics ",
         "graphics/icon/search_32.png",
         "graphics/icon/search_32.png",
         ""
       );
-      var al = new icon(
+      var al = new ImageIcon(
         "songnav_searchauthorbutton",
         " SEARCH Song by Author ",
         "graphics/icon/search_author_32.png",
         "graphics/icon/search_author_32.png",
         ""
       );
-      var am = new icon(
+      var am = new ImageIcon(
         "songnav_clearbutton",
         " CLEAR Search ",
         "graphics/icon/clearsearch_32.png",

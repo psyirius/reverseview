@@ -41,7 +41,7 @@ function checkForNewVersion() {
     }
     if (m) {
       var s = new air.URLRequest(
-        "http://www.verseview.info/download/version_server.txt"
+        "http://reverseview.github.io/download/version_server.txt"
       );
       var p = new air.URLLoader();
       p.addEventListener(air.Event.COMPLETE, r);

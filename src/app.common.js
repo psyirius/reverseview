@@ -1,7 +1,5 @@
-var genericPanelObj = null;
 function save2file(c, d, a) {
-  var b = air.File.applicationStorageDirectory;
-  b = b.resolvePath(d);
+  var b = air.File.applicationStorageDirectory.resolvePath(d);
   var e = new air.FileStream();
   e.open(b, air.FileMode.WRITE);
   e.writeMultiByte(c, "utf-8");
@@ -9,8 +7,7 @@ function save2file(c, d, a) {
 }
 function filesave2vvexport(c, a) {
   var d = "./vvexport/" + a + ".html";
-  var b = air.File.desktopDirectory;
-  b = b.resolvePath(d);
+  var b = air.File.desktopDirectory.resolvePath(d);
   var e = new air.FileStream();
   e.open(b, air.FileMode.WRITE);
   e.writeMultiByte(c, "utf-8");
@@ -416,41 +413,47 @@ function BibleReference() {
     }
   }
 }
-function icon(a, n, e, d, b) {
-  this.disableIcon = o;
-  this.enableIcon = c;
-  var l = a;
-  var f = n;
-  var k = e;
-  var j = d;
-  var g = b;
-  var h = null;
-  document.getElementById(l).src = k;
-  document.getElementById(l).addEventListener("mouseover", m, false);
-  document.getElementById(l).addEventListener("mouseout", p, false);
-  document.getElementById(l).style.border = "1px solid #ffffff";
-  h = new YAHOO.widget.Tooltip("ttip", { context: l, text: f });
-  function o() {
-    document.getElementById(l).src = g;
-    document.getElementById(l).removeEventListener("mouseover", m, false);
-    document.getElementById(l).removeEventListener("mouseout", p, false);
-  }
-  function c() {
-    document.getElementById(l).src = k;
-    document.getElementById(l).addEventListener("mouseover", m, false);
-    document.getElementById(l).addEventListener("mouseout", p, false);
-  }
-  function m() {
-    document.getElementById(l).src = j;
-    document.getElementById(l).style.border = "1px solid #87AFC7";
-  }
-  function p() {
-    document.getElementById(l).src = k;
-    document.getElementById(l).style.border = "1px solid #ffffff";
+class ImageIcon {
+  constructor(a, n, e, d, b) {
+    this.disableIcon = disableIcon;
+    this.enableIcon = enableIcon;
+
+    const m_sel = a;
+    const m_text = n;
+    const m_src = e;
+    const m_srcActive = d;
+    const m_srcDisabled = b;
+
+    this.m_tooltip = new YAHOO.widget.Tooltip("ttip", { context: m_sel, text: m_text });
+
+    document.getElementById(m_sel).src = m_src;
+    document.getElementById(m_sel).addEventListener("mouseover", _on_mouseOver, false);
+    document.getElementById(m_sel).addEventListener("mouseout", _on_mouseOut, false);
+    document.getElementById(m_sel).style.border = "1px solid #ffffff";
+
+    function disableIcon() {
+      document.getElementById(m_sel).src = m_srcDisabled;
+      document.getElementById(m_sel).removeEventListener("mouseover", _on_mouseOver, false);
+      document.getElementById(m_sel).removeEventListener("mouseout", _on_mouseOut, false);
+    }
+    function enableIcon() {
+      document.getElementById(m_sel).src = m_src;
+      document.getElementById(m_sel).addEventListener("mouseover", _on_mouseOver, false);
+      document.getElementById(m_sel).addEventListener("mouseout", _on_mouseOut, false);
+    }
+    function _on_mouseOver() {
+      document.getElementById(m_sel).src = m_srcActive;
+      document.getElementById(m_sel).style.border = "1px solid #87AFC7";
+    }
+    function _on_mouseOut() {
+      document.getElementById(m_sel).src = m_src;
+      document.getElementById(m_sel).style.border = "1px solid #ffffff";
+    }
   }
 }
 function invert_hex_color(d) {
-  var e = "0123456789ABCDEF";
+  const e = "0123456789ABCDEF";
+
   function c(f) {
     return e.charAt((f >> 4) & 15) + e.charAt(f & 15);
   }
@@ -463,39 +466,25 @@ function invert_hex_color(d) {
       window.alert("You Must Enter a six digit color code");
       return false;
     }
-    hex1 = f.slice(0, 2);
-    hexb1 = f.slice(2, 4);
-    hexc1 = f.slice(4, 6);
-    hex2 = 16 * b(hex1.slice(0, 1));
-    hex3 = b(hex1.slice(1, 2));
+    let hex1 = f.slice(0, 2);
+    let hexb1 = f.slice(2, 4);
+    let hexc1 = f.slice(4, 6);
+    let hex2 = 16 * b(hex1.slice(0, 1));
+    let hex3 = b(hex1.slice(1, 2));
     hex1 = hex1 + hex2;
-    hexb2 = 16 * b(hexb1.slice(0, 1));
-    hexb3 = b(hexb1.slice(1, 2));
+    let hexb2 = 16 * b(hexb1.slice(0, 1));
+    let hexb3 = b(hexb1.slice(1, 2));
     hexb1 = hexb2 + hexb3;
-    hexc2 = 16 * b(hexc1.slice(0, 1));
-    hexc3 = b(hexc1.slice(1, 2));
+    let hexc2 = 16 * b(hexc1.slice(0, 1));
+    let hexc3 = b(hexc1.slice(1, 2));
     hexc1 = hexc2 + hexc3;
-    newColor = c(255 - hex1) + "" + c(255 - hexb1) + "" + c(255 - hexc1);
-    return newColor;
+    return c(255 - hex1) + "" + c(255 - hexb1) + "" + c(255 - hexc1);
   }
   return a(d);
 }
-function generateGenericPanel() {
-  genericPanelObj = new YAHOO.widget.Panel("genericPanelObj", {
-    width: "300px",
-    fixedcenter: true,
-    modal: true,
-    visible: false,
-    constraintoviewport: true,
-  });
-  genericPanelObj.render();
-  genericPanelObj.setHeader("Bible Version Selection");
-  genericPanelObj.setBody("test");
-  genericPanelObj.show();
-}
 function promoteVV(a) {
-  p_text1_arr = new Array();
-  p_text2_arr = new Array();
+  p_text1_arr = [];
+  p_text2_arr = [];
   p_text1_font = "";
   p_text2_font = "";
   p_title = "";

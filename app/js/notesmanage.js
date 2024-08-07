@@ -113,7 +113,7 @@ function manageNotes() {
       } else {
         var Z = "Bible Notes";
         var ac = "Are you sure you want to delete " + ab;
-        rvw.ui.Confirm.exec(Z, ac, Y);
+        rvw.ui.Prompt.exec(Z, ac, Y);
         function Y() {
           V(X);
           ab = "./notes/" + ab;

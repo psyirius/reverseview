@@ -900,29 +900,29 @@ function setupTheme() {
 
 function generateTabContent() {
   bibleVersionSelObj = new bibleVersionSelClass();
-  bibleVersionSelObj.init(loadTemplate("./content/setup_biblesel.txt"));
+  bibleVersionSelObj.init(loadTemplate("./content/setup_biblesel.html"));
 
   remoteVV_UI_Obj = new remoteVV_UI_Class();
   remoteVV_UI_Obj.init(loadTemplate("./content/setup_remote.html"));
 
-  readTabContentFile("./content/bible_verses.txt", "bibleverseTab");
+  readTabContentFile("./content/bible_verses.html", "bibleverseTab");
   readTabContentFile("./content/screens.html", "screenTab");
 
   updateVV_UI_Obj = new updateVV_UI_Class();
-  updateVV_UI_Obj.init(loadTemplate("./content/setup_update.txt"));
+  updateVV_UI_Obj.init(loadTemplate("./content/setup_update.html"));
 
-  readTabContentFile("./content/config.txt", "configTab");
+  readTabContentFile("./content/config.html", "configTab");
   readTabContentFile("./content/nav.html", "navTab");
-  readTabContentFile("./content/search.txt", "searchField");
-  readTabContentFile("./content/notesmanage.txt", "notesTab");
-  readTabContentFile("./content/schedule.txt", "scheduleTab");
+  readTabContentFile("./content/search.html", "searchField");
+  readTabContentFile("./content/html.html", "notesTab");
+  readTabContentFile("./content/schedule.html", "scheduleTab");
   readTabContentFile("./content/song_nav.html", "songNavTab");
   readTabContentFile("./content/song_lyrics.html", "lyricsTab");
 
   notesManageObj = new manageNotes();
   notesManageObj.init(firstTimeFlag);
 
-  notesObj = new notes(loadTemplate("./content/notesui.txt"));
+  notesObj = new notes(loadTemplate("./content/notesui.html"));
   notesObj.setNotesContainerID("notesPanelID");
 
   searchObj = new vvsearch("./bible/" + getVersion1Filename());
@@ -943,7 +943,7 @@ function generateTabContent() {
   songNavObj.init();
 
   helpObj = new vvhelpClass();
-  helpObj.init(loadTemplate("./content/help.txt"));
+  helpObj.init(loadTemplate("./content/help.html"));
 
   graphicsObj = new graphicsClass();
   graphicsObj.init(loadTemplate("./content/graphics.html"));
@@ -1155,7 +1155,7 @@ function fillNav() {
   document
     .getElementById("verseList")
     .addEventListener("change", verseChange, false);
-  var b = new icon(
+  var b = new ImageIcon(
     "searchButtonID",
     " SEARCH ",
     "graphics/icon/search_32.png",
@@ -1168,14 +1168,14 @@ function fillNav() {
   document
     .getElementById("nav_bibleRef_findID")
     .addEventListener("click", processNavBibleRefFind, false);
-  var c = new icon(
+  var c = new ImageIcon(
     "nav_bibleRef_presentID",
     " QUICK PRESENT ",
     "graphics/icon/qpresent_24.png",
     "graphics/icon/qpresent_24.png",
     ""
   );
-  var a = new icon(
+  var a = new ImageIcon(
     "nav_bibleRef_findID",
     " FIND ",
     "graphics/icon/search_s.png",

@@ -1,3 +1,10 @@
+// TODO: yui-migrate
+// - YAHOO.widget.ColorPicker
+// - YAHOO.util.Event
+// - YAHOO.example.container.tt1cp
+// - YAHOO.example.container.tt2cp
+// - YAHOO.widget.Tooltip
+
 var textColorHEX = 16777215;
 bkgnd = {
   selectedIndex: 0,
