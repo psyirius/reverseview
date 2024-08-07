@@ -288,22 +288,12 @@ function songNavClass() {
             var av = ap.data[ar].name;
             var al = ap.data[ar].title2;
             var ao = ap.data[ar].font;
-            if (testTAB) {
-              if (ao != "Tamil Bible") {
-                aw = aw + av + "|" + al + "| <BR>";
-              } else {
-                aw = aw + av + "| |" + al + "<BR>";
-              }
-            }
             if (C(av)) {
               var aq = ap.data[ar].id;
               YAHOO.example.Data.songTitle.push({ ID: ar, Title: av });
             }
           }
         }
-      }
-      if (testTAB) {
-        document.getElementById("texttest").innerHTML = aw;
       }
     }
     U();
