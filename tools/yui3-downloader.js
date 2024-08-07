@@ -38,6 +38,9 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
         const modules = [
             'yui',
             'oop',
+            'test',
+            'console-filters',
+            'test-console',
             'timers',
             'promise',
             'event-touch',
@@ -228,13 +231,17 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             ['overlay', 'assets/skins/sam/overlay.css'],
             ['overlay', 'assets/skins/night/overlay.css'],
 
+            ['console', 'assets/skins/sam/console.css'],
+            ['test-console', 'assets/skins/sam/test-console.css'],
+            ['console-filters', 'assets/skins/sam/console-filters.css'],
+
             ['autocomplete-list', 'assets/skins/sam/autocomplete-list.css'],
             ['autocomplete-list', 'assets/skins/night/autocomplete-list.css'],
 
-            ['console', 'assets/skins/sam/console.css'],
-            // ['console', 'assets/skins/night/console.css'],
-
+            ['console', 'lang/console.js'],
             ['console', 'lang/console_en.js'],
+
+            ['autocomplete-list', 'lang/autocomplete-list.js'],
             ['autocomplete-list', 'lang/autocomplete-list_en.js'],
         ];
 

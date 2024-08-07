@@ -38,7 +38,33 @@ window.global = new Function("return this;").apply(null);
 
 // init YUI 3
 ((YUI, config, modules) => {
-    YUI(config).use(...modules, function(Y) {
+    function checkModules(Y, modules) {
+        const loader = new Y.Loader({
+            base: Y.config.base,
+            require: [...modules],
+        });
+
+        // Tell loader to calculate dependencies
+        loader.calculate();
+
+        const out = loader.resolve();
+        // out: js, jsMods, css, cssMods
+
+        const { File } = air;
+
+        for (const filepath of [...out.js, ...out.css]) {
+            const file = new File(filepath);
+            if (!file.exists) {
+                air.trace(`YUI3 Dep missing: ${filepath}`);
+            }
+        }
+    }
+
+    const Y = YUI(config);
+
+    checkModules(Y, modules);
+
+    Y.use(...modules, function(Y) {
         global.$Y = Y;
     });
 })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);

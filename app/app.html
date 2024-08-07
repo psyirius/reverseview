@@ -17,12 +17,16 @@
       window.$YUI3_CONFIG = {
         debug: true,
         combine: false,
-        // skin: 'night',
+        skin: 'sam', // sam, night
       };
       window.$YUI3_MODULES = [
         // app
         'app',
         'console',
+
+        // test
+        'test',
+        'test-console',
 
         // dom
         'node',
@@ -46,8 +50,10 @@
         // io
         'io',
 
-        // async
+        // async/parallel
         'promise',
+        'parallel',
+        'async-queue',
 
         // util
         'escape',
@@ -55,6 +61,9 @@
         // plugin
         'plugin',
         'dd-plugin',
+
+        // ...
+        'event-focus', 'json', 'model', 'model-list', 'view',
       ]
     </script>
 
