@@ -942,8 +942,7 @@ function generateTabContent() {
   songNavObj = new songNavClass();
   songNavObj.init();
 
-  helpObj = new vvhelpClass();
-  helpObj.init(loadTemplate("./content/help.html"));
+  helpObj = new vvhelpClass(loadTemplate("./content/help.html"));
 
   graphicsObj = new graphicsClass();
   graphicsObj.init(loadTemplate("./content/graphics.html"));

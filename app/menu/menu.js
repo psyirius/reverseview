@@ -76,7 +76,8 @@ function importchords() {
   importnew_chords();
 }
 function showHelp_menu() {
-  helpObj.showHelp();
+  // TODO: make it a separate tool window
+  helpObj.show();
 }
 function vvPromote_menu1() {
   promoteVV(1);
