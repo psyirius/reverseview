@@ -900,30 +900,30 @@ function setupTheme() {
 
 function setupTabContent() {
   bibleVersionSelObj = new bibleVersionSelClass();
-  bibleVersionSelObj.init(readAppFile("./views/setup_biblesel.html"));
+  bibleVersionSelObj.init(loadViewTemplate("setup_biblesel"));
 
   remoteVV_UI_Obj = new remoteVV_UI_Class();
-  remoteVV_UI_Obj.init(readAppFile("./views/setup_remote.html"));
+  remoteVV_UI_Obj.init(loadViewTemplate("setup_remote"));
 
-  loadTabViewTemplate("./views/bible_verses.html", "bibleverseTab");
-  loadTabViewTemplate("./views/screens.html", "screenTab");
+  setupTabViewTemplate("bible_verses", "bibleverseTab");
+  setupTabViewTemplate("screens", "screenTab");
 
   updateVV_UI_Obj = new updateVV_UI_Class();
-  updateVV_UI_Obj.init(readAppFile("./views/setup_update.html"));
+  updateVV_UI_Obj.init(loadViewTemplate("setup_update"));
 
   fillTabs('configTab');
 
-  loadTabViewTemplate("./views/nav.html", "navTab");
-  loadTabViewTemplate("./views/search.html", "searchField");
-  loadTabViewTemplate("./views/html.html", "notesTab");
-  loadTabViewTemplate("./views/schedule.html", "scheduleTab");
-  loadTabViewTemplate("./views/song_nav.html", "songNavTab");
-  loadTabViewTemplate("./views/song_lyrics.html", "lyricsTab");
+  setupTabViewTemplate("nav", "navTab");
+  setupTabViewTemplate("search", "searchField");
+  setupTabViewTemplate("html", "notesTab");
+  setupTabViewTemplate("schedule", "scheduleTab");
+  setupTabViewTemplate("song_nav", "songNavTab");
+  setupTabViewTemplate("song_lyrics", "lyricsTab");
 
   notesManageObj = new manageNotes();
   notesManageObj.init(firstTimeFlag);
 
-  notesObj = new notes(readAppFile("./views/notesui.html"));
+  notesObj = new notes(loadViewTemplate("notesui"));
   notesObj.setNotesContainerID("notesPanelID");
 
   searchObj = new vvsearch("./bible/" + getVersion1Filename());
@@ -938,24 +938,24 @@ function setupTabContent() {
   songManagerObj = new songManagerClass();
   songManagerObj.init(true, true);
 
-  songEditObj = new SongEdit(readAppFile("./views/song_edit.html"));
+  songEditObj = new SongEdit(loadViewTemplate("song_edit"));
 
   songNavObj = new songNavClass();
   songNavObj.init();
 
-  helpObj = new vvhelpClass(readAppFile("./views/help.html"));
+  helpObj = new vvhelpClass(loadViewTemplate("help"));
 
   graphicsObj = new graphicsClass();
-  graphicsObj.init(readAppFile("./views/graphics.html"));
+  graphicsObj.init(loadViewTemplate("graphics"));
 
   chordsNavObj = new chordsNavClass();
-  chordsNavObj.init(readAppFile("./views/chords.html"));
+  chordsNavObj.init(loadViewTemplate("chords"));
 
   chordsEditObj = new chordsEditClass();
-  chordsEditObj.init(readAppFile("./views/chords_edit.html"));
+  chordsEditObj.init(loadViewTemplate("chords_edit"));
 
   chordsKeyboard = new chordsVirtualKeyboard();
-  chordsKeyboard.init(readAppFile("./views/chords_keyboard.html"));
+  chordsKeyboard.init(loadViewTemplate("chords_keyboard"));
 
   if (!isUpToDate() && task2Status() == false) {
     air.trace("About to copy webroot files...");
@@ -968,11 +968,13 @@ function setupTabContent() {
   }
 }
 
-function readAppFile(path) {
+function loadViewTemplate(name) {
+  const filepath = `./views/${name}.hbs`;
+
   const { File, FileStream, FileMode } = air;
   const { applicationDirectory: appDir } = File;
 
-  const file = appDir.resolvePath(path);
+  const file = appDir.resolvePath(filepath);
 
   const prefsFS = new FileStream();
   prefsFS.open(file, FileMode.READ);
@@ -982,8 +984,8 @@ function readAppFile(path) {
   return data;
 }
 
-function loadTabViewTemplate(filepath, mountPoint) {
-  document.getElementById(mountPoint).innerHTML = readAppFile(filepath);
+function setupTabViewTemplate(name, mountPoint) {
+  document.getElementById(mountPoint).innerHTML = loadViewTemplate(name);
   fillTabs(mountPoint);
 }
 function fillTabs(a) {

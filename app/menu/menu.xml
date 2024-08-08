@@ -7,7 +7,7 @@
 		<menuItem type="separator" />
  		<menuItem label="Exit" onSelect="verseviewExit" />
 	</menu>
-	
+
 	<menu label="Bible">
 		<menuItem label="Add" onSelect="add_bible_version" />
 		<menuItem label="Select" onSelect="setup_bible_version" />
