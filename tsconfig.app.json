@@ -4,18 +4,18 @@
     /* Language and Environment */
     "ignoreDeprecations": "5.0",
     "target": "ES3",
-//    "jsx": "react-jsx",
-//    "jsxImportSource": "@lib/zrx",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lib/zrx",
 
     /* Modules */
     "module": "AMD",
     "rootDir": "./src",
     "baseUrl": "./src",
     "moduleResolution": "node",
-//    "paths": {
-//      "@lib/*": ["lib/*"],
-//      "@app/*": ["app/*"]
-//    },
+    "paths": {
+      "@lib/*": ["lib/*"],
+      "@app/*": ["app/*"]
+    },
     "typeRoots": [
       "./types",
       "node_modules/@types"
@@ -30,9 +30,6 @@
 
     /* Emit */
     "outDir": "./app/js",
-
-    /* Type Checking */
-//    "strict": true,
   },
   "include": [
     "./src/**/*.ts",

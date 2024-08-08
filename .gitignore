@@ -28,4 +28,5 @@ dist/
 
 # downloadable libs
 /app/lib/yui3/*
+/app/lib/dojo/*
 /app/lib/alloyui/*

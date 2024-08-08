@@ -143,7 +143,7 @@ function chordsNavClass() {
         var aq = ap[ad - 1].id;
         chordsManagerObj.deleteChords(aq);
       } else {
-        rvw.ui.Dialog.show("Chords", "Can not be deleted..");
+        rvw.ui.Toast.show("Chords", "Can not be deleted..");
       }
     }
   }
@@ -438,7 +438,7 @@ function chordsNavClass() {
           av++;
           break;
         default:
-          rvw.ui.Dialog.show(
+          rvw.ui.Toast.show(
             "Chords",
             'Invalid Chord: "' + aC[av]
           );
@@ -618,7 +618,7 @@ function chordsNavClass() {
               av++;
               break;
             default:
-              rvw.ui.Dialog.show(
+              rvw.ui.Toast.show(
                 "Chords",
                 'Invalid Chord: "' + aE[az][av]
               );

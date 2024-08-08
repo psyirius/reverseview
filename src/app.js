@@ -694,6 +694,7 @@ function loadPreferences(callback) {
     }
 
     rvwPreferences = store;
+
     callback(store);
   }
 
@@ -753,34 +754,37 @@ function vvInit() {
   rvw.window.Splash.show();
 
   if (!firstTimeCheck()) {
-    rvw.ui.Dialog.show(
+    rvw.ui.Toast.show(
       "ReVerseVIEW",
       "Error first init!"
     );
   }
 
-  {
-    // Register a {{{link}}} helper for creating HTML links.
-    $Y.Handlebars.registerHelper('link', function (text, url) {
-      text = $Y.Escape.html(text);
-      url  = $Y.Escape.html(url);
+  // {
+  //   // Register a {{{link}}} helper for creating HTML links.
+  //   $Y.Handlebars.registerHelper('link', function (text, url) {
+  //     text = $Y.Escape.html(text);
+  //     url  = $Y.Escape.html(url);
+  //
+  //     return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
+  //   });
+  // }
 
-      return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
+  // FIXME: hack to let YUI3 load first
+  setTimeout(() => {
+    loadPreferences(() => {
+      setupLeftTabFrame();
+      setupRightTabFrame();
+
+      vvConfigObj = new RvwConfig();
+      vvConfigObj.load(vvinit_continue);
+
+      learner = new wordlearner();
+
+      wordbrain = new vvbrain();
+      wordbrain.init();
     });
-  }
-
-  loadPreferences(() => {
-    setupLeftTabFrame();
-    setupRightTabFrame();
-
-    vvConfigObj = new RvwConfig();
-    vvConfigObj.load(vvinit_continue);
-
-    learner = new wordlearner();
-
-    wordbrain = new vvbrain();
-    wordbrain.init();
-  });
+  }, 1000);
 }
 
 function setupConsole() {
@@ -795,7 +799,7 @@ function setupConsole() {
 function vvinit_continue() {
   setupConsole();
 
-  rvw.ui.Dialog.setup();
+  rvw.ui.Toast.setup();
   rvw.ui.Prompt.setup();
 
   // rvw.ui.Overlay.setup();
@@ -805,7 +809,7 @@ function vvinit_continue() {
     if (b == 1 && !firstTimeFlag) {
       var c = copyFile("chords/chords.db", "song/chords.db");
       if (c) {
-        rvw.ui.Dialog.show("Chords", "Updated Chords database");
+        rvw.ui.Toast.show("Chords", "Updated Chords database");
         vvConfigObj.set_chordsDBVersion(2);
       }
     }
@@ -818,15 +822,15 @@ function vvinit_continue() {
           vvConfigObj.set_version1(1);
           vvConfigObj.set_version2(2);
           vvConfigObj.set_bibleDBVersion(2);
-          rvw.ui.Dialog.show("VerseVIEW", "Bible Database update process completed.");
+          rvw.ui.Toast.show("VerseVIEW", "Bible Database update process completed.");
         } else {
-          rvw.ui.Dialog.show(
+          rvw.ui.Toast.show(
             "VerseVIEW",
             "Bible Database update failed. Please contact verseview@yahoo.com"
           );
         }
       } else {
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "VerseVIEW",
           "Bible Database update failed. Please contact verseview@yahoo.com"
         );

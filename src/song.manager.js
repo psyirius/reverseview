@@ -480,7 +480,7 @@ class songManagerClass {
       __debug("Error message:" + aN.error.message);
       __debug("Details (create DB):" + aN.error.details);
       ax = false;
-      rvw.ui.Dialog.show(
+      rvw.ui.Toast.show(
         "Song Database",
         "Error opening Song Database : " + aN.error.message
       );
@@ -597,12 +597,12 @@ class songManagerClass {
         if (aR) {
           if (T == 0) {
             aH.hide();
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "Song Database",
               "Song Lyrics imported to the Song Database complete."
             );
             if (!isUpToDate()) {
-              rvw.ui.Dialog.show("Songs", "Imported song database");
+              rvw.ui.Toast.show("Songs", "Imported song database");
               task1Complete();
               checkVerUpdateFlags();
             }
@@ -620,12 +620,12 @@ class songManagerClass {
           F();
           at();
           if (aR) {
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "Song Database",
               "Song Lyrics imported to the Song Database"
             );
           } else {
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "Song Database",
               'Song "' + m + '" added to the Song Database.'
             );
@@ -640,7 +640,7 @@ class songManagerClass {
         T--;
         aP.removeEventListener(air.SQLEvent.RESULT, aO);
         aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "ADD EDIT Song",
           "Failed to update song database.  Error message:" + aU.error.message
         );
@@ -649,7 +649,7 @@ class songManagerClass {
           if (aT == 2) {
             vvConfigObj.set_songDBVersion(1);
             vvConfigObj.save();
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "ADD EDIT Song",
               "Failed to update song database. Please restart VerseVIEW Error message:" +
               aU.error.message
@@ -695,7 +695,7 @@ class songManagerClass {
         C();
         F();
         at();
-        rvw.ui.Dialog.show("Song Database", 'Song "' + m + '" updated.');
+        rvw.ui.Toast.show("Song Database", 'Song "' + m + '" updated.');
       }
       function aQ(aS) {
         aO.removeEventListener(air.SQLEvent.RESULT, aP);
@@ -821,7 +821,7 @@ class songManagerClass {
         sqlRes = sqlQuery.getResult();
         if (aQ === SEARCH_TAGS && sqlRes.data == null) {
           removeTag(aP);
-          rvw.ui.Dialog.show("Song Tag Search", "No matching tag");
+          rvw.ui.Toast.show("Song Tag Search", "No matching tag");
         } else {
           if (aP.length > 2) {
             wordbrain.findRecordBy_wordin(aP);
@@ -950,7 +950,7 @@ class songManagerClass {
       function aO(aR) {
         __debug("Succesfuly got all data from Original Song DB and inserted");
         if (!isUpToDate()) {
-          rvw.ui.Dialog.show("Songs", "Updated song database");
+          rvw.ui.Toast.show("Songs", "Updated song database");
           task1Complete();
           checkVerUpdateFlags();
         }
@@ -963,7 +963,7 @@ class songManagerClass {
         __debug("UPDATE error:" + aR.error);
         __debug("event.error.code:" + aR.error.code);
         __debug("event.error.message:" + aR.error.message);
-        rvw.ui.Dialog.show("Song Manager", "Song DB updater data error...");
+        rvw.ui.Toast.show("Song Manager", "Song DB updater data error...");
       }
     }
     function ag() {

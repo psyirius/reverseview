@@ -393,7 +393,7 @@ class songNavClass {
         var ap = 'Do you want to delete ALL songs from "' + an + '" category?';
         rvw.ui.Prompt.exec(am, ap, al);
       } else {
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "Song Database",
           "Can not delete the _ALL category. Please select a specific category."
         );
@@ -626,13 +626,13 @@ class songNavClass {
       am.addEventListener(air.IOErrorEvent.IO_ERROR, ao);
       am.copyToAsync(al, true);
       function an(ar) {
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "Song Database",
           'Song database saved to Desktop under the "vvexport" folder'
         );
       }
       function ao(ar) {
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "Song Database",
           "Unable to save the song database to the Desktop"
         );

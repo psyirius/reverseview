@@ -32,7 +32,7 @@ function chordsImporExportClass() {
   function q() {
     var x = chordsDatabaseObj.getExportChords();
     if (x.data == null) {
-      rvw.ui.Dialog.show("Chords Database", "No user added chords to export");
+      rvw.ui.Toast.show("Chords Database", "No user added chords to export");
       return false;
     }
     k("Number of chords to export: " + x.data.length);
@@ -102,7 +102,7 @@ function chordsImporExportClass() {
     y.writeMultiByte(w, "utf-8");
     y.close();
     function z() {
-      rvw.ui.Dialog.show(
+      rvw.ui.Toast.show(
         "Chords Database",
         "Exported to " + A + " under vvexport folder on the Desktop."
       );

@@ -103,10 +103,10 @@ function manageNotes() {
     var W = S(X);
     var ab = W.filename;
     if (ab == "defaultnotes.db") {
-      rvw.ui.Dialog.show("Bible Notes", "The Default Notes file can not be deleted.");
+      rvw.ui.Toast.show("Bible Notes", "The Default Notes file can not be deleted.");
     } else {
       if (ab == d) {
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "Bible Notes",
           ab + " is the active notes file and can not be deleted."
         );
@@ -120,9 +120,9 @@ function manageNotes() {
           var ae = air.File.applicationStorageDirectory.resolvePath(ab);
           try {
             ae.deleteFile();
-            rvw.ui.Dialog.show("Bible Notes", "Deleted Notes file " + ab);
+            rvw.ui.Toast.show("Bible Notes", "Deleted Notes file " + ab);
           } catch (ad) {
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "Bible Notes",
               " Please restart VerseVIEW to update the notes list"
             );
@@ -143,7 +143,7 @@ function manageNotes() {
       Z = Z.resolvePath(aa);
       Y.copyTo(Z, true);
       Y = null;
-      rvw.ui.Dialog.show("Bible Notes", "Notes Database Added to VerseVIEW");
+      rvw.ui.Toast.show("Bible Notes", "Notes Database Added to VerseVIEW");
       var ab = new notesInfo();
       ab.init(ac);
     }
@@ -169,13 +169,13 @@ function manageNotes() {
     Z.addEventListener(air.IOErrorEvent.IO_ERROR, W);
     Z.copyToAsync(af, true);
     function aa(ah) {
-      rvw.ui.Dialog.show(
+      rvw.ui.Toast.show(
         "Bible Notes",
         "Notes file " + Y + ' saved to Desktop under the "vvexport" folder'
       );
     }
     function W(ah) {
-      rvw.ui.Dialog.show("Bible Notes", "Unable to save Notes to Desktop");
+      rvw.ui.Toast.show("Bible Notes", "Unable to save Notes to Desktop");
     }
   }
   function T() {
@@ -218,7 +218,7 @@ function manageNotes() {
       D = false;
       x();
     } else {
-      rvw.ui.Dialog.show("Bible Notes", "Invalid Notes name.");
+      rvw.ui.Toast.show("Bible Notes", "Invalid Notes name.");
     }
   }
   function c() {
@@ -482,7 +482,7 @@ function manageNotes() {
     function aa(ac) {
       Y.removeEventListener(air.SQLEvent.RESULT, W);
       Y.removeEventListener(air.SQLErrorEvent.ERROR, aa);
-      rvw.ui.Dialog.show("Bible Notes", "Error Updating Selected");
+      rvw.ui.Toast.show("Bible Notes", "Error Updating Selected");
       air.trace("event.error.code:", ac.error.code);
       air.trace("event.error.message:", ac.error.message);
     }

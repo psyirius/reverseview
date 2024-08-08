@@ -161,7 +161,7 @@ class remoteVV_UI_Class {
               e();
             }
           } else {
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "Remote VerseVIEW",
               "Port Number: Out of Range. Valid range is 49152 to 65535."
             );
@@ -169,7 +169,7 @@ class remoteVV_UI_Class {
             e();
           }
         } else {
-          rvw.ui.Dialog.show(
+          rvw.ui.Toast.show(
             "Remote VerseVIEW",
             "Invalid Port Number. Valid range is 49152 to 65535."
           );

@@ -253,7 +253,7 @@ function deleteVersion() {
     c.deleteFile();
   } catch (f) {
     g = false;
-    rvw.ui.Dialog.show(
+    rvw.ui.Toast.show(
       "Bible Version",
       "Database in use. Please restart VerseVIEW and try deleting again."
     );
@@ -291,7 +291,7 @@ function deleteVersionConfirm() {
   var a = document.getElementById("selectVersionList").selectedIndex;
   var b = document.getElementById("selectVersionList").options[a].value;
   if (b == vvConfigObj.get_version1() || b == vvConfigObj.get_version2()) {
-    rvw.ui.Dialog.show(
+    rvw.ui.Toast.show(
       "Manage Bible Database",
       "Can not delete the primary and seconday version."
     );
@@ -332,18 +332,18 @@ function loadVersion(d) {
   var b = new air.File(d);
   var c = b.extension.toLowerCase();
   if (c != "db") {
-    rvw.ui.Dialog.show("Bible Database", "Invalid VerseVIEW file.");
+    rvw.ui.Toast.show("Bible Database", "Invalid VerseVIEW file.");
     return false;
   }
   var k = b.exists;
   if (!k) {
-    rvw.ui.Dialog.show("Bible Database", "File does not exists.");
+    rvw.ui.Toast.show("Bible Database", "File does not exists.");
     return false;
   }
   var a = bibleVersionArray[vvConfigObj.get_version1()][1];
   var f = bibleVersionArray[vvConfigObj.get_version2()][1];
   if (e == a || e == f) {
-    rvw.ui.Dialog.show(
+    rvw.ui.Toast.show(
       "Manage Bible Database",
       "Bible database in use. Can not UPDATE the primary and seconday version. <br> Go to Bible > Select Version and select another Bible database and then update " +
         e +
@@ -369,7 +369,7 @@ function loadVersion(d) {
         }
       }, 200);
     } else {
-      rvw.ui.Dialog.show("Bible Database", "File not VerseVIEW database");
+      rvw.ui.Toast.show("Bible Database", "File not VerseVIEW database");
     }
   }
 }
@@ -529,10 +529,10 @@ function addFontVersionBibleOK() {
   var a = bibleVersionArray[g][2].split(",");
   var f = $.inArray(b, a);
   if (f == -1) {
-    rvw.ui.Dialog.show("Adding new font: " + b);
+    rvw.ui.Toast.show("Adding new font: " + b);
     bibleVersionArray[g][2] = bibleVersionArray[g][2] + "," + b;
   } else {
-    rvw.ui.Dialog.show("Font " + b + " already available");
+    rvw.ui.Toast.show("Font " + b + " already available");
   }
   updateVersionDetails();
   hideFontVersionBox();

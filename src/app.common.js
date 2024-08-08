@@ -60,14 +60,14 @@ function backupWebroot() {
         c.moveTo(a, true);
         return true;
       } catch (b) {
-        rvw.ui.Dialog.show(
+        rvw.ui.Toast.show(
           "Creating Webroot Backup",
           b.message + " Files in use by another application"
         );
         return false;
       }
     } else {
-      rvw.ui.Dialog.show("Creating Webroot Backup", "Backup already exists.");
+      rvw.ui.Toast.show("Creating Webroot Backup", "Backup already exists.");
       return true;
     }
   } else {

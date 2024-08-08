@@ -46,7 +46,7 @@ function processNavBibleRef() {
       }
     }, queryCheckInterval);
   } else {
-    rvw.ui.Dialog.show("Bible Reference", bibleRefObj.getErrorMessage());
+    rvw.ui.Toast.show("Bible Reference", bibleRefObj.getErrorMessage());
   }
 }
 function processNavBibleRefFind() {
@@ -60,7 +60,7 @@ function processNavBibleRefFind() {
     scroll_to_view = true;
     highlightVerse(a - 1);
   } else {
-    rvw.ui.Dialog.show("Bible Reference", bibleRefObj.getErrorMessage());
+    rvw.ui.Toast.show("Bible Reference", bibleRefObj.getErrorMessage());
   }
 }
 function setBookChVer(a, e, d) {

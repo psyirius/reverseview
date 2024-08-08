@@ -100,7 +100,7 @@ class RvwConfig {
                 this.save();
                 this.load(callback, retry + 1);
               } else {
-                rvw.ui.Dialog.show(
+                rvw.ui.Toast.show(
                   "ReVerseVIEW",
                   "Error parsing ReVerseVIEW config. Please restart VerseVIEW."
                 );
@@ -108,7 +108,7 @@ class RvwConfig {
             }
           },
           failure: (x, o) => {
-            rvw.ui.Dialog.show(
+            rvw.ui.Toast.show(
               "VerseVIEW",
               "Error loading VerseVIEW database. Please restart VerseVIEW."
             );

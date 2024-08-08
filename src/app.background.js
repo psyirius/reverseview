@@ -127,7 +127,7 @@ bkgnd = {
       b.push(new air.FileFilter("VerseVIEW Background", "*.jpg"));
       bkgnd.newBkgndFile.browseForOpen("Select Background", b);
     } else {
-      rvw.ui.Dialog.show(
+      rvw.ui.Toast.show(
         "Background Graphics",
         "VerseVIEW supports a maximum of 50 backgrounds. Please delete backgrounds to add new ones."
       );
@@ -158,7 +158,7 @@ bkgnd = {
       save2file(g, l, false);
       bkgnd.fill();
     } else {
-      rvw.ui.Dialog.show("Background Graphics", "Background already exists.");
+      rvw.ui.Toast.show("Background Graphics", "Background already exists.");
     }
   },
   generateBkgndXML: function () {

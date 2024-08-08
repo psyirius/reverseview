@@ -121,7 +121,7 @@ function chordsManagerClass() {
         s.additional = u[w].getElementsByTagName("preferredkey")[0].textContent;
         chordsDatabaseObj.addRecord(s);
       }
-      rvw.ui.Dialog.show("Chords Import", "Imported " + q + " chords to the database.");
+      rvw.ui.Toast.show("Chords Import", "Imported " + q + " chords to the database.");
     }
   }
   function k(m, n) {
@@ -164,7 +164,7 @@ function chordsManagerClass() {
     }
   }
   function c(n) {
-    rvw.ui.Dialog.show("Chords", n);
+    rvw.ui.Toast.show("Chords", n);
   }
   function h(p) {
     var m = "";

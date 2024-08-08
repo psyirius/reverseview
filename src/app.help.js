@@ -1,6 +1,6 @@
 class RvwHelp {
   constructor(bodyTemplate) {
-    $Y.Handlebars.compile(bodyTemplate);
+    // $Y.Handlebars.compile(bodyTemplate);
 
     this.m_body = bodyTemplate /*$Y.Handlebars.compile(bodyTemplate)({
       app: {

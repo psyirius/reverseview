@@ -6,9 +6,16 @@
 
     <title>ReVerseVIEW</title>
 
+    <!-- ****************************************** Style Libraries ************************************************ -->
+
     <!-- YUI3 reset and fonts -->
     <link rel="stylesheet" type="text/css" href="lib/yui3/3.18.1/cssreset/cssreset-min.css"/>
     <link rel="stylesheet" type="text/css" href="lib/yui3/3.18.1/cssfonts/cssfonts-min.css"/>
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="css/app.main.css">
+
+    <!-- *************************************** Javascript Libraries ********************************************** -->
 
     <!-- YUI3 -->
     <script type="text/javascript" src="lib/yui3/3.18.1/yui/yui-min.js"></script>
@@ -24,8 +31,8 @@
         'app',
 
         // test
-        'test',
-        'test-console',
+        // 'test',
+        // 'test-console',
 
         // dom
         'node',
@@ -68,15 +75,15 @@
 
         // templating
         'escape',
-        'handlebars',
+        // 'handlebars',
 
         // ...
-        'event-focus',
-        'model',
-        'model-list',
-        'view',
-        'stylesheet',
-        'slider',
+        // 'event-focus',
+        // 'model',
+        // 'model-list',
+        // 'view',
+        // 'stylesheet',
+        // 'slider',
 
         // gallery (downloaded)
         // 'gallery-tipsy',
@@ -135,27 +142,41 @@
     <script type="text/javascript" src="lib/yui2/datatable/datatable-min.js"></script>
     <script type="text/javascript" src="lib/yui2/paginator/paginator-min.js"></script>
 
-    <!-- support libraries: air (AS3) -->
+    <!---------------------------------------------- 1st-party libraries ---------------------------------------------->
+
+    <!-- Air libraries (AS3) -->
     <script type="application/x-shockwave-flash" src="lib/air/aircore.swf"></script>
     <script type="application/x-shockwave-flash" src="lib/air/servicemonitor.swf"></script>
-    <!--    <script type="application/x-shockwave-flash" src="./libs/custom/library.swf"></script>-->
+<!--    <script type="application/x-shockwave-flash" src="libs/custom/library.swf"></script>-->
 
-    <!-- support libraries: Air -->
+    <!-- Air libraries (JS) -->
     <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
     <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
     <script type="text/javascript" src="lib/air/AIRMenuBuilder.js"></script>
+    <script type="text/javascript" src="lib/air/AIRLocalizer.js"></script>
+    <script type="text/javascript" src="lib/air/AIRSourceViewer.js"></script>
 
-    <!-- external library: jQuery -->
+    <!---------------------------------------------- 3rd-party libraries ---------------------------------------------->
+
+    <!-- dojo: Module loader (AMD) -->
+    <script type="text/javascript" src="lib/dojo/1.17.3/dojo/dojo.js"></script>
+
+    <!-- jQuery: dom manipulation -->
     <script type="text/javascript" src="lib/jquery/jquery-3.7.1.min.js"></script>
+
+    <!-------------------------------------------------- App scripts -------------------------------------------------->
 
     <!-- ReVerseVIEW library -->
     <script type="text/javascript" src="js/__preload__.js"></script>
 
+    <!-- app entrypoint (loaded with dojo) -->
+    <script type="text/javascript" src="js/app.boot.js"></script>
+
     <script type="text/javascript" src="js/app.preferences.js"></script>
     <script type="text/javascript" src="js/app.splash.js"></script>
-    <script type="text/javascript" src="js/app.dialog.js"></script>
     <script type="text/javascript" src="js/app.prompt.js"></script>
-    <!--    <script type="text/javascript" src="js/app.overlay.js"></script>-->
+    <script type="text/javascript" src="js/app.toast.js"></script>
+    <script type="text/javascript" src="js/app.overlay.js"></script>
     <script type="text/javascript" src="js/app.background.js"></script>
     <script type="text/javascript" src="js/app.common.js"></script>
     <script type="text/javascript" src="js/app.config.js"></script>
@@ -268,13 +289,6 @@
     <div id="tooltip"></div>
     <!-- Modal::Tooltip::End -->
 
-    <!--<div class="ui mini modal">
-			<div class="header"><div id="dialogHeader"></div></div>
-			<div class="description"><div id="dialogMsg"style="padding:20px">Message</div></div>
-			<div class="actions">
-				<div class="ui black deny button">OK</div>
-			</div>
-		</div>-->
     <div class="modal" tabindex="-1" role="dialog" id="message">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -416,11 +430,13 @@
 <!--    </div>-->
     <!-- MenuBar::End -->
 
+    <!-- App::Content::Begin -->
     <div id="wrapper">
       <div id="container" class="tabContainer"></div>
       <div id="container2" class="verseContainer"></div>
       <div id="cleared"></div>
     </div>
+    <!-- App::Content::End -->
 
     <!-- Dialog box for Version Management -->
     <div id="versionManageDialog">
@@ -443,19 +459,6 @@
       <div class="bd"></div>
     </div>
 
-    <!-- Modal::Dialog::Begin -->
-    <div id="somemessage" class="ui black large compact message">
-      <i class="close icon"></i>
-      <div id="vvdialog_header" class="header"></div>
-      <p>
-        <span id="vvdialog_message"></span><br />
-        <button id="vvdialog_close" class="mini ui button">CLOSE</button>
-        <br />
-      </p>
-      <br />
-    </div>
-    <!-- Modal::Dialog::Begin -->
-
     <!-- Modal::Confirm::Begin -->
     <div id="confirm-panel"></div>
     <!-- Modal::Confirm::End -->
@@ -467,5 +470,9 @@
     <!-- Modal::Popover::Begin -->
     <div id="popover"></div>
     <!-- Modal::Popover::End -->
+
+    <!-- Modal::Toast::Begin -->
+    <div id="toast-container"></div>
+    <!-- Modal::Toast::End -->
   </body>
 </html>

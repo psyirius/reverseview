@@ -77,7 +77,7 @@ rvw.provide("rvw.store").Preferences = {
     init(file, callback) {
         const store = this.__Store.fromJSON(this.defaults(), (store) => {
             this.save(file, store, (err) => {
-                // TODO: Handle error
+                air.trace('Prefs::init: ' + err);
             });
         });
         this.save(file, store, (err) => {
@@ -93,9 +93,9 @@ rvw.provide("rvw.store").Preferences = {
             const data = prefsFS.readMultiByte(prefsFS.bytesAvailable, 'utf-8');
             prefsFS.close();
 
-            callback(null, this.__Store.fromJSON($Y.JSON.parse(data), (store) => {
+            callback(null, this.__Store.fromJSON(JSON.parse(data), (store) => {
                 this.save(file, store, (err) => {
-                    // TODO: Handle error
+                    air.trace('Prefs::load: ' + err);
                 });
             }));
         } catch (e) {
@@ -106,7 +106,7 @@ rvw.provide("rvw.store").Preferences = {
         try {
             const { FileStream, FileMode } = air;
 
-            const data = $Y.JSON.stringify(store.toJSON());
+            const data = JSON.stringify(store.toJSON());
 
             const prefsFS = new FileStream();
             prefsFS.open(file, FileMode.WRITE);
