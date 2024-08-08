@@ -77,7 +77,7 @@ class RvwConfig {
 
     /*
     * Loads preferences from config.xml file.
-    * */
+    */
     this.load = function(callback, retry = 0) {
       const { File } = air;
       const { applicationStorageDirectory: appStorageDir } = File;
