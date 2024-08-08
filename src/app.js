@@ -825,7 +825,7 @@ function vvinit_continue() {
     loadBibleVersion();
     loadSQLBible(vvConfigObj.get_version1(), 1);
     loadSQLBible(vvConfigObj.get_version2(), 2);
-    generateTabContent();
+    setupTabContent();
 
     rvw.window.Splash.close();
 
@@ -898,31 +898,32 @@ function setupTheme() {
   }
 }
 
-function generateTabContent() {
+function setupTabContent() {
   bibleVersionSelObj = new bibleVersionSelClass();
-  bibleVersionSelObj.init(loadTemplate("./content/setup_biblesel.html"));
+  bibleVersionSelObj.init(readAppFile("./views/setup_biblesel.html"));
 
   remoteVV_UI_Obj = new remoteVV_UI_Class();
-  remoteVV_UI_Obj.init(loadTemplate("./content/setup_remote.html"));
+  remoteVV_UI_Obj.init(readAppFile("./views/setup_remote.html"));
 
-  readTabContentFile("./content/bible_verses.html", "bibleverseTab");
-  readTabContentFile("./content/screens.html", "screenTab");
+  loadTabViewTemplate("./views/bible_verses.html", "bibleverseTab");
+  loadTabViewTemplate("./views/screens.html", "screenTab");
 
   updateVV_UI_Obj = new updateVV_UI_Class();
-  updateVV_UI_Obj.init(loadTemplate("./content/setup_update.html"));
+  updateVV_UI_Obj.init(readAppFile("./views/setup_update.html"));
 
-  readTabContentFile("./content/config.html", "configTab");
-  readTabContentFile("./content/nav.html", "navTab");
-  readTabContentFile("./content/search.html", "searchField");
-  readTabContentFile("./content/html.html", "notesTab");
-  readTabContentFile("./content/schedule.html", "scheduleTab");
-  readTabContentFile("./content/song_nav.html", "songNavTab");
-  readTabContentFile("./content/song_lyrics.html", "lyricsTab");
+  fillTabs('configTab');
+
+  loadTabViewTemplate("./views/nav.html", "navTab");
+  loadTabViewTemplate("./views/search.html", "searchField");
+  loadTabViewTemplate("./views/html.html", "notesTab");
+  loadTabViewTemplate("./views/schedule.html", "scheduleTab");
+  loadTabViewTemplate("./views/song_nav.html", "songNavTab");
+  loadTabViewTemplate("./views/song_lyrics.html", "lyricsTab");
 
   notesManageObj = new manageNotes();
   notesManageObj.init(firstTimeFlag);
 
-  notesObj = new notes(loadTemplate("./content/notesui.html"));
+  notesObj = new notes(readAppFile("./views/notesui.html"));
   notesObj.setNotesContainerID("notesPanelID");
 
   searchObj = new vvsearch("./bible/" + getVersion1Filename());
@@ -937,24 +938,24 @@ function generateTabContent() {
   songManagerObj = new songManagerClass();
   songManagerObj.init(true, true);
 
-  songEditObj = new SongEdit(loadTemplate("./content/song_edit.html"));
+  songEditObj = new SongEdit(readAppFile("./views/song_edit.html"));
 
   songNavObj = new songNavClass();
   songNavObj.init();
 
-  helpObj = new vvhelpClass(loadTemplate("./content/help.html"));
+  helpObj = new vvhelpClass(readAppFile("./views/help.html"));
 
   graphicsObj = new graphicsClass();
-  graphicsObj.init(loadTemplate("./content/graphics.html"));
+  graphicsObj.init(readAppFile("./views/graphics.html"));
 
   chordsNavObj = new chordsNavClass();
-  chordsNavObj.init(loadTemplate("./content/chords.html"));
+  chordsNavObj.init(readAppFile("./views/chords.html"));
 
   chordsEditObj = new chordsEditClass();
-  chordsEditObj.init(loadTemplate("./content/chords_edit.html"));
+  chordsEditObj.init(readAppFile("./views/chords_edit.html"));
 
   chordsKeyboard = new chordsVirtualKeyboard();
-  chordsKeyboard.init(loadTemplate("./content/chords_keyboard.html"));
+  chordsKeyboard.init(readAppFile("./views/chords_keyboard.html"));
 
   if (!isUpToDate() && task2Status() == false) {
     air.trace("About to copy webroot files...");
@@ -967,7 +968,7 @@ function generateTabContent() {
   }
 }
 
-function loadTemplate(path) {
+function readAppFile(path) {
   const { File, FileStream, FileMode } = air;
   const { applicationDirectory: appDir } = File;
 
@@ -981,21 +982,9 @@ function loadTemplate(path) {
   return data;
 }
 
-function readTabContentFile(a, b) {
-  var c;
-  c = new XMLHttpRequest();
-  c.onreadystatechange = function () {
-    if (c.readyState < 4) {
-    }
-    if (c.readyState == 4) {
-      if (b != "configTab") {
-        document.getElementById(b).innerHTML = c.responseText;
-      }
-      fillTabs(b);
-    }
-  };
-  c.open("GET", a, false);
-  c.send(null);
+function loadTabViewTemplate(filepath, mountPoint) {
+  document.getElementById(mountPoint).innerHTML = readAppFile(filepath);
+  fillTabs(mountPoint);
 }
 function fillTabs(a) {
   if (a == "navTab") {

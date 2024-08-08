@@ -1,5 +1,8 @@
 ### ReVerseVIEW - Rebirth of the old-school VerseVIEW
 
+### Notes
+- Typescript <5.5 is required for the project as 5.5 doesn't support ES3 target
+
 #### Run
 ```shell
 adl -nodebug ./application.xml ./app
