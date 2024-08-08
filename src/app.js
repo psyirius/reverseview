@@ -586,12 +586,12 @@ function updateRefMenu() {
   $("#book_name").text(e);
 }
 function highlightVerse(a) {
-  var b = "TC_" + previousSelVerse;
+  let b = "TC_" + previousSelVerse;
   document.getElementById(b).style.backgroundColor = "edf5ff";
-  var b = "TC_" + a;
+  b = "TC_" + a;
   document.getElementById(b).style.backgroundColor = highlightColor;
   previousSelVerse = a;
-  var c = "TC_" + a;
+  const c = "TC_" + a;
   if (scroll_to_view) {
     document.getElementById(c).scrollIntoView();
     scroll_to_view = false;

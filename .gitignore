@@ -28,3 +28,4 @@ dist/
 
 # downloadable libs
 /app/lib/yui3/*
+/app/lib/alloyui/*

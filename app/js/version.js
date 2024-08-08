@@ -565,7 +565,7 @@ function manageVersion() {
   versionManageDialog.show();
   versionManageDialog.setHeader("Bible Version Manager");
   versionManageDialog.setBody("");
-  readPanelContent("./views/version.html", "versionManageDialog");
+  readPanelContent("version", "versionManageDialog");
 }
 function processSingleVersion() {
   var a = document.getElementById("singleVersionBoxID").checked;

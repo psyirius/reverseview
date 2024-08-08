@@ -112,4 +112,13 @@ swfdump -abc ./app/lib/air/aircore.swf
 - https://github.com/evangoer/yui3-cookbook
 - https://github.com/charlypoly/generator-yui3
 - https://github.com/rockstar/yui3-nightly-tools
+- https://alloyui.com/
+- https://alloyui.com/api/
+- https://alloyui.com/rosetta-stone/
+- https://www.cdnpkg.com/alloy-ui
+- https://github.com/liferay/alloy-ui/archive/3.1.0-deprecated.86.zip
+- https://www.jsdelivr.com/package/npm/alloy-ui
+- https://cdn.jsdelivr.net/npm/alloy-ui@3.1.0-deprecated.83/build/aui/aui-min.min.js
+- https://cdn.jsdelivr.net/npm/alloy-ui@3.1.0-deprecated.83/build/resize-base/assets/skins/sam/resize-base.min.css
+- https://gander.wustl.edu/~wilson/store/yui/api/
 - https://github.com/liferay/liferay-frontend-projects/tree/master/third-party/projects/alloy-ui

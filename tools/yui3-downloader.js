@@ -3,11 +3,13 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 const yui3Version = '3.18.1';
+const alloyUIVersion = '3.1.0-deprecated.83';
 
 // const baseURL = 'https://yui-s.yahooapis.com/combo?';
 const baseURL = `http://yui.yahooapis.com/${yui3Version}/build`;
 // const baseURL = `https://cdnjs.cloudflare.com/ajax/libs/yui/${yui3Version}`;
-const galleryURL = `http://yui.yahooapis.com/combo?gallery-2014.07.31-18-26/build/`;
+const alloyUIBaseURL = `https://cdn.jsdelivr.net/npm/alloy-ui@${alloyUIVersion}/build`;
+// const galleryURL = `http://yui.yahooapis.com/combo?gallery-2014.07.31-18-26/build`;
 
 async function downloadModule(moduleName, extension = 'js', minified = true, filename = null) {
     try {
