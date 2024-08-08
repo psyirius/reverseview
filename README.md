@@ -118,6 +118,11 @@ swfdump -abc ./app/lib/air/aircore.swf
 - https://www.cdnpkg.com/alloy-ui
 - https://github.com/liferay/alloy-ui/archive/3.1.0-deprecated.86.zip
 - https://www.jsdelivr.com/package/npm/alloy-ui
+- https://github.com/jingoro/yui3-elastic-textarea
+- https://github.com/ericabouaf/yuitor
+- https://github.com/colorhook/yui-tween
+- https://github.com/tilomitra/tipsy
+- https://tilomitra.github.io/tipsy/
 - https://cdn.jsdelivr.net/npm/alloy-ui@3.1.0-deprecated.83/build/aui/aui-min.min.js
 - https://cdn.jsdelivr.net/npm/alloy-ui@3.1.0-deprecated.83/build/resize-base/assets/skins/sam/resize-base.min.css
 - https://gander.wustl.edu/~wilson/store/yui/api/

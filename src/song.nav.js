@@ -140,10 +140,13 @@ class songNavClass {
         .getElementById("songnav_tags")
         .addEventListener("change", ac, false);
       $("#songnav_filterbox").hide();
-      document
-        .getElementById("songAddScheduleButton")
-        .addEventListener("click", F, false);
-      document
+
+      // menubar
+      // document
+      // .getElementById("songAddScheduleButton")
+      // .addEventListener("click", F, false);
+      
+        document
         .getElementById("songnav_searchbutton")
         .addEventListener("click", e, false);
       document
@@ -464,22 +467,22 @@ class songNavClass {
       }
       document.getElementById("ly_copy").innerHTML = at.copyright;
       document.getElementById("ly_notes").innerHTML = at.notes;
-      var aG = true;
-      if (aG) {
-        if (at.yvideo != null && at.yvideo != "") {
-          B = at.yvideo;
-          document.getElementById("ytubeid").disabled = false;
-          $("#ytubeid").removeClass("disabled");
-          document.getElementById("ytubeid").addEventListener("click", ai, false);
-        } else {
-          B = null;
-          document
-            .getElementById("ytubeid")
-            .removeEventListener("click", ai, false);
-          document.getElementById("ytubeid").disabled = true;
-          $("#ytubeid").addClass("disabled");
-        }
-      }
+      // menubar 
+      // {
+      //   if (at.yvideo != null && at.yvideo != "") {
+      //     B = at.yvideo;
+      //     document.getElementById("ytubeid").disabled = false;
+      //     $("#ytubeid").removeClass("disabled");
+      //     document.getElementById("ytubeid").addEventListener("click", ai, false);
+      //   } else {
+      //     B = null;
+      //     document
+      //       .getElementById("ytubeid")
+      //       .removeEventListener("click", ai, false);
+      //     document.getElementById("ytubeid").disabled = true;
+      //     $("#ytubeid").addClass("disabled");
+      //   }
+      // }
       document.getElementById("ly_slide").style.fontFamily = at.font;
       var aC = at.slides2[0];
       if (aC == "") {

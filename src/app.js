@@ -759,6 +759,16 @@ function vvInit() {
     );
   }
 
+  {
+    // Register a {{{link}}} helper for creating HTML links.
+    $Y.Handlebars.registerHelper('link', function (text, url) {
+      text = $Y.Escape.html(text);
+      url  = $Y.Escape.html(url);
+
+      return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
+    });
+  }
+
   loadPreferences(() => {
     setupLeftTabFrame();
     setupRightTabFrame();
@@ -787,7 +797,7 @@ function vvinit_continue() {
 
   rvw.ui.Dialog.setup();
   rvw.ui.Prompt.setup();
-  
+
   // rvw.ui.Overlay.setup();
 
   setTimeout(function () {
@@ -943,7 +953,7 @@ function setupTabContent() {
   songNavObj = new songNavClass();
   songNavObj.init();
 
-  helpObj = new vvhelpClass(loadViewTemplate("help"));
+  helpObj = new RvwHelp(loadViewTemplate("help"));
 
   graphicsObj = new graphicsClass();
   graphicsObj.init(loadViewTemplate("graphics"));
@@ -1178,39 +1188,44 @@ function fillNav() {
   document
     .getElementById("nav_bibleRefID")
     .addEventListener("focus", bibleRefFocus, false);
-  $("#bibleAddScheduleButton").click(function () {
-    nav_addVerse2Schedule();
-  });
-  $("#icon_present").click(function () {
-    var d = getActiveTabLabel();
-    if (d == "Songs") {
-      songNavObj.sn_presentSong();
-    } else {
-      present();
-    }
-  });
-  $("#icon_blank").click(function () {
-    blankSlide();
-  });
-  $("#icon_theme").click(function () {
-    if (newWindow != null) {
-      newWindow.window.showThemeProcess();
-    }
-  });
-  $("#icon_logo").click(function () {
-    showLogoSlide();
-  });
-  $("#icon_close").click(function () {
-    closePresentWindowMain();
-  });
-  $("#icon_prev").click(function () {
-    call_prevSlide();
-  });
-  $("#icon_next").click(function () {
-    call_nextSlide();
-  });
+  // Menu bar buttons
+  // $("#icon_present").click(function () {
+  //   var d = getActiveTabLabel();
+  //   if (d == "Songs") {
+  //     songNavObj.sn_presentSong();
+  //   } else {
+  //     present();
+  //   }
+  // });
+  // $("#icon_blank").click(function () {
+  //   blankSlide();
+  // });
+  // $("#icon_theme").click(function () {
+  //   if (newWindow != null) {
+  //     newWindow.window.showThemeProcess();
+  //   }
+  // });
+  // $("#icon_logo").click(function () {
+  //   showLogoSlide();
+  // });
+  // $("#icon_close").click(function () {
+  //   closePresentWindowMain();
+  // });
+  // $("#icon_prev").click(function () {
+  //   call_prevSlide();
+  // });
+  // $("#icon_next").click(function () {
+  //   call_nextSlide();
+  // });
+
+  // conditionally disable nav buttons
+  // $("#bibleAddScheduleButton").click(function () {
+  //   nav_addVerse2Schedule();
+  // });
+  
   disableNavButtons(true);
   enterForSearchActive = true;
+  
   recent.init();
 }
 
@@ -1304,10 +1319,7 @@ function setupRightTabFrame() {
   const rti = rvwPreferences.get('app.state.rightTabActiveIndex', 0);
   tabview.selectChild(rti);
 
-  tabview.after('selectionChange', (e) => {
-    const currentTab = e.newVal;
-
-    // // for some perf fix
+  function menuBarSync(currentTab) {
     // switch (currentTab.get('index')) {
     //   case 0: {
     //     $("#lyrics_menu").hide();
@@ -1320,6 +1332,12 @@ function setupRightTabFrame() {
     //     break;
     //   }
     // }
+  }
+
+  tabview.after('selectionChange', (e) => {
+    const currentTab = e.newVal;
+
+    menuBarSync(currentTab);
 
     // TODO: figure out store base tab sync
     switch (currentTab.get('index')) {
@@ -1333,6 +1351,8 @@ function setupRightTabFrame() {
       }
     }
   });
+
+  menuBarSync(tabview.get('selection'));
 
   rightTabView = tabview;
 }

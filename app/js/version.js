@@ -142,20 +142,9 @@ function saveVersionSelection() {
   updateVerseContainer();
 }
 function readPanelContent(a) {
-  var b;
-  b = new XMLHttpRequest();
-  b.onreadystatechange = function () {
-    if (b.readyState < 4) {
-      versionManageDialog.setBody("Loading....");
-    }
-    if (b.readyState == 4) {
-      versionManageDialog.setBody(b.responseText);
-      fillVersionPanel();
-      hideFontVersionBox();
-    }
-  };
-  b.open("GET", a, false);
-  b.send(null);
+  versionManageDialog.setBody(loadViewTemplate(a));
+  fillVersionPanel();
+  hideFontVersionBox();
 }
 function fillVersionPanel() {
   document.getElementById("selectVersionList").width = 80;

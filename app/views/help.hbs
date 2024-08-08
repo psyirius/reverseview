@@ -1,11 +1,11 @@
 <div id="helpID" class="generalDIV">
-  <div class="generalheading2">About</div>
-  
-  <br/>
-
   <div class="generaltext">
-    <p>ReVerseVIEW v8.5.0</p><br/>
-    <p>http://reverseview.github.io</p><br/>
-    <div id="airVersionID"></div>
+    {{#with app}}
+      <p>{{name}} {{version}}</p>
+      <p>{{{link website.text website.url}}}</p>
+    {{/with}}
+    {{#with runtime}}
+      <p>{{name}} {{version}}</p>
+    {{/with}}
   </div>
 </div>

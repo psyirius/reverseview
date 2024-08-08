@@ -1,11 +1,24 @@
-class vvhelpClass {
-  constructor(bodyContent) {
-    this.m_body = bodyContent;
+class RvwHelp {
+  constructor(bodyTemplate) {
+    $Y.Handlebars.compile(bodyTemplate);
+
+    this.m_body = bodyTemplate /*$Y.Handlebars.compile(bodyTemplate)({
+      app: {
+        name: 'ReVerseVIEW',
+        version: '8.5.0',
+        website: {
+          text: "reverseview.github.io",
+          url : "https://reverseview.github.io"
+        },
+      },
+      runtime: {
+        name: 'Adobe Air',
+        version: air.NativeApplication.nativeApplication.runtimeVersion,
+      },
+    });*/
     this.m_panel = null;
 
     this._setup();
-
-    $("#airVersionID").html("Adobe AIR Version " + air.NativeApplication.nativeApplication.runtimeVersion);
   }
   
   _setup() {
@@ -21,9 +34,11 @@ class vvhelpClass {
     this.m_panel.setBody(this.m_body);
     this.m_panel.bringToTop();
   }
+
   show() {
     this.m_panel.show();
   }
+
   hide() {
     this.m_panel.hide();
   }
