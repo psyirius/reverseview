@@ -19,9 +19,9 @@ dist/
 !dist/.gitkeep
 
 # compiled js files (wip)
+/app/app.test.html
 /app/js/__*.js
 /app/js/app.js
-
 /app/js/app.*.js
 /app/js/song.*.js
 /app/js/network.*.js

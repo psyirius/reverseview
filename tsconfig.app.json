@@ -3,7 +3,6 @@
   "compilerOptions": {
     /* Language and Environment */
     "ignoreDeprecations": "5.0",
-
     "target": "ES3",
 //    "jsx": "react-jsx",
 //    "jsxImportSource": "@lib/zrx",
@@ -21,13 +20,19 @@
       "./types",
       "node_modules/@types"
     ],
-//    "allowUmdGlobalAccess": true,
+//    "lib": [
+//
+//    ],
+    "allowUmdGlobalAccess": true,
 
     /* JavaScript Support */
     "allowJs": true,
 
     /* Emit */
     "outDir": "./app/js",
+
+    /* Type Checking */
+//    "strict": true,
   },
   "include": [
     "./src/**/*.ts",
