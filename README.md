@@ -1,5 +1,35 @@
 ### ReVerseVIEW - Rebirth of the old-school VerseVIEW
 
+#### Run
+```shell
+adl -nodebug ./application.xml ./app
+```
+
+#### Run (Debug)
+```shell
+adl ./application.xml ./app
+```
+
+#### Dump SWF
+```shell
+swfdump -abc ./app/lib/air/aircore.swf
+```
+
+# SWF Info
+
+- aircore.swf
+  - air.net.ServiceMonitor
+  - air.net.URLMonitor
+  - air.net.SocketMonitor
+  - air.net.SecureSocketMonitor
+  - air.desktop.URLFilePromise
+
+- servicemonitor.swf
+  - air.net.ServiceMonitor
+  - air.net.URLMonitor
+  - air.net.SocketMonitor
+  - air.net.SecureSocketMonitor
+
 - HTML: 4.x
 - CSS: 2.x
 - JS: ES3 + parts of ES5
@@ -71,3 +101,12 @@
 - [ ] Strict mode
   - [ ] reserved words
   - [ ] ........
+
+### References
+- https://github.com/yui/yui3
+- https://github.com/yui/yui3-swfs
+- https://github.com/liferay/alloy-ui
+- https://github.com/evangoer/yui3-cookbook
+- https://github.com/charlypoly/generator-yui3
+- https://github.com/rockstar/yui3-nightly-tools
+- https://github.com/liferay/liferay-frontend-projects/tree/master/third-party/projects/alloy-ui
