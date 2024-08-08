@@ -82,7 +82,7 @@ class songNavClass {
         maxResults: 50, // TODO: make this dynamic
         sourceType: "function",
         source: (query, callback) => {
-          air.trace(`source: ${query}`);
+          __debug(`Query: ${query}`);
 
           m_suggestion_defer = new Deferred();
           m_suggestion_defer.then((data) => {

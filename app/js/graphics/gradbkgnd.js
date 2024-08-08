@@ -5,7 +5,7 @@ function gradBkgndColorClass() {
   var p;
   var n;
   var f;
-  var c = false;
+  var c = true;
   function q() {
     e();
     m();

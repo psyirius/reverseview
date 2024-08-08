@@ -20,7 +20,7 @@ function chordsVirtualKeyboard() {
   var k = false;
   var f = 0;
   var C = 0;
-  var d = false;
+  var d = true;
   var y = null;
   var r = false;
   function M(R) {

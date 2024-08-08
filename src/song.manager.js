@@ -27,7 +27,7 @@ class songManagerClass {
     this.getAllTitlesForWeb = aC;
     this.test2_updateRecords = G;
     this.test2_getOrgsonglist = B;
-    var m_isDebug = false;
+    var m_isDebug = true;
     var ax = false;
     var ad = "./song/default.db";
     var m_sqlConnection = null;

@@ -12,7 +12,7 @@ function schedule() {
   this.processDeleteAll = q;
   var M;
   var N = 0;
-  var C = false;
+  var C = true;
   var K = "./xml/schedule.db";
   var R;
   var E;

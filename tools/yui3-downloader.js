@@ -168,8 +168,15 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'anim-xy',
             'anim-curve',
             'anim-easing',
+            'slider-base',
+            'button-group',
+            'clickable-rail',
             'anim-node-plugin',
             'anim-scroll',
+            'stylesheet',
+            'range-slider',
+            'dd-constrain',
+            'slider-value-range',
             'autocomplete-list',
             'autocomplete-list-keys',
             'shim-plugin',
@@ -215,6 +222,9 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
         const modules = [
             ['widget-base', 'assets/skins/sam/widget-base.css'],
             ['widget-base', 'assets/skins/night/widget-base.css'],
+
+            ['slider-base', 'assets/skins/sam/slider-base.css'],
+            ['slider-base', 'assets/skins/night/slider-base.css'],
 
             ['tabview', 'assets/skins/sam/tabview.css'],
             ['tabview', 'assets/skins/night/tabview.css'],

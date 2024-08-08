@@ -36,7 +36,7 @@ function chordsNavClass() {
   var G;
   var I;
   var q;
-  var x = false;
+  var x = true;
   function ai(ap) {
     Q = ap;
     y("Initialize Chords Panel");

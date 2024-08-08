@@ -16,7 +16,7 @@ function vvbrain() {
   var C;
   var s;
   var m = null;
-  var v = false;
+  var v = true;
   function init() {
     a = false;
     d();

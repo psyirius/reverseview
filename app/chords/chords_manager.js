@@ -17,7 +17,7 @@ function chordsManagerClass() {
   this.updateChords = j;
   this.taskcomplete = k;
   var i = null;
-  var b = false;
+  var b = true;
   function l() {
     a("Initialize Chords Manager");
     chordsDatabaseObj = new chordsDatabaseClass();

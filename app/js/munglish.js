@@ -156,7 +156,7 @@ function valsonachanTransliteration() {
     "ou",
     "ri"
   );
-  var b = false;
+  var b = true;
   function j() {}
   function f(p) {
     var o = p.split(" ");

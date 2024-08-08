@@ -4,7 +4,7 @@ function chordsWebInterfaceClass() {
   var h = "";
   var b = 0;
   var d = null;
-  var a = false;
+  var a = true;
   function g(j) {
     h = "";
     b = 0;

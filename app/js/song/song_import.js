@@ -1,6 +1,6 @@
 function songImportClass() {
   this.init = q;
-  var o = false;
+  var o = true;
   var l = null;
   var p = null;
   var k = null;

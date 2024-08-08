@@ -59,7 +59,7 @@ var specialFontList = ["JC_Malayalam",
   "tamil",
   "Kerala"];
 var firstTime = true;
-var presentDebug = false;
+var presentDebug = true;
 function initPresentation() {
   debugPrintPresent("*** Init Presentation****");
   passVariable(0);

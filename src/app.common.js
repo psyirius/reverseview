@@ -258,7 +258,7 @@ function BibleReference() {
   var p = null;
   var e = null;
   var k = "";
-  var j = false;
+  var j = true;
   function o(u) {
     f = u;
     k = "";

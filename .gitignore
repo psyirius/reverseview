@@ -19,11 +19,12 @@ dist/
 !dist/.gitkeep
 
 # compiled js files (wip)
+/app/js/__*.js
 /app/js/app.js
+
 /app/js/app.*.js
 /app/js/song.*.js
-/app/js/__*.js
-/app/js/config.js
+/app/js/network.*.js
 
 # downloadable libs
 /app/lib/yui3/*

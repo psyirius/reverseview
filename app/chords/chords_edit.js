@@ -38,7 +38,7 @@ function chordsEditClass() {
   var u;
   var J;
   var a = true;
-  var B = false;
+  var B = true;
   function am(au) {
     R = au;
     G("Initialize Chords Edit Panel");

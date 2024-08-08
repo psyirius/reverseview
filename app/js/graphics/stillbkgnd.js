@@ -19,7 +19,7 @@ function bkgndClass() {
   var S = false;
   var k = false;
   var g = false;
-  var y = false;
+  var y = true;
   function O() {
     H();
     i();

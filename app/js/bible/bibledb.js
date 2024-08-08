@@ -49,7 +49,7 @@ function bibledb() {
   var x;
   var k = false;
   var O = 500;
-  var I = false;
+  var I = true;
   function L(ai) {
     if (I) {
       air.trace("[Bible Database]...." + ai);

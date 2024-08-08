@@ -37,7 +37,7 @@ function chordsObjClass() {
   var m = 0;
   var p = "";
   var b = "";
-  var o = false;
+  var o = true;
   function r() {
     l("Initialize Chords Object");
     n = "";
