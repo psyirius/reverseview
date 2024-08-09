@@ -5,9 +5,8 @@
     width: auto;
     max-width: 300px;
     margin: 10px; /* Default margin */
-    -webkit-user-select: none;
-       -moz-user-select: none;
-            user-select: none;
+    -ms-user-select: none;
+        user-select: none;
 }
 .yui3-toast-panel.center {
         top: 50%;
@@ -56,7 +55,6 @@
         border-radius: 0 0 3px 3px;
         font-family: Arial, sans-serif;
         font-size: 14px;
-        -webkit-user-select: text;
-           -moz-user-select: text;
-                user-select: text;
+        -ms-user-select: text;
+            user-select: text;
     }

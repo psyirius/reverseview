@@ -137,7 +137,7 @@ function chordsEditClass() {
   function ag() {
     var au = "Chords";
     var av = "Do you want to discard the edits?";
-    rvw.ui.Confirm.exec(au, av, h);
+    rvw.ui.Prompt.exec(au, av, h);
   }
   function h() {
     G("Close Edit chords...");
@@ -429,7 +429,7 @@ function chordsEditClass() {
   function g() {
     var au = "Chords";
     var av = "Do you want to clear the lyrics for this version?";
-    rvw.ui.Confirm.exec(au, av, q);
+    rvw.ui.Prompt.exec(au, av, q);
   }
   function q() {
     G("Clear chords");
@@ -445,7 +445,7 @@ function chordsEditClass() {
   function D() {
     var au = "Chords";
     var av = "Do you want to switch to Lyrics 1 for this progression?";
-    rvw.ui.Confirm.exec(au, av, aj);
+    rvw.ui.Prompt.exec(au, av, aj);
   }
   function aj() {
     G("Load Lyrics 1");
@@ -458,7 +458,7 @@ function chordsEditClass() {
   function C() {
     var au = "Chords";
     var av = "Do you want to switch to Lyrics 2 for this progression?";
-    rvw.ui.Confirm.exec(au, av, b);
+    rvw.ui.Prompt.exec(au, av, b);
   }
   function b() {
     G("Load Lyrics 2");

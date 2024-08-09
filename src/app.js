@@ -964,8 +964,7 @@ function setupTabContent() {
   graphicsObj = new graphicsClass();
   graphicsObj.init(loadViewTemplate("graphics"));
 
-  chordsNavObj = new chordsNavClass();
-  chordsNavObj.init(loadViewTemplate("chords"));
+  chordsNavObj = new ChordsNav(loadViewTemplate("chords"));
 
   chordsEditObj = new chordsEditClass();
   chordsEditObj.init(loadViewTemplate("chords_edit"));

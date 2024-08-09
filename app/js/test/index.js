@@ -1,9 +1,22 @@
-define(["require", "exports", "@lib/zrx/jsx-runtime", "jquery", "@lib/zrx/hooks"], function (require, exports, jsx_runtime_1, $, hooks_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "@lib/zrx/jsx-runtime", "jquery", "@lib/zrx/hooks"], factory);
+    }
+})(function (require, exports) {
     "use strict";
+    var __syncRequire = typeof module === "object" && typeof module.exports === "object";
     exports.__esModule = true;
+    var jsx_runtime_1 = require("@lib/zrx/jsx-runtime");
+    var $ = require("jquery");
     $(function () {
         // alert('jQuery ready');
+        air.trace('jQuery ready');
     });
+    var hooks_1 = require("@lib/zrx/hooks");
     var Counter = function () {
         var _a = (0, hooks_1.useState)(0), count = _a[0], setCount = _a[1];
         (0, hooks_1.useEffect)(function () {
@@ -30,7 +43,7 @@ define(["require", "exports", "@lib/zrx/jsx-runtime", "jquery", "@lib/zrx/hooks"
     /* ------------------------------------------------------------------------------------------------------------------ */
     // Dynamic import works with a polyfill of Promise
     window.__defineGetter__("Promise", function () { return $Y.Promise; });
-    new Promise(function (resolve_1, reject_1) { require(['./cfg'], resolve_1, reject_1); }).then(function (mod) {
+    (__syncRequire ? Promise.resolve().then(function () { return require('./cfg'); }) : new Promise(function (resolve_1, reject_1) { require(['./cfg'], resolve_1, reject_1); })).then(function (mod) {
         air.trace('cfg', mod["default"]);
     });
     air.trace('test/index.tsx');

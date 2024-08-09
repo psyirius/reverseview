@@ -1,0 +1,2 @@
+- [ ] Add a script to crete the preact es3 jsx runtime.
+- [ ] Check parcel if it can be used for bulding or as build tool

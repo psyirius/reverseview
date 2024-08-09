@@ -17,6 +17,22 @@
 
     <!-- *************************************** Javascript Libraries ********************************************** -->
 
+    <!---------------------------------------------- 1st-party libraries ---------------------------------------------->
+
+    <!-- Air libraries (AS3) -->
+    <script type="application/x-shockwave-flash" src="lib/air/aircore.swf"></script>
+    <script type="application/x-shockwave-flash" src="lib/air/servicemonitor.swf"></script>
+<!--    <script type="application/x-shockwave-flash" src="libs/custom/library.swf"></script>-->
+
+    <!-- Air libraries (JS) -->
+    <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
+    <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
+    <script type="text/javascript" src="lib/air/AIRMenuBuilder.js"></script>
+    <script type="text/javascript" src="lib/air/AIRLocalizer.js"></script>
+    <script type="text/javascript" src="lib/air/AIRSourceViewer.js"></script>
+
+    <!---------------------------------------------- 3rd-party libraries ---------------------------------------------->
+
     <!-- YUI3 -->
     <script type="text/javascript" src="lib/yui3/3.18.1/yui/yui-min.js"></script>
 
@@ -110,8 +126,8 @@
     </script>
 
     <!-- YUI2 standard reset and fonts -->
-<!--    <link rel="stylesheet" type="text/css" href="lib/yui2/reset/reset-min.css"/>-->
-<!--    <link rel="stylesheet" type="text/css" href="lib/yui2/fonts/fonts-min.css"/>-->
+    <!--    <link rel="stylesheet" type="text/css" href="lib/yui2/reset/reset-min.css"/>-->
+    <!--    <link rel="stylesheet" type="text/css" href="lib/yui2/fonts/fonts-min.css"/>-->
 
     <!-- YUI2 module themes -->
     <link rel="stylesheet" type="text/css" href="lib/yui2/button/assets/skins/sam/button.css"/>
@@ -142,22 +158,6 @@
     <script type="text/javascript" src="lib/yui2/datatable/datatable-min.js"></script>
     <script type="text/javascript" src="lib/yui2/paginator/paginator-min.js"></script>
 
-    <!---------------------------------------------- 1st-party libraries ---------------------------------------------->
-
-    <!-- Air libraries (AS3) -->
-    <script type="application/x-shockwave-flash" src="lib/air/aircore.swf"></script>
-    <script type="application/x-shockwave-flash" src="lib/air/servicemonitor.swf"></script>
-<!--    <script type="application/x-shockwave-flash" src="libs/custom/library.swf"></script>-->
-
-    <!-- Air libraries (JS) -->
-    <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
-    <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
-    <script type="text/javascript" src="lib/air/AIRMenuBuilder.js"></script>
-    <script type="text/javascript" src="lib/air/AIRLocalizer.js"></script>
-    <script type="text/javascript" src="lib/air/AIRSourceViewer.js"></script>
-
-    <!---------------------------------------------- 3rd-party libraries ---------------------------------------------->
-
     <!-- dojo: Module loader (AMD) -->
     <script type="text/javascript" src="lib/dojo/1.17.3/dojo/dojo.js"></script>
 
@@ -181,6 +181,7 @@
     <script type="text/javascript" src="js/app.common.js"></script>
     <script type="text/javascript" src="js/app.config.js"></script>
     <script type="text/javascript" src="js/app.help.js"></script>
+    <script type="text/javascript" src="js/app.checkupdate.js"></script>
 
     <script type="text/javascript" src="js/app.js"></script>
 
@@ -193,6 +194,7 @@
     <script type="text/javascript" src="js/bible/bibledb.js"></script>
     <script type="text/javascript" src="js/bible/bibledb_edit.js"></script>
     <script type="text/javascript" src="js/bible/bibledb_manager.js"></script>
+    <script type="text/javascript" src="js/bible.booknames.js"></script>
 
     <script type="text/javascript" src="js/graphics/graphics.js"></script>
     <script type="text/javascript" src="js/graphics/colorpicker.js"></script>
@@ -212,9 +214,7 @@
     <script type="text/javascript" src="js/schedule.js"></script>
     <script type="text/javascript" src="js/setup.js"></script>
     <script type="text/javascript" src="js/fonts.js"></script>
-    <script type="text/javascript" src="js/booknames.js"></script>
     <script type="text/javascript" src="js/munglish.js"></script>
-    <script type="text/javascript" src="js/checkupdate.js"></script>
 
     <script type="text/javascript" src="js/words/wordlearner.js"></script>
     <script type="text/javascript" src="js/words/vvbrain.js"></script>
@@ -225,25 +225,25 @@
     <script type="text/javascript" src="js/network.vvwebengine.js"></script>
     <script type="text/javascript" src="js/network.support.js"></script>
 
+    <script type="text/javascript" src="js/song.obj.js"></script>
     <script type="text/javascript" src="js/song.edit.js"></script>
     <script type="text/javascript" src="js/song.nav.js"></script>
     <script type="text/javascript" src="js/song.manager.js"></script>
-    <script type="text/javascript" src="js/song/song_present.js"></script>
-    <script type="text/javascript" src="js/song/songobj.js"></script>
-    <script type="text/javascript" src="js/song/song_lyrics.js"></script>
-    <script type="text/javascript" src="js/song/song_port_xml.js"></script>
-    <script type="text/javascript" src="js/song/song_import.js"></script>
-    <script type="text/javascript" src="js/song/song_updatedb.js"></script>
-    <script type="text/javascript" src="js/song/song_number.js"></script>
+    <script type="text/javascript" src="js/song.present.js"></script>
+    <script type="text/javascript" src="js/song.lyrics.js"></script>
+    <script type="text/javascript" src="js/song.port_xml.js"></script>
+    <script type="text/javascript" src="js/song.import.js"></script>
+    <script type="text/javascript" src="js/song.updatedb.js"></script>
+    <script type="text/javascript" src="js/song.number.js"></script>
 
-    <script type="text/javascript" src="chords/chords_database.js"></script>
-    <script type="text/javascript" src="chords/chords_manager.js"></script>
-    <script type="text/javascript" src="chords/chords_navigation.js"></script>
-    <script type="text/javascript" src="chords/chords_edit.js"></script>
-    <script type="text/javascript" src="chords/chords_object.js"></script>
-    <script type="text/javascript" src="chords/chords_import_export.js"></script>
-    <script type="text/javascript" src="chords/chords_webinterface.js"></script>
-    <script type="text/javascript" src="chords/chords_virtualkeyboard.js"></script>
+    <script type="text/javascript" src="js/chords.database.js"></script>
+    <script type="text/javascript" src="js/chords.manager.js"></script>
+    <script type="text/javascript" src="js/chords.navigation.js"></script>
+    <script type="text/javascript" src="js/chords.edit.js"></script>
+    <script type="text/javascript" src="js/chords.object.js"></script>
+    <script type="text/javascript" src="js/chords.import_export.js"></script>
+    <script type="text/javascript" src="js/chords.webinterface.js"></script>
+    <script type="text/javascript" src="js/chords.virtualkeyboard.js"></script>
 
     <script type="text/javascript" src="menu/menu.js"></script>
 
@@ -258,7 +258,9 @@
 
     <!-- !!! messing up preact -->
     <!-- Semantic UI -->
+    <!-- TODO: migrate and remove asap if not needed -->
     <link rel="stylesheet" type="text/css" href="lib/semantic/semantic.min.css" />
+    <!-- used for tab in chords panel -->
     <script type="text/javascript" src="lib/semantic/semantic.min.js"></script>
 
     <!-- library: jscolor -->

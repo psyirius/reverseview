@@ -14,16 +14,27 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Build cache (air packaging)
+.build
+
 # Artifact files
 dist/
 !dist/.gitkeep
 
+# Secrets
+keystores/
+!keystores/.gitkeep
+!keystores/README.md
+
 # compiled js files (wip)
 /app/app.test.html
+/app/js/lib
 /app/js/__*.js
 /app/js/app.js
 /app/js/app.*.js
 /app/js/song.*.js
+/app/js/bible.*.js
+/app/js/chords.*.js
 /app/js/network.*.js
 
 # downloadable libs

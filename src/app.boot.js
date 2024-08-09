@@ -21,8 +21,8 @@
             name: "jsx", location: "lib/jsx"
         }],
         paths: {
-            jquery: "../node_modules/jquery/dist/jquery.slim.min",
-            // jquery: "lib/jquery/jquery-3.7.1.min",
+            // jquery: "../node_modules/jquery/dist/jquery.slim.min",
+            jquery: "lib/jquery/jquery-3.7.1.min",
         },
         aliases: {},
         map: {}
