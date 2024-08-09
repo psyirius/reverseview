@@ -62,11 +62,16 @@ window.global = new Function("return this;").apply(null);
 
     const Y = YUI(config);
 
-    // checkModules(Y, modules);
+    checkModules(Y, modules);
 
     Y.use(...modules, function(Y) {
         global.$Y = Y;
+
         air.trace("YUI3 loaded");
+
+        if (typeof global.__yui3_loaded !== "undefined") {
+            global.__yui3_loaded.resolve(Y);
+        }
     });
 })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
 

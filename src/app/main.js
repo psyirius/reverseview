@@ -1497,7 +1497,7 @@ function getActiveTabLabel() {
 }
 
 // body: onload
-export function startup() {
+export function startup(Y) {
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     rvw.window.Splash.show();
@@ -1519,19 +1519,16 @@ export function startup() {
     //   });
     // }
 
-    // FIXME: hack to let YUI3 load first
-    setTimeout(() => {
-        loadPreferences(() => {
-            setupLeftTabFrame();
-            setupRightTabFrame();
+    loadPreferences(() => {
+        setupLeftTabFrame();
+        setupRightTabFrame();
 
-            $RvW.vvConfigObj = new RvwConfig();
-            $RvW.vvConfigObj.load(vvinit_continue);
+        $RvW.vvConfigObj = new RvwConfig();
+        $RvW.vvConfigObj.load(vvinit_continue);
 
-            $RvW.learner = new wordlearner();
+        $RvW.learner = new wordlearner();
 
-            $RvW.wordbrain = new vvbrain();
-            $RvW.wordbrain.init();
-        });
-    }, 500);
+        $RvW.wordbrain = new vvbrain();
+        $RvW.wordbrain.init();
+    });
 }
