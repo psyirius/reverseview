@@ -77,6 +77,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.9
         version: 3.4.9
+      teoria:
+        specifier: ^2.5.0
+        version: 2.5.0
       tslib:
         specifier: ^2.6.3
         version: 2.6.3
@@ -429,6 +432,9 @@ packages:
   '@types/yui@3.14.31':
     resolution: {integrity: sha512-zsaXWd7Z6epeYXbmK1UTPGK9E6ZobOlX5syYt7OOw+GTZvA2KPTTYNT09k5fTt6KsCvIadayeLhVSWMOCHm3RA==}
 
+  accidental-value@1.0.0:
+    resolution: {integrity: sha512-Dug400VXZ95UwXqoSjYa3kUvKSDfOtPQAOerbKY5Tk/9Kf3DW3+sYKJK5qv4//TIwIaG2r5xxRN55OwMxCsN7A==}
+
   ajv@8.17.1:
     resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
 
@@ -687,6 +693,9 @@ packages:
     resolution: {integrity: sha512-T6CEkoSV4q50zW3TlTHMbzy1E5+zlnNcY+yb7tWVYlTwPhx9LpnfAkd4wecpWknDyptp4k97LUZeInlf6jdzBg==}
     engines: {node: '>= 0.4'}
 
+  daccord@1.1.0:
+    resolution: {integrity: sha512-LMIBv6VNgcZqD5zQEPps5xT+EyrClJwCzJR9qWGhZ4SoWylPucqtiwIWm9Z7Yla90A017+408HXh6RS4o2qkgw==}
+
   debug@4.3.6:
     resolution: {integrity: sha512-O/09Bd4Z1fBrU4VzkhFqVgpPzaGbw6Sm9FEkBT1A/YBXQFGuuSxa1dN2nxgxS34JmKXqYx8CZAwEVoJFImUXIg==}
     engines: {node: '>=6.0'}
@@ -901,6 +910,9 @@ packages:
     engines: {node: '>=0.8.0'}
     deprecated: This module moved to @hapi/hawk. Please make sure to switch over as this distribution is no longer supported and may contain bugs and critical security issues.
 
+  helmholtz@2.0.2:
+    resolution: {integrity: sha512-0Pw0Z1W+SxObTKrdyKFZ6n3DV34aAyufdE9/hSRqqfb9q+myVgzlAyTUESr+eHTBX5pKsQgV5wlfexkM+wGnPg==}
+
   hoek@0.9.1:
     resolution: {integrity: sha512-ZZ6eGyzGjyMTmpSPYVECXy9uNfqBR7x5CavhUaLOeD6W0vWK1mp/b7O3f86XE0Mtfo9rZ6Bh3fnuw9Xr8MF9zA==}
     engines: {node: '>=0.8.0'}
@@ -931,6 +943,9 @@ packages:
 
   ini@1.3.8:
     resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
+
+  interval-coords@1.1.1:
+    resolution: {integrity: sha512-s7tB4gLonSlNpJ1bIzQUtdehpX7BjdCQnlBfKl6wXNo93/KIrum/DQdKOzbObjTrfYY4IwlRfJI7NZdFoRo0Qw==}
 
   is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
@@ -1102,6 +1117,9 @@ packages:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
 
+  notecoord@1.1.0:
+    resolution: {integrity: sha512-nMJ/uHG9AxMO5lZ0JBb17+T2eU5CbqChAfTJpC0SdvMzguvy4b2iIO7jhdoRdv+k19Nko7XGcmRCSeqd/aGVXA==}
+
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
@@ -1160,6 +1178,9 @@ packages:
   pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
+
+  pitch-fq@1.0.0:
+    resolution: {integrity: sha512-a2C3vxij0lxkY3yn7w0MmTiPdIgBuwv5kZPngIZJ2lOz7VGgNL/60liG88XHP3oX906QRGEpGkZCOEfm1OUc+g==}
 
   postcss-alias@2.0.0:
     resolution: {integrity: sha512-SzsjZdGaqVRql33315QLrhnNpNvvH2skp0hXpjzz+nYmaSwXSUjk4JADJRi7zUkwYyCXj41fy1go5MR3S9TDyg==}
@@ -1658,6 +1679,9 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
+  scientific-notation@1.0.2:
+    resolution: {integrity: sha512-F2HBoNIyQf1HSEJfQj/ycE3KLg/Hf74yACkzyZjvSYaiZ5pvqFjmPEvsp4CcudFUdKPCmVEWEZ5AyxHqBsiJRw==}
+
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
     engines: {node: '>=8'}
@@ -1762,6 +1786,9 @@ packages:
     resolution: {integrity: sha512-1SEOvRr6sSdV5IDf9iC+NU4dhwdqzF4zKKq3sAbasUWHEM6lsMhX+eNN5gkPx1BvLFEnZQEUFbXnGj8Qlp83Pg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
+
+  teoria@2.5.0:
+    resolution: {integrity: sha512-LdnDG2PKkYAdBWGBgqZS3POuwq3Kzwj4PBR4PzEsEQ8T/tGqwEoa++SLDxSx7mvsfYA2VirfJWSXhMcpuhquaQ==}
 
   thenby@1.3.4:
     resolution: {integrity: sha512-89Gi5raiWA3QZ4b2ePcEwswC3me9JIg+ToSgtE0JWeCynLnLxNr/f9G+xfo9K+Oj4AFdom8YNJjibIARTJmapQ==}
@@ -2194,6 +2221,8 @@ snapshots:
 
   '@types/yui@3.14.31': {}
 
+  accidental-value@1.0.0: {}
+
   ajv@8.17.1:
     dependencies:
       fast-deep-equal: 3.1.3
@@ -2473,6 +2502,8 @@ snapshots:
   ctype@0.5.3:
     optional: true
 
+  daccord@1.1.0: {}
+
   debug@4.3.6:
     dependencies:
       ms: 2.1.2
@@ -2678,6 +2709,11 @@ snapshots:
       sntp: 0.2.4
     optional: true
 
+  helmholtz@2.0.2:
+    dependencies:
+      accidental-value: 1.0.0
+      notecoord: 1.1.0
+
   hoek@0.9.1:
     optional: true
 
@@ -2702,6 +2738,8 @@ snapshots:
   imurmurhash@0.1.4: {}
 
   ini@1.3.8: {}
+
+  interval-coords@1.1.1: {}
 
   is-arrayish@0.2.1: {}
 
@@ -2829,6 +2867,8 @@ snapshots:
 
   normalize-range@0.1.2: {}
 
+  notecoord@1.1.0: {}
+
   nth-check@2.1.1:
     dependencies:
       boolbase: 1.0.0
@@ -2873,6 +2913,8 @@ snapshots:
   pify@2.3.0: {}
 
   pirates@4.0.6: {}
+
+  pitch-fq@1.0.0: {}
 
   postcss-alias@2.0.0:
     dependencies:
@@ -3407,6 +3449,11 @@ snapshots:
       immutable: 4.3.7
       source-map-js: 1.2.0
 
+  scientific-notation@1.0.2:
+    dependencies:
+      accidental-value: 1.0.0
+      notecoord: 1.1.0
+
   shebang-command@2.0.0:
     dependencies:
       shebang-regex: 3.0.0
@@ -3579,6 +3626,14 @@ snapshots:
       sucrase: 3.35.0
     transitivePeerDependencies:
       - ts-node
+
+  teoria@2.5.0:
+    dependencies:
+      daccord: 1.1.0
+      helmholtz: 2.0.2
+      interval-coords: 1.1.1
+      pitch-fq: 1.0.0
+      scientific-notation: 1.0.2
 
   thenby@1.3.4: {}
 

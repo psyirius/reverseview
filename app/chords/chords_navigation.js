@@ -780,6 +780,7 @@ function chordsNavClass() {
     return aw;
   }
   function ac(au, ar, ap) {
+    // TODO: find a better way to import teoria
     var aq = teoria.interval(teoria.note(ar), teoria.note(ap));
     var at;
     try {
