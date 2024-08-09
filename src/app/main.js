@@ -1,4 +1,6 @@
-// import SongEdit from './song.edit.js';
+// import SongEdit from '../song/edit.js';
+
+air.trace("Loaded rvw.js");
 
 // TODO:
 // - Export global functions to be used in other files
@@ -1231,7 +1233,6 @@ function setupLeftTabFrame() {
     tabview.after('selectionChange', (e) => {
         const currentTab = e.newVal;
 
-        // FIXME: find store base tab sync
         switch (currentTab.get('index')) {
             case 0: {
                 $RvW.rightTabView.selectChild(0);
@@ -1302,6 +1303,11 @@ function setupRightTabFrame() {
             case 1: {
                 $("#verses_menu").hide();
                 $("#lyrics_menu").show();
+                break;
+            }
+            default: {
+                $("#verses_menu").hide();
+                $("#lyrics_menu").hide();
                 break;
             }
         }
