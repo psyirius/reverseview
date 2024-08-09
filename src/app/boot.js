@@ -14,10 +14,10 @@
         locale: "en-us",
         baseUrl: "/js/",
         packages: [
-            // dojo
-            { name: "dojo", location: "lib/dojo" },
-            { name: "dijit", location: "lib/dijit" },
-            { name: "dojox", location: "lib/dojox" },
+            // dojo (use tools/dojo-downloader.js to cache)
+            { name: "dojo", location: "../lib/dojo" },
+            { name: "dijit", location: "../lib/dijit" },
+            { name: "dojox", location: "../lib/dojox" },
             // internal libs
             { name: "@lib", location: "lib" },
             // jsx
@@ -36,11 +36,11 @@
     air.trace('BOOTING!');
 
     // execute main
-    require(dojoConfig, ["app", 'dojo/dom', 'dojo/store', "dojo/Deferred"], (app, dom, store, Deferred) => {
+    require(dojoConfig, ["app", 'dojo/dom', 'dojo/query', "dojo/Deferred"], (app, dom, query, Deferred) => {
         air.trace('BOOTED!');
-        air.trace(app);
-        air.trace(dom.byId("root"));
-        air.trace(store);
-        air.trace(Deferred);
+        air.trace('app: ' + app);
+        air.trace('dom: ' + dom);
+        air.trace('query: ' + query("body"));
+        air.trace('Deferred: ' + Deferred);
     });
 })();
