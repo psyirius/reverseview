@@ -142,7 +142,6 @@ async function downloadModule(packageName = 'dojo', moduleName, extension = 'js'
     // dojox
     {
         const modules = [
-            // base
             ['dojox', 'collections.js'],
             ['dojox', 'color.js'],
             ['dojox', 'jq.js'],
@@ -162,64 +161,21 @@ async function downloadModule(packageName = 'dojo', moduleName, extension = 'js'
         }
     }
 
-    // // css modules
-    // {
-    //     const modules = [
-    //         'cssbase',
-    //         'cssfonts',
-    //         'cssgrids',
-    //         'cssreset',
-    //         'cssnormalize',
-    //
-    //         'cssbutton',
-    //         'app-transitions-css',
-    //     ];
-    //
-    //     for (const moduleName of modules) {
-    //         await downloadModule(moduleName, 'css', true);
-    //     }
-    // }
-    //
-    // // assets
-    // {
-    //     const modules = [
-    //         ['widget-base', 'assets/skins/sam/widget-base.css'],
-    //         ['widget-base', 'assets/skins/night/widget-base.css'],
-    //
-    //         ['slider-base', 'assets/skins/sam/slider-base.css'],
-    //         ['slider-base', 'assets/skins/night/slider-base.css'],
-    //
-    //         ['tabview', 'assets/skins/sam/tabview.css'],
-    //         ['tabview', 'assets/skins/night/tabview.css'],
-    //
-    //         ['widget-modality', 'assets/skins/sam/widget-modality.css'],
-    //         ['widget-modality', 'assets/skins/night/widget-modality.css'],
-    //
-    //         ['widget-stack', 'assets/skins/sam/widget-stack.css'],
-    //         ['widget-stack', 'assets/skins/night/widget-stack.css'],
-    //
-    //         ['panel', 'assets/skins/sam/panel.css'],
-    //         ['panel', 'assets/skins/night/panel.css'],
-    //
-    //         ['overlay', 'assets/skins/sam/overlay.css'],
-    //         ['overlay', 'assets/skins/night/overlay.css'],
-    //
-    //         ['console', 'assets/skins/sam/console.css'],
-    //         ['test-console', 'assets/skins/sam/test-console.css'],
-    //         ['console-filters', 'assets/skins/sam/console-filters.css'],
-    //
-    //         ['autocomplete-list', 'assets/skins/sam/autocomplete-list.css'],
-    //         ['autocomplete-list', 'assets/skins/night/autocomplete-list.css'],
-    //
-    //         ['console', 'lang/console.js'],
-    //         ['console', 'lang/console_en.js'],
-    //
-    //         ['autocomplete-list', 'lang/autocomplete-list.js'],
-    //         ['autocomplete-list', 'lang/autocomplete-list_en.js'],
-    //     ];
-    //
-    //     for (const [moduleName, filename] of modules) {
-    //         await downloadModule(moduleName, null, null, filename);
-    //     }
-    // }
+    // dijit
+    {
+        const modules = [
+            // base
+            ['dijit', 'dijit.js'],
+
+            // full
+            ['dijit', 'dijit-all.js'],
+
+            // individual modules
+            ['dijit', 'Editor.js'],
+        ];
+
+        for (const [moduleName, filename] of modules) {
+            await downloadModule('', moduleName, undefined, true, filename);
+        }
+    }
 })();

@@ -29,9 +29,14 @@ keystores/
 # compiled js files (wip)
 /app/app.test.html
 /app/js/
+/app/css/
+/app/*.js
+/app/*.css
 !/app/js/.gitkeep
 
 # downloadable libs
 /app/lib/yui3/*
 /app/lib/dojo/*
+/app/lib/dojox/*
+/app/lib/dijit/*
 /app/lib/alloyui/*

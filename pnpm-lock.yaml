@@ -50,6 +50,9 @@ importers:
       dojo:
         specifier: ^1.17.3
         version: 1.17.3
+      dojo-dstore:
+        specifier: ^1.2.1
+        version: 1.2.1
       dojox:
         specifier: ^1.17.3
         version: 1.17.3
@@ -816,6 +819,9 @@ packages:
 
   dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
+
+  dojo-dstore@1.2.1:
+    resolution: {integrity: sha512-xOgHXNGEdRn+cNvHK6Mf9gU07YPy8MXwZ74Nd7rKVMFxu0/uZOThGljWBdU3bJvhRMzI4IPVTTAOXv/FGGKC4g==}
 
   dojo@1.17.3:
     resolution: {integrity: sha512-iWDx1oSfCEDnIrs8cMW7Zh9Fbjgxu8iRagFz+Qi2eya3MXIAxFXKhv2A7dpi+bfpMpFozLwcsLV8URLw6BsHsA==}
@@ -2966,6 +2972,11 @@ snapshots:
       path-type: 4.0.0
 
   dlv@1.1.3: {}
+
+  dojo-dstore@1.2.1:
+    dependencies:
+      '@types/dojo': 1.9.48
+      dojo: 1.17.3
 
   dojo@1.17.3: {}
 
