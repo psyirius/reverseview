@@ -3,7 +3,7 @@ function setupVerseEditObject() {
   var d = getChapterValue();
   var c = getVerseValue();
   var a = getSingleVerse(b, d, c, 1);
-  editVerse_UI_Obj.setValue(b, d, c, a);
+  $RvW.editVerse_UI_Obj.setValue(b, d, c, a);
 }
 function editVerse_UI_Class() {
   this.init = n;
@@ -59,7 +59,7 @@ function editVerse_UI_Class() {
     $("#currentVerseRefDiv").html(r);
     $("#currentVerseTextDiv").html(l);
     $("#updatedVerseTextDiv").val(l);
-    var s = bibleVersionArray[vvConfigObj.get_version1()][6];
+    var s = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     $("#currentVerseTextDiv").css("font-family", s);
     $("#updatedVerseTextDiv").css("font-family", s);
   }

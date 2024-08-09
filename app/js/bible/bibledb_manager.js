@@ -7,9 +7,9 @@ function loadSQLBible(c, b) {
     c = 1;
     rvw.ui.Toast.show("Bible Database", "Please select the Bible translation of choice");
     if (b == 1) {
-      vvConfigObj.set_version1(1);
+      $RvW.vvConfigObj.set_version1(1);
     } else {
-      vvConfigObj.set_version2(1);
+      $RvW.vvConfigObj.set_version2(1);
     }
   }
   a = "./bible/" + bibleVersionArray[c][1];
@@ -18,19 +18,19 @@ function loadSQLBible(c, b) {
 function getdata(j) {
   var g = new Array();
   var f = new Array();
-  var e = bookIndex * 1 + 1;
-  var a = chapterIndex * 1 + 1;
+  var e = $RvW.bookIndex * 1 + 1;
+  var a = $RvW.chapterIndex * 1 + 1;
   vx = 1;
   var d = getVerseFromArray(e, a, vx);
-  var c = numofch[e][a];
+  var c = $RvW.numofch[e][a];
   if (j) {
     for (var b = 0; b < c; b++) {
       g.push(bibledbObj[1].getSingleVerseFromBuffer(d - 1));
       f.push(bibledbObj[2].getSingleVerseFromBuffer(d - 1));
       d++;
     }
-    content1 = g;
-    content2 = f;
+    $RvW.content1 = g;
+    $RvW.content2 = f;
     updateVerseContainer_continue();
   } else {
     var h = null;
@@ -42,8 +42,8 @@ function getdata(j) {
           f.push(bibledbObj[2].getSingleVerseFromBuffer(d - 1));
           d++;
         }
-        content1 = g;
-        content2 = f;
+        $RvW.content1 = g;
+        $RvW.content2 = f;
         updateVerseContainer_continue();
       } else {
       }
@@ -53,18 +53,18 @@ function getdata(j) {
 function getdataONLY() {
   var f = new Array();
   var d = new Array();
-  var g = bookIndex * 1 + 1;
-  var a = chapterIndex * 1 + 1;
+  var g = $RvW.bookIndex * 1 + 1;
+  var a = $RvW.chapterIndex * 1 + 1;
   vx = 1;
   var c = getVerseFromArray(g, a, vx);
-  var b = numofch[g][a];
+  var b = $RvW.numofch[g][a];
   for (var e = 0; e < b; e++) {
     f.push(bibledbObj[1].getSingleVerseFromBuffer(c - 1));
     d.push(bibledbObj[2].getSingleVerseFromBuffer(c - 1));
     c++;
   }
-  content1 = f;
-  content2 = d;
+  $RvW.content1 = f;
+  $RvW.content2 = d;
 }
 function getAllVersesFromChapter(d, k) {
   var h = new Array();
@@ -72,7 +72,7 @@ function getAllVersesFromChapter(d, k) {
   var a = k * 1 + 1;
   vx = 1;
   var f = getVerseFromArray(j, a, vx);
-  var e = numofch[j][a];
+  var e = $RvW.numofch[j][a];
   for (var g = 0; g < e; g++) {
     h.push(bibledbObj[1].getSingleVerseFromBuffer(f - 1));
     f++;
@@ -84,27 +84,27 @@ function getdata_sql() {
   var a = new Array();
   air.trace(
     "getdata_sql: Index in getdata  " +
-      bookIndex +
+      $RvW.bookIndex +
       " " +
-      chapterIndex +
+      $RvW.chapterIndex +
       " " +
-      verseIndex
+      $RvW.verseIndex
   );
-  bibledbObj[1].setBookNumber(bookIndex);
-  bibledbObj[1].setChapterNumber(chapterIndex);
-  bibledbObj[1].setVerseNumber(verseIndex);
-  bibledbObj[2].setBookNumber(bookIndex);
-  bibledbObj[2].setChapterNumber(chapterIndex);
-  bibledbObj[2].setVerseNumber(verseIndex);
+  bibledbObj[1].setBookNumber($RvW.bookIndex);
+  bibledbObj[1].setChapterNumber($RvW.chapterIndex);
+  bibledbObj[1].setVerseNumber($RvW.verseIndex);
+  bibledbObj[2].setBookNumber($RvW.bookIndex);
+  bibledbObj[2].setChapterNumber($RvW.chapterIndex);
+  bibledbObj[2].setVerseNumber($RvW.verseIndex);
   bibledbObj[1].getChapter();
   bibledbObj[2].getChapter();
   var c = null;
   c = setInterval(function () {
     if (bibledbObj[1].isDataReady() && bibledbObj[2].isDataReady()) {
       clearTimeout(c);
-      content1 = bibledbObj[1].getResultArray();
-      content2 = bibledbObj[2].getResultArray();
-      p_last_index = content1.length;
+      $RvW.content1 = bibledbObj[1].getResultArray();
+      $RvW.content2 = bibledbObj[2].getResultArray();
+      p_last_index = $RvW.content1.length;
       updateVerseContainer_continue();
     } else {
     }
@@ -131,7 +131,7 @@ function verseClass() {
     } else {
       e = true;
     }
-    var q = vvConfigObj.get_navFontSize() + "px";
+    var q = $RvW.vvConfigObj.get_navFontSize() + "px";
     document.getElementById(a).style.fontSize = q;
     document.getElementById(a).style.fontFamily = r;
     document.getElementById(a).innerHTML = '<a href="#">' + i + "</a>";
@@ -141,26 +141,26 @@ function verseClass() {
     document.getElementById(a).addEventListener("click", h, false);
   }
   function h() {
-    var n = bookIndex;
-    var m = chapterIndex;
-    var o = verseIndex;
-    bookIndex = l - 1;
-    chapterIndex = b - 1;
-    verseIndex = j - 1;
-    recent.addSelection(bookIndex, chapterIndex, verseIndex);
+    var n = $RvW.bookIndex;
+    var m = $RvW.chapterIndex;
+    var o = $RvW.verseIndex;
+    $RvW.bookIndex = l - 1;
+    $RvW.chapterIndex = b - 1;
+    $RvW.verseIndex = j - 1;
+    recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     getdata(true);
     p_footer = getFooter();
-    p_title = booknames[bookIndex] + " " + (chapterIndex + 1);
-    launch(verseIndex);
-    document.getElementById("verseList").selectedIndex = verseIndex;
+    p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+    launch($RvW.verseIndex);
+    document.getElementById("verseList").selectedIndex = $RvW.verseIndex;
     if (e) {
-      scroll_to_view = false;
-      highlightVerse(verseIndex);
+      $RvW.scroll_to_view = false;
+      highlightVerse($RvW.verseIndex);
     }
     disableNavButtons(false);
-    bookIndex = n;
-    chapterIndex = m;
-    verseIndex = o;
+    $RvW.bookIndex = n;
+    $RvW.chapterIndex = m;
+    $RvW.verseIndex = o;
     getdata(true);
   }
   function f() {
@@ -176,14 +176,14 @@ function getVerseFromArray(d, p, f) {
   var l = p;
   var o = f;
   for (var g = 1; g < n; g++) {
-    var m = numofch[g][0];
+    var m = $RvW.numofch[g][0];
     for (var e = 1; e <= m; e++) {
-      h += numofch[g][e];
+      h += $RvW.numofch[g][e];
     }
   }
-  var m = numofch[n][0];
+  var m = $RvW.numofch[n][0];
   for (var a = 1; a < l; a++) {
-    h += numofch[n][a];
+    h += $RvW.numofch[n][a];
   }
   h += o;
   return h;

@@ -38,16 +38,16 @@ function fillScreenList() {
       d
     );
   }
-  setScreenIndex(vvConfigObj.get_selectedScreenIndex(), f);
-  setStageScreenIndex(vvConfigObj.get_selectedStageScreenIndex(), f);
+  setScreenIndex($RvW.vvConfigObj.get_selectedScreenIndex(), f);
+  setStageScreenIndex($RvW.vvConfigObj.get_selectedStageScreenIndex(), f);
 }
 function getSelectedScreenIndex() {
   var a = document.getElementById("selectScreenID").selectedIndex;
-  vvConfigObj.set_selectedScreenIndex(a);
+  $RvW.vvConfigObj.set_selectedScreenIndex(a);
 }
 function getSelectedStageScreenIndex() {
   var a = document.getElementById("selectStageScreenID").selectedIndex;
-  vvConfigObj.set_selectedStageScreenIndex(a);
+  $RvW.vvConfigObj.set_selectedStageScreenIndex(a);
 }
 function setScreenIndex(a, b) {
   if (a < b) {
@@ -73,11 +73,11 @@ function addScreenSelectionEvent() {
 }
 function processScreenSelChange() {
   getSelectedScreenIndex();
-  vvConfigObj.save();
+  $RvW.vvConfigObj.save();
 }
 function processStageScreenSelChange() {
   getSelectedStageScreenIndex();
-  vvConfigObj.save();
+  $RvW.vvConfigObj.save();
 }
 function presentation() {
   stageView = $("#stageConfigEnable").is(":checked");
@@ -89,16 +89,16 @@ function presentation() {
   var j = air.Screen.screens;
   var c;
   var i;
-  stageViewScreenIndex = vvConfigObj.get_selectedStageScreenIndex();
+  stageViewScreenIndex = $RvW.vvConfigObj.get_selectedStageScreenIndex();
   if (j[stageViewScreenIndex] == null) {
     stageViewScreenIndex = 0;
-    vvConfigObj.set_selectedStageScreenIndex(stageViewScreenIndex);
+    $RvW.vvConfigObj.set_selectedStageScreenIndex(stageViewScreenIndex);
   }
   stageView = stageView && j[stageViewScreenIndex] != null;
-  var e = vvConfigObj.get_selectedScreenIndex();
+  var e = $RvW.vvConfigObj.get_selectedScreenIndex();
   if (j[e] == null) {
     e = 0;
-    vvConfigObj.set_selectedScreenIndex(e);
+    $RvW.vvConfigObj.set_selectedScreenIndex(e);
   }
   if (dualScreen && j[e] != null) {
     c = j[e].bounds;
@@ -120,7 +120,7 @@ function presentation() {
       presentWindowClosed
     );
     newWindow.window.nativeWindow.alwaysInFront =
-      vvConfigObj.get_presentationOnTop();
+      $RvW.vvConfigObj.get_presentationOnTop();
     newWindow.window.nativeWindow.stage.frameRate = 30;
     newWindow.load(new air.URLRequest("presentation.htm"));
     newWindow.window.iamclosingStage = function () {
@@ -142,7 +142,7 @@ function presentation() {
     };
     if (stageView) {
       var h = new air.NativeWindowInitOptions();
-      var a = vvConfigObj.get_svWindow();
+      var a = $RvW.vvConfigObj.get_svWindow();
       i = j[stageViewScreenIndex].bounds;
       if (a) {
         h.resizable = false;
@@ -214,7 +214,7 @@ function closePresentWindowMain() {
   if (presentWindowOpen) {
     newWindow.window.nativeWindow.close();
     newWindow = null;
-    if (!vvConfigObj.get_mainConfigEnable()) {
+    if (!$RvW.vvConfigObj.get_mainConfigEnable()) {
       presentWindowOpen = false;
     }
   }
@@ -254,22 +254,22 @@ function passVariable(o) {
   this.p_last_index = p_last_index;
   this.p_bkgnd_filename = p_bkgnd_filename;
   this.p_bkgnd_motion = p_bkgnd_motion;
-  this.p_bkgnd_color = vvConfigObj.get_p_solidBkgndColor();
+  this.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
   this.p_font_color = p_font_color;
   this.p_font_color2 = p_font_color2;
-  this.p_format_multiplelines = vvConfigObj.get_pformat_multiplelines();
+  this.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
   if (o == 1) {
     var f = $("#thirdview_fcolor").val();
-    this.p_font_color = colorChart[f];
-    this.p_font_color2 = colorChart[f];
+    this.p_font_color = $RvW.colorChart[f];
+    this.p_font_color2 = $RvW.colorChart[f];
   }
-  this.p_bkgnd_color1 = vvConfigObj.get_p_bkgnd_color1();
-  this.p_bkgnd_color2 = vvConfigObj.get_p_bkgnd_color2();
-  this.p_bkgnd_grad_orient = vvConfigObj.get_p_bkgnd_grad_orient();
-  this.p_motion_bkgnd_index = vvConfigObj.get_p_motion_bkgnd_index();
-  this.p_bkgnd_type = vvConfigObj.get_p_bkgnd_type();
+  this.p_bkgnd_color1 = $RvW.vvConfigObj.get_p_bkgnd_color1();
+  this.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
+  this.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
+  this.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
+  this.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
   if (o == 1) {
-    var v = vvConfigObj.get_stageStyleVal();
+    var v = $RvW.vvConfigObj.get_stageStyleVal();
     if (v != "3") {
       if (p_text_orientation == "2") {
         v = "2";
@@ -279,16 +279,16 @@ function passVariable(o) {
     var r = $("#thirdview_height").val();
     var s = $("#thirdview_primary").prop("checked");
     var l = $("#thirdview_secondary").prop("checked");
-    var g = vvConfigObj.get_svBcolor();
-    var p = vvConfigObj.get_svPosition();
-    var i = vvConfigObj.get_svMaxFontSize();
-    var d = vvConfigObj.get_svTextOutline();
-    var e = vvConfigObj.get_svTextShadow();
-    var c = vvConfigObj.get_svGreenWindow();
-    var n = vvConfigObj.get_svAlignLeft();
-    var k = vvConfigObj.get_svAlignCenter();
-    var q = vvConfigObj.get_svAddTexture();
-    var h = vvConfigObj.get_svShowHorizontal();
+    var g = $RvW.vvConfigObj.get_svBcolor();
+    var p = $RvW.vvConfigObj.get_svPosition();
+    var i = $RvW.vvConfigObj.get_svMaxFontSize();
+    var d = $RvW.vvConfigObj.get_svTextOutline();
+    var e = $RvW.vvConfigObj.get_svTextShadow();
+    var c = $RvW.vvConfigObj.get_svGreenWindow();
+    var n = $RvW.vvConfigObj.get_svAlignLeft();
+    var k = $RvW.vvConfigObj.get_svAlignCenter();
+    var q = $RvW.vvConfigObj.get_svAddTexture();
+    var h = $RvW.vvConfigObj.get_svShowHorizontal();
     var m =
       v +
       "|" +
@@ -298,7 +298,7 @@ function passVariable(o) {
       "|" +
       s +
       "|" +
-      colorChart[g] +
+      $RvW.colorChart[g] +
       "|" +
       p +
       "|" +
@@ -320,40 +320,40 @@ function passVariable(o) {
     this.p_window_X = stageViewWindowX;
     this.p_window_Y = stageViewWindowY;
   }
-  this.p_topMargin = vvConfigObj.get_p_topMargin();
-  this.p_bottomMargin = vvConfigObj.get_p_bottomMargin();
-  this.p_leftMargin = vvConfigObj.get_p_leftMargin();
-  this.p_rightMargin = vvConfigObj.get_p_rightMargin();
-  this.p_maxFontSize = vvConfigObj.get_p_maxFontSize();
-  this.p_enableTransition = vvConfigObj.get_p_enableTransition();
-  this.p_showTitle = vvConfigObj.get_p_showTitle();
-  this.p_enableShadow = vvConfigObj.get_p_enableShadow();
-  this.p_align = vvConfigObj.get_p_align();
-  if (vvConfigObj.get_showVVLogo()) {
+  this.p_topMargin = $RvW.vvConfigObj.get_p_topMargin();
+  this.p_bottomMargin = $RvW.vvConfigObj.get_p_bottomMargin();
+  this.p_leftMargin = $RvW.vvConfigObj.get_p_leftMargin();
+  this.p_rightMargin = $RvW.vvConfigObj.get_p_rightMargin();
+  this.p_maxFontSize = $RvW.vvConfigObj.get_p_maxFontSize();
+  this.p_enableTransition = $RvW.vvConfigObj.get_p_enableTransition();
+  this.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
+  this.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
+  this.p_align = $RvW.vvConfigObj.get_p_align();
+  if ($RvW.vvConfigObj.get_showVVLogo()) {
     this.p_logo = "ReVerseVIEW<br>reverseview.github.io";
   } else {
     this.p_logo =
-      vvConfigObj.get_logoText1() + "<br>" + vvConfigObj.get_logoText2();
+      $RvW.vvConfigObj.get_logoText1() + "<br>" + $RvW.vvConfigObj.get_logoText2();
   }
   if (o == 1) {
-    this.p_showDate = vvConfigObj.get_svShowDate();
+    this.p_showDate = $RvW.vvConfigObj.get_svShowDate();
   } else {
-    this.p_showDate = vvConfigObj.get_showDateTime();
+    this.p_showDate = $RvW.vvConfigObj.get_showDateTime();
   }
   this.p_showLogo =
-    vvConfigObj.get_showVVLogo() || vvConfigObj.get_showCustomLogo();
+    $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
   this.p_shadeBackground = graphicsObj.getShadeFlag();
   this.p_transparentBackground = graphicsObj.getTransparentFlag();
   this.p_ver1ScaleFactor = p_ver1ScaleFactor;
   this.p_ver2ScaleFactor = p_ver2ScaleFactor;
   this.p_isArabic1 = false;
   this.p_isArabic2 = false;
-  var t = bibleVersionArray[vvConfigObj.get_version1()][0];
+  var t = bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
   var u = t.indexOf("Arabic");
   if (u != -1) {
     this.p_isArabic1 = true;
   }
-  var t = bibleVersionArray[vvConfigObj.get_version2()][0];
+  var t = bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
   var u = t.indexOf("Arabic");
   if (u != -1) {
     this.p_isArabic2 = true;

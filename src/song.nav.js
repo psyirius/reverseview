@@ -181,17 +181,17 @@ class songNavClass {
       song_edit_menu();
     }
     function F() {
-      learner.finishLearning();
-      songNavObj.sn_add2schedule();
+      $RvW.learner.finishLearning();
+      $RvW.songNavObj.sn_add2schedule();
       showNotification("Added to schedule");
     }
     function r() {
-      songNavObj.sn_presentSong();
+      $RvW.songNavObj.sn_presentSong();
     }
     function I() {
-      if (chordsNavObj != null) {
-        chordsNavObj.setSongValues(y.name, y.slides, y.slides2);
-        chordsNavObj.showChordsPanelForSong(y.name, y.slides, y.slides2, 1);
+      if ($RvW.chordsNavObj != null) {
+        $RvW.chordsNavObj.setSongValues(y.name, y.slides, y.slides2);
+        $RvW.chordsNavObj.showChordsPanelForSong(y.name, y.slides, y.slides2, 1);
       }
     }
     function setFormats() {
@@ -211,7 +211,7 @@ class songNavClass {
       $("#songnav_editbox").val("");
       setTag2All();
       ag = false;
-      songManagerObj.getSongsFromCat(al);
+      $RvW.songManagerObj.getSongsFromCat(al);
     }
     function ac() {
       var am = $("#songnav_tags option:selected").text();
@@ -223,7 +223,7 @@ class songNavClass {
         clearTimeout(searchDelay);
         if (am != "ALL") {
           al = "%" + am + "%";
-          songManagerObj.searchRecords(al, SEARCH_TAGS);
+          $RvW.songManagerObj.searchRecords(al, SEARCH_TAGS);
         } else {
           i();
         }
@@ -231,11 +231,11 @@ class songNavClass {
       }, searchDelayTime);
     }
     function sn_newSong() {
-      songEditObj.showEditPanel(null, false, null);
+      $RvW.songEditObj.showEditPanel(null, false, null);
     }
     function sn_editSong() {
       __debug("Launch panel edit song..");
-      songEditObj.showEditPanel(y, true, a, ag);
+      $RvW.songEditObj.showEditPanel(y, true, a, ag);
     }
     function _loadSuggestions(sqlRes, category, searchMode) {
       m_keywords = [];
@@ -270,7 +270,7 @@ class songNavClass {
       }
     }
     function showSuggestedList() {
-      const an = wordbrain.getSuggestions();
+      const an = $RvW.wordbrain.getSuggestions();
       const all_sugg = an.concat(m_keywords);
 
       __debug("Suggested word - concatenated : " + all_sugg);
@@ -356,7 +356,7 @@ class songNavClass {
       document.getElementById("songnav_category").selectedIndex = 0;
     }
     function ab() {
-      y = songManagerObj.getSongObj(a, ag);
+      y = $RvW.songManagerObj.getSongObj(a, ag);
       J(y);
     }
     function sn_presentSong() {
@@ -384,7 +384,7 @@ class songNavClass {
         if (a != 0) {
           a = a - 1;
         }
-        songManagerObj.deleteSong(ao, ag);
+        $RvW.songManagerObj.deleteSong(ao, ag);
       }
     }
     function sn_deleteSongByCat() {
@@ -402,7 +402,7 @@ class songNavClass {
       }
       function al() {
         a = 0;
-        songManagerObj.deleteSongByCat(an);
+        $RvW.songManagerObj.deleteSongByCat(an);
       }
     }
     function sn_searchSong() {
@@ -414,11 +414,11 @@ class songNavClass {
         var al = document.getElementById("songnav_editbox").value;
         al = $.trim(al);
         if ($.isNumeric(al)) {
-          songManagerObj.searchRecords(al, SEARCH_SONGNUMBER);
+          $RvW.songManagerObj.searchRecords(al, SEARCH_SONGNUMBER);
         } else {
-          learner.addWord(al);
+          $RvW.learner.addWord(al);
           al = al + "%";
-          songManagerObj.searchRecords(al, SEARCH_TITLE);
+          $RvW.songManagerObj.searchRecords(al, SEARCH_TITLE);
         }
         searchDelay = null;
       }, searchDelayTime);
@@ -427,22 +427,22 @@ class songNavClass {
       var al = document.getElementById("songnav_editbox").value;
       al = $.trim(al);
       al = "%" + al + "%";
-      songManagerObj.searchRecords(al, SEARCH_LYRICS);
+      $RvW.songManagerObj.searchRecords(al, SEARCH_LYRICS);
     }
     function aj() {
       var al = document.getElementById("songnav_editbox").value;
       var am = "%" + al + "%";
-      songManagerObj.searchRecords(am, SEARCH_AUTHOR);
+      $RvW.songManagerObj.searchRecords(am, SEARCH_AUTHOR);
     }
     function i() {
       ag = false;
-      learner.cancelLearning();
+      $RvW.learner.cancelLearning();
       $("#songnav_editbox").val("");
       setTag2All();
       R();
     }
     function J(at) {
-      var az = vvConfigObj.get_navFontSize() + "px";
+      var az = $RvW.vvConfigObj.get_navFontSize() + "px";
       document.getElementById("ly_slide").style.fontSize = az;
       var an = at.name;
       if (at.catIndex == "VV Malayalam 2021" || at.catIndex == "VV Hindi 2021") {
@@ -451,7 +451,7 @@ class songNavClass {
       document.getElementById("ly_name").innerHTML = an;
       if (at.name2 != "null") {
         document.getElementById("ly_name2").innerHTML = at.name2;
-        var aF = specialFontList.indexOf(at.font);
+        var aF = $RvW.specialFontList.indexOf(at.font);
         if (aF == -1) {
           document.getElementById("ly_name2").style.fontFamily = at.font;
         } else {
@@ -584,19 +584,19 @@ class songNavClass {
     }
     function sn_showLyricsByID(al) {
       air.trace("show lyrics by ID called.. ");
-      y = songManagerObj.getSongObjWithID(al);
+      y = $RvW.songManagerObj.getSongObjWithID(al);
       air.trace("show lyrics by ID called.. " + y.name + "  " + a + "   " + b);
       J(y);
     }
     function q(al) {
       var an = document.getElementById(al.target.id).innerHTML;
       var am = "%" + an + "%";
-      songManagerObj.searchRecords(am, SEARCH_TAGS);
+      $RvW.songManagerObj.searchRecords(am, SEARCH_TAGS);
     }
     function ak(am) {
       var al = document.getElementById(am.target.id).innerHTML;
       var an = "%" + al + "%";
-      songManagerObj.searchRecords(an, SEARCH_AUTHOR);
+      $RvW.songManagerObj.searchRecords(an, SEARCH_AUTHOR);
     }
     function searchComplete(sqlRes, al) {
       __debug("Search Complete " + sqlRes);
@@ -641,8 +641,8 @@ class songNavClass {
       }
     }
     function sn_add2schedule() {
-      var al = songManagerObj.getSongID(a, ag);
-      scheduleObj.processAddSong(al);
+      var al = $RvW.songManagerObj.getSongID(a, ag);
+      $RvW.scheduleObj.processAddSong(al);
     }
     function ai() {
       var al = new air.URLRequest(B);

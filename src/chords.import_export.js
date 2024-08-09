@@ -1,10 +1,10 @@
 function importnew_chords() {
-  chordsImportExportObj.chimport();
+  $RvW.chordsImportExportObj.chimport();
 }
 function export_chords() {
   var a = 1;
-  chordsImportExportObj.configexport(a, "");
-  chordsImportExportObj.chexport();
+  $RvW.chordsImportExportObj.configexport(a, "");
+  $RvW.chordsImportExportObj.chexport();
 }
 function chordsImporExportClass() {
   this.init = p;
@@ -27,10 +27,10 @@ function chordsImporExportClass() {
   var m = true;
   function p() {}
   function j() {
-    chordsDatabaseObj.loadChordsForExport();
+    $RvW.chordsDatabaseObj.loadChordsForExport();
   }
   function q() {
-    var x = chordsDatabaseObj.getExportChords();
+    var x = $RvW.chordsDatabaseObj.getExportChords();
     if (x.data == null) {
       rvw.ui.Toast.show("Chords Database", "No user added chords to export");
       return false;
@@ -79,7 +79,7 @@ function chordsImporExportClass() {
     function v(y) {
       k("Continuing with import....");
       var z = y.currentTarget.nativePath;
-      chordsManagerObj.importChordsXML(z);
+      $RvW.chordsManagerObj.importChordsXML(z);
     }
   }
   function t(w, v) {

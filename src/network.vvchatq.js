@@ -1,7 +1,7 @@
 function testQClass() {
-  vvchatQObj.addMsg("Binu", "Bass volume down");
-  vvchatQObj.addMsg("Jisen", "Got it");
-  vvchatQObj.addMsg("Toby", "Headphone drum too high");
+  $RvW.vvchatQObj.addMsg("Binu", "Bass volume down");
+  $RvW.vvchatQObj.addMsg("Jisen", "Got it");
+  $RvW.vvchatQObj.addMsg("Toby", "Headphone drum too high");
   document
     .getElementById("getMsgID")
     .addEventListener("click", testgetmessage, false);
@@ -12,11 +12,11 @@ function testQClass() {
 function testaddmessage() {
   var b = document.getElementById("msgS").value;
   var a = document.getElementById("msgM").value;
-  vvchatQObj.addMsg(b, a);
+  $RvW.vvchatQObj.addMsg(b, a);
 }
 function testgetmessage() {
   var a = document.getElementById("msgID").value;
-  alert(vvchatQObj.getMsgFromID(a));
+  alert($RvW.vvchatQObj.getMsgFromID(a));
 }
 class chatQ {
   constructor() {

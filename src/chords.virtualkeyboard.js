@@ -257,7 +257,7 @@ function chordsVirtualKeyboard() {
     var T = Q.substring(0, n);
     var S = Q.substring(n);
     Q = T + "" + U + S;
-    chordsEditObj.chordUpdateReady();
+    $RvW.chordsEditObj.chordUpdateReady();
     H = new Array();
     j();
     L();
@@ -267,7 +267,7 @@ function chordsVirtualKeyboard() {
     var R = Q.substring(n);
     Q = S + " " + R;
     n++;
-    chordsEditObj.chordUpdateReady();
+    $RvW.chordsEditObj.chordUpdateReady();
   }
   function u() {
     air.trace("Del space caret.." + n);
@@ -279,7 +279,7 @@ function chordsVirtualKeyboard() {
       var S = Q.substring(0, n);
       var R = Q.substring(n + 1);
       Q = S + R;
-      chordsEditObj.chordUpdateReady();
+      $RvW.chordsEditObj.chordUpdateReady();
     } else {
       if (n != 0) {
         if (Q[n - 1] == " " || Q[n - 1].charCodeAt(0) == 160) {
@@ -287,7 +287,7 @@ function chordsVirtualKeyboard() {
           var S = Q.substring(0, n - 1);
           var R = Q.substring(n);
           Q = S + R;
-          chordsEditObj.chordUpdateReady();
+          $RvW.chordsEditObj.chordUpdateReady();
         } else {
           air.trace("no space left or right");
           air.trace("X" + Q[n] + "X" + Q[n - 1] + "X");
@@ -303,7 +303,7 @@ function chordsVirtualKeyboard() {
       var R = Q.substring(C + 1);
       Q = S + R;
       n = f;
-      chordsEditObj.chordUpdateReady();
+      $RvW.chordsEditObj.chordUpdateReady();
     }
   }
   function m() {
@@ -377,7 +377,7 @@ function chordsVirtualKeyboard() {
       Q = T + R + S;
       n = n + R.length;
     }
-    chordsEditObj.chordUpdateReady();
+    $RvW.chordsEditObj.chordUpdateReady();
   }
   function E() {
     var S = s.length;

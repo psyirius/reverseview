@@ -7,8 +7,8 @@ function removeTag(a) {
     tags.splice(c, 1);
   }
   tags.pop();
-  vvConfigObj.set_taglist(tags);
-  vvConfigObj.save();
+  $RvW.vvConfigObj.set_taglist(tags);
+  $RvW.vvConfigObj.save();
   tags.push("ALL");
 }
 function addTagList(b) {
@@ -23,8 +23,8 @@ function addTag(a) {
     var b = tags.pop();
     tags.push(a);
     tags.sort();
-    vvConfigObj.set_taglist(tags);
-    vvConfigObj.save();
+    $RvW.vvConfigObj.set_taglist(tags);
+    $RvW.vvConfigObj.save();
     tags.push("ALL");
   }
 }
@@ -40,7 +40,7 @@ function isNewTag(a) {
   }
 }
 function getTags2Array() {
-  var a = vvConfigObj.get_taglist();
+  var a = $RvW.vvConfigObj.get_taglist();
   tags = a.split(",");
   tags.sort();
   tags.push("ALL");

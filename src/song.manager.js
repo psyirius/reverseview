@@ -1,32 +1,32 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-class songManagerClass {
-  constructor() {
-    this.init = Z;
-    this.addSong = ak;
-    this.updateSong = l;
-    this.deleteSong = aL;
-    this.deleteSongByCat = aa;
-    this.delCatManagedUpdate = E;
-    this.getSongObj = O;
-    this.getSongsFromCat = A;
-    this.get_sm_cat_records = c;
-    this.getFontList = aJ;
-    this.searchRecords = p;
-    this.processImportSongDB = e;
-    this.processExportSongXML = h;
-    this.processExportCatXML = Y;
-    this.processImportSongXML = i;
-    this.addImportSongs = o;
-    this.getSongObjWithID = ar;
-    this.getSongObjWithName = H;
-    this.getSongID = q;
-    this.checkSongExists = V;
-    this.checkSongExistsInCat = ai;
-    this.getAllTitlesForWeb = aC;
-    this.test2_updateRecords = G;
-    this.test2_getOrgsonglist = B;
+class SongManager {
+  constructor(_arg1, _arg2) {
+    this.addSong = addSong;
+    this.updateSong = updateSong;
+    this.deleteSong = deleteSong;
+    this.deleteSongByCat = deleteSongByCat;
+    this.delCatManagedUpdate = delCatManagedUpdate;
+    this.getSongObj = getSongObj;
+    this.getSongsFromCat = getSongsFromCat;
+    this.get_sm_cat_records = get_sm_cat_records;
+    this.getFontList = getFontList;
+    this.searchRecords = searchRecords;
+    this.processImportSongDB = processImportSongDB;
+    this.processExportSongXML = processExportSongXML;
+    this.processExportCatXML = processExportCatXML;
+    this.processImportSongXML = processImportSongXML;
+    this.addImportSongs = addImportSongs;
+    this.getSongObjWithID = getSongObjWithID;
+    this.getSongObjWithName = getSongObjWithName;
+    this.getSongID = getSongID;
+    this.checkSongExists = checkSongExists;
+    this.checkSongExistsInCat = checkSongExistsInCat;
+    this.getAllTitlesForWeb = getAllTitlesForWeb;
+    this.test2_updateRecords = test2_updateRecords;
+    this.test2_getOrgsonglist = test2_getOrgsonglist;
+
     var m_isDebug = true;
     var ax = false;
     var ad = "./song/default.db";
@@ -34,9 +34,9 @@ class songManagerClass {
     var aA = null;
     var ab = "_ALL";
     var av = null;
-    var az = new Array();
-    var ae = new Array();
-    var ap = new Array();
+    var az = [];
+    var ae = [];
+    var ap = [];
     var m;
     var K;
     var x;
@@ -63,7 +63,10 @@ class songManagerClass {
     var aj = null;
     var aH = null;
     var T = 0;
-    function Z(aO, aN) {
+
+    init(_arg1, _arg2);
+
+    function init(aO, aN) {
       aw();
       av = new songObj();
       ax = false;
@@ -93,17 +96,17 @@ class songManagerClass {
       return aN;
     }
     function D(aR) {
-      var aQ = new Array();
+      var aQ;
       aQ = aR.split("<slide>");
       aQ.splice(aQ.length - 1, 1);
-      var aO = vvConfigObj.get_hideStanzaNumber();
+      var aO = $RvW.vvConfigObj.get_hideStanzaNumber();
       if (aO) {
         var aN = aQ.length;
         for (var aP = 0; aP < aN; aP++) {
           aQ[aP] = aQ[aP].replace(/^-?[0-9]*\.?[0-9]+/, "");
         }
       }
-      var aO = vvConfigObj.get_show2lines();
+      var aO = $RvW.vvConfigObj.get_show2lines();
       if (aO) {
         aQ = splitIN2(aQ);
       }
@@ -128,7 +131,7 @@ class songManagerClass {
         ae[aN] = N.data[aN].id;
       }
     }
-    function ak(aN, aP, aO) {
+    function addSong(aN, aP, aO) {
       m = aN.name;
       K = aN.catIndex;
       x = aN.font;
@@ -155,7 +158,7 @@ class songManagerClass {
       ao = aN.subcat;
       s(aP, aO);
     }
-    function l(aN, aO, aR, aS) {
+    function updateSong(aN, aO, aR, aS) {
       var aP = null;
       var aQ;
       if (aS == null) {
@@ -194,7 +197,7 @@ class songManagerClass {
       ao = aN.subcat;
       Q(aP);
     }
-    function aL(aN, aO) {
+    function deleteSong(aN, aO) {
       if (aO) {
         var aP = sqlRes.data[aN].id;
       } else {
@@ -202,10 +205,10 @@ class songManagerClass {
       }
       X(aP);
     }
-    function aa(aN) {
+    function deleteSongByCat(aN) {
       y(aN);
     }
-    function ar(aS) {
+    function getSongObjWithID(aS) {
       var aP = false;
       var aR = new songObj();
       aR.init();
@@ -248,7 +251,7 @@ class songManagerClass {
         return null;
       }
     }
-    function H(aQ) {
+    function getSongObjWithName(aQ) {
       var aP = false;
       var aS = new songObj();
       aS.init();
@@ -291,7 +294,7 @@ class songManagerClass {
         return null;
       }
     }
-    function q(aO, aP) {
+    function getSongID(aO, aP) {
       var aN = 0;
       if (!aP) {
         aN = N.data[aO].id;
@@ -300,7 +303,7 @@ class songManagerClass {
       }
       return aN;
     }
-    function O(aO, aQ) {
+    function getSongObj(aO, aQ) {
       var aP = new songObj();
       aP.init();
       aP.slides = new Array();
@@ -359,10 +362,10 @@ class songManagerClass {
       }
       return aP;
     }
-    function A(aN) {
+    function getSongsFromCat(aN) {
       ab = aN;
       __debug("In getSongsFromCat function " + aN);
-      songNavObj.update_songList(N, aN);
+      $RvW.songNavObj.update_songList(N, aN);
     }
     function aK() {
       var aN = N.data.length;
@@ -373,7 +376,7 @@ class songManagerClass {
       var aQ = "./song/songlist.txt";
       save2file(aO, aQ, false);
     }
-    function c() {
+    function get_sm_cat_records() {
       return aq;
     }
     function d() {
@@ -384,32 +387,32 @@ class songManagerClass {
         }
       }
     }
-    function aJ() {
+    function getFontList() {
       return ap;
     }
-    function e() {
+    function processImportSongDB() {
       var aN = new songImportClass();
       aN.init();
     }
-    function i() {
+    function processImportSongXML() {
       var aN = new songPortXML();
       aN.init(N, null, null, 1);
       aN.importXML();
     }
-    function h() {
+    function processExportSongXML() {
       var aN = new songPortXML();
       aN.init(N, null, null, 1);
       aN.exportAll();
     }
-    function Y() {
+    function processExportCatXML() {
       var aN = new songPortXML();
       aN.init(N, ab, null, 2);
       aN.exportByCat();
     }
-    function o(aN) {
+    function addImportSongs(aN) {
       var aO = aN.data.length;
       for (var aP = 0; aP < aO; aP++) {
-        var aQ = V(aN.data[aP].name);
+        var aQ = checkSongExists(aN.data[aP].name);
         if (!aQ) {
           m = aN.data[aP].name;
           au = aN.data[aP].lyrics;
@@ -431,7 +434,7 @@ class songManagerClass {
         }
       }
     }
-    function V(aO) {
+    function checkSongExists(aO) {
       if (N.data != null) {
         var aN = N.data.length;
         for (var aP = 0; aP < aN; aP++) {
@@ -444,7 +447,7 @@ class songManagerClass {
         return false;
       }
     }
-    function ai(aP, aN) {
+    function checkSongExistsInCat(aP, aN) {
       if (N.data != null) {
         var aO = N.data.length;
         for (var aQ = 0; aQ < aO; aQ++) {
@@ -517,7 +520,7 @@ class songManagerClass {
       aA.removeEventListener(air.SQLEvent.RESULT, r);
       aA.removeEventListener(air.SQLErrorEvent.ERROR, M);
       __debug("Notes Table created.....");
-      songDBVersion = vvConfigObj.get_songDBVersion();
+      var songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
       __debug("Song DB version " + songDBVersion);
       if (songDBVersion < 2) {
         aI("title2", "TEXT");
@@ -527,12 +530,12 @@ class songManagerClass {
         aI("chordsavailable", "Boolean");
         aI("usagecount", "INTEGER");
         aI("subcat", "TEXT");
-        vvConfigObj.set_songDBVersion(2);
-        songDBVersion = vvConfigObj.get_songDBVersion();
-        vvConfigObj.save();
+        $RvW.vvConfigObj.set_songDBVersion(2);
+        songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
+        $RvW.vvConfigObj.save();
       }
       if (!isUpToDate() && task1Status() == false) {
-        E();
+        delCatManagedUpdate();
       } else {
         C();
         F();
@@ -615,7 +618,7 @@ class songManagerClass {
           __debug("UPDATE UI Flag....");
           var aU = aP.getResult();
           var aT = aU.lastInsertRowID;
-          songEditObj.setEditPrimaryKey(aT);
+          $RvW.songEditObj.setEditPrimaryKey(aT);
           C();
           F();
           at();
@@ -645,10 +648,10 @@ class songManagerClass {
           "Failed to update song database.  Error message:" + aU.error.message
         );
         if (!isUpToDate() && T == 0) {
-          var aT = vvConfigObj.get_songDBVersion();
+          var aT = $RvW.vvConfigObj.get_songDBVersion();
           if (aT == 2) {
-            vvConfigObj.set_songDBVersion(1);
-            vvConfigObj.save();
+            $RvW.vvConfigObj.set_songDBVersion(1);
+            $RvW.vvConfigObj.save();
             rvw.ui.Toast.show(
               "ADD EDIT Song",
               "Failed to update song database. Please restart VerseVIEW Error message:" +
@@ -691,7 +694,7 @@ class songManagerClass {
       function aP(aS) {
         aO.removeEventListener(air.SQLEvent.RESULT, aP);
         aO.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-        songNavObj.sn_backupGlobalID();
+        $RvW.songNavObj.sn_backupGlobalID();
         C();
         F();
         at();
@@ -718,14 +721,14 @@ class songManagerClass {
         __debug("Succesfuly got all data from Song DB");
         N = aP.getResult();
         a();
-        scheduleObj.init();
-        songNavObj.update_songList(N, "_ALL");
+        $RvW.scheduleObj.init();
+        $RvW.songNavObj.update_songList(N, "_ALL");
       }
       function aN(aR) {
         __debug("Song Manager data error...");
       }
     }
-    function aC(aQ) {
+    function getAllTitlesForWeb(aQ) {
       __debug("Getting ALL Titles from Song DB");
       var aP = new air.SQLStatement();
       aP.sqlConnection = m_sqlConnection;
@@ -737,7 +740,7 @@ class songManagerClass {
       function aO(aS) {
         __debug("Succesfuly got all data from Song DB");
         aj = aP.getResult();
-        songListRemote = songNavObj.get_songList(aj, "_ALL", aQ);
+        songListRemote = $RvW.songNavObj.get_songList(aj, "_ALL", aQ);
         $("#command18").trigger("click");
       }
       function aN(aS) {
@@ -756,7 +759,7 @@ class songManagerClass {
       function aO(aR) {
         __debug("Succesfuly got all categories from Song DB");
         aq = aP.getResult();
-        songNavObj.update_CategoryList(aq);
+        $RvW.songNavObj.update_CategoryList(aq);
       }
       function aN(aR) {
         __debug("Song Manager data error while trying to get category...");
@@ -780,7 +783,7 @@ class songManagerClass {
         __debug("Song Manager data error while trying to get fonts...");
       }
     }
-    function p(aP, aQ) {
+    function searchRecords(aP, aQ) {
       __debug("Searching Song DB " + aQ);
 
       const sqlQuery = new air.SQLStatement();
@@ -824,9 +827,9 @@ class songManagerClass {
           rvw.ui.Toast.show("Song Tag Search", "No matching tag");
         } else {
           if (aP.length > 2) {
-            wordbrain.findRecordBy_wordin(aP);
+            $RvW.wordbrain.findRecordBy_wordin(aP);
           }
-          songNavObj.searchComplete(sqlRes, aQ);
+          $RvW.songNavObj.searchComplete(sqlRes, aQ);
         }
       }
       function _onSqlError(aU) {
@@ -890,7 +893,7 @@ class songManagerClass {
         __debug("event.error.message:" + aS.error.message);
       }
     }
-    function E() {
+    function delCatManagedUpdate() {
       __debug("Deleting Category for managed update from Song Database...");
       var aP = new air.SQLStatement();
       aP.sqlConnection = m_sqlConnection;
@@ -994,8 +997,8 @@ class songManagerClass {
     }
     function a() {
       var aN = ag();
-      songNumberObj.setMaxMalayalam(aN[0]);
-      songNumberObj.setMaxHindi(aN[1]);
+      $RvW.songNumberObj.setMaxMalayalam(aN[0]);
+      $RvW.songNumberObj.setMaxHindi(aN[1]);
     }
     function aB() {
       var aO = N.data.length;
@@ -1013,7 +1016,7 @@ class songManagerClass {
         aW.addEventListener(air.SQLEvent.RESULT, aZ);
         aW.addEventListener(air.SQLErrorEvent.ERROR, aU);
         aW.parameters[":id"] = aT;
-        var aV = songNumberObj.assignSongNumber(aS);
+        var aV = $RvW.songNumberObj.assignSongNumber(aS);
         aW.parameters[":songnumber"] = aV;
         air.trace(aQ + " ID: " + aT + " Song Number: " + aV);
         aW.execute();
@@ -1058,7 +1061,7 @@ class songManagerClass {
         aU.addEventListener(air.SQLEvent.RESULT, aT);
         aU.addEventListener(air.SQLErrorEvent.ERROR, aY);
         aU.parameters[":id"] = aZ;
-        var a1 = songNumberObj.assignSongNumber(aW, aV);
+        var a1 = $RvW.songNumberObj.assignSongNumber(aW, aV);
         aU.parameters[":songnumber"] = a1;
         aU.execute();
         function aT(a2) {
@@ -1087,7 +1090,7 @@ class songManagerClass {
         }
       }
     }
-    function G() {
+    function test2_updateRecords() {
       var aS = testName.length;
       var aT = N.data.length;
       for (var aQ = 0; aQ < aS; aQ++) {
@@ -1107,7 +1110,7 @@ class songManagerClass {
         }
       }
     }
-    function B() {
+    function test2_getOrgsonglist() {
       var aS = new Array();
       var aR = "";
       var aO = N.data.length;
@@ -1129,7 +1132,7 @@ class songManagerClass {
         var aN = N.data[aQ].cat;
         var aR = new songObj();
         if (aN == "Malayalam 2019") {
-          aR = O(aQ, false);
+          aR = getSongObj(aQ, false);
           var aP = findIndexFromTestTitle1(aR.name);
           if (aP != -1) {
             aR.name2 = testTitle2[aP];
@@ -1144,7 +1147,7 @@ class songManagerClass {
               aR.tags = aR.tags + testTag3[aP] + ",";
             }
             aR.tags = aR.tags.slice(0, -1);
-            l(aR, aQ, N.data[aQ].id, false);
+            updateSong(aR, aQ, N.data[aQ].id, false);
           } else {
             __debug("**** No Match **** : " + aR.name);
           }

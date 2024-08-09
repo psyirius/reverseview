@@ -146,7 +146,7 @@ function vvsearch(O) {
     R = 0;
     L = 50;
     Q();
-    rightTabView.selectChild(3);
+    $RvW.rightTabView.selectChild(3);
   }
   function Q() {
     if (I.data == null) {
@@ -244,7 +244,7 @@ function vvsearch(O) {
           an.verseNum +
           "</font><br>" +
           Z;
-        var ah = bibleVersionArray[vvConfigObj.get_version1()][6];
+        var ah = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
         ad[i].init(aj, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
         ac[i] = new verseClass();
         var ai =
@@ -256,7 +256,7 @@ function vvsearch(O) {
           an.verseNum +
           "</font><br>" +
           X;
-        var ah = bibleVersionArray[vvConfigObj.get_version2()][6];
+        var ah = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
         ac[i].init(ae, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
       }
       if (C > L) {
@@ -320,8 +320,8 @@ function vvsearch(O) {
           ak.verseNum;
         var ac = u[ai];
         var ab = s[ai];
-        var ag = bibleVersionArray[vvConfigObj.get_version1()][6];
-        var af = bibleVersionArray[vvConfigObj.get_version2()][6];
+        var ag = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+        var af = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
         aj = aj + "<tr>\n";
         aj = aj + "<td width=14%>" + ae + "</td>\n";
         aj =

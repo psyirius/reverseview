@@ -26,7 +26,7 @@ function bkgndClass() {
   }
   function H() {
     B("Setting values...");
-    G = vvConfigObj.get_bkgndIndex();
+    G = $RvW.vvConfigObj.get_bkgndIndex();
     z = -1;
     o = new Array();
     E = new Array();
@@ -36,7 +36,7 @@ function bkgndClass() {
     document.getElementById("still_animate").checked = S;
     h = false;
     document.getElementById("randomBackgroundID").checked = h;
-    var T = vvConfigObj.get_logoFilename();
+    var T = $RvW.vvConfigObj.get_logoFilename();
     if (isNaN(T)) {
       T = 0;
     }
@@ -161,7 +161,7 @@ function bkgndClass() {
           G--;
         }
       }
-      var X = vvConfigObj.get_logoFilename();
+      var X = $RvW.vvConfigObj.get_logoFilename();
       if (isNaN(X)) {
         X = 0;
       }
@@ -172,15 +172,15 @@ function bkgndClass() {
           X--;
         }
       }
-      vvConfigObj.set_logoFilename(X);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_logoFilename(X);
+      $RvW.vvConfigObj.save();
       E.splice(W, 1);
       o.splice(W, 1);
       var T = e();
       var V = "./xml/backgroundlist.xml";
       save2file(T, V, false);
-      vvConfigObj.set_bkgndIndex(G);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_bkgndIndex(G);
+      $RvW.vvConfigObj.save();
       q();
     }
   }
@@ -198,8 +198,8 @@ function bkgndClass() {
       var U = e();
       var W = "./xml/backgroundlist.xml";
       save2file(U, W, false);
-      vvConfigObj.set_bkgndIndex(G);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_bkgndIndex(G);
+      $RvW.vvConfigObj.save();
       q();
     }
   }
@@ -232,7 +232,7 @@ function bkgndClass() {
     document.getElementById("selected_still_id").src = X.url;
     document.getElementById("selected_still_id").width = 100;
     document.getElementById("selected_still_id").height = 75;
-    var T = vvConfigObj.get_logoFilename();
+    var T = $RvW.vvConfigObj.get_logoFilename();
     if (isNaN(T)) {
       T = 0;
     }
@@ -286,7 +286,7 @@ function bkgndClass() {
     document.getElementById("selected_still_id").src = W.url;
     document.getElementById("selected_still_id").width = 150;
     document.getElementById("selected_still_id").height = 100;
-    var T = vvConfigObj.get_logoFilename();
+    var T = $RvW.vvConfigObj.get_logoFilename();
     if (isNaN(T) || T == "") {
       T = 0;
     }
@@ -386,16 +386,16 @@ function bkgndClass() {
       document.getElementById("still_animate").checked = S;
       h = false;
       document.getElementById("randomBackgroundID").checked = h;
-      vvConfigObj.set_bkgndIndex(G);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_bkgndIndex(G);
+      $RvW.vvConfigObj.save();
     } else {
     }
   }
   function M() {
     w = "";
     w = "./background/" + E[v];
-    vvConfigObj.set_logoFilename(v);
-    vvConfigObj.save();
+    $RvW.vvConfigObj.set_logoFilename(v);
+    $RvW.vvConfigObj.save();
     var T = air.File.applicationStorageDirectory;
     var U = "./background/thumbnail/" + E[v];
     U = T.resolvePath(U);

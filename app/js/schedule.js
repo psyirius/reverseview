@@ -28,7 +28,7 @@ function schedule() {
     w();
   }
   function I() {
-    var X = vvConfigObj.get_navFontSize();
+    var X = $RvW.vvConfigObj.get_navFontSize();
     document.getElementById("sch_verseTextID").style.fontSize = X + "px";
   }
   function v() {
@@ -165,7 +165,7 @@ function schedule() {
       var X = t.data[Y];
       if (X.isSong) {
         var ac = X.songID;
-        var ab = songManagerObj.getSongObjWithID(ac);
+        var ab = $RvW.songManagerObj.getSongObjWithID(ac);
         var aa = new songPresentObj();
         aa.init(ab);
         aa.present();
@@ -179,7 +179,7 @@ function schedule() {
       var X = t.data[Z];
       if (X.isSong) {
         var ac = X.songID;
-        var ab = songManagerObj.getSongObjWithID(ac);
+        var ab = $RvW.songManagerObj.getSongObjWithID(ac);
         var aa = new songPresentObj();
         aa.init(ab);
         aa.present(Y);
@@ -245,7 +245,7 @@ function schedule() {
   function u(ai) {
     $("#sch_show_in_lyrics").show();
     if (t.data != null) {
-      var X = vvConfigObj.get_navFontSize();
+      var X = $RvW.vvConfigObj.get_navFontSize();
       var ao = "";
       if (t.data[ai].isSong == false) {
         var Z = t.data[ai];
@@ -275,7 +275,7 @@ function schedule() {
         $("#sch_show_in_lyrics").text("Show Chapter");
       } else {
         var af = t.data[ai].songID;
-        var ar = songManagerObj.getSongObjWithID(af);
+        var ar = $RvW.songManagerObj.getSongObjWithID(af);
         if (ar != null) {
           var ak = ar.font;
           var am = ar.font2;
@@ -391,7 +391,7 @@ function schedule() {
     var Y = null;
     if (ae) {
       var aa = new songObj();
-      aa = songManagerObj.getSongObjWithID(ac);
+      aa = $RvW.songManagerObj.getSongObjWithID(ac);
       if (aa != null) {
         Y = aa.name;
       }
@@ -664,18 +664,18 @@ function schedule() {
       var X = t.data[Y];
       if (X.isSong) {
         var ab = X.songID;
-        var aa = songManagerObj.getSongObjWithID(ab);
+        var aa = $RvW.songManagerObj.getSongObjWithID(ab);
         $("#songnav_editbox").val(aa.name);
-        songNavObj.sn_searchSong();
-        leftTabView.selectChild(1);
-        rightTabView.selectChild(1);
+        $RvW.songNavObj.sn_searchSong();
+        $RvW.leftTabView.selectChild(1);
+        $RvW.rightTabView.selectChild(1);
       } else {
         $("#nav_bibleRefID").val(
           booknames[X.book] + " " + (X.ch + 1) + " " + (X.ver + 1)
         );
         processNavBibleRefFind();
-        leftTabView.selectChild(0);
-        rightTabView.selectChild(0);
+        $RvW.leftTabView.selectChild(0);
+        $RvW.rightTabView.selectChild(0);
       }
     }
   }

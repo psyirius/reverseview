@@ -82,7 +82,7 @@ function songImportClass() {
     function u(x) {
       m("Succesfuly got all data from Song Import DB");
       g = v.getResult();
-      songManagerObj.addImportSongs(g);
+      $RvW.songManagerObj.addImportSongs(g);
     }
     function t(x) {
       m("Song Import Manager data error...");

@@ -15,7 +15,7 @@ bkgnd = {
   numofPicsInRow: 4,
   randomBkgnd: false,
   init: function () {
-    bkgnd.selectedIndex = vvConfigObj.get_bkgndIndex();
+    bkgnd.selectedIndex = $RvW.vvConfigObj.get_bkgndIndex();
     bkgnd.newSelectedIndex = -1;
     bkgnd.name = new Array();
     bkgnd.filename = new Array();
@@ -113,8 +113,8 @@ bkgnd = {
     bkgnd.newSelectedIndex = d;
     if (bkgnd.newSelectedIndex != -1) {
       bkgnd.selectedIndex = bkgnd.newSelectedIndex;
-      vvConfigObj.set_bkgndIndex(bkgnd.selectedIndex);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_bkgndIndex(bkgnd.selectedIndex);
+      $RvW.vvConfigObj.save();
       var b =
         "Background " + bkgnd.name[bkgnd.newSelectedIndex] + " selected.....";
     } else {
@@ -190,8 +190,8 @@ bkgnd = {
       var b = bkgnd.generateBkgndXML();
       var e = "./xml/backgroundlist.xml";
       save2file(b, e, false);
-      vvConfigObj.set_bkgndIndex(bkgnd.selectedIndex);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_bkgndIndex(bkgnd.selectedIndex);
+      $RvW.vvConfigObj.save();
       bkgnd.fill();
     }
   },

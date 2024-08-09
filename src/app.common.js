@@ -224,7 +224,7 @@ function fontSizeSlider() {
       200,
       20
     );
-    var h = (vvConfigObj.get_navFontSize() - 8) * 10;
+    var h = ($RvW.vvConfigObj.get_navFontSize() - 8) * 10;
     d.setValue(h, true);
     c();
   }
@@ -234,7 +234,7 @@ function fontSizeSlider() {
   function f() {
     var h = Math.round(d.getValue());
     var j = h / 10 + 8;
-    vvConfigObj.set_navFontSize(j);
+    $RvW.vvConfigObj.set_navFontSize(j);
     processFontSizeChange();
   }
   function a() {
@@ -351,13 +351,13 @@ function BibleReference() {
           k = "Did not find matching book name to " + m;
           D = false;
         } else {
-          var v = numofch[s + 1][0];
+          var v = $RvW.numofch[s + 1][0];
           d("Last Chapter number: " + v);
           if (p < 1 || p > v) {
             k = "Invalid chapter number for the book " + c;
             D = false;
           } else {
-            var u = numofch[s + 1][p];
+            var u = $RvW.numofch[s + 1][p];
             d("Last Verse number: " + u);
             if (e < 1 || e > u) {
               k = "Invalid verse number for " + c + " " + p;
@@ -375,23 +375,23 @@ function BibleReference() {
     var u = e - 1;
     present_external(t, w, u);
     return true;
-    bookIndex = s;
-    chapterIndex = p - 1;
-    verseIndex = e - 1;
-    recent.addSelection(bookIndex, chapterIndex, verseIndex);
+    $RvW.bookIndex = s;
+    $RvW.chapterIndex = p - 1;
+    $RvW.verseIndex = e - 1;
+    recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     p_footer = getFooter();
-    p_title = c + " " + (chapterIndex + 1);
-    launch(verseIndex);
+    p_title = c + " " + ($RvW.chapterIndex + 1);
+    launch($RvW.verseIndex);
   }
   function q() {
-    var t = bible[vvConfigObj.get_version1()]
+    var t = $RvW.bible[$RvW.vvConfigObj.get_version1()]
       .getElementsByTagName("b")
       [s].getElementsByTagName("c")
       [p - 1].getElementsByTagName("v");
     return t;
   }
   function r() {
-    var t = bibleVersionArray[vvConfigObj.get_version1()][6];
+    var t = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     return t;
   }
   function l() {
@@ -496,8 +496,8 @@ function promoteVV(a) {
     p_bkgnd_filename = "./background/promote2.jpg";
   }
   p_bkgnd_color = "black";
-  p_font_color = vvConfigObj.get_p_textColor();
-  p_font_color2 = vvConfigObj.get_p_textColor2();
+  p_font_color = $RvW.vvConfigObj.get_p_textColor();
+  p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
   presentation();
 }
 function showLogoSlide() {
@@ -513,8 +513,8 @@ function showLogoSlide() {
   p_last_index = 0;
   p_bkgnd_filename = graphicsObj.getLogoFilename();
   p_bkgnd_color = "black";
-  p_font_color = vvConfigObj.get_p_textColor();
-  p_font_color2 = vvConfigObj.get_p_textColor2();
+  p_font_color = $RvW.vvConfigObj.get_p_textColor();
+  p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
   presentation();
 }
 function blankSlide() {

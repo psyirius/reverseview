@@ -20,13 +20,13 @@ function chordsManagerClass() {
   var b = true;
   function l() {
     a("Initialize Chords Manager");
-    chordsDatabaseObj = new chordsDatabaseClass();
-    chordsDatabaseObj.init();
+    $RvW.chordsDatabaseObj = new chordsDatabaseClass();
+    $RvW.chordsDatabaseObj.init();
   }
   function d(p) {
     var s = new Array();
     var r = null;
-    r = chordsDatabaseObj.getAllChords();
+    r = $RvW.chordsDatabaseObj.getAllChords();
     if (r) {
       var m = r.data.length;
       for (var o = 0; o < m; o++) {
@@ -60,13 +60,13 @@ function chordsManagerClass() {
     }
   }
   function f(m) {
-    chordsDatabaseObj.addRecord(m);
+    $RvW.chordsDatabaseObj.addRecord(m);
   }
   function g(m) {
-    chordsDatabaseObj.deleteRecord(m);
+    $RvW.chordsDatabaseObj.deleteRecord(m);
   }
   function j(m, n) {
-    chordsDatabaseObj.updateRecord(m, n);
+    $RvW.chordsDatabaseObj.updateRecord(m, n);
   }
   function e(p) {
     a("Importing Chords XML");
@@ -95,7 +95,7 @@ function chordsManagerClass() {
         if (v != null) {
           s.lyrics = u[w].getElementsByTagName("lyrics")[0].textContent;
         } else {
-          var r = songManagerObj.getSongObjWithName(s.title);
+          var r = $RvW.songManagerObj.getSongObjWithName(s.title);
           if (r != null) {
             s.lyrics = h(r.slides2);
           } else {
@@ -119,7 +119,7 @@ function chordsManagerClass() {
         s.usagecount = 0;
         s.category = "";
         s.additional = u[w].getElementsByTagName("preferredkey")[0].textContent;
-        chordsDatabaseObj.addRecord(s);
+        $RvW.chordsDatabaseObj.addRecord(s);
       }
       rvw.ui.Toast.show("Chords Import", "Imported " + q + " chords to the database.");
     }
@@ -131,7 +131,7 @@ function chordsManagerClass() {
         c(n);
         break;
       case CHORDS_ADDNEW_PASS:
-        chordsDatabaseObj.loadAllChordsRecords();
+        $RvW.chordsDatabaseObj.loadAllChordsRecords();
         break;
       case CHORDS_LOAD_FAIL:
         a("Loading of chords db records to array failed");
@@ -142,16 +142,16 @@ function chordsManagerClass() {
         c(n);
         break;
       case CHORDS_UPDATE_PASS:
-        chordsDatabaseObj.loadAllChordsRecords();
+        $RvW.chordsDatabaseObj.loadAllChordsRecords();
         break;
       case CHORDS_LOAD_PASS:
-        chordsNavObj.showChordsPanelForSong();
+        $RvW.chordsNavObj.showChordsPanelForSong();
         break;
       case CHORDS_DELETE_PASS:
-        chordsDatabaseObj.loadAllChordsRecords();
+        $RvW.chordsDatabaseObj.loadAllChordsRecords();
         break;
       case CHORDS_EXPORT_LOAD_PASS:
-        chordsImportExportObj.chexport_continue();
+        $RvW.chordsImportExportObj.chexport_continue();
         break;
       case CHORDS_EXPORT_LOAD_FAIL:
         c(n);

@@ -106,7 +106,7 @@ function chordsEditClass() {
     I.keydown(false);
     I.on("click", function (au) {
       chedit_chords_jselement = document.getElementById("chedit_chordsIdTXT");
-      chordsKeyboard.edit(I.text(), M(chedit_chords_jselement));
+      $RvW.chordsKeyboard.edit(I.text(), M(chedit_chords_jselement));
     });
   }
   function M(au) {
@@ -120,7 +120,7 @@ function chordsEditClass() {
     return av;
   }
   function x() {
-    var au = chordsKeyboard.get_txt();
+    var au = $RvW.chordsKeyboard.get_txt();
     I.html(au);
     ai();
   }
@@ -287,9 +287,9 @@ function chordsEditClass() {
     var au = y();
     if (a) {
       if (aq == k) {
-        chordsManagerObj.addNew(au);
+        $RvW.chordsManagerObj.addNew(au);
       } else {
-        chordsManagerObj.updateChords(au, Z);
+        $RvW.chordsManagerObj.updateChords(au, Z);
       }
       an();
     }

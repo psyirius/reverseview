@@ -1,40 +1,40 @@
 function song_new_menu(a) {
-  if (songNavObj != null) {
-    songNavObj.sn_newSong();
+  if ($RvW.songNavObj != null) {
+    $RvW.songNavObj.sn_newSong();
   }
 }
 function song_edit_menu(a) {
-  if (songNavObj != null) {
-    songNavObj.sn_editSong();
+  if ($RvW.songNavObj != null) {
+    $RvW.songNavObj.sn_editSong();
   }
 }
 function song_delete_menu(a) {
-  if (songNavObj != null) {
-    songNavObj.sn_deleteSong();
+  if ($RvW.songNavObj != null) {
+    $RvW.songNavObj.sn_deleteSong();
   }
 }
 function song_delete_cat_menu(a) {
-  if (songNavObj != null) {
-    songNavObj.sn_deleteSongByCat();
+  if ($RvW.songNavObj != null) {
+    $RvW.songNavObj.sn_deleteSongByCat();
   }
 }
 function songDB_Export_all_db() {
-  songNavObj.processExportSongDB();
+  $RvW.songNavObj.processExportSongDB();
 }
 function songDB_Export_all_xml() {
-  songManagerObj.processExportSongXML();
+  $RvW.songManagerObj.processExportSongXML();
 }
 function songDB_Export_cat_xml() {
-  songManagerObj.processExportCatXML();
+  $RvW.songManagerObj.processExportCatXML();
 }
 function songDB_Import_db() {
-  songManagerObj.processImportSongDB();
+  $RvW.songManagerObj.processImportSongDB();
 }
 function songDB_Import_xml() {
-  songManagerObj.processImportSongXML();
+  $RvW.songManagerObj.processImportSongXML();
 }
 function setup_bible_version() {
-  bibleVersionSelObj.show();
+  $RvW.bibleVersionSelObj.show();
 }
 function add_bible_version() {
   manageVersion();
@@ -45,14 +45,14 @@ function show_bible_manage() {
 }
 function show_editVerse_UI() {
   setupVerseEditObject();
-  editVerse_UI_Obj.show();
+  $RvW.editVerse_UI_Obj.show();
 }
 function remoteVV_UI() {
-  remoteVV_UI_Obj.show();
+  $RvW.remoteVV_UI_Obj.show();
 }
 function show_present_setup_UI() {}
 function show_updateVV_UI() {
-  newUpdateObj.checkForUpdates();
+  $RvW.newUpdateObj.checkForUpdates();
 }
 function verseviewExit() {
   processExit();
@@ -65,7 +65,6 @@ function deleteBkgndMenu() {
   bkgnd.delBkgnd();
 }
 function resetFGMenu() {
-  cpObj.cp_reset();
 }
 function exportchords() {
   air.trace("Export Chords");
@@ -77,7 +76,7 @@ function importchords() {
 }
 function showHelp_menu() {
   // TODO: make it a separate tool window
-  helpObj.show();
+  $RvW.helpObj.show();
 }
 function vvPromote_menu1() {
   promoteVV(1);

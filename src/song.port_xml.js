@@ -346,7 +346,7 @@ function songPortXML() {
           u.subcat = w(
             t.getElementsByTagName("song")[y].getElementsByTagName("subcat")[0]
           );
-          songManagerObj.addSong(u, false, true);
+          $RvW.songManagerObj.addSong(u, false, true);
         }
       }
     }
@@ -384,7 +384,7 @@ function songPortXML() {
       var s = r
         .getElementsByTagName("song")
         [u].getElementsByTagName("name")[0].textContent;
-      var w = songManagerObj.checkSongExists(s);
+      var w = $RvW.songManagerObj.checkSongExists(s);
       if (!w) {
         t = u;
       }

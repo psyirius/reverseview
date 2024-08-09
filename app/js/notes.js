@@ -54,10 +54,10 @@ function notes(notesUI) {
     var P = p - 1;
     var W = j - 1;
     var Q = n - 1;
-    var T = bibleVersionArray[vvConfigObj.get_version1()][6];
-    var V = bibleVersionArray[vvConfigObj.get_version2()][6];
-    S = content1[Q];
-    R = content2[Q];
+    var T = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    var V = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    S = $RvW.content1[Q];
+    R = $RvW.content2[Q];
     U = "<b>" + booknames[P] + " " + j + ":" + n + "</b><br>";
     U =
       U +
@@ -114,13 +114,13 @@ function notes(notesUI) {
     document.getElementById("notesVerse").innerHTML = b();
     z = i();
     document.getElementById("notes_rte").value = z;
-    enterForSearchActive = false;
+    $RvW.enterForSearchActive = false;
     k.cfg.setProperty("modal", true);
     k.show();
   }
   function C() {
     k.hide();
-    enterForSearchActive = true;
+    $RvW.enterForSearchActive = true;
   }
   function O() {
     var P = t;
@@ -258,7 +258,7 @@ function notes(notesUI) {
     var X = "No Notes for this chapter...";
     v = F.getResult();
     var P = document.getElementById("notesResultsID");
-    var Q = vvConfigObj.get_navFontSize();
+    var Q = $RvW.vvConfigObj.get_navFontSize();
     P.style.fontSize = Q + "px";
     P.innerHTML = "";
     if (v != null) {
@@ -338,8 +338,8 @@ function postit() {
     document.getElementById(a).addEventListener("click", b, false);
   }
   function b() {
-    notesObj.setVariables(e, c, f);
-    notesObj.showNotesPanel();
+    $RvW.notesObj.setVariables(e, c, f);
+    $RvW.notesObj.showNotesPanel();
   }
 }
 function notesInfo() {
@@ -378,7 +378,7 @@ function notesInfo() {
       var k = h.getResult();
       if (k.data != null) {
         var j = k.data[0];
-        notesManageObj.nm_addRecord_ext(j.noteInfoName, j.noteInfoDes, d);
+        $RvW.notesManageObj.nm_addRecord_ext(j.noteInfoName, j.noteInfoDes, d);
         c = null;
       }
     }

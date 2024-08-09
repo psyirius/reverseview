@@ -45,9 +45,9 @@ class ChordsNav {
             __debug("Initialize Chords Panel");
             _setupUI();
 
-            chordsImportExportObj = new chordsImporExportClass();
-            chordsManagerObj = new chordsManagerClass();
-            chordsManagerObj.init();
+            $RvW.chordsImportExportObj = new chordsImporExportClass();
+            $RvW.chordsManagerObj = new chordsManagerClass();
+            $RvW.chordsManagerObj.init();
 
             m_el_name = $("#ch_name");
             m_el_author = $("#ch_author");
@@ -99,40 +99,40 @@ class ChordsNav {
                 showChordsPanelForSong(m_el_name.val(), "", d, m_version_value);
             });
             m_el_new.on("click", function () {
-                chordsKeyboard.clearRecent();
+                $RvW.chordsKeyboard.clearRecent();
                 _createNew();
             });
             m_el_edit.on("click", function () {
-                chordsKeyboard.clearRecent();
+                $RvW.chordsKeyboard.clearRecent();
                 _editChords();
             });
             m_el_delete.on("click", function () {
                 _onDeleteChords();
             });
             m_el_close.on("click", function () {
-                chordsKeyboard.clearRecent();
+                $RvW.chordsKeyboard.clearRecent();
                 _closeIt();
             });
         }
         function _createNew() {
-            chordsEditObj.configureChordsEdit(false);
-            chordsEditObj.setSongValues(R, W, S);
-            chordsEditObj.setActiveData(m, d, parseInt(n) + 1);
-            chordsEditObj.showEditChordsPanel();
+            $RvW.chordsEditObj.configureChordsEdit(false);
+            $RvW.chordsEditObj.setSongValues(R, W, S);
+            $RvW.chordsEditObj.setActiveData(m, d, parseInt(n) + 1);
+            $RvW.chordsEditObj.showEditChordsPanel();
         }
         function _editChords() {
             __debug("Edit chords...");
-            chordsEditObj.configureChordsEdit(true);
-            chordsEditObj.setSongValues(R, W, S);
-            chordsEditObj.setActiveData(m, d, parseInt(m_version_value) + 0);
-            chordsEditObj.showEditChordsPanel();
+            $RvW.chordsEditObj.configureChordsEdit(true);
+            $RvW.chordsEditObj.setSongValues(R, W, S);
+            $RvW.chordsEditObj.setActiveData(m, d, parseInt(m_version_value) + 0);
+            $RvW.chordsEditObj.showEditChordsPanel();
         }
         function _onDeleteChords() {
             rvw.ui.Prompt.exec("Chords", "Are you sure you want to delete this version?", () => _deleteChords.apply(this));
         }
         function _deleteChords() {
             __debug("Delete chords...");
-            var ap = chordsManagerObj.getChordsByTitle(m_el_name.val());
+            var ap = $RvW.chordsManagerObj.getChordsByTitle(m_el_name.val());
             if (ap.length == 0) {
                 __debug("No chords...");
             } else {
@@ -142,7 +142,7 @@ class ChordsNav {
                 var ar = ap[m_version_value - 1].original;
                 if (!ar) {
                     var aq = ap[m_version_value - 1].id;
-                    chordsManagerObj.deleteChords(aq);
+                    $RvW.chordsManagerObj.deleteChords(aq);
                 } else {
                     rvw.ui.Toast.show("Chords", "Can not be deleted..");
                 }
@@ -172,7 +172,7 @@ class ChordsNav {
             if (!m_visible) {
                 if (at == null) {
                 } else {
-                    const ar = chordsManagerObj.getChordsByTitle(at);
+                    const ar = $RvW.chordsManagerObj.getChordsByTitle(at);
                     if (ar.length === 0) {
                         __debug("No chords...");
                     }
@@ -180,7 +180,7 @@ class ChordsNav {
                     L(ar, ap, true);
                 }
             } else {
-                const ar = chordsManagerObj.getChordsByTitle(m_el_name.val());
+                const ar = $RvW.chordsManagerObj.getChordsByTitle(m_el_name.val());
                 if (ar.length === 0) {
                     __debug("No chords...");
                 }

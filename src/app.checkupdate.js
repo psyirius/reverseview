@@ -18,14 +18,14 @@ function checkForNewVersion() {
     }
   }
   function d() {
-    var r = vvConfigObj.get_lastCheckForUpdateDate();
+    var r = $RvW.vvConfigObj.get_lastCheckForUpdateDate();
     if (r == null) {
-      vvConfigObj.set_lastCheckForUpdateDate(k);
+      $RvW.vvConfigObj.set_lastCheckForUpdateDate(k);
     } else {
       var q = k - r;
       var p = q / 86400000;
       if (p > h) {
-        vvConfigObj.set_lastCheckForUpdateDate(k);
+        $RvW.vvConfigObj.set_lastCheckForUpdateDate(k);
         return true;
       }
     }

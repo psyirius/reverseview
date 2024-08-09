@@ -18,7 +18,7 @@ function songLyricsClass() {
     document.getElementById(a).innerHTML = j;
     var k = document.getElementById(a);
     k.style.padding = "10px";
-    k.style.backgroundColor = highlightColor;
+    k.style.backgroundColor = $RvW.highlightColor;
     k.style.borderRadius = "10px";
     document.getElementById(a).addEventListener("click", b, false);
   }

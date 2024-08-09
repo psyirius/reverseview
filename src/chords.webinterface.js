@@ -17,7 +17,7 @@ function chordsWebInterfaceClass() {
     }
   }
   function e() {
-    d = chordsManagerObj.getChordsByTitle(h);
+    d = $RvW.chordsManagerObj.getChordsByTitle(h);
     c("Number of versions : " + d.length);
     if (d[b] == null) {
       if (d[0] == null) {

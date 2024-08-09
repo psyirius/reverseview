@@ -95,7 +95,7 @@ function manageNotes() {
     R(X, false);
     var W = S(aa);
     var Z = "./notes/" + W.filename;
-    notesObj.init(Z);
+    $RvW.notesObj.init(Z);
   }
   function U() {
     var aa = document.getElementById("nm_selectID");
@@ -198,9 +198,9 @@ function manageNotes() {
     if (Y.checked) {
       var W = document.getElementById("bookList").selectedIndex + 1;
       var Z = document.getElementById("chapterList").selectedIndex + 1;
-      notesObj.getNotes(W, Z, 0);
+      $RvW.notesObj.getNotes(W, Z, 0);
     } else {
-      notesObj.getNotes(-1, 0, 0);
+      $RvW.notesObj.getNotes(-1, 0, 0);
     }
   }
   function J() {
@@ -432,7 +432,7 @@ function manageNotes() {
       v();
       if (A) {
         var aa = "./notes/" + d;
-        notesObj.init(aa);
+        $RvW.notesObj.init(aa);
         A = false;
       }
     }

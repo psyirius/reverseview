@@ -24,11 +24,11 @@ function indexWords2Array() {
   var n = f.getTime();
   for (var h = 1; h <= 66; h++) {
     air.trace(h);
-    var o = numofch[h][0];
+    var o = $RvW.numofch[h][0];
     for (var g = 1; g <= o; g++) {
-      var a = numofch[h][g];
+      var a = $RvW.numofch[h][g];
       for (var m = 1; m <= a; m++) {
-        var l = bible[vvConfigObj.get_version1()]
+        var l = $RvW.bible[$RvW.vvConfigObj.get_version1()]
           .getElementsByTagName("b")
           [h - 1].getElementsByTagName("c")
           [g - 1].getElementsByTagName("v")[m - 1];
@@ -128,7 +128,7 @@ function insertResult(c) {
     endTime = g.getTime();
     var f = endTime - startTime;
     var a = getIndexFilepath();
-    bibleVersionArray[vvConfigObj.get_version1()][5] = a;
+    bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = a;
     updateVersionXML();
     alert(
       "Completed indexing " +

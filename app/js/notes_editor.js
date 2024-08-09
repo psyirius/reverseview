@@ -157,7 +157,7 @@ function postit() {
     document.getElementById(a).addEventListener("click", b, false);
   }
   function b() {
-    notesObj.setVariables(e, c, f);
-    notesObj.showNotesPanel();
+    $RvW.notesObj.setVariables(e, c, f);
+    $RvW.notesObj.showNotesPanel();
   }
 }

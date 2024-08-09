@@ -117,67 +117,67 @@ class vvWebServer {
           f(N);
           switch (d) {
             case "1":
-              var R = bibleRefObj.init(n);
+              var R = $RvW.bibleRefObj.init(n);
               if (R) {
-                bibleRefObj.present();
+                $RvW.bibleRefObj.present();
                 B("Presenting verse...");
               } else {
-                B(bibleRefObj.getErrorMessage());
+                B($RvW.bibleRefObj.getErrorMessage());
               }
               break;
             case "2":
-              webEngineObj.nextSlide();
+              $RvW.webEngineObj.nextSlide();
               B("Next slide OK....");
               break;
             case "3":
-              webEngineObj.prevSlide();
+              $RvW.webEngineObj.prevSlide();
               B("Previous Slide OK..");
               break;
             case "4":
-              webEngineObj.closePresentation();
+              $RvW.webEngineObj.closePresentation();
               B("Close Activated");
               break;
             case "13":
-              webEngineObj.themePresentation();
+              $RvW.webEngineObj.themePresentation();
               B("Blank Activated");
               break;
             case "14":
-              webEngineObj.logoPresentation();
+              $RvW.webEngineObj.logoPresentation();
               B("Blank Activated");
               break;
             case "15":
-              webEngineObj.blankPresentation();
+              $RvW.webEngineObj.blankPresentation();
               B("Blank Activated");
               break;
             case "6":
-              var S = scheduleObj.getScheduleText(parseInt(n));
+              var S = $RvW.scheduleObj.getScheduleText(parseInt(n));
               B(S);
               break;
             case "10":
-              scheduleObj.processRemotePresent(n);
+              $RvW.scheduleObj.processRemotePresent(n);
               B("Presenting from Schedule");
               break;
             case "7":
-              var R = bibleRefObj.init(n);
+              var R = $RvW.bibleRefObj.init(n);
               if (R) {
-                var K = bibleRefObj.getVerseFont();
-                var O = bibleRefObj.getBook();
-                var M = bibleRefObj.getChapter();
+                var K = $RvW.bibleRefObj.getVerseFont();
+                var O = $RvW.bibleRefObj.getBook();
+                var M = $RvW.bibleRefObj.getChapter();
                 var Q = getAllVersesFromChapter(O, M - 1);
-                var J = webEngineObj.processVerses(Q, K, O, M);
+                var J = $RvW.webEngineObj.processVerses(Q, K, O, M);
                 B(J);
               } else {
-                B(bibleRefObj.getErrorMessage());
+                B($RvW.bibleRefObj.getErrorMessage());
               }
               break;
             case "16":
-              var P = scheduleObj.getSongIndexFromSch(n);
-              var H = songManagerObj.getSongObjWithID(P);
-              var J = webEngineObj.processSong(H);
+              var P = $RvW.scheduleObj.getSongIndexFromSch(n);
+              var H = $RvW.songManagerObj.getSongObjWithID(P);
+              var J = $RvW.webEngineObj.processSong(H);
               B(J);
               break;
             case "17":
-              scheduleObj.processRemotePresent(n, l);
+              $RvW.scheduleObj.processRemotePresent(n, l);
               B("Presenting song slide");
               break;
             case "8":
@@ -186,21 +186,21 @@ class vvWebServer {
               B("Presenting Verse...");
               break;
             case "9":
-              B(webEngineObj.stageViewContent());
+              B($RvW.webEngineObj.stageViewContent());
               break;
             case "19":
-              B("19<command>" + vvchatQObj.getKeywords());
+              B("19<command>" + $RvW.vvchatQObj.getKeywords());
               break;
             case "11":
-              B("11<command>" + vvchatQObj.getMsgFromID(n));
+              B("11<command>" + $RvW.vvchatQObj.getMsgFromID(n));
               break;
             case "12":
               var G = n.split("|");
-              vvchatQObj.addMsg(G[0], G[1]);
+              $RvW.vvchatQObj.addMsg(G[0], G[1]);
               B("12<command>Mission Accomplished");
               break;
             case "18":
-              songManagerObj.getAllTitlesForWeb(n);
+              $RvW.songManagerObj.getAllTitlesForWeb(n);
               $("#command18").on("click", function () {
                 B(songListRemote);
               });

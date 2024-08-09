@@ -180,7 +180,7 @@ class SongEdit {
           }
         }
       }
-      var ae = songManagerObj.get_sm_cat_records();
+      var ae = $RvW.songManagerObj.get_sm_cat_records();
       if (ae.data != null) {
         var ah = ae.data.length;
         for (var ag = 0; ag < ah; ag++) {
@@ -228,7 +228,7 @@ class SongEdit {
       document.getElementById("songnav_category2").selectedIndex = A;
     }
     function _loadUsedFonts(ad, ak) {
-      const al = songManagerObj.getFontList();
+      const al = $RvW.songManagerObj.getFontList();
       let ao;
       let af = null;
       let ap = 0;
@@ -245,7 +245,7 @@ class SongEdit {
       } else {
         ao = _fontsList;
       }
-      ao = ao.concat(systemFontList);
+      ao = ao.concat($RvW.systemFontList);
       ao.sort();
       const ac = ao.length;
       clearSelectList("se_fontID2");
@@ -759,7 +759,7 @@ class SongEdit {
           if (sngObj.catIndex === "VV Malayalam 2021" || sngObj.catIndex === "VV Hindi 2021") {
             const af = document.getElementById("songEdit_SongNumberID").value;
             if (af === "" || af == null) {
-              sngObj.subcat = songNumberObj.assignSongNumber(sngObj.catIndex);
+              sngObj.subcat = $RvW.songNumberObj.assignSongNumber(sngObj.catIndex);
             } else {
               sngObj.subcat = af;
             }
@@ -813,11 +813,11 @@ class SongEdit {
       if (ac != false) {
         if (!b) {
           _debug("Adding song..");
-          songManagerObj.addSong(ac, true, false);
+          $RvW.songManagerObj.addSong(ac, true, false);
           b = true;
         } else {
           _debug("Updating song..");
-          songManagerObj.updateSong(ac, v, _primaryKey, Z);
+          $RvW.songManagerObj.updateSong(ac, v, _primaryKey, Z);
         }
         _panel.hide();
         return true;

@@ -22,7 +22,7 @@ function songPresentObj() {
     p_text2_arr = d.slides2;
     p_text1_font = d.font;
     p_text2_font = d.font2;
-    if (vvConfigObj.get_p_showTitle()) {
+    if ($RvW.vvConfigObj.get_p_showTitle()) {
       p_title = d.name;
     } else {
       p_title = "";
@@ -37,16 +37,16 @@ function songPresentObj() {
     p_bkgnd_filename = graphicsObj.getBkgndFilename();
     p_bkgnd_motion = graphicsObj.getMotionFlag();
     p_bkgnd_color = "blue";
-    p_font_color = vvConfigObj.get_p_textColor();
-    p_font_color2 = vvConfigObj.get_p_textColor2();
+    p_font_color = $RvW.vvConfigObj.get_p_textColor();
+    p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
     p_ver1ScaleFactor = 2;
     p_ver2ScaleFactor = 2;
     var h = a();
-    var f = vvConfigObj.get_song_primaryOnly();
+    var f = $RvW.vvConfigObj.get_song_primaryOnly();
     if (f == "true" || h) {
       p_text_orientation = "2";
     } else {
-      if (vvConfigObj.get_song_text_orientation() == "0") {
+      if ($RvW.vvConfigObj.get_song_text_orientation() == "0") {
         p_text_orientation = "0";
       } else {
         p_text_orientation = "1";

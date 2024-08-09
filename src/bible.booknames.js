@@ -470,19 +470,19 @@ var default_booknames = [
 
 function setPrimaryBooknames() {
     booknames = [];
-    const e = parseInt(vvConfigObj.get_booknamestyle());
+    const e = parseInt($RvW.vvConfigObj.get_booknamestyle());
     switch (e) {
         case 1:
             booknames = default_booknames;
             break;
         case 2: {
-            booknames = bibleVersionArray[vvConfigObj.get_version1()][7]
+            booknames = bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
             break;
         }
         case 3: {
-            let d = bibleVersionArray[vvConfigObj.get_version1()][7]
+            let d = bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
             if (d[0] === default_booknames[0]) {
@@ -496,10 +496,10 @@ function setPrimaryBooknames() {
             break;
         }
         case 4: {
-            const c = bibleVersionArray[vvConfigObj.get_version1()][7]
+            const c = bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
-            const a = bibleVersionArray[vvConfigObj.get_version2()][7]
+            const a = bibleVersionArray[$RvW.vvConfigObj.get_version2()][7]
                 .replace(/["']/g, "")
                 .split(",");
             if (c[0] === a[0] || a[0] === "") {

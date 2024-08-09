@@ -34,7 +34,7 @@ function graphicsClass() {
     s();
   }
   function d() {
-    var x = vvConfigObj.get_p_bkgnd_type();
+    var x = $RvW.vvConfigObj.get_p_bkgnd_type();
     document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
     document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
     document.getElementById("still_bkgnddiv").style.visibility = "hidden";
@@ -84,32 +84,32 @@ function graphicsClass() {
       document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
       document.getElementById("still_bkgnddiv").style.visibility = "hidden";
       document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
-      vvConfigObj.set_p_bkgnd_type(1);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_p_bkgnd_type(1);
+      $RvW.vvConfigObj.save();
     }
     if (A) {
       document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
       document.getElementById("graident_bkgnddiv").style.visibility = "visible";
       document.getElementById("still_bkgnddiv").style.visibility = "hidden";
       document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
-      vvConfigObj.set_p_bkgnd_type(2);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_p_bkgnd_type(2);
+      $RvW.vvConfigObj.save();
     }
     if (x) {
       document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
       document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
       document.getElementById("still_bkgnddiv").style.visibility = "visible";
       document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
-      vvConfigObj.set_p_bkgnd_type(3);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_p_bkgnd_type(3);
+      $RvW.vvConfigObj.save();
     }
     if (z) {
       document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
       document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
       document.getElementById("still_bkgnddiv").style.visibility = "hidden";
       document.getElementById("motion_bkgnddiv").style.visibility = "visible";
-      vvConfigObj.set_p_bkgnd_type(4);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.set_p_bkgnd_type(4);
+      $RvW.vvConfigObj.save();
     }
   }
   function l(y, x) {

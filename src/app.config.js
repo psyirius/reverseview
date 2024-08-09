@@ -1167,13 +1167,13 @@ function showLogoChangeEvent() {
 }
 function stageEnableChangeEvent() {
   const a = $("#stageConfigEnable").is(":checked");
-  vvConfigObj.set_stageConfigEnable(a);
-  vvConfigObj.save();
+  $RvW.vvConfigObj.set_stageConfigEnable(a);
+  $RvW.vvConfigObj.save();
 }
 function mainEnableChangeEvent() {
   const a = $("#mainConfigEnable").is(":checked");
-  vvConfigObj.set_mainConfigEnable(a);
-  vvConfigObj.save();
+  $RvW.vvConfigObj.set_mainConfigEnable(a);
+  $RvW.vvConfigObj.save();
 }
 function svParameterSaveEvent() {
   var e = $("#thirdview_opacity").val();
@@ -1193,24 +1193,24 @@ function svParameterSaveEvent() {
   var n = $("#thirdview_alignCenter").is(":checked");
   var i = $("#thirdview_showTexture").is(":checked");
   var h = $("#thirdview_alignHorizontal").is(":checked");
-  vvConfigObj.set_svOpacity(e);
-  vvConfigObj.set_svHeight(g);
-  vvConfigObj.set_svFcolor(l);
-  vvConfigObj.set_svShowPrimary(f);
-  vvConfigObj.set_svShowSecondary(q);
-  vvConfigObj.set_svWindow(k);
-  vvConfigObj.set_svGreenWindow(m);
-  vvConfigObj.set_svPosition(j);
-  vvConfigObj.set_svMaxFontSize(p);
-  vvConfigObj.set_svBcolor(d);
-  vvConfigObj.set_svTextOutline(c);
-  vvConfigObj.set_svTextShadow(b);
-  vvConfigObj.set_svAlignLeft(o);
-  vvConfigObj.set_svAlignCenter(n);
-  vvConfigObj.set_svAddTexture(i);
-  vvConfigObj.set_svShowHorizontal(h);
-  vvConfigObj.set_svShowDate(a);
-  vvConfigObj.save();
+  $RvW.vvConfigObj.set_svOpacity(e);
+  $RvW.vvConfigObj.set_svHeight(g);
+  $RvW.vvConfigObj.set_svFcolor(l);
+  $RvW.vvConfigObj.set_svShowPrimary(f);
+  $RvW.vvConfigObj.set_svShowSecondary(q);
+  $RvW.vvConfigObj.set_svWindow(k);
+  $RvW.vvConfigObj.set_svGreenWindow(m);
+  $RvW.vvConfigObj.set_svPosition(j);
+  $RvW.vvConfigObj.set_svMaxFontSize(p);
+  $RvW.vvConfigObj.set_svBcolor(d);
+  $RvW.vvConfigObj.set_svTextOutline(c);
+  $RvW.vvConfigObj.set_svTextShadow(b);
+  $RvW.vvConfigObj.set_svAlignLeft(o);
+  $RvW.vvConfigObj.set_svAlignCenter(n);
+  $RvW.vvConfigObj.set_svAddTexture(i);
+  $RvW.vvConfigObj.set_svShowHorizontal(h);
+  $RvW.vvConfigObj.set_svShowDate(a);
+  $RvW.vvConfigObj.save();
 }
 function svPassMessage() {
   var a = $("#stageConfigMessage").val();
@@ -1228,8 +1228,8 @@ function stageStyleChangeEvent() {
   air.trace("stage Style change.. ");
   var a = $("#selectStageStyle").val();
   setupStageViewOptions();
-  vvConfigObj.set_stageStyleVal(a);
-  vvConfigObj.save();
+  $RvW.vvConfigObj.set_stageStyleVal(a);
+  $RvW.vvConfigObj.save();
 }
 function setupStageViewOptions() {
   $("#stageviewOpacityDiv").hide();
@@ -1288,61 +1288,61 @@ function configInit() {
   $("#selectStageStyle").change(stageStyleChangeEvent);
   $("#stageSettingShowTime").change(stageShowTimeChangeEvent);
   document.getElementById("presentConfigMarginTop").value =
-    vvConfigObj.get_p_topMargin();
+    $RvW.vvConfigObj.get_p_topMargin();
   document.getElementById("presentConfigMarginBottom").value =
-    vvConfigObj.get_p_bottomMargin();
+    $RvW.vvConfigObj.get_p_bottomMargin();
   document.getElementById("presentConfigMarginLeft").value =
-    vvConfigObj.get_p_leftMargin();
+    $RvW.vvConfigObj.get_p_leftMargin();
   document.getElementById("presentConfigMarginRight").value =
-    vvConfigObj.get_p_rightMargin();
+    $RvW.vvConfigObj.get_p_rightMargin();
   document.getElementById("presentConfigMaxFontSize").value =
-    vvConfigObj.get_p_maxFontSize();
-  if (vvConfigObj.get_stageConfigEnable()) {
+    $RvW.vvConfigObj.get_p_maxFontSize();
+  if ($RvW.vvConfigObj.get_stageConfigEnable()) {
     document.getElementById("stageConfigEnable").checked = true;
   } else {
     document.getElementById("stageConfigEnable").checked = false;
   }
-  if (vvConfigObj.get_mainConfigEnable()) {
+  if ($RvW.vvConfigObj.get_mainConfigEnable()) {
     document.getElementById("mainConfigEnable").checked = true;
   } else {
     document.getElementById("mainConfigEnable").checked = false;
   }
-  if (vvConfigObj.get_stageStyleVal() != null) {
-    $("#selectStageStyle").val(vvConfigObj.get_stageStyleVal());
+  if ($RvW.vvConfigObj.get_stageStyleVal() != null) {
+    $("#selectStageStyle").val($RvW.vvConfigObj.get_stageStyleVal());
   } else {
     $("#selectStageStyle").val(0);
   }
   setupStageViewOptions();
-  if (vvConfigObj.get_p_enableTransition()) {
+  if ($RvW.vvConfigObj.get_p_enableTransition()) {
     document.getElementById("presentConfigEnableTransition").checked = true;
   } else {
     document.getElementById("presentConfigEnableTransition").checked = false;
   }
-  if (vvConfigObj.get_presentationOnTop()) {
+  if ($RvW.vvConfigObj.get_presentationOnTop()) {
     document.getElementById("presentConfigOntop").checked = true;
   } else {
     document.getElementById("presentConfigOntop").checked = false;
   }
-  if (vvConfigObj.get_p_showTitle()) {
+  if ($RvW.vvConfigObj.get_p_showTitle()) {
     document.getElementById("presentConfigEnableSongTitle").checked = true;
   } else {
     document.getElementById("presentConfigEnableSongTitle").checked = false;
   }
-  if (vvConfigObj.get_p_enableShadow()) {
+  if ($RvW.vvConfigObj.get_p_enableShadow()) {
     document.getElementById("presentConfigEnableShadow").checked = true;
   } else {
     document.getElementById("presentConfigEnableShadow").checked = false;
   }
-  if (vvConfigObj.get_singleVersion()) {
+  if ($RvW.vvConfigObj.get_singleVersion()) {
     document.getElementById("singleVersionBoxID").checked = true;
     document.getElementById("version2Menu").disabled = true;
   }
-  if (vvConfigObj.get_navDualLanguage()) {
+  if ($RvW.vvConfigObj.get_navDualLanguage()) {
     document.getElementById("navDualLanguageID").checked = true;
   } else {
     document.getElementById("navDualLanguageID").checked = false;
   }
-  var a = vvConfigObj.get_p_align();
+  var a = $RvW.vvConfigObj.get_p_align();
   document.getElementById("justify_left").checked = false;
   document.getElementById("justify_center").checked = false;
   document.getElementById("justify_right").checked = false;
@@ -1355,7 +1355,7 @@ function configInit() {
   if (a == "right") {
     document.getElementById("justify_right").checked = true;
   }
-  var j = vvConfigObj.get_p_text_orientation();
+  var j = $RvW.vvConfigObj.get_p_text_orientation();
   document.getElementById("porient_hori").checked = false;
   document.getElementById("porient_vert").checked = false;
   if (j == 0) {
@@ -1364,7 +1364,7 @@ function configInit() {
   if (j == 1) {
     document.getElementById("porient_vert").checked = true;
   }
-  var f = vvConfigObj.get_song_text_orientation();
+  var f = $RvW.vvConfigObj.get_song_text_orientation();
   document.getElementById("porient_song_hori").checked = false;
   document.getElementById("porient_song_vert").checked = false;
   if (f == 0) {
@@ -1373,34 +1373,34 @@ function configInit() {
   if (f == 1) {
     document.getElementById("porient_song_vert").checked = true;
   }
-  var h = vvConfigObj.get_song_primaryOnly();
+  var h = $RvW.vvConfigObj.get_song_primaryOnly();
   if (h == "true") {
     document.getElementById("showPrimaryFont").checked = true;
   } else {
     document.getElementById("showPrimaryFont").checked = false;
   }
-  if (vvConfigObj.get_show2lines()) {
+  if ($RvW.vvConfigObj.get_show2lines()) {
     document.getElementById("show2LinesSlides").checked = true;
   } else {
     document.getElementById("show2LinesSlides").checked = false;
   }
-  if (vvConfigObj.get_hideStanzaNumber()) {
+  if ($RvW.vvConfigObj.get_hideStanzaNumber()) {
     document.getElementById("hideStanzaNumber").checked = true;
   } else {
     document.getElementById("hideStanzaNumber").checked = false;
   }
-  if (vvConfigObj.get_pformat_multiplelines()) {
+  if ($RvW.vvConfigObj.get_pformat_multiplelines()) {
     document.getElementById("fitLineSetup").checked = true;
   } else {
     document.getElementById("fitLineSetup").checked = false;
   }
-  var d = vvConfigObj.get_logoText1();
+  var d = $RvW.vvConfigObj.get_logoText1();
   document.getElementById("customLogoText1").value = d;
-  var c = vvConfigObj.get_logoText2();
+  var c = $RvW.vvConfigObj.get_logoText2();
   document.getElementById("customLogoText2").value = c;
-  var k = vvConfigObj.get_showDateTime();
-  var g = vvConfigObj.get_showVVLogo();
-  var b = vvConfigObj.get_showCustomLogo();
+  var k = $RvW.vvConfigObj.get_showDateTime();
+  var g = $RvW.vvConfigObj.get_showVVLogo();
+  var b = $RvW.vvConfigObj.get_showCustomLogo();
   if (k == true) {
     document.getElementById("presentConfigShowDateTime").checked = true;
   } else {
@@ -1416,7 +1416,7 @@ function configInit() {
   } else {
     document.getElementById("presentConfigShowCustomLogo").checked = false;
   }
-  remoteVV_UI_Obj.configure();
+  $RvW.remoteVV_UI_Obj.configure();
   getScreenList();
   fillScreenList();
   addScreenSelectionEvent();
@@ -1425,36 +1425,36 @@ function configInit() {
   var i = new vvupdate();
   i.init();
   document.getElementById("thirdview_opacity").value =
-    vvConfigObj.get_svOpacity();
+    $RvW.vvConfigObj.get_svOpacity();
   document.getElementById("thirdview_height").value =
-    vvConfigObj.get_svHeight();
+    $RvW.vvConfigObj.get_svHeight();
   document.getElementById("thirdview_fcolor").value =
-    vvConfigObj.get_svFcolor();
+    $RvW.vvConfigObj.get_svFcolor();
   document.getElementById("thirdview_position").value =
-    vvConfigObj.get_svPosition();
+    $RvW.vvConfigObj.get_svPosition();
   document.getElementById("thirdview_maxFontSize").value =
-    vvConfigObj.get_svMaxFontSize();
+    $RvW.vvConfigObj.get_svMaxFontSize();
   document.getElementById("thirdview_bcolor").value =
-    vvConfigObj.get_svBcolor();
+    $RvW.vvConfigObj.get_svBcolor();
   document.getElementById("thirdview_primary").checked =
-    vvConfigObj.get_svShowPrimary();
+    $RvW.vvConfigObj.get_svShowPrimary();
   document.getElementById("thirdview_secondary").checked =
-    vvConfigObj.get_svShowSecondary();
+    $RvW.vvConfigObj.get_svShowSecondary();
   document.getElementById("stageSettingShowTime").checked =
-    vvConfigObj.get_svShowDate();
+    $RvW.vvConfigObj.get_svShowDate();
   document.getElementById("stageConfigMessage").value =
-    vvConfigObj.get_svMessage();
+    $RvW.vvConfigObj.get_svMessage();
   $("#thirdview_opacity").change(svParameterSaveEvent);
   $("#thirdview_height").change(svParameterSaveEvent);
   $("#thirdview_fcolor").change(svParameterSaveEvent);
   $("#thirdview_primary").change(function () {
-    if (!vvConfigObj.get_svShowPrimary()) {
+    if (!$RvW.vvConfigObj.get_svShowPrimary()) {
       document.getElementById("thirdview_secondary").checked = false;
     }
     svParameterSaveEvent();
   });
   $("#thirdview_secondary").change(function () {
-    if (!vvConfigObj.get_svShowSecondary()) {
+    if (!$RvW.vvConfigObj.get_svShowSecondary()) {
       document.getElementById("thirdview_primary").checked = false;
     }
     svParameterSaveEvent();

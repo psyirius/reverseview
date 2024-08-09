@@ -92,7 +92,7 @@ function dbUpdater() {
         t.tags = "";
       }
       t.slideseq = g.data[q].slideseq;
-      songManagerObj.addSong(t, s, n);
+      $RvW.songManagerObj.addSong(t, s, n);
     }
   }
   function a(n) {

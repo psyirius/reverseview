@@ -55,7 +55,7 @@ class remoteVV_UI_Class {
         .getElementById("updateFixedWords")
         .addEventListener("click", function () {
           var B = document.getElementById("fixedWordList").value;
-          vvchatQObj.updateFixedWords(B);
+          $RvW.vvchatQObj.updateFixedWords(B);
         });
       $("#configRemoteCopy").click(function () {
         var B = $("#configRemoteLink").val();
@@ -92,8 +92,8 @@ class remoteVV_UI_Class {
             g = "localhost";
           } else {
             g = $("#configRemoteHostname").val();
-            vvConfigObj.set_myhostname(g);
-            vvConfigObj.save();
+            $RvW.vvConfigObj.set_myhostname(g);
+            $RvW.vvConfigObj.save();
           }
         } else {
           g = "";
@@ -136,13 +136,13 @@ class remoteVV_UI_Class {
     function b() {
       var C = 50000;
       var D = null;
-      if (webServerObj.remoteVVStatus() == false) {
+      if ($RvW.webServerObj.remoteVVStatus() == false) {
         C = document.getElementById("configRemotePort").value;
         D = c();
         if (IsNumeric(C)) {
           if (withinRange(49152, 65535, C)) {
             portNumber = C;
-            var B = webServerObj.init(portNumber, D);
+            var B = $RvW.webServerObj.init(portNumber, D);
             if (B) {
               t("DISABLE");
               document.getElementById("configRemotePort").disabled = true;
@@ -177,7 +177,7 @@ class remoteVV_UI_Class {
           e();
         }
       } else {
-        webServerObj.init(portNumber);
+        $RvW.webServerObj.init(portNumber);
         t("ENABLE");
         document.getElementById("configRemotePort").disabled = false;
         document.getElementById("configIPaddr").disabled = false;
@@ -185,7 +185,7 @@ class remoteVV_UI_Class {
       }
     }
     function e() {
-      g = vvConfigObj.get_myhostname();
+      g = $RvW.vvConfigObj.get_myhostname();
       $("#configRemoteHostname").val(g);
       document.getElementById("remoteVVStatus").innerHTML = "Remote is DISABLED";
       $("#remoteVVShowKeywords").show();

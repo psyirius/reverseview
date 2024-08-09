@@ -69,3 +69,6 @@ window.global = new Function("return this;").apply(null);
         air.trace("YUI3 loaded");
     });
 })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
+
+// the global object to host the global variables
+rvw.provide("$RvW").global = {};

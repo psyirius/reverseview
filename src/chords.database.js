@@ -102,7 +102,7 @@ function chordsDatabaseClass() {
       } else {
         v("Reading SQL data passed: " + P.data.length);
       }
-      chordsManagerObj.taskcomplete(CHORDS_EXPORT_LOAD_PASS, "");
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_EXPORT_LOAD_PASS, "");
     }
     function T(X) {
       v("Export Chords data error...");
@@ -113,7 +113,7 @@ function chordsDatabaseClass() {
         X.error.code +
         " | " +
         X.error.message;
-      chordsManagerObj.taskcomplete(CHORDS_EXPORT_LOAD_FAIL, Y);
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_EXPORT_LOAD_FAIL, Y);
     }
   }
   function f() {
@@ -130,7 +130,7 @@ function chordsDatabaseClass() {
       v("Succesfuly got all data from Chords DB");
       j = V.getResult();
       K = true;
-      chordsManagerObj.taskcomplete(CHORDS_LOAD_PASS, "");
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_LOAD_PASS, "");
     }
     function T(X) {
       v("Chords Manager data error...");
@@ -141,7 +141,7 @@ function chordsDatabaseClass() {
         X.error.code +
         " | " +
         X.error.message;
-      chordsManagerObj.taskcomplete(CHORDS_LOAD_FAIL, Y);
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_LOAD_FAIL, Y);
     }
   }
   function R() {
@@ -226,7 +226,7 @@ function chordsDatabaseClass() {
       V.removeEventListener(air.SQLEvent.RESULT, U);
       V.removeEventListener(air.SQLErrorEvent.ERROR, W);
       if (J == 0) {
-        chordsManagerObj.taskcomplete(
+        $RvW.chordsManagerObj.taskcomplete(
           CHORDS_ADDNEW_PASS,
           "Added the record to db"
         );
@@ -246,7 +246,7 @@ function chordsDatabaseClass() {
         Y.error.code +
         " | " +
         Y.error.message;
-      chordsManagerObj.taskcomplete(CHORDS_ADDNEW_FAIL, Z);
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_ADDNEW_FAIL, Z);
     }
   }
   function x(T, Y) {
@@ -283,7 +283,7 @@ function chordsDatabaseClass() {
       U.removeEventListener(air.SQLEvent.RESULT, insertResult);
       U.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
       v("Updated DB sucessfully...");
-      chordsManagerObj.taskcomplete(
+      $RvW.chordsManagerObj.taskcomplete(
         CHORDS_UPDATE_PASS,
         "Updated the record to db"
       );
@@ -301,7 +301,7 @@ function chordsDatabaseClass() {
         Z.error.code +
         " | " +
         Z.error.message;
-      chordsManagerObj.taskcomplete(CHORDS_UPDATE_FAIL, aa);
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_UPDATE_FAIL, aa);
     }
   }
   function S(X) {
@@ -318,7 +318,7 @@ function chordsDatabaseClass() {
     function T(Y) {
       V.removeEventListener(air.SQLEvent.RESULT, insertResult);
       V.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
-      chordsManagerObj.taskcomplete(
+      $RvW.chordsManagerObj.taskcomplete(
         CHORDS_DELETE_PASS,
         "Delete record from db passed"
       );
@@ -330,7 +330,7 @@ function chordsDatabaseClass() {
       v("event.error.code:" + Y.error.code);
       v("event.error.message:" + Y.error.message);
       var Z = "Delete record from db failed. " + Y.error.message;
-      chordsManagerObj.taskcomplete(CHORDS_DELETE_FAIL, Z);
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_DELETE_FAIL, Z);
     }
   }
   function k(T, ab, U, Z, aa, X) {
@@ -366,7 +366,7 @@ function chordsDatabaseClass() {
         ad.error.code +
         " | " +
         ad.error.message;
-      chordsManagerObj.taskcomplete(CHORDS_UPDATE_FAIL, ae);
+      $RvW.chordsManagerObj.taskcomplete(CHORDS_UPDATE_FAIL, ae);
     }
   }
   function I() {

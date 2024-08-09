@@ -8,7 +8,7 @@ function solidBkgndColorClass() {
     g();
   }
   function c() {
-    var l = vvConfigObj.get_p_solidBkgndColor();
+    var l = $RvW.vvConfigObj.get_p_solidBkgndColor();
     b("Color from config file... " + l);
     if (l != null) {
       e = l;
@@ -44,8 +44,8 @@ function solidBkgndColorClass() {
     document.getElementById("graphics_solid_color_id").style.background = e;
   }
   function d() {
-    vvConfigObj.set_p_solidBkgndColor(e);
-    vvConfigObj.save();
+    $RvW.vvConfigObj.set_p_solidBkgndColor(e);
+    $RvW.vvConfigObj.save();
   }
   function b(l) {
     if (a) {

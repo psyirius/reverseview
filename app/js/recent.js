@@ -68,17 +68,17 @@ recent = {
         document.getElementById("recentSel").options[
           document.getElementById("recentSel").selectedIndex
         ].value;
-      bookIndex = recent.bArray[b];
-      chapterIndex = recent.cArray[b];
-      verseIndex = recent.vArray[b];
-      setBookChVer(bookIndex, chapterIndex * 1 + 1, verseIndex * 1 + 1);
+      $RvW.bookIndex = recent.bArray[b];
+      $RvW.chapterIndex = recent.cArray[b];
+      $RvW.verseIndex = recent.vArray[b];
+      setBookChVer($RvW.bookIndex, $RvW.chapterIndex * 1 + 1, $RvW.verseIndex * 1 + 1);
       getdata(true);
       p_footer =
-        bibleVersionArray[vvConfigObj.get_version1()][3] +
+        bibleVersionArray[$RvW.vvConfigObj.get_version1()][3] +
         " / " +
-        bibleVersionArray[vvConfigObj.get_version2()][3];
-      p_title = booknames[bookIndex] + " " + (chapterIndex + 1);
-      launch(verseIndex);
+        bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
+      p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+      launch($RvW.verseIndex);
     }
   },
   data2string: function () {

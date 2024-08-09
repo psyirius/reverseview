@@ -11,21 +11,21 @@ function gradBkgndColorClass() {
     m();
   }
   function e() {
-    var r = vvConfigObj.get_p_bkgnd_color1();
+    var r = $RvW.vvConfigObj.get_p_bkgnd_color1();
     d("Color 1 from config file... " + r);
     if (r != null) {
       p = r;
     } else {
       p = "#000000";
     }
-    var r = vvConfigObj.get_p_bkgnd_color2();
+    var r = $RvW.vvConfigObj.get_p_bkgnd_color2();
     d("Color 2 from config file... " + r);
     if (r != null) {
       n = r;
     } else {
       n = "#FFFFFF";
     }
-    var s = vvConfigObj.get_p_bkgnd_grad_orient();
+    var s = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
     d("Orientation of gradient... " + s);
     if (s != null) {
       f = s;
@@ -111,10 +111,10 @@ function gradBkgndColorClass() {
     document.getElementById("graphics_grad_color_id").style.backgroundImage = r;
   }
   function b() {
-    vvConfigObj.set_p_bkgnd_color1(p);
-    vvConfigObj.set_p_bkgnd_color2(n);
-    vvConfigObj.set_p_bkgnd_grad_orient(f);
-    vvConfigObj.save();
+    $RvW.vvConfigObj.set_p_bkgnd_color1(p);
+    $RvW.vvConfigObj.set_p_bkgnd_color2(n);
+    $RvW.vvConfigObj.set_p_bkgnd_grad_orient(f);
+    $RvW.vvConfigObj.save();
   }
   function d(r) {
     if (c) {

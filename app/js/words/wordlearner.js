@@ -49,7 +49,7 @@ function wordlearner() {
       }
       if (o) {
         q.push(i[n]);
-        wordbrain.addRecordBy_wordin_wordout(i[n], l);
+        $RvW.wordbrain.addRecordBy_wordin_wordout(i[n], l);
       }
     }
   }

@@ -167,7 +167,7 @@ function vvbrain() {
           z.push(E);
         }
       }
-      songNavObj.showSuggestedList();
+      $RvW.songNavObj.showSuggestedList();
     }
   }
   function _onSqlError(D) {

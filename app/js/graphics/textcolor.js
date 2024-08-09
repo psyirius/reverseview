@@ -11,7 +11,7 @@ function textColorClass() {
     h();
   }
   function b() {
-    var m = vvConfigObj.get_p_textColor();
+    var m = $RvW.vvConfigObj.get_p_textColor();
     if (m != null) {
       i = m;
     } else {
@@ -19,7 +19,7 @@ function textColorClass() {
     }
   }
   function d() {
-    var m = vvConfigObj.get_p_textColor2();
+    var m = $RvW.vvConfigObj.get_p_textColor2();
     if (m != null) {
       f = m;
     } else {
@@ -57,8 +57,8 @@ function textColorClass() {
     document.getElementById("graphics_text_color_id").style.background = i;
   }
   function c() {
-    vvConfigObj.set_p_textColor(i);
-    vvConfigObj.set_p_textColor2(f);
-    vvConfigObj.save();
+    $RvW.vvConfigObj.set_p_textColor(i);
+    $RvW.vvConfigObj.set_p_textColor2(f);
+    $RvW.vvConfigObj.save();
   }
 }

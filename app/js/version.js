@@ -64,17 +64,17 @@ function versionFill(b) {
     );
   }
   document.getElementById("version1Menu").selectedIndex =
-    vvConfigObj.get_version1();
+    $RvW.vvConfigObj.get_version1();
   document.getElementById("version2Menu").selectedIndex =
-    vvConfigObj.get_version2();
+    $RvW.vvConfigObj.get_version2();
   document.getElementById("version1Text").innerHTML =
-    "Primary: " + bibleVersionArray[vvConfigObj.get_version1()][0];
+    "Primary: " + bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
   document.getElementById("version2Text").innerHTML =
-    "Secondary: " + bibleVersionArray[vvConfigObj.get_version2()][0];
+    "Secondary: " + bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
   document.getElementById("booknameStyle").selectedIndex =
-    vvConfigObj.get_booknamestyle() - 1;
+    $RvW.vvConfigObj.get_booknamestyle() - 1;
   document.getElementById("englishList").checked =
-    vvConfigObj.get_listinenglish();
+    $RvW.vvConfigObj.get_listinenglish();
   if (b) {
     document
       .getElementById("versionSave")
@@ -90,16 +90,16 @@ function versionFill(b) {
   }
 }
 function saveVersionSelection() {
-  var f = vvConfigObj.get_version1();
-  var e = vvConfigObj.get_version2();
+  var f = $RvW.vvConfigObj.get_version1();
+  var e = $RvW.vvConfigObj.get_version2();
   var b = document.getElementById("version1Menu").selectedIndex;
   var g = document.getElementById("version2Menu").selectedIndex;
   __versionDbg("****************" + b + "  " + g);
   __versionDbg(
     "****************" +
-      vvConfigObj.get_version1() +
+      $RvW.vvConfigObj.get_version1() +
       "  " +
-      vvConfigObj.get_version2()
+      $RvW.vvConfigObj.get_version2()
   );
   if (b != f) {
     bibledbObj[1].closeDB();
@@ -114,12 +114,12 @@ function saveVersionSelection() {
   if (b != f) {
     var a = "./bible/" + bibleVersionArray[b][1];
     __versionDbg("             Search file...." + a);
-    if (searchObj != null) {
-      searchObj.close();
-      searchObj = null;
+    if ($RvW.searchObj != null) {
+      $RvW.searchObj.close();
+      $RvW.searchObj = null;
     }
-    searchObj = new vvsearch(a);
-    searchObj.init();
+    $RvW.searchObj = new vvsearch(a);
+    $RvW.searchObj.init();
     document.getElementById("searchID").disabled = false;
     document.getElementById("adSearch").disabled = false;
     document.getElementById("adSearchButton").disabled = false;
@@ -128,17 +128,17 @@ function saveVersionSelection() {
     "Primary: " + bibleVersionArray[b][0];
   document.getElementById("version2Text").innerHTML =
     "Secondary: " + bibleVersionArray[g][0];
-  vvConfigObj.set_version1(b);
-  vvConfigObj.set_version2(g);
+  $RvW.vvConfigObj.set_version1(b);
+  $RvW.vvConfigObj.set_version2(g);
   var d = $("#booknameStyle option:selected").val();
   var c = $("#englishList").is(":checked");
   __versionDbg(d + "  " + c);
-  vvConfigObj.set_booknamestyle(d);
-  vvConfigObj.set_listinenglish(c);
+  $RvW.vvConfigObj.set_booknamestyle(d);
+  $RvW.vvConfigObj.set_listinenglish(c);
   loadBookNames();
   putbook();
   putch();
-  vvConfigObj.save();
+  $RvW.vvConfigObj.save();
   updateVerseContainer();
 }
 function readPanelContent(a) {
@@ -210,18 +210,18 @@ function updateVersionDetails() {
       d[f],
       d[f]
     );
-    var k = specialFontList.indexOf(d[f]);
+    var k = $RvW.specialFontList.indexOf(d[f]);
     if (k != -1) {
       c = false;
     }
     f++;
   }
   if (c) {
-    j = systemFontList.length;
+    j = $RvW.systemFontList.length;
     for (var e = 0; e < j; e++) {
       document.getElementById("fontVersionList").options[f] = new Option(
-        systemFontList[e],
-        systemFontList[e]
+        $RvW.systemFontList[e],
+        $RvW.systemFontList[e]
       );
       f++;
     }
@@ -265,32 +265,32 @@ function deleteVersion() {
       save2file(b, o, false);
       loadVersionList();
       var n = j * 1 + 1;
-      var l = vvConfigObj.get_version1();
-      var k = vvConfigObj.get_version2();
+      var l = $RvW.vvConfigObj.get_version1();
+      var k = $RvW.vvConfigObj.get_version2();
       if (n > l && n < k) {
-        vvConfigObj.set_version2(vvConfigObj.get_version2() - 1);
+        $RvW.vvConfigObj.set_version2($RvW.vvConfigObj.get_version2() - 1);
       }
       if (n < l && n > k) {
-        vvConfigObj.set_version1(vvConfigObj.get_version1() - 1);
+        $RvW.vvConfigObj.set_version1($RvW.vvConfigObj.get_version1() - 1);
       }
       if (n < l && n < k) {
         if (l < k) {
-          vvConfigObj.set_version1(vvConfigObj.get_version1() - 1);
-          vvConfigObj.set_version2(vvConfigObj.get_version2() - 1);
+          $RvW.vvConfigObj.set_version1($RvW.vvConfigObj.get_version1() - 1);
+          $RvW.vvConfigObj.set_version2($RvW.vvConfigObj.get_version2() - 1);
         } else {
-          vvConfigObj.set_version2(vvConfigObj.get_version2() - 1);
-          vvConfigObj.set_version1(vvConfigObj.get_version1() - 1);
+          $RvW.vvConfigObj.set_version2($RvW.vvConfigObj.get_version2() - 1);
+          $RvW.vvConfigObj.set_version1($RvW.vvConfigObj.get_version1() - 1);
         }
       }
       versionFill(false);
-      vvConfigObj.save();
+      $RvW.vvConfigObj.save();
     }
   }
 }
 function deleteVersionConfirm() {
   var a = document.getElementById("selectVersionList").selectedIndex;
   var b = document.getElementById("selectVersionList").options[a].value;
-  if (b == vvConfigObj.get_version1() || b == vvConfigObj.get_version2()) {
+  if (b == $RvW.vvConfigObj.get_version1() || b == $RvW.vvConfigObj.get_version2()) {
     rvw.ui.Toast.show(
       "Manage Bible Database",
       "Can not delete the primary and seconday version."
@@ -340,8 +340,8 @@ function loadVersion(d) {
     rvw.ui.Toast.show("Bible Database", "File does not exists.");
     return false;
   }
-  var a = bibleVersionArray[vvConfigObj.get_version1()][1];
-  var f = bibleVersionArray[vvConfigObj.get_version2()][1];
+  var a = bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
+  var f = bibleVersionArray[$RvW.vvConfigObj.get_version2()][1];
   if (e == a || e == f) {
     rvw.ui.Toast.show(
       "Manage Bible Database",
@@ -558,22 +558,22 @@ function manageVersion() {
 }
 function processSingleVersion() {
   var a = document.getElementById("singleVersionBoxID").checked;
-  vvConfigObj.set_singleVersion(a);
-  if (vvConfigObj.get_singleVersion()) {
+  $RvW.vvConfigObj.set_singleVersion(a);
+  if ($RvW.vvConfigObj.get_singleVersion()) {
     document.getElementById("version2Menu").disabled = true;
   } else {
     document.getElementById("version2Menu").disabled = false;
   }
-  vvConfigObj.save();
+  $RvW.vvConfigObj.save();
 }
 function getVersion1Filename() {
-  return bibleVersionArray[vvConfigObj.get_version1()][1];
+  return bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
 }
 function getVersion1Font() {
-  return bibleVersionArray[vvConfigObj.get_version1()][2];
+  return bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
 }
 function getVersion1Name() {
-  return bibleVersionArray[vvConfigObj.get_version1()][0];
+  return bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
 }
 function updateVersionXML() {
   var b = generateVersionXML();

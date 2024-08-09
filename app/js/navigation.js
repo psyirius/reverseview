@@ -1,37 +1,37 @@
 function getNumofVerses() {
-  return numofch[bookIndex + 1][chapterIndex + 1];
+  return $RvW.numofch[$RvW.bookIndex + 1][$RvW.chapterIndex + 1];
 }
 function processNextButton() {
   air.trace("navigation.js: processNextButton()");
   var a;
   var b = getNumofVerses();
-  if (verseIndex + 1 == b) {
+  if ($RvW.verseIndex + 1 == b) {
     a = 0;
   } else {
-    a = verseIndex + 1;
+    a = $RvW.verseIndex + 1;
   }
-  verseIndex = a;
-  launch(verseIndex);
+  $RvW.verseIndex = a;
+  launch($RvW.verseIndex);
 }
 function processPrevButton() {
   var a;
   var b = getNumofVerses();
-  if (verseIndex + 1 == 1) {
+  if ($RvW.verseIndex + 1 == 1) {
     a = b - 1;
   } else {
-    a = verseIndex - 1;
+    a = $RvW.verseIndex - 1;
   }
-  verseIndex = a;
-  launch(verseIndex);
+  $RvW.verseIndex = a;
+  launch($RvW.verseIndex);
 }
 function disableNavButtons(a) {}
 function processNavBibleRef() {
   var d = document.getElementById("nav_bibleRefID").value;
-  var e = bibleRefObj.init(d);
+  var e = $RvW.bibleRefObj.init(d);
   if (e) {
-    var c = bibleRefObj.getBook();
-    var b = bibleRefObj.getChapter();
-    var a = bibleRefObj.getVerse();
+    var c = $RvW.bibleRefObj.getBook();
+    var b = $RvW.bibleRefObj.getChapter();
+    var a = $RvW.bibleRefObj.getVerse();
     document.getElementById("bookList").selectedIndex = c;
     putch(b - 1, true);
     putver(a - 1);
@@ -39,28 +39,28 @@ function processNavBibleRef() {
     f = setInterval(function () {
       if (bibledbObj[1].isFullDataReady() && bibledbObj[2].isFullDataReady()) {
         clearTimeout(f);
-        bibleRefObj.present();
-        scroll_to_view = true;
+        $RvW.bibleRefObj.present();
+        $RvW.scroll_to_view = true;
         highlightVerse(a - 1);
       } else {
       }
     }, queryCheckInterval);
   } else {
-    rvw.ui.Toast.show("Bible Reference", bibleRefObj.getErrorMessage());
+    rvw.ui.Toast.show("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
   }
 }
 function processNavBibleRefFind() {
   var d = document.getElementById("nav_bibleRefID").value;
-  var e = bibleRefObj.init(d);
+  var e = $RvW.bibleRefObj.init(d);
   if (e) {
-    var c = bibleRefObj.getBook();
-    var b = bibleRefObj.getChapter();
-    var a = bibleRefObj.getVerse();
+    var c = $RvW.bibleRefObj.getBook();
+    var b = $RvW.bibleRefObj.getChapter();
+    var a = $RvW.bibleRefObj.getVerse();
     setBookChVer(c, b, a);
-    scroll_to_view = true;
+    $RvW.scroll_to_view = true;
     highlightVerse(a - 1);
   } else {
-    rvw.ui.Toast.show("Bible Reference", bibleRefObj.getErrorMessage());
+    rvw.ui.Toast.show("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
   }
 }
 function setBookChVer(a, e, d) {
@@ -69,14 +69,14 @@ function setBookChVer(a, e, d) {
   putver(d - 1);
 }
 function bibleRefBlur() {
-  enterForBibleRef = false;
+  $RvW.enterForBibleRef = false;
 }
 function bibleRefFocus() {
-  enterForBibleRef = true;
+  $RvW.enterForBibleRef = true;
 }
 function nav_addVerse2Schedule() {
   var b = getBookValue();
   var a = getChapterValue();
   var c = getVerseValue();
-  scheduleObj.processAddVerse(b, a, c);
+  $RvW.scheduleObj.processAddVerse(b, a, c);
 }
