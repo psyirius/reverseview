@@ -579,17 +579,17 @@ $RvW.putver = function(a) {
   $RvW.updateVerseContainer();
 }
 function verseChange() {
-  var a = $RvW.getVerseValue();
-  $RvW.scroll_to_view = true;
-  $RvW.highlightVerse(a);
-  updateRefMenu();
+    const a = $RvW.getVerseValue();
+    $RvW.scroll_to_view = true;
+    $RvW.highlightVerse(a);
+    updateRefMenu();
 }
 function updateRefMenu() {
-  var a = document.getElementById("bookList").selectedIndex;
-  var f = document.getElementById("chapterList").selectedIndex;
-  var d = document.getElementById("verseList").selectedIndex;
-  var e = booknames[a] + " " + (f + 1);
-  $("#book_name").text(e);
+    const bi = document.getElementById("bookList").selectedIndex;
+    const ci = document.getElementById("chapterList").selectedIndex;
+    const vi = document.getElementById("verseList").selectedIndex;
+    const e = booknames[bi] + " " + (ci + 1) + ":" + (vi + 1);
+    $("#book_name").text(e);
 }
 $RvW.highlightVerse = function(a) {
   let b = "TC_" + previousSelVerse;
@@ -1126,34 +1126,34 @@ function fillNav() {
   document
     .getElementById("verseList")
     .addEventListener("change", verseChange, false);
-  var b = new ImageIcon(
-    "searchButtonID",
-    " SEARCH ",
-    "graphics/icon/search_32.png",
-    "graphics/icon/search_32.png",
-    ""
-  );
-  document
+    const b = new ImageIcon(
+        "searchButtonID",
+        " SEARCH ",
+        "graphics/icon/search_32.png",
+        "graphics/icon/search_32.png",
+        ""
+    );
+    document
     .getElementById("nav_bibleRef_presentID")
     .addEventListener("click", processNavBibleRef, false);
   document
     .getElementById("nav_bibleRef_findID")
     .addEventListener("click", processNavBibleRefFind, false);
-  var c = new ImageIcon(
-    "nav_bibleRef_presentID",
-    " QUICK PRESENT ",
-    "graphics/icon/qpresent_24.png",
-    "graphics/icon/qpresent_24.png",
-    ""
-  );
-  var a = new ImageIcon(
-    "nav_bibleRef_findID",
-    " FIND ",
-    "graphics/icon/search_s.png",
-    "graphics/icon/search_s.png",
-    ""
-  );
-  document
+    const c = new ImageIcon(
+        "nav_bibleRef_presentID",
+        " QUICK PRESENT ",
+        "graphics/icon/qpresent_24.png",
+        "graphics/icon/qpresent_24.png",
+        ""
+    );
+    const a = new ImageIcon(
+        "nav_bibleRef_findID",
+        " FIND ",
+        "graphics/icon/search_s.png",
+        "graphics/icon/search_s.png",
+        ""
+    );
+    document
     .getElementById("nav_bibleRefID")
     .addEventListener("blur", bibleRefBlur, false);
   document
@@ -1162,8 +1162,8 @@ function fillNav() {
     
   // menubar buttons
   $("#icon_present").click(function () {
-    var d = getActiveTabLabel();
-    if (d == "Songs") {
+      const d = getActiveTabLabel();
+      if (d === "Songs") {
       $RvW.songNavObj.sn_presentSong();
     } else {
       $RvW.present();
@@ -1197,6 +1197,7 @@ function fillNav() {
   
   disableNavButtons(true);
   $RvW.enterForSearchActive = true;
+    updateRefMenu();
   
   recent.init();
 }
@@ -1292,18 +1293,18 @@ function setupRightTabFrame() {
   tabview.selectChild(rti);
 
   function menuBarSync(currentTab) {
-    // switch (currentTab.get('index')) {
-    //   case 0: {
-    //     $("#lyrics_menu").hide();
-    //     $("#verses_menu").show();
-    //     break;
-    //   }
-    //   case 1: {
-    //     $("#verses_menu").hide();
-    //     $("#lyrics_menu").show();
-    //     break;
-    //   }
-    // }
+    switch (currentTab.get('index')) {
+      case 0: {
+        $("#lyrics_menu").hide();
+        $("#verses_menu").show();
+        break;
+      }
+      case 1: {
+        $("#verses_menu").hide();
+        $("#lyrics_menu").show();
+        break;
+      }
+    }
   }
 
   tabview.after('selectionChange', (e) => {
