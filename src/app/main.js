@@ -1497,7 +1497,7 @@ function getActiveTabLabel() {
 }
 
 // body: onload
-export function startup(Y) {
+export function start(Y) {
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     rvw.window.Splash.show();

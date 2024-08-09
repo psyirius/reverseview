@@ -35,24 +35,31 @@
 
     air.trace('BOOTING!');
 
-    global.__yui3_loaded = null;
-
     // execute main
-    require(dojoConfig, ["app", 'dojo/dom', 'dojo/query', 'dojo/Deferred', "dojo/domReady!"], (app, dom, query, Deferred) => {
+    require(dojoConfig, ["app", 'dojo/Deferred', "dojo/domReady!"], (app, Deferred) => {
         air.trace('BOOTED!');
 
-        air.trace('app: ' + app);
+        const yui3Loaded = (() => {
+            const deferred = new Deferred();
 
-        const bd = global.__yui3_loaded = new Deferred();
+            if (typeof global.__yui3_loaded === 'undefined') {
+                global.__yui3_loaded = deferred;
+            } else {
+                deferred.resolve(global.__yui3_loaded);
+            }
+
+            return deferred;
+        })();
 
         // air.trace('dom: ' + dom.byId("root"));
         // air.trace('query: ' + query("#root"));
 
-        bd.then((Y) => {
+        yui3Loaded.then((Y) => {
             delete global.__yui3_loaded;
 
             air.trace('STARTING!');
-            app.startup(Y);
+
+            app.start(Y);
         });
     });
 })();

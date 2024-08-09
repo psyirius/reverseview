@@ -71,6 +71,8 @@ window.global = new Function("return this;").apply(null);
 
         if (typeof global.__yui3_loaded !== "undefined") {
             global.__yui3_loaded.resolve(Y);
+        } else {
+            global.__yui3_loaded = Y;
         }
     });
 })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
