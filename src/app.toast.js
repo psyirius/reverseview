@@ -44,19 +44,21 @@ rvw.provide("rvw.ui").Toast = {
                     duration: 0.25
                 }, () => {
                     this.panel.hide();
+
+                    // FIXME: memory leak
                     // this.panel.destroy();
                 });
             }, 5000);
         }
     },
     setup: function () {
-        $Y.later(3000, this, () => {
-            this.__instance = new this.__Toast('New Notification', 'ifhgoiew ehvniweo hviohweo hvio hweoh vohwei hvnkowe o vbnokedhovhedkohvos odhiv', {
-                position: 'bottom-right',
-                margin: 20
-            });
-            this.__instance.show();
-        });
+        // $Y.later(3000, this, () => {
+        //     this.__instance = new this.__Toast('New Notification', 'ifhgoiew ehvniweo hviohweo hvio hweoh vohwei hvnkowe o vbnokedhovhedkohvos odhiv', {
+        //         position: 'bottom-right',
+        //         margin: 20
+        //     });
+        //     this.__instance.show();
+        // });
     },
     show: function (header, message) {
         const toast = new this.__Toast(header, message, {

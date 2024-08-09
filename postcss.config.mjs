@@ -5,7 +5,6 @@ import postcss_alias from "postcss-alias";
 import postcss_preset_env from "postcss-preset-env";
 import stylelint from "stylelint";
 import styleLintConfig from "./.stylelintrc.js";
-
 import cssnano from "cssnano";
 
 /** @type {import('postcss-load-config').Config} */
@@ -23,7 +22,13 @@ const config = {
             },
         }),
         stylelint(styleLintConfig),
-        // cssnano,
+        // cssnano({
+        //     preset: ['default', {
+        //         discardComments: {
+        //             removeAll: true,
+        //         },
+        //     }],
+        // }),
     ]
 }
 

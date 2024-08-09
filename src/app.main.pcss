@@ -1,0 +1,67 @@
+/* Toast Panel */
+.yui3-toast-panel {
+    position: fixed;
+    z-index: 1000;
+    width: auto;
+    max-width: 300px;
+    margin: 10px; /* Default margin */
+    user-select: none;
+
+    &.center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &.top-center {
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &.bottom-center {
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &.top-right {
+        top: 10px;
+        right: 10px;
+    }
+
+    &.bottom-right {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    &.bottom-left {
+        bottom: 10px;
+        left: 10px;
+    }
+
+    &.top-left {
+        top: 10px;
+        left: 10px;
+    }
+
+    .yui3-widget-hd {
+        padding: 10px;
+        background-color: #444444;
+        color: #ffffff;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        border-bottom: 1px solid #333333;
+    }
+
+    .yui3-widget-bd {
+        padding: 10px;
+        background-color: #323232;
+        color: #ffffff;
+        border-radius: 0 0 3px 3px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        user-select: text;
+    }
+}

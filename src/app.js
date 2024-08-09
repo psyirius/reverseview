@@ -749,8 +749,10 @@ function loadInstalledFonts() {
   });
 }
 
-// body: onLoad
-function vvInit() {
+// body: onload
+function rvwInit() {
+  document.body.addEventListener("keyup", mainWindowKey);
+
   rvw.window.Splash.show();
 
   if (!firstTimeCheck()) {

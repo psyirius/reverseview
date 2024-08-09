@@ -213,9 +213,7 @@
     <script type="text/javascript" src="js/setup.js"></script>
     <script type="text/javascript" src="js/fonts.js"></script>
     <script type="text/javascript" src="js/booknames.js"></script>
-
     <script type="text/javascript" src="js/munglish.js"></script>
-
     <script type="text/javascript" src="js/checkupdate.js"></script>
 
     <script type="text/javascript" src="js/words/wordlearner.js"></script>
@@ -255,15 +253,20 @@
     <link rel="stylesheet" type="text/css" href="graphics.css" />
 
     <!-- Bootstrap -->
+    <!-- TODO: migrate and remove asap if not needed -->
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
-    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+
+    <!-- !!! prevents dojo from loading modules -->
+<!--    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>-->
 
     <!-- library: jscolor -->
     <script type="text/javascript" src="lib/jscolor/jscolor.js"></script>
 
+      <!-- !!! prevents dojo from executing modules -->
     <!-- library: teoria -->
-    <script type="text/javascript" src="lib/music/teoria.js"></script>
+<!--    <script type="text/javascript" src="lib/music/teoria.js"></script>-->
 
+      <!-- !!! messing up preact -->
     <!-- Semantic UI -->
     <link rel="stylesheet" type="text/css" href="lib/semantic/semantic.min.css" />
     <script type="text/javascript" src="lib/semantic/semantic.min.js"></script>
@@ -281,10 +284,12 @@
 
   <body
     class="yui3-skin-sam yui-skin-sam"
-    id="bodyID"
-    onkeyup="mainWindowKey(event)"
-    onLoad="vvInit()"
+    onload="rvwInit()"
   >
+    <!-- Preact::Root::Begin -->
+    <div id="root"></div>
+    <!-- Preact::Root::End -->
+
     <!-- Modal::Tooltip::Begin -->
     <div id="tooltip"></div>
     <!-- Modal::Tooltip::End -->
@@ -315,119 +320,119 @@
     </div>
 
     <!-- MenuBar::Begin -->
-<!--    <div id="menubar" style="width: 100%">-->
-<!--      &lt;!&ndash; MenuBar::Content::Begin &ndash;&gt;-->
-<!--      <div class="ui compact mini menu">-->
-<!--        &lt;!&ndash; MenuBar::MenuItems::Begin &ndash;&gt;-->
-<!--        &lt;!&ndash; MenuItem: Present &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_present"-->
-<!--          class="item"-->
-<!--          data-tooltip="Presentation"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          &lt;!&ndash; <i class="gamepad icon"></i> &ndash;&gt;-->
-<!--          <img src="./icons/images/32/present.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuItem: Blank &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_blank"-->
-<!--          class="item"-->
-<!--          data-tooltip="Blank Presentation"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          <img src="./icons/images/32/blank.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuItem: Theme &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_theme"-->
-<!--          class="item"-->
-<!--          data-tooltip="Show Theme"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          <img src="./icons/images/32/theme.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuItem: Logo &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_logo"-->
-<!--          class="item"-->
-<!--          data-tooltip="Show Logo"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          <img src="./icons/images/32/logo.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuItem: Close &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_close"-->
-<!--          class="item"-->
-<!--          data-tooltip="Close Presentation"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          <img src="./icons/images/32/close.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuItem: Previous &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_prev"-->
-<!--          class="item"-->
-<!--          data-tooltip="Previous Slide"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          <img src="./icons/images/32/left.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuItem: Next &ndash;&gt;-->
-<!--        <a-->
-<!--          id="icon_next"-->
-<!--          class="item"-->
-<!--          data-tooltip="Next Slide"-->
-<!--          data-position="right center"-->
-<!--        >-->
-<!--          <img src="./icons/images/32/right.png" alt=""/>-->
-<!--        </a>-->
-<!--        &lt;!&ndash; MenuBar::MenuItems::End &ndash;&gt;-->
+    <div id="menubar" style="width: 100%">
+      <!-- MenuBar::Content::Begin -->
+      <div class="ui compact mini menu">
+        <!-- MenuBar::MenuItems::Begin -->
+        <!-- MenuItem: Present -->
+        <a
+          id="icon_present"
+          class="item"
+          data-tooltip="Presentation"
+          data-position="right center"
+        >
+          <!-- <i class="gamepad icon"></i> -->
+          <img src="./icons/images/32/present.png" alt=""/>
+        </a>
+        <!-- MenuItem: Blank -->
+        <a
+          id="icon_blank"
+          class="item"
+          data-tooltip="Blank Presentation"
+          data-position="right center"
+        >
+          <img src="./icons/images/32/blank.png" alt=""/>
+        </a>
+        <!-- MenuItem: Theme -->
+        <a
+          id="icon_theme"
+          class="item"
+          data-tooltip="Show Theme"
+          data-position="right center"
+        >
+          <img src="./icons/images/32/theme.png" alt=""/>
+        </a>
+        <!-- MenuItem: Logo -->
+        <a
+          id="icon_logo"
+          class="item"
+          data-tooltip="Show Logo"
+          data-position="right center"
+        >
+          <img src="./icons/images/32/logo.png" alt=""/>
+        </a>
+        <!-- MenuItem: Close -->
+        <a
+          id="icon_close"
+          class="item"
+          data-tooltip="Close Presentation"
+          data-position="right center"
+        >
+          <img src="./icons/images/32/close.png" alt=""/>
+        </a>
+        <!-- MenuItem: Previous -->
+        <a
+          id="icon_prev"
+          class="item"
+          data-tooltip="Previous Slide"
+          data-position="right center"
+        >
+          <img src="./icons/images/32/left.png" alt=""/>
+        </a>
+        <!-- MenuItem: Next -->
+        <a
+          id="icon_next"
+          class="item"
+          data-tooltip="Next Slide"
+          data-position="right center"
+        >
+          <img src="./icons/images/32/right.png" alt=""/>
+        </a>
+        <!-- MenuBar::MenuItems::End -->
 
-<!--        &lt;!&ndash; MenuBar::ExtraMenuItems::Begin &ndash;&gt;-->
-<!--        &lt;!&ndash; TODO: fit heights of ExtraMenuItems within the Content Box &ndash;&gt;-->
-<!--        <div id="verses_menu" class="menu">-->
-<!--          <div id="book_name" class="item">Bible book Name</div>-->
+        <!-- MenuBar::ExtraMenuItems::Begin -->
+        <!-- TODO: fit heights of ExtraMenuItems within the Content Box -->
+        <div id="verses_menu" class="menu">
+          <div id="book_name" class="item">Bible book Name</div>
 
-<!--          <div class="item">-->
-<!--            <a-->
-<!--              id="bibleAddScheduleButton"-->
-<!--              class="item"-->
-<!--              data-tooltip="Add to Schedule"-->
-<!--              data-position="left center"-->
-<!--            >-->
-<!--              <i class="add icon"></i>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </div>-->
+          <div class="item">
+            <a
+              id="bibleAddScheduleButton"
+              class="item"
+              data-tooltip="Add to Schedule"
+              data-position="left center"
+            >
+              <i class="add icon"></i>
+            </a>
+          </div>
+        </div>
 
-<!--        <div id="lyrics_menu" class="menu">-->
-<!--          <div class="item">-->
-<!--            <div-->
-<!--              id="ytubeid"-->
-<!--              class="item"-->
-<!--              data-tooltip="YouTube"-->
-<!--              data-position="left center"-->
-<!--            >-->
-<!--              <i class="video icon"></i>-->
-<!--            </div>-->
-<!--            <div-->
-<!--              id="songAddScheduleButton"-->
-<!--              class="item"-->
-<!--              data-tooltip="Add to Schedule"-->
-<!--              data-position="left center"-->
-<!--            >-->
-<!--              <i class="add icon"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <div id="lyrics_menu" class="menu">
+          <div class="item">
+            <div
+              id="ytubeid"
+              class="item"
+              data-tooltip="YouTube"
+              data-position="left center"
+            >
+              <i class="video icon"></i>
+            </div>
+            <div
+              id="songAddScheduleButton"
+              class="item"
+              data-tooltip="Add to Schedule"
+              data-position="left center"
+            >
+              <i class="add icon"></i>
+            </div>
+          </div>
+        </div>
 
-<!--        <div id="notificationMenu" class="item"></div>-->
-<!--        &lt;!&ndash; MenuBar::ExtraMenuItems::End &ndash;&gt;-->
-<!--      </div>-->
-<!--      &lt;!&ndash; MenuBar::Content::End &ndash;&gt;-->
-<!--    </div>-->
+        <div id="notificationMenu" class="item"></div>
+        <!-- MenuBar::ExtraMenuItems::End -->
+      </div>
+      <!-- MenuBar::Content::End -->
+    </div>
     <!-- MenuBar::End -->
 
     <!-- App::Content::Begin -->

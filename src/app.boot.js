@@ -14,7 +14,7 @@
         locale: "en-us",
         baseUrl: "/js/",
         packages: [{
-            name: "app", location: "app", main: "index",
+            name: "app", location: "test", main: "index",
         }, {
             name: "@lib", location: "lib",
         }, {
@@ -27,6 +27,8 @@
         aliases: {},
         map: {}
     };
+
+    air.trace('BOOTING!');
 
     // execute main
     require(dojoConfig, ["app"], function (app) {
