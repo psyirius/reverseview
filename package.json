@@ -17,7 +17,8 @@
     "build": "pnpm run build:src && pnpm run build:styles",
     "build:src": "tsc -p tsconfig.app.json",
     "build:styles": "node build.styles.js",
-    "watch:src": "tsc -p tsconfig.app.json --watch"
+    "watch:src": "tsc -p tsconfig.app.json --watch",
+    "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.30",
