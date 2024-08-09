@@ -287,7 +287,8 @@ $RvW.systemFontList = [
   "Kambar",
   "Lohit Malayalam",
   "Meera Malayalam",
-  "Tenali Telugu"];
+  "Tenali Telugu"
+];
 $RvW.specialFontList = [
   "JC_Malayalam",
   "JC_Hindi",
@@ -752,6 +753,8 @@ function loadInstalledFonts() {
   allFonts.forEach((font) => {
     air.trace(font.fontName);
   });
+
+  return allFonts;
 }
 
 function setupConsole() {
@@ -1522,6 +1525,8 @@ export function start(Y) {
     loadPreferences(() => {
         setupLeftTabFrame();
         setupRightTabFrame();
+
+        $RvW.systemFontList = loadInstalledFonts().map((font) => font.fontName);
 
         $RvW.vvConfigObj = new RvwConfig();
         $RvW.vvConfigObj.load(vvinit_continue);

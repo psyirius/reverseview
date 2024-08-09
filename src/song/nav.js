@@ -451,8 +451,8 @@ class songNavClass {
       document.getElementById("ly_name").innerHTML = an;
       if (at.name2 != "null") {
         document.getElementById("ly_name2").innerHTML = at.name2;
-        var aF = $RvW.specialFontList.indexOf(at.font);
-        if (aF == -1) {
+          const aF = $RvW.specialFontList.indexOf(at.font);
+          if (aF === -1) {
           document.getElementById("ly_name2").style.fontFamily = at.font;
         } else {
           document.getElementById("ly_name2").style.fontFamily = "Arial";
