@@ -130,6 +130,8 @@ async function downloadModule(packageName = 'dojo', moduleName, extension = 'js'
             ['dojo', 'robotx.js'],
             ['dojo', 'router.js'],
             ['dojo', 'ready.js'],
+            ['dojo', 'store/util/SimpleQueryEngine.js'],
+            ['dojo', 'store/util/QueryResults.js'],
         ];
 
         for (const [moduleName, filename] of modules) {

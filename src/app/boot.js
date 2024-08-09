@@ -23,7 +23,7 @@
             // jsx
             { name: "jsx", location: "lib/jsx" },
             // entry point
-            { name: "app", location: "test", main: "index" },
+            { name: "app", location: "app", main: "main" },
         ],
         paths: {
             // jquery: "../node_modules/jquery/dist/jquery.slim.min",
@@ -36,11 +36,14 @@
     air.trace('BOOTING!');
 
     // execute main
-    require(dojoConfig, ["app", 'dojo/dom', 'dojo/query', "dojo/Deferred"], (app, dom, query, Deferred) => {
+    require(dojoConfig, ["app", 'dojo/dom', 'dojo/query', "dojo/domReady!"], (app, dom, query) => {
         air.trace('BOOTED!');
+
         air.trace('app: ' + app);
-        air.trace('dom: ' + dom);
-        air.trace('query: ' + query("body"));
-        air.trace('Deferred: ' + Deferred);
+
+        // air.trace('dom: ' + dom.byId("root"));
+        // air.trace('query: ' + query("#root"));
+
+        app.startup();
     });
 })();

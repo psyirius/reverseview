@@ -754,46 +754,6 @@ function loadInstalledFonts() {
   });
 }
 
-// body: onload
-$RvW.INIT = function() {
-  document.body.addEventListener("keyup", onMainWindowKeyUp);
-
-  rvw.window.Splash.show();
-
-  if (!firstTimeCheck()) {
-    rvw.ui.Toast.show(
-      "ReVerseVIEW",
-      "Error first init!"
-    );
-  }
-
-  // {
-  //   // Register a {{{link}}} helper for creating HTML links.
-  //   $Y.Handlebars.registerHelper('link', function (text, url) {
-  //     text = $Y.Escape.html(text);
-  //     url  = $Y.Escape.html(url);
-  //
-  //     return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
-  //   });
-  // }
-
-  // FIXME: hack to let YUI3 load first
-  setTimeout(() => {
-    loadPreferences(() => {
-      setupLeftTabFrame();
-      setupRightTabFrame();
-
-      $RvW.vvConfigObj = new RvwConfig();
-      $RvW.vvConfigObj.load(vvinit_continue);
-
-      $RvW.learner = new wordlearner();
-
-      $RvW.wordbrain = new vvbrain();
-      $RvW.wordbrain.init();
-    });
-  }, 0);
-}
-
 function setupConsole() {
   // new $Y.Console({
   //   logSource: $Y.Global,
@@ -1478,7 +1438,6 @@ function setupVBkgnd() {
   return a;
 }
 
-// body: onkeyup
 function onMainWindowKeyUp(evt) {
   const b = $(":focus").attr("id");
   switch (evt.keyCode) {
@@ -1537,4 +1496,42 @@ function getActiveTabLabel() {
   return $RvW.leftTabView.get('selection').get('label')
 }
 
-export default $RvW; // entry point
+// body: onload
+export function startup() {
+    document.body.addEventListener("keyup", onMainWindowKeyUp);
+
+    rvw.window.Splash.show();
+
+    if (!firstTimeCheck()) {
+        rvw.ui.Toast.show(
+            "ReVerseVIEW",
+            "Error first init!"
+        );
+    }
+
+    // {
+    //   // Register a {{{link}}} helper for creating HTML links.
+    //   $Y.Handlebars.registerHelper('link', function (text, url) {
+    //     text = $Y.Escape.html(text);
+    //     url  = $Y.Escape.html(url);
+    //
+    //     return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
+    //   });
+    // }
+
+    // FIXME: hack to let YUI3 load first
+    setTimeout(() => {
+        loadPreferences(() => {
+            setupLeftTabFrame();
+            setupRightTabFrame();
+
+            $RvW.vvConfigObj = new RvwConfig();
+            $RvW.vvConfigObj.load(vvinit_continue);
+
+            $RvW.learner = new wordlearner();
+
+            $RvW.wordbrain = new vvbrain();
+            $RvW.wordbrain.init();
+        });
+    }, 500);
+}
