@@ -8,7 +8,7 @@
     "jsxImportSource": "@lib/zrx",
 
     /* Modules */
-    "module": "AMD",
+    "module": "UMD", // out loader is AMD
     "rootDir": "./src",
     "baseUrl": "./src",
     "moduleResolution": "node",
@@ -24,7 +24,7 @@
 //
 //    ],
     "allowUmdGlobalAccess": true,
-    "resolveJsonModule": true,
+//    "resolveJsonModule": true,
 
     /* JavaScript Support */
     "allowJs": true,

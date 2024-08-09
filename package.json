@@ -12,12 +12,14 @@
     "ie 10"
   ],
   "scripts": {
+    "dev": "pnpm run build && pnpm run debug",
     "debug": "adl -profile extendedDesktop ./application.xml ./app",
     "start": "adl -profile extendedDesktop -nodebug ./application.xml ./app",
     "build": "pnpm run build:src && pnpm run build:styles",
     "build:src": "tsc -p tsconfig.app.json",
     "build:styles": "node build.styles.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
+    "clean": "rimraf -g \"app/js/**/*.js\" \"app/css/**/*.css\"",
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
@@ -25,7 +27,9 @@
     "@types/node": "^20.14.14",
     "@types/sizzle": "^2.3.4",
     "@types/yui": "^3.14.31",
+    "@types/dojo": "^1.9.48",
     "@types/lodash": "^4.17.7",
+    "rimraf": "^6.0.1",
     "lodash": "^4.17.21",
     "almond": "^0.3.3",
     "cajon": "^0.4.4",

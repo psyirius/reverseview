@@ -2,7 +2,6 @@ $RvW.setupMenu = function() {
     const { ui: { Menu } } = air;
 
     const vvMenu = Menu.createFromXML("menu.xml");
-    // const vvMenu = Menu.createFromJSON('menu.json');
 
     // application or window menu
     Menu.setAsMenu(vvMenu);

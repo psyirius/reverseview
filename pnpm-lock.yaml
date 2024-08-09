@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@types/dojo':
+        specifier: ^1.9.48
+        version: 1.9.48
       '@types/jquery':
         specifier: ^3.5.30
         version: 3.5.30
@@ -95,6 +98,9 @@ importers:
       recache:
         specifier: ^0.6.0
         version: 0.6.0
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
       sass:
         specifier: ^1.77.8
         version: 1.77.8
@@ -446,6 +452,9 @@ packages:
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
+
+  '@types/dojo@1.9.48':
+    resolution: {integrity: sha512-+/wltO++J0mmLoPa+mqElzilBahIfSY5Lz3o7RJkyIB0GDPnWhw3RUxU+xuZRCJE7uOFnNgqTdL76n/E0wDJ5w==}
 
   '@types/jquery@3.5.30':
     resolution: {integrity: sha512-nbWKkkyb919DOUxjmRVk8vwtDb0/k8FKncmUKFi+NY+QXqWltooxTrswvz4LspQwxvLdvzBN1TImr6cw3aQx2A==}
@@ -1961,6 +1970,11 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
+  rimraf@6.0.1:
+    resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
+    engines: {node: 20 || >=22}
+    hasBin: true
+
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
@@ -2559,6 +2573,8 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@trysound/sax@0.2.0': {}
+
+  '@types/dojo@1.9.48': {}
 
   '@types/jquery@3.5.30':
     dependencies:
@@ -4155,6 +4171,11 @@ snapshots:
       supports-preserve-symlinks-flag: 1.0.0
 
   reusify@1.0.4: {}
+
+  rimraf@6.0.1:
+    dependencies:
+      glob: 11.0.0
+      package-json-from-dist: 1.0.0
 
   run-parallel@1.2.0:
     dependencies:
