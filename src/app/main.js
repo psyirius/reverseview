@@ -752,9 +752,9 @@ function loadInstalledFonts() {
     // );
     // embeddedFonts.sortOn("fontName", Array.CASEINSENSITIVE);
 
-    allFonts.forEach((font) => {
-        air.trace(font.fontName);
-    });
+    // allFonts.forEach((font) => {
+    //     air.trace(font.fontName);
+    // });
 
     return allFonts;
 }
@@ -1528,6 +1528,22 @@ export function start(Y) {
     //     return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
     //   });
     // }
+
+    // load swf
+    try {
+        const { Loader, URLRequest } = air;
+
+        // const loader = new Loader();
+        // loader.load(new URLRequest("./bin/AppEntry.swf"));
+        // loader.load(new URLRequest("./bin/library.swf"));
+
+        const { nativeWindow } = window;
+        const { stage } = nativeWindow;
+
+        // stage.addChild(loader);
+    } catch (e) {
+        air.trace(e);
+    }
 
     loadPreferences(() => {
         setupLeftTabFrame();

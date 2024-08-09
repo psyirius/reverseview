@@ -15,13 +15,13 @@
     "dev": "pnpm run build && pnpm run debug",
     "debug": "adl -profile extendedDesktop ./application.xml ./app",
     "start": "adl -profile extendedDesktop -nodebug ./application.xml ./app",
-    "build": "pnpm run build:src && pnpm run build:styles",
+    "build": "pnpm run build:src && pnpm run build:styles && pnpm run build:swf",
     "build:src": "tsc -p tsconfig.app.json",
     "build:as3": "asconfigc -p as3 --sdk \"D:/AirSDK/32.0.0.116\"",
-    "build:swf": "amxmlc -output app/bin/AppEntry.swf as3/src/AppEntry.as",
+    "build:swf": "amxmlc -source-path=\"./as3/src\" -o \"app/bin/AppEntry.swf\" \"as3/src/AppEntry.as\"",
     "build:styles": "node build.styles.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
-    "clean": "rimraf -g \"app/js/**/*.js\" \"app/css/**/*.css\" \"app/*.css\" \"dist/*.air\"",
+    "clean": "rimraf -g \"app/js/**/*.js\" \"app/css/**/*.css\" \"app/*.css\" \"app/bin/*\" \"dist/*.air\"",
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
