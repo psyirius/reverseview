@@ -786,7 +786,7 @@ function rvwInit() {
       wordbrain = new vvbrain();
       wordbrain.init();
     });
-  }, 1000);
+  }, 0);
 }
 
 function setupConsole() {
@@ -1193,40 +1193,41 @@ function fillNav() {
   document
     .getElementById("nav_bibleRefID")
     .addEventListener("focus", bibleRefFocus, false);
-  // Menu bar buttons
-  // $("#icon_present").click(function () {
-  //   var d = getActiveTabLabel();
-  //   if (d == "Songs") {
-  //     songNavObj.sn_presentSong();
-  //   } else {
-  //     present();
-  //   }
-  // });
-  // $("#icon_blank").click(function () {
-  //   blankSlide();
-  // });
-  // $("#icon_theme").click(function () {
-  //   if (newWindow != null) {
-  //     newWindow.window.showThemeProcess();
-  //   }
-  // });
-  // $("#icon_logo").click(function () {
-  //   showLogoSlide();
-  // });
-  // $("#icon_close").click(function () {
-  //   closePresentWindowMain();
-  // });
-  // $("#icon_prev").click(function () {
-  //   call_prevSlide();
-  // });
-  // $("#icon_next").click(function () {
-  //   call_nextSlide();
-  // });
+    
+  // menubar buttons
+  $("#icon_present").click(function () {
+    var d = getActiveTabLabel();
+    if (d == "Songs") {
+      songNavObj.sn_presentSong();
+    } else {
+      present();
+    }
+  });
+  $("#icon_blank").click(function () {
+    blankSlide();
+  });
+  $("#icon_theme").click(function () {
+    if (newWindow != null) {
+      newWindow.window.showThemeProcess();
+    }
+  });
+  $("#icon_logo").click(function () {
+    showLogoSlide();
+  });
+  $("#icon_close").click(function () {
+    closePresentWindowMain();
+  });
+  $("#icon_prev").click(function () {
+    call_prevSlide();
+  });
+  $("#icon_next").click(function () {
+    call_nextSlide();
+  });
 
   // conditionally disable nav buttons
-  // $("#bibleAddScheduleButton").click(function () {
-  //   nav_addVerse2Schedule();
-  // });
+  $("#bibleAddScheduleButton").click(function () {
+    nav_addVerse2Schedule();
+  });
   
   disableNavButtons(true);
   enterForSearchActive = true;

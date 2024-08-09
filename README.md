@@ -105,7 +105,7 @@ swfdump -abc ./app/lib/air/aircore.swf
   - [ ] reserved words
   - [ ] ........
 
-### References
+### Development References & Resources
 - https://github.com/yui/yui3
 - https://github.com/yui/yui3-swfs
 - https://github.com/liferay/alloy-ui

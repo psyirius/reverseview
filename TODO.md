@@ -1,2 +1,3 @@
 - [ ] Add a script to crete the preact es3 jsx runtime.
-- [ ] Check parcel if it can be used for bulding or as build tool
+- [ ] Check parcel if it can be used for building or as build tool
+- [ ] System fonts in font list

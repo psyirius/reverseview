@@ -1,7 +1,7 @@
 {
   "name": "reverseview",
   "version": "8.5.0",
-  "description": "",
+  "description": "Rebirth of the old-school VerseVIEW 8",
   "private": true,
   "type": "module",
   "engines": {

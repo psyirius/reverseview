@@ -142,10 +142,12 @@ class songNavClass {
       $("#songnav_filterbox").hide();
 
       // menubar
-      // document
-      // .getElementById("songAddScheduleButton")
-      // .addEventListener("click", F, false);
-      
+      {
+        document
+        .getElementById("songAddScheduleButton")
+        .addEventListener("click", F, false);
+      }
+        
         document
         .getElementById("songnav_searchbutton")
         .addEventListener("click", e, false);
@@ -468,21 +470,21 @@ class songNavClass {
       document.getElementById("ly_copy").innerHTML = at.copyright;
       document.getElementById("ly_notes").innerHTML = at.notes;
       // menubar 
-      // {
-      //   if (at.yvideo != null && at.yvideo != "") {
-      //     B = at.yvideo;
-      //     document.getElementById("ytubeid").disabled = false;
-      //     $("#ytubeid").removeClass("disabled");
-      //     document.getElementById("ytubeid").addEventListener("click", ai, false);
-      //   } else {
-      //     B = null;
-      //     document
-      //       .getElementById("ytubeid")
-      //       .removeEventListener("click", ai, false);
-      //     document.getElementById("ytubeid").disabled = true;
-      //     $("#ytubeid").addClass("disabled");
-      //   }
-      // }
+      {
+        if (at.yvideo != null && at.yvideo != "") {
+          B = at.yvideo;
+          document.getElementById("ytubeid").disabled = false;
+          $("#ytubeid").removeClass("disabled");
+          document.getElementById("ytubeid").addEventListener("click", ai, false);
+        } else {
+          B = null;
+          document
+            .getElementById("ytubeid")
+            .removeEventListener("click", ai, false);
+          document.getElementById("ytubeid").disabled = true;
+          $("#ytubeid").addClass("disabled");
+        }
+      }
       document.getElementById("ly_slide").style.fontFamily = at.font;
       var aC = at.slides2[0];
       if (aC == "") {
