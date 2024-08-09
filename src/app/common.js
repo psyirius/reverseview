@@ -242,6 +242,12 @@ function fontSizeSlider() {
   }
   function b() {}
 }
+
+function processFontSizeChange() {
+    $RvW.updateVerseContainer();
+    $RvW.searchObj.setFontSize($RvW.vvConfigObj.get_navFontSize());
+    $RvW.scheduleObj.changeFontsizeScheduleTab();
+}
 function BibleReference() {
   this.init = o;
   this.present = b;
@@ -373,15 +379,15 @@ function BibleReference() {
     var t = s;
     var w = p - 1;
     var u = e - 1;
-    present_external(t, w, u);
+    $RvW.present_external(t, w, u);
     return true;
     $RvW.bookIndex = s;
     $RvW.chapterIndex = p - 1;
     $RvW.verseIndex = e - 1;
     recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
-    p_footer = getFooter();
+    $RvW.p_footer = $RvW.getFooter();
     p_title = c + " " + ($RvW.chapterIndex + 1);
-    launch($RvW.verseIndex);
+    $RvW.launch($RvW.verseIndex);
   }
   function q() {
     var t = $RvW.bible[$RvW.vvConfigObj.get_version1()]
@@ -491,7 +497,7 @@ function promoteVV(a) {
   p_footnote = "";
   p_current_index = 0;
   p_last_index = 0;
-  p_bkgnd_filename = graphicsObj.getLogoFilename();
+  p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
   if (a == 2) {
     p_bkgnd_filename = "./background/promote2.jpg";
   }
@@ -511,7 +517,7 @@ function showLogoSlide() {
   p_footnote = "";
   p_current_index = 0;
   p_last_index = 0;
-  p_bkgnd_filename = graphicsObj.getLogoFilename();
+  p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
   p_bkgnd_color = "black";
   p_font_color = $RvW.vvConfigObj.get_p_textColor();
   p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();

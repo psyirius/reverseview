@@ -8,7 +8,7 @@
     "jsxImportSource": "@lib/zrx",
 
     /* Modules */
-    "module": "UMD", // supports AMD
+    "module": "AMD",
     "rootDir": "./src",
     "baseUrl": "./src",
     "moduleResolution": "node",
@@ -24,9 +24,11 @@
 //
 //    ],
     "allowUmdGlobalAccess": true,
+    "resolveJsonModule": true,
 
     /* JavaScript Support */
     "allowJs": true,
+//    "checkJs": true,
 
     /* Emit */
     "outDir": "./app/js",
@@ -36,6 +38,7 @@
     "./src/**/*.js",
     "./src/**/*.tsx",
     "./src/**/*.jsx",
+    "./src/**/*.json",
   ],
   "exclude": ["node_modules"]
 }

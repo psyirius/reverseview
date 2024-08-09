@@ -28,14 +28,8 @@ keystores/
 
 # compiled js files (wip)
 /app/app.test.html
-/app/js/lib
-/app/js/__*.js
-/app/js/app.js
-/app/js/app.*.js
-/app/js/song.*.js
-/app/js/bible.*.js
-/app/js/chords.*.js
-/app/js/network.*.js
+/app/js/
+!/app/js/.gitkeep
 
 # downloadable libs
 /app/lib/yui3/*

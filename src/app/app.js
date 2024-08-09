@@ -1,5 +1,8 @@
 // import SongEdit from './song.edit.js';
 
+// TODO:
+// - Export global functions to be used in other files
+
 $RvW.bookIndex = 0;
 $RvW.chapterIndex = 0;
 $RvW.verseIndex = 0;
@@ -339,23 +342,22 @@ $RvW.learner = null;
 $RvW.wordbrain = null;
 
 let firstTimeFlag = false;
-let vvMenu = null;
 let navWindowHeight = 1000;
 let navWindowWidth = 1000;
 let previousSelVerse = 0;
 let themeState = false;
 let rvwPreferences = null;
 
-function getBookValue() {
+$RvW.getBookValue = function() {
   return document.getElementById("bookList").selectedIndex;
 }
-function getChapterValue() {
+$RvW.getChapterValue = function() {
   return document.getElementById("chapterList").selectedIndex;
 }
-function getVerseValue() {
+$RvW.getVerseValue = function() {
   return document.getElementById("verseList").selectedIndex;
 }
-function launch(g) {
+$RvW.launch = function(g) {
   var j;
   var c = document.getElementById("multipleVerseID").checked;
   var e = 1;
@@ -400,11 +402,11 @@ function launch(g) {
   p_text1_font = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
   p_text2_font = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
   p_title = p_title;
-  p_footnote = p_footer;
+  p_footnote = $RvW.p_footer;
   p_current_index = k;
   p_last_index = j;
-  p_bkgnd_filename = graphicsObj.getBkgndFilename();
-  p_bkgnd_motion = graphicsObj.getMotionFlag();
+  p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+  p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
   p_bkgnd_color = "blue";
   p_font_color = $RvW.vvConfigObj.get_p_textColor();
   p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
@@ -417,10 +419,10 @@ function launch(g) {
   }
   presentation();
 }
-function loadBookNames(a) {
+$RvW.loadBookNames = function(a) {
   setPrimaryBooknames();
 }
-function getSingleVerse(j, f, k, e) {
+$RvW.getSingleVerse = function(j, f, k, e) {
   var l;
   var g = j * 1 + 1;
   var a = f * 1 + 1;
@@ -433,20 +435,20 @@ function getSingleVerse(j, f, k, e) {
   }
   return l;
 }
-function present() {
+$RvW.present = function() {
   $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
   $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
   $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
   recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
-  air.trace("Called in present()");
+  air.trace("Called in $RvW.present()");
   getdata();
-  p_footer = getFooter();
+  $RvW.p_footer = $RvW.getFooter();
   p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
-  launch($RvW.verseIndex);
+  $RvW.launch($RvW.verseIndex);
   themeState = false;
   disableNavButtons(false);
 }
-function present_external(a, h, e) {
+$RvW.present_external = function(a, h, e) {
   var g = $RvW.bookIndex;
   var f = $RvW.chapterIndex;
   var d = $RvW.verseIndex;
@@ -454,9 +456,9 @@ function present_external(a, h, e) {
   $RvW.chapterIndex = h;
   $RvW.verseIndex = e;
   getdataONLY();
-  p_footer = getFooter();
+  $RvW.p_footer = $RvW.getFooter();
   p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
-  launch($RvW.verseIndex);
+  $RvW.launch($RvW.verseIndex);
   themeState = false;
   $RvW.bookIndex = g;
   $RvW.chapterIndex = f;
@@ -464,7 +466,7 @@ function present_external(a, h, e) {
   getdataONLY();
   disableNavButtons(false);
 }
-function getFooter() {
+$RvW.getFooter = function() {
   var b;
   var a = bibleVersionArray[$RvW.vvConfigObj.get_version1()][3];
   var c = bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
@@ -498,7 +500,7 @@ function getFooter() {
 }
 function presentTheme() {
   if (themeState) {
-    present();
+    $RvW.present();
   } else {
     themeState = true;
     p_title = "";
@@ -507,22 +509,22 @@ function presentTheme() {
     $RvW.content1[0] = "";
     $RvW.content2[0] = "";
     p_current_index = 0;
-    p_bkgnd_filename = graphicsObj.getBkgndFilename();
-    p_bkgnd_motion = graphicsObj.getMotionFlag();
+    p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+    p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
     p_bkgnd_color = "black";
     p_font_color = "white";
     p_font_color2 = "white";
     presentation();
   }
 }
-function setFontForList() {
+$RvW.setFontForList = function() {
   var a = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
   $("#bookList").css("font-family", a);
   $("#chapterList").css("font-family", a);
   $("#verseList").css("font-family", a);
   $("#recentSel").css("font-family", a);
 }
-function putbook() {
+$RvW.putbook = function() {
   clearSelectList("bookList");
   var a = $RvW.vvConfigObj.get_listinenglish();
   var b = booknames.length;
@@ -540,12 +542,12 @@ function putbook() {
     }
   }
   document.getElementById("bookList").selectedIndex = 0;
-  setFontForList();
+  $RvW.setFontForList();
 }
-function putch(b, a) {
+$RvW.putch = function(b, a) {
   clearSelectList("chapterList");
-  val = document.getElementById("bookList").selectedIndex + 1;
-  for (i = 0; i < $RvW.numofch[val][0]; i++) {
+  const val = document.getElementById("bookList").selectedIndex + 1;
+  for (let i = 0; i < $RvW.numofch[val][0]; i++) {
     document.getElementById("chapterList").options[i] = new Option(i + 1, i);
   }
   if (b == null) {
@@ -554,14 +556,17 @@ function putch(b, a) {
     document.getElementById("chapterList").selectedIndex = b;
   }
   if (!a) {
-    putver();
+    $RvW.putver();
   }
 }
-function putver(a) {
+
+let bookval, chval;
+
+$RvW.putver = function(a) {
   bookval = document.getElementById("bookList").selectedIndex + 1;
   chval = document.getElementById("chapterList").selectedIndex + 1;
   clearSelectList("verseList");
-  for (i = 0; i < $RvW.numofch[bookval][chval]; i++) {
+  for (let i = 0; i < $RvW.numofch[bookval][chval]; i++) {
     document.getElementById("verseList").options[i] = new Option(i + 1, i + 1);
   }
   if (a == null) {
@@ -570,12 +575,12 @@ function putver(a) {
     document.getElementById("verseList").selectedIndex = a;
   }
   $RvW.scroll_to_view = true;
-  updateVerseContainer();
+  $RvW.updateVerseContainer();
 }
 function verseChange() {
-  var a = getVerseValue();
+  var a = $RvW.getVerseValue();
   $RvW.scroll_to_view = true;
-  highlightVerse(a);
+  $RvW.highlightVerse(a);
   updateRefMenu();
 }
 function updateRefMenu() {
@@ -585,7 +590,7 @@ function updateRefMenu() {
   var e = booknames[a] + " " + (f + 1);
   $("#book_name").text(e);
 }
-function highlightVerse(a) {
+$RvW.highlightVerse = function(a) {
   let b = "TC_" + previousSelVerse;
   document.getElementById(b).style.backgroundColor = "edf5ff";
   b = "TC_" + a;
@@ -598,10 +603,10 @@ function highlightVerse(a) {
   }
   window.scroll(0, 0);
 }
-function updateVerseContainer() {
+$RvW.updateVerseContainer = function() {
   previousSelVerse = 0;
-  priFontName = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-  secFontName = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+  $RvW.priFontName = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+  $RvW.secFontName = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
   var a = document.getElementById("navDualLanguageID").checked;
   $RvW.vvConfigObj.set_navDualLanguage(a);
   $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
@@ -609,7 +614,7 @@ function updateVerseContainer() {
   $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
   getdata();
 }
-function updateVerseContainer_continue() {
+$RvW.updateVerseContainer_continue = function() {
   var p = $RvW.content1.length;
   var n = "";
   n = n + "<table border=1>";
@@ -679,8 +684,8 @@ function updateVerseContainer_continue() {
       $RvW.notesObj.getNotes(bookval, chval, 0);
     }
   }
-  var d = getVerseValue();
-  highlightVerse(d);
+  var d = $RvW.getVerseValue();
+  $RvW.highlightVerse(d);
 }
 
 function loadPreferences(callback) {
@@ -750,8 +755,8 @@ function loadInstalledFonts() {
 }
 
 // body: onload
-function rvwInit() {
-  document.body.addEventListener("keyup", mainWindowKey);
+$RvW.INIT = function() {
+  document.body.addEventListener("keyup", onMainWindowKeyUp);
 
   rvw.window.Splash.show();
 
@@ -848,10 +853,9 @@ function vvinit_continue() {
     activateMainWindow();
 
     setupNavWindow();
-    loadBookNames($RvW.vvConfigObj.get_version1());
-    putbook();
-    vvMenu = air.ui.Menu.createFromXML("menu/menu.xml");
-    air.ui.Menu.setAsMenu(vvMenu);
+    $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
+    $RvW.putbook();
+  $RvW.setupMenu();
     nativeWindow.addEventListener("resize", setupNavWindow);
     nativeWindow.addEventListener("close", processExit);
     nativeWindow.addEventListener("closing", beforeExit);
@@ -874,27 +878,27 @@ function setupNavWindow() {
     var f = window.innerHeight;
     var b = parseInt((j * 3) / 100);
     var a = parseInt((f * 4) / 100);
-    tabHeight = f - 120;
+    $RvW.tabHeight = f - 120;
     var g = 250;
     var e = 200;
-    document.getElementById("wrapper").style.height = tabHeight;
-    $("#container").height(tabHeight);
-    $("#navTab").height(tabHeight);
-    $("#songNavTab").height(tabHeight);
-    $("#bookList").height(tabHeight - c);
-    $("#chapterList").height(tabHeight - c);
-    $("#verseList").height(tabHeight - c);
+    document.getElementById("wrapper").style.height = $RvW.tabHeight;
+    $("#container").height($RvW.tabHeight);
+    $("#navTab").height($RvW.tabHeight);
+    $("#songNavTab").height($RvW.tabHeight);
+    $("#bookList").height($RvW.tabHeight - c);
+    $("#chapterList").height($RvW.tabHeight - c);
+    $("#verseList").height($RvW.tabHeight - c);
     var l = j - g - e - 3 * b;
-    document.getElementById("container2").style.height = tabHeight;
-    document.getElementById("bibleverseTab").style.height = tabHeight;
-    document.getElementById("lyricsTab").style.height = tabHeight;
-    document.getElementById("notesTab").style.height = tabHeight;
-    document.getElementById("scheduleTab").style.height = tabHeight;
-    document.getElementById("searchTab").style.height = tabHeight;
-    document.getElementById("graphicsTab").style.height = tabHeight;
-    document.getElementById("screenTab").style.height = tabHeight;
+    document.getElementById("container2").style.height = $RvW.tabHeight;
+    document.getElementById("bibleverseTab").style.height = $RvW.tabHeight;
+    document.getElementById("lyricsTab").style.height = $RvW.tabHeight;
+    document.getElementById("notesTab").style.height = $RvW.tabHeight;
+    document.getElementById("scheduleTab").style.height = $RvW.tabHeight;
+    document.getElementById("searchTab").style.height = $RvW.tabHeight;
+    document.getElementById("graphicsTab").style.height = $RvW.tabHeight;
+    document.getElementById("screenTab").style.height = $RvW.tabHeight;
     document.getElementById("still_bkgnd_grid").style.height = f - 450;
-    graphicsObj.setNumOfPicsInRow(l);
+    $RvW.graphicsObj.setNumOfPicsInRow(l);
     $RvW.songNavObj.setFormats();
     navWindowHeight = d;
     navWindowWidth = k;
@@ -916,16 +920,16 @@ function setupTheme() {
 
 function setupTabContent() {
   $RvW.bibleVersionSelObj = new bibleVersionSelClass();
-  $RvW.bibleVersionSelObj.init(loadViewTemplate("setup_biblesel"));
+  $RvW.bibleVersionSelObj.init($RvW.loadViewTemplate("setup_biblesel"));
 
   $RvW.remoteVV_UI_Obj = new remoteVV_UI_Class();
-  $RvW.remoteVV_UI_Obj.init(loadViewTemplate("setup_remote"));
+  $RvW.remoteVV_UI_Obj.init($RvW.loadViewTemplate("setup_remote"));
 
   setupTabViewTemplate("bible_verses", "bibleverseTab");
   setupTabViewTemplate("screens", "screenTab");
 
   $RvW.updateVV_UI_Obj = new updateVV_UI_Class();
-  $RvW.updateVV_UI_Obj.init(loadViewTemplate("setup_update"));
+  $RvW.updateVV_UI_Obj.init($RvW.loadViewTemplate("setup_update"));
 
   fillTabs('configTab');
 
@@ -939,7 +943,7 @@ function setupTabContent() {
   $RvW.notesManageObj = new manageNotes();
   $RvW.notesManageObj.init(firstTimeFlag);
 
-  $RvW.notesObj = new notes(loadViewTemplate("notesui"));
+  $RvW.notesObj = new notes($RvW.loadViewTemplate("notesui"));
   $RvW.notesObj.setNotesContainerID("notesPanelID");
 
   $RvW.searchObj = new vvsearch("./bible/" + getVersion1Filename());
@@ -953,23 +957,23 @@ function setupTabContent() {
 
   $RvW.songManagerObj = new SongManager(true, true);
 
-  $RvW.songEditObj = new SongEdit(loadViewTemplate("song_edit"));
+  $RvW.songEditObj = new SongEdit($RvW.loadViewTemplate("song_edit"));
 
   $RvW.songNavObj = new songNavClass();
   $RvW.songNavObj.init();
 
-  $RvW.helpObj = new RvwHelp(loadViewTemplate("help"));
+  $RvW.helpObj = new RvwHelp($RvW.loadViewTemplate("help"));
 
-  graphicsObj = new graphicsClass();
-  graphicsObj.init(loadViewTemplate("graphics"));
+  $RvW.graphicsObj = new graphicsClass();
+  $RvW.graphicsObj.init($RvW.loadViewTemplate("graphics"));
 
-  $RvW.chordsNavObj = new ChordsNav(loadViewTemplate("chords"));
+  $RvW.chordsNavObj = new ChordsNav($RvW.loadViewTemplate("chords"));
 
   $RvW.chordsEditObj = new chordsEditClass();
-  $RvW.chordsEditObj.init(loadViewTemplate("chords_edit"));
+  $RvW.chordsEditObj.init($RvW.loadViewTemplate("chords_edit"));
 
   $RvW.chordsKeyboard = new chordsVirtualKeyboard();
-  $RvW.chordsKeyboard.init(loadViewTemplate("chords_keyboard"));
+  $RvW.chordsKeyboard.init($RvW.loadViewTemplate("chords_keyboard"));
 
   if (!isUpToDate() && task2Status() == false) {
     air.trace("About to copy webroot files...");
@@ -982,7 +986,7 @@ function setupTabContent() {
   }
 }
 
-function loadViewTemplate(name) {
+$RvW.loadViewTemplate = function(name) {
   const filepath = `./views/${name}.hbs`;
 
   const { File, FileStream, FileMode } = air;
@@ -999,7 +1003,7 @@ function loadViewTemplate(name) {
 }
 
 function setupTabViewTemplate(name, mountPoint) {
-  document.getElementById(mountPoint).innerHTML = loadViewTemplate(name);
+  document.getElementById(mountPoint).innerHTML = $RvW.loadViewTemplate(name);
   fillTabs(mountPoint);
 }
 function fillTabs(a) {
@@ -1150,12 +1154,12 @@ function updateBookNameVar() {
   }
 }
 function fillNav() {
-  putbook();
-  putch();
-  document.getElementById("bookList").addEventListener("change", putch, false);
+  $RvW.putbook();
+  $RvW.putch();
+  document.getElementById("bookList").addEventListener("change", $RvW.putch, false);
   document
     .getElementById("chapterList")
-    .addEventListener("change", putver, false);
+    .addEventListener("change", $RvW.putver, false);
   document
     .getElementById("verseList")
     .addEventListener("change", verseChange, false);
@@ -1199,7 +1203,7 @@ function fillNav() {
     if (d == "Songs") {
       $RvW.songNavObj.sn_presentSong();
     } else {
-      present();
+      $RvW.present();
     }
   });
   $("#icon_blank").click(function () {
@@ -1475,7 +1479,7 @@ function setupVBkgnd() {
 }
 
 // body: onkeyup
-function mainWindowKey(evt) {
+function onMainWindowKeyUp(evt) {
   const b = $(":focus").attr("id");
   switch (evt.keyCode) {
     case 13: /* Enter */
@@ -1523,17 +1527,14 @@ function mainWindowKey(evt) {
 }
 
 function setupVConfig() {
-  var a = copyFile("xml/config.xml", "xml/config.xml");
-  if (!a) {
+    const a = copyFile("xml/config.xml", "xml/config.xml");
+    if (!a) {
     return a;
   }
   return a;
 }
-function processFontSizeChange() {
-  updateVerseContainer();
-  $RvW.searchObj.setFontSize($RvW.vvConfigObj.get_navFontSize());
-  $RvW.scheduleObj.changeFontsizeScheduleTab();
-}
 function getActiveTabLabel() {
   return $RvW.leftTabView.get('selection').get('label')
 }
+
+export default $RvW; // entry point

@@ -1270,7 +1270,7 @@ function stageShowTimeChangeEvent() {}
 function configInit() {
   document
     .getElementById("navDualLanguageID")
-    .addEventListener("click", updateVerseContainer);
+    .addEventListener("click", $RvW.updateVerseContainer);
   document
     .getElementById("singleVersionBoxID")
     .addEventListener("click", processSingleVersion);

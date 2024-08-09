@@ -274,8 +274,8 @@ function notes(notesUI) {
           X = X + "<tr>";
           X = X + '<td class="navtd" width=30%>';
           X = X + "<b>" + T + " " + R + ":" + W + "</b><br>";
-          X = X + '<font  face="' + priFontName + '"> </font><br>';
-          X = X + '<font  face="' + secFontName + '"> </font><br>';
+          X = X + '<font  face="' + $RvW.priFontName + '"> </font><br>';
+          X = X + '<font  face="' + $RvW.secFontName + '"> </font><br>';
           X = X + "</td>";
           X = X + '<td class="navtd" width=40%>';
           X =

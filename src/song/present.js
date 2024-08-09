@@ -34,8 +34,8 @@ function songPresentObj() {
       p_current_index = g;
     }
     p_last_index = d.slides.length - 1;
-    p_bkgnd_filename = graphicsObj.getBkgndFilename();
-    p_bkgnd_motion = graphicsObj.getMotionFlag();
+    p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+    p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
     p_bkgnd_color = "blue";
     p_font_color = $RvW.vvConfigObj.get_p_textColor();
     p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();

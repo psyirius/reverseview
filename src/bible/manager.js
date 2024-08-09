@@ -31,7 +31,7 @@ function getdata(j) {
     }
     $RvW.content1 = g;
     $RvW.content2 = f;
-    updateVerseContainer_continue();
+    $RvW.updateVerseContainer_continue();
   } else {
     var h = null;
     h = setInterval(function () {
@@ -44,7 +44,7 @@ function getdata(j) {
         }
         $RvW.content1 = g;
         $RvW.content2 = f;
-        updateVerseContainer_continue();
+        $RvW.updateVerseContainer_continue();
       } else {
       }
     }, queryCheckInterval);
@@ -105,7 +105,7 @@ function getdata_sql() {
       $RvW.content1 = bibledbObj[1].getResultArray();
       $RvW.content2 = bibledbObj[2].getResultArray();
       p_last_index = $RvW.content1.length;
-      updateVerseContainer_continue();
+      $RvW.updateVerseContainer_continue();
     } else {
     }
   }, queryCheckInterval);
@@ -149,13 +149,13 @@ function verseClass() {
     $RvW.verseIndex = j - 1;
     recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     getdata(true);
-    p_footer = getFooter();
+    p_footer = $RvW.getFooter();
     p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
-    launch($RvW.verseIndex);
+    $RvW.launch($RvW.verseIndex);
     document.getElementById("verseList").selectedIndex = $RvW.verseIndex;
     if (e) {
       $RvW.scroll_to_view = false;
-      highlightVerse($RvW.verseIndex);
+      $RvW.highlightVerse($RvW.verseIndex);
     }
     disableNavButtons(false);
     $RvW.bookIndex = n;

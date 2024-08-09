@@ -73,12 +73,12 @@ recent = {
       $RvW.verseIndex = recent.vArray[b];
       setBookChVer($RvW.bookIndex, $RvW.chapterIndex * 1 + 1, $RvW.verseIndex * 1 + 1);
       getdata(true);
-      p_footer =
+      $RvW.p_footer =
         bibleVersionArray[$RvW.vvConfigObj.get_version1()][3] +
         " / " +
         bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
       p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
-      launch($RvW.verseIndex);
+      $RvW.launch($RvW.verseIndex);
     }
   },
   data2string: function () {

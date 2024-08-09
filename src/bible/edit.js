@@ -1,8 +1,8 @@
 function setupVerseEditObject() {
-  var b = getBookValue();
-  var d = getChapterValue();
-  var c = getVerseValue();
-  var a = getSingleVerse(b, d, c, 1);
+  var b = $RvW.getBookValue();
+  var d = $RvW.getChapterValue();
+  var c = $RvW.getVerseValue();
+  var a = $RvW.getSingleVerse(b, d, c, 1);
   $RvW.editVerse_UI_Obj.setValue(b, d, c, a);
 }
 function editVerse_UI_Class() {

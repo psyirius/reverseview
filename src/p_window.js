@@ -342,8 +342,8 @@ function passVariable(o) {
   }
   this.p_showLogo =
     $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
-  this.p_shadeBackground = graphicsObj.getShadeFlag();
-  this.p_transparentBackground = graphicsObj.getTransparentFlag();
+  this.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
+  this.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
   this.p_ver1ScaleFactor = p_ver1ScaleFactor;
   this.p_ver2ScaleFactor = p_ver2ScaleFactor;
   this.p_isArabic1 = false;

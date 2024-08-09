@@ -170,7 +170,7 @@ function schedule() {
         aa.init(ab);
         aa.present();
       } else {
-        present_external(X.book, X.ch, X.ver);
+        $RvW.present_external(X.book, X.ch, X.ver);
       }
     }
   }
@@ -184,7 +184,7 @@ function schedule() {
         aa.init(ab);
         aa.present(Y);
       } else {
-        present_external(X.book, X.ch, X.ver);
+        $RvW.present_external(X.book, X.ch, X.ver);
       }
     }
   }
@@ -249,21 +249,21 @@ function schedule() {
       var ao = "";
       if (t.data[ai].isSong == false) {
         var Z = t.data[ai];
-        var aq = getSingleVerse(Z.book, Z.ch, Z.ver, 1);
-        var an = getSingleVerse(Z.book, Z.ch, Z.ver, 2);
+        var aq = $RvW.getSingleVerse(Z.book, Z.ch, Z.ver, 1);
+        var an = $RvW.getSingleVerse(Z.book, Z.ch, Z.ver, 2);
         var ad = b(Z.isSong, Z.book, Z.ch, Z.ver, Z.songID);
-        ad = F(ad, priFontName, secFontName);
+        ad = F(ad, $RvW.priFontName, $RvW.secFontName);
         ao =
           ao +
           '<br><div id="scheduleTextDIV"><a href="#"><b>' +
           ad +
           "</b><br><br>";
         ao =
-          ao + '<font  face="' + priFontName + '"> ' + aq + "</font><br><br>";
+          ao + '<font  face="' + $RvW.priFontName + '"> ' + aq + "</font><br><br>";
         ao =
           ao +
           '<font  face="' +
-          secFontName +
+          $RvW.secFontName +
           '"> ' +
           an +
           "</font></a></div><br><br>";

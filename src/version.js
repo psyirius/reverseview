@@ -135,14 +135,14 @@ function saveVersionSelection() {
   __versionDbg(d + "  " + c);
   $RvW.vvConfigObj.set_booknamestyle(d);
   $RvW.vvConfigObj.set_listinenglish(c);
-  loadBookNames();
-  putbook();
-  putch();
+  $RvW.loadBookNames();
+  $RvW.putbook();
+  $RvW.putch();
   $RvW.vvConfigObj.save();
-  updateVerseContainer();
+  $RvW.updateVerseContainer();
 }
 function readPanelContent(a) {
-  versionManageDialog.setBody(loadViewTemplate(a));
+  versionManageDialog.setBody($RvW.loadViewTemplate(a));
   fillVersionPanel();
   hideFontVersionBox();
 }
@@ -311,11 +311,11 @@ function saveVersion() {
   var a = document.getElementById("fontVersionList").selectedIndex;
   var e = document.getElementById("fontVersionList").options[a].value;
   bibleVersionArray[d][6] = e;
-  setFontForList();
+  $RvW.setFontForList();
   var f = generateVersionXML();
   var c = "./xml/version.xml";
   save2file(f, c, false);
-  updateVerseContainer();
+  $RvW.updateVerseContainer();
 }
 function loadBibleDBEvent(a) {
   var b = a.currentTarget.nativePath;

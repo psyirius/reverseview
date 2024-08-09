@@ -79,10 +79,10 @@ function colorPickerPanel() {
     p.bringToTop();
   }
   function l() {
-    graphicsObj.assignColor(o, g);
+    $RvW.graphicsObj.assignColor(o, g);
   }
   function d() {
-    graphicsObj.assignColor(o, 4);
+    $RvW.graphicsObj.assignColor(o, 4);
   }
   function f() {
     p.hide();

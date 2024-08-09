@@ -195,7 +195,7 @@ class songNavClass {
       }
     }
     function setFormats() {
-      v = parseInt((tabHeight - 300) / 22);
+      v = parseInt(($RvW.tabHeight - 300) / 22);
       var al = m_songTitle;
       if (s) {
       } else {

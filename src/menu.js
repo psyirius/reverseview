@@ -1,3 +1,20 @@
+$RvW.setupMenu = function() {
+    const { ui: { Menu } } = air;
+
+    const vvMenu = Menu.createFromXML("menu.xml");
+    // const vvMenu = Menu.createFromJSON('menu.json');
+
+    // application or window menu
+    Menu.setAsMenu(vvMenu);
+
+    // DOM element context menu
+    // Menu.setAsContextMenu(vvMenu);
+    // Menu.setAsContextMenu(null);
+
+    // tray icon context menu
+    // Menu.setAsIconMenu(vvMenu);
+}
+
 function song_new_menu(a) {
   if ($RvW.songNavObj != null) {
     $RvW.songNavObj.sn_newSong();

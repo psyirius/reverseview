@@ -182,7 +182,7 @@ class vvWebServer {
               break;
             case "8":
               var I = n.split(":");
-              present_external(I[0], I[1], I[2]);
+              $RvW.present_external(I[0], I[1], I[2]);
               B("Presenting Verse...");
               break;
             case "9":
