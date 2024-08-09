@@ -1,0 +1,16 @@
+{
+  "config": "air",
+  "compilerOptions": {
+    "swf-version": 11,
+    "source-path": [
+      "src"
+    ],
+    "external-library-path": [
+    ],
+    "static-link-runtime-shared-libraries": false,
+    "output": "bin/AppEntry.swf",
+    "optimize": true,
+    "debug": false
+  },
+  "mainClass": "AppEntry"
+}

@@ -30,6 +30,7 @@ keystores/
 /app/app.test.html
 /app/js/
 /app/css/
+/app/bin/
 /app/*.js
 /app/*.css
 !/app/js/.gitkeep

@@ -1,3 +1,4 @@
 - [ ] Add a script to crete the preact es3 jsx runtime.
 - [ ] Check parcel if it can be used for building or as build tool
 - [ ] Setup dojo build system
+- [ ] remote using https with traefik.me
