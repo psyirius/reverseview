@@ -482,10 +482,10 @@ class SongEdit {
       _slidesTabView.add(
         new Tab({
           label: _current_slide_num,
-          content: `
-            <textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea>
-            <textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>
-          `,
+          content: [
+            `<textarea id="${slide1_id}" style="width: 284px" class="textareaStyle"></textarea>`,
+            `<textarea id="${slide2_id}" style="width: 284px" class="textareaStyle"></textarea>`,
+          ].join(''),
         })
       );
 
@@ -518,24 +518,7 @@ class SongEdit {
     function onClick_createSlidesButtonID() {
       _reset_seq_id();
 
-      let ak = "";
-      ak = ak + '<div class="style2">';
-      ak =
-        ak +
-        '<textarea id="se_quickSlideID" rows="20" style="width: 390px" class="textareaStyle4songslide"></textarea>';
-      ak =
-        ak +
-        '<textarea id="se_quickSlideID_2" rows="20" style="width: 390px" class="textareaStyle4songslide"></textarea><br>';
-      ak = ak + "<i>Seperate the slides with 2 new lines. </i><br><br>";
-      ak =
-        ak +
-        '<br><input type="button" id="se_generateID" value=" GENERATE SLIDES ">';
-      ak =
-        ak +
-        '<input type="button" id="se_generateMunglishID" value=" TRANSLITERATE ">';
-      ak =
-        ak +
-        '<input type="button" id="se_generateCancelID" value=" CANCEL "></DIV>';
+      const bodyContent = $RvW.loadViewTemplate('lyrics_create');
 
       const _createPanel = new YAHOO.widget.Panel("gpanelObj", {
         width: "800px",
@@ -546,10 +529,10 @@ class SongEdit {
       });
       _createPanel.render(document.body);
       _createPanel.setHeader("Generate Slides");
-      _createPanel.setBody(ak);
+      _createPanel.setBody(bodyContent);
 
-      let windowHeight = $(window).height();
-      windowHeight = windowHeight * 0.8;
+      const windowHeight = $(window).height() * 0.8;
+
       $("#se_quickSlideID").height(windowHeight);
       $("#se_quickSlideID_2").height(windowHeight);
 
@@ -565,14 +548,14 @@ class SongEdit {
 
       {
         const al = document.getElementById("se_fontID2").selectedIndex;
-        const ad = document.getElementById("se_fontID2").options[al].text;
-        document.getElementById("se_quickSlideID").style.fontFamily = ad;
+          document.getElementById("se_quickSlideID").style.fontFamily =
+              document.getElementById("se_fontID2").options[al].text;
       }
 
       {
         const al = document.getElementById("se_fontID2_2").selectedIndex;
-        const ad = document.getElementById("se_fontID2_2").options[al].text;
-        document.getElementById("se_quickSlideID_2").style.fontFamily = ad;
+          document.getElementById("se_quickSlideID_2").style.fontFamily =
+              document.getElementById("se_fontID2_2").options[al].text;
       }
 
       const numSlides = _slidesTabView.size();
@@ -609,8 +592,8 @@ class SongEdit {
           _append_Slide(az[0], null);
         }
 
-        var aw = _slidesTabView.item(1);
-        while (aw != null) {
+          let aw = _slidesTabView.item(1);
+          while (aw != null) {
           _slidesTabView.remove(aw.get("index"));
           aw = _slidesTabView.item(1);
         }

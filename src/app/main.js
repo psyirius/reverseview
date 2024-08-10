@@ -894,8 +894,6 @@ function setupTabContent() {
     $RvW.updateVV_UI_Obj = new VvUpdate($RvW.loadViewTemplate("setup_update"));
 
     fillTabs('configTab');
-
-    setupTabViewTemplate("menubar", "menubar");
     
     setupTabViewTemplate("nav", "navTab");
     setupTabViewTemplate("search", "searchField");
@@ -1285,6 +1283,8 @@ function setupRightTabFrame() {
     tabview.selectChild(rti);
 
     function menuBarSync(currentTab) {
+        air.trace('menuBarSync', currentTab.get('index'));
+
         switch (currentTab.get('index')) {
             case 0: {
                 $("#lyrics_menu").hide();
@@ -1304,6 +1304,8 @@ function setupRightTabFrame() {
         }
     }
 
+    menuBarSync(tabview.get('selection'));
+
     tabview.after('selectionChange', (e) => {
         const currentTab = e.newVal;
 
@@ -1321,8 +1323,6 @@ function setupRightTabFrame() {
             }
         }
     });
-
-    menuBarSync(tabview.get('selection'));
 
     $RvW.rightTabView = tabview;
 }
@@ -1537,10 +1537,12 @@ export function start(Y) {
     }
 
     loadPreferences(() => {
+        $RvW.systemFontList = loadInstalledFonts().map((font) => font.fontName);
+
+        setupTabViewTemplate("menubar", "menubar");
+
         setupLeftTabFrame();
         setupRightTabFrame();
-
-        $RvW.systemFontList = loadInstalledFonts().map((font) => font.fontName);
 
         $RvW.vvConfigObj = new RvwConfig();
         $RvW.vvConfigObj.load(vvinit_continue);
