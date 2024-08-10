@@ -2,3 +2,5 @@
 - [ ] Check parcel if it can be used for building or as build tool
 - [ ] Setup dojo build system
 - [ ] remote using https with traefik.me
+- [ ] search song and bible in remote
+- [ ] lyric create: [textfield]delimiter, [checkbox]allow empty

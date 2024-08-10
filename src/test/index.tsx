@@ -60,9 +60,11 @@ if (typeof window !== "undefined") {
 // Dynamic import works with a polyfill of Promise
 (window as any).__defineGetter__("Promise", () => $Y.Promise);
 
-import('./cfg').then((mod) => {
-    air.trace('cfg', mod.default);
-});
+(async function () {
+    const mod = await import('./cfg');
+
+    air.trace('cfg', mod.default.a);
+})();
 
 air.trace('test/index.tsx');
 
