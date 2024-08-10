@@ -235,128 +235,129 @@ function DOMIntializeCallback(a) {
 function DOMIntializeStageViewCallback(a) {
   newStageWindow.window.passVariable = passVariable;
 }
-function passVariable(o) {
-  presentationContent = presentationContentString(
-    p_title,
-    p_text1_font,
-    p_text2_font,
-    p_text1_arr[p_current_index],
-    p_text2_arr[p_current_index]
-  );
-  index_for_presentationContent = p_current_index;
-  this.p_text1_arr = p_text1_arr;
-  this.p_text2_arr = p_text2_arr;
-  this.p_text1_font = p_text1_font;
-  this.p_text2_font = p_text2_font;
-  this.p_title = p_title;
-  this.p_footnote = p_footnote;
-  this.p_current_index = p_current_index;
-  this.p_last_index = p_last_index;
-  this.p_bkgnd_filename = p_bkgnd_filename;
-  this.p_bkgnd_motion = p_bkgnd_motion;
-  this.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
-  this.p_font_color = p_font_color;
-  this.p_font_color2 = p_font_color2;
-  this.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
-  if (o == 1) {
-    var f = $("#thirdview_fcolor").val();
-    this.p_font_color = $RvW.colorChart[f];
-    this.p_font_color2 = $RvW.colorChart[f];
-  }
-  this.p_bkgnd_color1 = $RvW.vvConfigObj.get_p_bkgnd_color1();
-  this.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
-  this.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
-  this.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
-  this.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
-  if (o == 1) {
-    var v = $RvW.vvConfigObj.get_stageStyleVal();
-    if (v != "3") {
-      if (p_text_orientation == "2") {
-        v = "2";
-      }
+class passVariable {
+  constructor(o) {
+    presentationContent = presentationContentString(
+      p_title,
+      p_text1_font,
+      p_text2_font,
+      p_text1_arr[p_current_index],
+      p_text2_arr[p_current_index]
+    );
+    index_for_presentationContent = p_current_index;
+    this.p_text1_arr = p_text1_arr;
+    this.p_text2_arr = p_text2_arr;
+    this.p_text1_font = p_text1_font;
+    this.p_text2_font = p_text2_font;
+    this.p_title = p_title;
+    this.p_footnote = p_footnote;
+    this.p_current_index = p_current_index;
+    this.p_last_index = p_last_index;
+    this.p_bkgnd_filename = p_bkgnd_filename;
+    this.p_bkgnd_motion = p_bkgnd_motion;
+    this.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
+    this.p_font_color = p_font_color;
+    this.p_font_color2 = p_font_color2;
+    this.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
+    if (o == 1) {
+      var f = $("#thirdview_fcolor").val();
+      this.p_font_color = $RvW.colorChart[f];
+      this.p_font_color2 = $RvW.colorChart[f];
     }
-    var j = $("#thirdview_opacity").val();
-    var r = $("#thirdview_height").val();
-    var s = $("#thirdview_primary").prop("checked");
-    var l = $("#thirdview_secondary").prop("checked");
-    var g = $RvW.vvConfigObj.get_svBcolor();
-    var p = $RvW.vvConfigObj.get_svPosition();
-    var i = $RvW.vvConfigObj.get_svMaxFontSize();
-    var d = $RvW.vvConfigObj.get_svTextOutline();
-    var e = $RvW.vvConfigObj.get_svTextShadow();
-    var c = $RvW.vvConfigObj.get_svGreenWindow();
-    var n = $RvW.vvConfigObj.get_svAlignLeft();
-    var k = $RvW.vvConfigObj.get_svAlignCenter();
-    var q = $RvW.vvConfigObj.get_svAddTexture();
-    var h = $RvW.vvConfigObj.get_svShowHorizontal();
-    var m =
-      v +
-      "|" +
-      j +
-      "|" +
-      r +
-      "|" +
-      s +
-      "|" +
-      $RvW.colorChart[g] +
-      "|" +
-      p +
-      "|" +
-      i +
-      "|" +
-      d +
-      "|" +
-      e +
-      "|" +
-      c;
-    m = m + "|" + n + "|" + k + "|" + q + "|" + h + "|" + l;
-    this.p_text_orientation = m;
-  } else {
-    this.p_text_orientation = p_text_orientation;
-  }
-  this.p_window_X = pWindowX;
-  this.p_window_Y = pWindowY;
-  if (o == 1) {
-    this.p_window_X = stageViewWindowX;
-    this.p_window_Y = stageViewWindowY;
-  }
-  this.p_topMargin = $RvW.vvConfigObj.get_p_topMargin();
-  this.p_bottomMargin = $RvW.vvConfigObj.get_p_bottomMargin();
-  this.p_leftMargin = $RvW.vvConfigObj.get_p_leftMargin();
-  this.p_rightMargin = $RvW.vvConfigObj.get_p_rightMargin();
-  this.p_maxFontSize = $RvW.vvConfigObj.get_p_maxFontSize();
-  this.p_enableTransition = $RvW.vvConfigObj.get_p_enableTransition();
-  this.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
-  this.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
-  this.p_align = $RvW.vvConfigObj.get_p_align();
-  if ($RvW.vvConfigObj.get_showVVLogo()) {
-    this.p_logo = "ReVerseVIEW<br>reverseview.github.io";
-  } else {
-    this.p_logo =
-      $RvW.vvConfigObj.get_logoText1() + "<br>" + $RvW.vvConfigObj.get_logoText2();
-  }
-  if (o == 1) {
-    this.p_showDate = $RvW.vvConfigObj.get_svShowDate();
-  } else {
-    this.p_showDate = $RvW.vvConfigObj.get_showDateTime();
-  }
-  this.p_showLogo =
-    $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
-  this.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
-  this.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
-  this.p_ver1ScaleFactor = p_ver1ScaleFactor;
-  this.p_ver2ScaleFactor = p_ver2ScaleFactor;
-  this.p_isArabic1 = false;
-  this.p_isArabic2 = false;
-  var t = bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
-  var u = t.indexOf("Arabic");
-  if (u != -1) {
-    this.p_isArabic1 = true;
-  }
-  var t = bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
-  var u = t.indexOf("Arabic");
-  if (u != -1) {
-    this.p_isArabic2 = true;
+    this.p_bkgnd_color1 = $RvW.vvConfigObj.get_p_bkgnd_color1();
+    this.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
+    this.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
+    this.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
+    this.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
+    if (o == 1) {
+      var v = $RvW.vvConfigObj.get_stageStyleVal();
+      if (v != "3") {
+        if (p_text_orientation == "2") {
+          v = "2";
+        }
+      }
+      var j = $("#thirdview_opacity").val();
+      var r = $("#thirdview_height").val();
+      var s = $("#thirdview_primary").prop("checked");
+      var l = $("#thirdview_secondary").prop("checked");
+      var g = $RvW.vvConfigObj.get_svBcolor();
+      var p = $RvW.vvConfigObj.get_svPosition();
+      var i = $RvW.vvConfigObj.get_svMaxFontSize();
+      var d = $RvW.vvConfigObj.get_svTextOutline();
+      var e = $RvW.vvConfigObj.get_svTextShadow();
+      var c = $RvW.vvConfigObj.get_svGreenWindow();
+      var n = $RvW.vvConfigObj.get_svAlignLeft();
+      var k = $RvW.vvConfigObj.get_svAlignCenter();
+      var q = $RvW.vvConfigObj.get_svAddTexture();
+      var h = $RvW.vvConfigObj.get_svShowHorizontal();
+      var m = v +
+        "|" +
+        j +
+        "|" +
+        r +
+        "|" +
+        s +
+        "|" +
+        $RvW.colorChart[g] +
+        "|" +
+        p +
+        "|" +
+        i +
+        "|" +
+        d +
+        "|" +
+        e +
+        "|" +
+        c;
+      m = m + "|" + n + "|" + k + "|" + q + "|" + h + "|" + l;
+      this.p_text_orientation = m;
+    } else {
+      this.p_text_orientation = p_text_orientation;
+    }
+    this.p_window_X = pWindowX;
+    this.p_window_Y = pWindowY;
+    if (o == 1) {
+      this.p_window_X = stageViewWindowX;
+      this.p_window_Y = stageViewWindowY;
+    }
+    this.p_topMargin = $RvW.vvConfigObj.get_p_topMargin();
+    this.p_bottomMargin = $RvW.vvConfigObj.get_p_bottomMargin();
+    this.p_leftMargin = $RvW.vvConfigObj.get_p_leftMargin();
+    this.p_rightMargin = $RvW.vvConfigObj.get_p_rightMargin();
+    this.p_maxFontSize = $RvW.vvConfigObj.get_p_maxFontSize();
+    this.p_enableTransition = $RvW.vvConfigObj.get_p_enableTransition();
+    this.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
+    this.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
+    this.p_align = $RvW.vvConfigObj.get_p_align();
+    if ($RvW.vvConfigObj.get_showVVLogo()) {
+      this.p_logo = "ReVerseVIEW<br>reverseview.github.io";
+    } else {
+      this.p_logo =
+        $RvW.vvConfigObj.get_logoText1() + "<br>" + $RvW.vvConfigObj.get_logoText2();
+    }
+    if (o == 1) {
+      this.p_showDate = $RvW.vvConfigObj.get_svShowDate();
+    } else {
+      this.p_showDate = $RvW.vvConfigObj.get_showDateTime();
+    }
+    this.p_showLogo =
+      $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
+    this.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
+    this.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
+    this.p_ver1ScaleFactor = p_ver1ScaleFactor;
+    this.p_ver2ScaleFactor = p_ver2ScaleFactor;
+    this.p_isArabic1 = false;
+    this.p_isArabic2 = false;
+    var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
+    var u = t.indexOf("Arabic");
+    if (u != -1) {
+      this.p_isArabic1 = true;
+    }
+    var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
+    var u = t.indexOf("Arabic");
+    if (u != -1) {
+      this.p_isArabic2 = true;
+    }
   }
 }
 function updatePresentationContent(b) {

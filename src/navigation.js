@@ -37,14 +37,14 @@ function processNavBibleRef() {
     $RvW.putver(a - 1);
     var f = null;
     f = setInterval(function () {
-      if (bibledbObj[1].isFullDataReady() && bibledbObj[2].isFullDataReady()) {
+      if ($RvW.bibledbObj[1].isFullDataReady() && $RvW.bibledbObj[2].isFullDataReady()) {
         clearTimeout(f);
         $RvW.bibleRefObj.present();
         $RvW.scroll_to_view = true;
         $RvW.highlightVerse(a - 1);
       } else {
       }
-    }, queryCheckInterval);
+    }, $RvW.queryCheckInterval);
   } else {
     rvw.ui.Toast.show("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
   }

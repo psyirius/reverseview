@@ -1,6 +1,9 @@
 - [ ] Add a script to crete the preact es3 jsx runtime.
 - [ ] Check parcel if it can be used for building or as build tool
-- [ ] Setup dojo build system
+- [ ] Setup dojo build system to build dojo
 - [ ] remote using https with traefik.me
 - [ ] search song and bible in remote
-- [ ] lyric create: [textfield]delimiter, [checkbox]allow empty
+- [ ] remote project rebuild with modern web technologies
+- [ ] make it a yarn/turbo workspace
+- [ ] use parcel with custom plugins to build the project in our own way
+- [ ] move all global variables to $RvW object

@@ -1,4 +1,4 @@
-var bibleVersionArray = new Array(["", ""]);
+$RvW.bibleVersionArray = new Array(["", ""]);
 var versionManageDialog;
 var new_fname,
   new_revision,
@@ -25,23 +25,23 @@ function loadBibleVersion() {
     if (c.readyState == 4) {
       a = c.responseXML.documentElement;
       var f = a.getElementsByTagName("version").length;
-      bibleVersionArray[0][0] = "None";
+      $RvW.bibleVersionArray[0][0] = "None";
       for (i = 0; i < f; i++) {
         var d = i + 1;
         var e = a.getElementsByTagName("version")[i];
-        bibleVersionArray[d] = new Array();
-        bibleVersionArray[d][0] = e.getElementsByTagName("name")[0].textContent;
-        bibleVersionArray[d][1] = e.getElementsByTagName("file")[0].textContent;
-        bibleVersionArray[d][2] = e.getElementsByTagName("font")[0].textContent;
-        bibleVersionArray[d][3] =
+        $RvW.bibleVersionArray[d] = new Array();
+        $RvW.bibleVersionArray[d][0] = e.getElementsByTagName("name")[0].textContent;
+        $RvW.bibleVersionArray[d][1] = e.getElementsByTagName("file")[0].textContent;
+        $RvW.bibleVersionArray[d][2] = e.getElementsByTagName("font")[0].textContent;
+        $RvW.bibleVersionArray[d][3] =
           e.getElementsByTagName("copyright")[0].textContent;
-        bibleVersionArray[d][4] =
+        $RvW.bibleVersionArray[d][4] =
           e.getElementsByTagName("fontsizefactor")[0].textContent;
-        bibleVersionArray[d][5] =
+        $RvW.bibleVersionArray[d][5] =
           e.getElementsByTagName("searchfile")[0].textContent;
-        bibleVersionArray[d][6] =
+        $RvW.bibleVersionArray[d][6] =
           e.getElementsByTagName("selectedfont")[0].textContent;
-        bibleVersionArray[d][7] =
+        $RvW.bibleVersionArray[d][7] =
           e.getElementsByTagName("booknames")[0].textContent;
       }
     }
@@ -52,14 +52,14 @@ function loadBibleVersion() {
 function versionFill(b) {
   clearSelectList("version1Menu");
   clearSelectList("version2Menu");
-  var a = bibleVersionArray.length;
+  var a = $RvW.bibleVersionArray.length;
   for (i = 1; i < a; i++) {
     document.getElementById("version1Menu").options[i] = new Option(
-      bibleVersionArray[i][0],
+      $RvW.bibleVersionArray[i][0],
       i
     );
     document.getElementById("version2Menu").options[i] = new Option(
-      bibleVersionArray[i][0],
+      $RvW.bibleVersionArray[i][0],
       i
     );
   }
@@ -68,9 +68,9 @@ function versionFill(b) {
   document.getElementById("version2Menu").selectedIndex =
     $RvW.vvConfigObj.get_version2();
   document.getElementById("version1Text").innerHTML =
-    "Primary: " + bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
+    "Primary: " + $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
   document.getElementById("version2Text").innerHTML =
-    "Secondary: " + bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
+    "Secondary: " + $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
   document.getElementById("booknameStyle").selectedIndex =
     $RvW.vvConfigObj.get_booknamestyle() - 1;
   document.getElementById("englishList").checked =
@@ -102,32 +102,31 @@ function saveVersionSelection() {
       $RvW.vvConfigObj.get_version2()
   );
   if (b != f) {
-    bibledbObj[1].closeDB();
-    bibledbObj[1] = null;
+    $RvW.bibledbObj[1].closeDB();
+    $RvW.bibledbObj[1] = null;
     loadSQLBible(b, 1);
   }
   if (g != e) {
-    bibledbObj[2].closeDB();
-    bibledbObj[2] = null;
+    $RvW.bibledbObj[2].closeDB();
+    $RvW.bibledbObj[2] = null;
     loadSQLBible(g, 2);
   }
   if (b != f) {
-    var a = "./bible/" + bibleVersionArray[b][1];
+    var a = "./bible/" + $RvW.bibleVersionArray[b][1];
     __versionDbg("             Search file...." + a);
     if ($RvW.searchObj != null) {
       $RvW.searchObj.close();
       $RvW.searchObj = null;
     }
-    $RvW.searchObj = new vvsearch(a);
-    $RvW.searchObj.init();
+    $RvW.searchObj = new RvwSearch(a);
     document.getElementById("searchID").disabled = false;
     document.getElementById("adSearch").disabled = false;
     document.getElementById("adSearchButton").disabled = false;
   }
   document.getElementById("version1Text").innerHTML =
-    "Primary: " + bibleVersionArray[b][0];
+    "Primary: " + $RvW.bibleVersionArray[b][0];
   document.getElementById("version2Text").innerHTML =
-    "Secondary: " + bibleVersionArray[g][0];
+    "Secondary: " + $RvW.bibleVersionArray[g][0];
   $RvW.vvConfigObj.set_version1(b);
   $RvW.vvConfigObj.set_version2(g);
   var d = $("#booknameStyle option:selected").val();
@@ -178,12 +177,12 @@ function fillVersionPanel() {
 }
 function loadVersionList() {
   air.trace("Load Version List function...");
-  var a = bibleVersionArray.length;
+  var a = $RvW.bibleVersionArray.length;
   air.trace("Number of version: " + a);
   clearSelectList("selectVersionList");
   for (i = 1; i < a; i++) {
     document.getElementById("selectVersionList").options[i - 1] = new Option(
-      bibleVersionArray[i][0],
+      $RvW.bibleVersionArray[i][0],
       i
     );
   }
@@ -195,10 +194,10 @@ function updateVersionDetails() {
   var h = document.getElementById("selectVersionList").selectedIndex;
   var b = document.getElementById("selectVersionList").options[h].value;
   document.getElementById("versionVersionTextbox").value =
-    bibleVersionArray[b][0];
+    $RvW.bibleVersionArray[b][0];
   document.getElementById("copyrightVersionTextarea").value =
-    bibleVersionArray[b][3];
-  var g = bibleVersionArray[b][2];
+    $RvW.bibleVersionArray[b][3];
+  var g = $RvW.bibleVersionArray[b][2];
   var d = g.split(",");
   var j = d.length;
   document.getElementById("fontVersionList").options.length = 0;
@@ -245,7 +244,7 @@ function deleteVersion() {
   d.copyTo(m, true);
   var j = document.getElementById("selectVersionList").selectedIndex;
   var a = document.getElementById("selectVersionList").options[j].value;
-  var h = bibleVersionArray[a][1];
+  var h = $RvW.bibleVersionArray[a][1];
   var o = "./bible/" + h;
   var c = e.resolvePath(o);
   var g = true;
@@ -259,7 +258,7 @@ function deleteVersion() {
     );
   } finally {
     if (g) {
-      bibleVersionArray.splice(a, 1);
+      $RvW.bibleVersionArray.splice(a, 1);
       var b = generateVersionXML();
       var o = "./xml/version.xml";
       save2file(b, o, false);
@@ -310,7 +309,7 @@ function saveVersion() {
   var d = document.getElementById("selectVersionList").options[b].value;
   var a = document.getElementById("fontVersionList").selectedIndex;
   var e = document.getElementById("fontVersionList").options[a].value;
-  bibleVersionArray[d][6] = e;
+  $RvW.bibleVersionArray[d][6] = e;
   $RvW.setFontForList();
   var f = generateVersionXML();
   var c = "./xml/version.xml";
@@ -340,8 +339,8 @@ function loadVersion(d) {
     rvw.ui.Toast.show("Bible Database", "File does not exists.");
     return false;
   }
-  var a = bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
-  var f = bibleVersionArray[$RvW.vvConfigObj.get_version2()][1];
+  var a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
+  var f = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][1];
   if (e == a || e == f) {
     rvw.ui.Toast.show(
       "Manage Bible Database",
@@ -351,7 +350,7 @@ function loadVersion(d) {
     );
   } else {
     if (c == "db") {
-      var m = new bibledb();
+      var m = new BibleDB();
       var j = copyDB();
       m.init(j, true);
       var l = null;
@@ -375,16 +374,16 @@ function loadVersion(d) {
 }
 function continueLoadingZephania() {
   generateZephania2VVBibleXML();
-  var a = bibleVersionArray.length;
+  var a = $RvW.bibleVersionArray.length;
   var b = a;
-  bibleVersionArray.push(["", ""]);
-  bibleVersionArray[b][0] = new_title;
-  bibleVersionArray[b][1] = new_fname;
-  bibleVersionArray[b][2] = new_font_list;
-  bibleVersionArray[b][3] = new_copyright;
-  bibleVersionArray[b][4] = new_sizefactor;
-  bibleVersionArray[b][5] = "";
-  bibleVersionArray[b][6] = new_font;
+  $RvW.bibleVersionArray.push(["", ""]);
+  $RvW.bibleVersionArray[b][0] = new_title;
+  $RvW.bibleVersionArray[b][1] = new_fname;
+  $RvW.bibleVersionArray[b][2] = new_font_list;
+  $RvW.bibleVersionArray[b][3] = new_copyright;
+  $RvW.bibleVersionArray[b][4] = new_sizefactor;
+  $RvW.bibleVersionArray[b][5] = "";
+  $RvW.bibleVersionArray[b][6] = new_font;
   var d = generateVersionXML();
   var c = "./xml/version.xml";
   save2file(d, c, false);
@@ -465,18 +464,18 @@ function copyDB() {
   return "./bible/" + b;
 }
 function continueLoadingDB() {
-  var a = bibleVersionArray.length;
+  var a = $RvW.bibleVersionArray.length;
   var b = a;
   air.trace("Version Array Length: " + a);
-  bibleVersionArray.push(["", ""]);
-  bibleVersionArray[b][0] = new_title;
-  bibleVersionArray[b][1] = new_fname;
-  bibleVersionArray[b][2] = new_font_list;
-  bibleVersionArray[b][3] = new_copyright;
-  bibleVersionArray[b][4] = "";
-  bibleVersionArray[b][5] = "";
-  bibleVersionArray[b][6] = new_sel_font;
-  bibleVersionArray[b][7] = new_booknames;
+  $RvW.bibleVersionArray.push(["", ""]);
+  $RvW.bibleVersionArray[b][0] = new_title;
+  $RvW.bibleVersionArray[b][1] = new_fname;
+  $RvW.bibleVersionArray[b][2] = new_font_list;
+  $RvW.bibleVersionArray[b][3] = new_copyright;
+  $RvW.bibleVersionArray[b][4] = "";
+  $RvW.bibleVersionArray[b][5] = "";
+  $RvW.bibleVersionArray[b][6] = new_sel_font;
+  $RvW.bibleVersionArray[b][7] = new_booknames;
   var d = generateVersionXML();
   var c = "./xml/version.xml";
   save2file(d, c, false);
@@ -485,24 +484,24 @@ function continueLoadingDB() {
 }
 function generateVersionXML() {
   var a = "";
-  var b = bibleVersionArray.length;
+  var b = $RvW.bibleVersionArray.length;
   a = a + '<?xml version="1.0" encoding="UTF-8"?>\n';
   a = a + "<bibleversion>\n";
   for (i = 1; i < b; i++) {
     a = a + "  <version>\n";
-    a = a + "    <name>" + bibleVersionArray[i][0] + "</name>\n";
-    a = a + "    <file>" + bibleVersionArray[i][1] + "</file>\n";
-    a = a + "    <font>" + bibleVersionArray[i][2] + "</font>\n";
-    a = a + "    <copyright>" + bibleVersionArray[i][3] + "</copyright>\n";
+    a = a + "    <name>" + $RvW.bibleVersionArray[i][0] + "</name>\n";
+    a = a + "    <file>" + $RvW.bibleVersionArray[i][1] + "</file>\n";
+    a = a + "    <font>" + $RvW.bibleVersionArray[i][2] + "</font>\n";
+    a = a + "    <copyright>" + $RvW.bibleVersionArray[i][3] + "</copyright>\n";
     a =
       a +
       "    <fontsizefactor>" +
-      bibleVersionArray[i][4] +
+      $RvW.bibleVersionArray[i][4] +
       "</fontsizefactor>\n";
-    a = a + "    <searchfile>" + bibleVersionArray[i][5] + "</searchfile>\n";
+    a = a + "    <searchfile>" + $RvW.bibleVersionArray[i][5] + "</searchfile>\n";
     a =
-      a + "    <selectedfont>" + bibleVersionArray[i][6] + "</selectedfont>\n";
-    a = a + "    <booknames>" + bibleVersionArray[i][7] + "</booknames>\n";
+      a + "    <selectedfont>" + $RvW.bibleVersionArray[i][6] + "</selectedfont>\n";
+    a = a + "    <booknames>" + $RvW.bibleVersionArray[i][7] + "</booknames>\n";
     a = a + "  </version>\n";
   }
   a = a + "</bibleversion>\n";
@@ -525,12 +524,12 @@ function addFontVersionBibleOK() {
   var g = document.getElementById("selectVersionList").options[c].value;
   var b = $("#addFontVersionTextbox").val();
   b = b.trim();
-  bibleVersionArray[g][6] = b;
-  var a = bibleVersionArray[g][2].split(",");
+  $RvW.bibleVersionArray[g][6] = b;
+  var a = $RvW.bibleVersionArray[g][2].split(",");
   var f = $.inArray(b, a);
   if (f == -1) {
     rvw.ui.Toast.show("Adding new font: " + b);
-    bibleVersionArray[g][2] = bibleVersionArray[g][2] + "," + b;
+    $RvW.bibleVersionArray[g][2] = $RvW.bibleVersionArray[g][2] + "," + b;
   } else {
     rvw.ui.Toast.show("Font " + b + " already available");
   }
@@ -567,13 +566,13 @@ function processSingleVersion() {
   $RvW.vvConfigObj.save();
 }
 function getVersion1Filename() {
-  return bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
+  return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
 }
 function getVersion1Font() {
-  return bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
+  return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
 }
 function getVersion1Name() {
-  return bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
+  return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
 }
 function updateVersionXML() {
   var b = generateVersionXML();

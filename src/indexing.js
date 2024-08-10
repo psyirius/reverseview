@@ -128,7 +128,7 @@ function insertResult(c) {
     endTime = g.getTime();
     var f = endTime - startTime;
     var a = getIndexFilepath();
-    bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = a;
+    $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = a;
     updateVersionXML();
     alert(
       "Completed indexing " +

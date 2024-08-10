@@ -1,4 +1,4 @@
-class VvRemote {
+class RvwRemote {
   constructor(bodyContent) {
     this.configure = configure;
     this.show = show;

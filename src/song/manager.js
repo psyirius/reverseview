@@ -740,7 +740,7 @@ class SongManager {
       function aO(aS) {
         __debug("Succesfuly got all data from Song DB");
         aj = aP.getResult();
-        songListRemote = $RvW.songNavObj.get_songList(aj, "_ALL", aQ);
+        $RvW.songListRemote = $RvW.songNavObj.get_songList(aj, "_ALL", aQ);
         $("#command18").trigger("click");
       }
       function aN(aS) {

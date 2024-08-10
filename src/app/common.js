@@ -316,15 +316,15 @@ function BibleReference() {
     d(m);
     d(p);
     d(e);
-    var x = booknames.length;
+    var x = $RvW.booknames.length;
     s = -1;
     for (var z = 0; z < x; z++) {
-      var w = booknames[z].toLowerCase();
+      var w = $RvW.booknames[z].toLowerCase();
       var A = new RegExp("^ " + m);
       var F = A.test(w);
       if (F) {
-        d(booknames[z]);
-        c = booknames[z];
+        d($RvW.booknames[z]);
+        c = $RvW.booknames[z];
         s = z;
         break;
       }
@@ -334,12 +334,12 @@ function BibleReference() {
         "Failed finding in version 1 language, so finding in default language..."
       );
       for (var z = 0; z < x; z++) {
-        var w = default_booknames[z].toLowerCase();
+        var w = $RvW.default_booknames[z].toLowerCase();
         var A = new RegExp("^" + m);
         var F = A.test(w);
         if (F) {
-          d(default_booknames[z]);
-          c = booknames[z];
+          d($RvW.default_booknames[z]);
+          c = $RvW.booknames[z];
           s = z;
           break;
         }
@@ -397,7 +397,7 @@ function BibleReference() {
     return t;
   }
   function r() {
-    var t = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     return t;
   }
   function l() {

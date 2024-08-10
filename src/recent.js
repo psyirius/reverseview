@@ -44,7 +44,7 @@ recent = {
     var a = new Array();
     for (i = 0; i < recent.numofElements; i++) {
       a[i] =
-        booknames[recent.bArray[i]] +
+        $RvW.booknames[recent.bArray[i]] +
         " " +
         (recent.cArray[i] + 1) +
         ":" +
@@ -74,10 +74,10 @@ recent = {
       setBookChVer($RvW.bookIndex, $RvW.chapterIndex * 1 + 1, $RvW.verseIndex * 1 + 1);
       getdata(true);
       $RvW.p_footer =
-        bibleVersionArray[$RvW.vvConfigObj.get_version1()][3] +
+        $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3] +
         " / " +
-        bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
-      p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+        $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
+      p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
       $RvW.launch($RvW.verseIndex);
     }
   },
@@ -86,7 +86,7 @@ recent = {
     for (i = 0; i < recent.numofElements; i++) {
       a =
         a +
-        booknames[recent.bArray[i]] +
+        $RvW.booknames[recent.bArray[i]] +
         " " +
         (recent.cArray[i] + 1) +
         ":" +

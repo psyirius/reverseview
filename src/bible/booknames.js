@@ -1,4 +1,4 @@
-var booknames = [
+$RvW.booknames = [
     "Genesis",
     "Exodus",
     "Leviticus",
@@ -400,7 +400,7 @@ var spanish_booknames = [
     "3 Juan",
     "Judas",
     "Apocalipsis"];
-var default_booknames = [
+$RvW.default_booknames = [
     "Genesis",
     "Exodus",
     "Leviticus",
@@ -468,52 +468,52 @@ var default_booknames = [
     "Jude",
     "Revelation"];
 
-function setPrimaryBooknames() {
-    booknames = [];
+$RvW.setPrimaryBooknames = function() {
+    $RvW.booknames = [];
     const e = parseInt($RvW.vvConfigObj.get_booknamestyle());
     switch (e) {
         case 1:
-            booknames = default_booknames;
+            $RvW.booknames = $RvW.default_booknames;
             break;
         case 2: {
-            booknames = bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
+            $RvW.booknames = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
             break;
         }
         case 3: {
-            let d = bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
+            let d = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
-            if (d[0] === default_booknames[0]) {
-                booknames = d;
+            if (d[0] === $RvW.default_booknames[0]) {
+                $RvW.booknames = d;
             } else {
                 for (let f = 0; f < 66; f++) {
-                    let b = d[f] + " (" + default_booknames[f] + ")";
-                    booknames.push(b);
+                    let b = d[f] + " (" + $RvW.default_booknames[f] + ")";
+                    $RvW.booknames.push(b);
                 }
             }
             break;
         }
         case 4: {
-            const c = bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
+            const c = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
-            const a = bibleVersionArray[$RvW.vvConfigObj.get_version2()][7]
+            const a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][7]
                 .replace(/["']/g, "")
                 .split(",");
             if (c[0] === a[0] || a[0] === "") {
-                booknames = c;
+                $RvW.booknames = c;
             } else {
                 for (var f = 0; f < 66; f++) {
                     var b = c[f] + " (" + a[f] + ")";
-                    booknames.push(b);
+                    $RvW.booknames.push(b);
                 }
             }
             break;
         }
         default: {
-            booknames = default_booknames;
+            $RvW.booknames = $RvW.default_booknames;
             break;
         }
     }

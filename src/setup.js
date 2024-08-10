@@ -36,7 +36,7 @@ class BibleVersionSelector {
     }
   }
 }
-class VvUpdate {
+class RvwUpdate {
   constructor(bodyContent) {
     this.show = show;
 

@@ -531,7 +531,7 @@ class SongEdit {
       _createPanel.setBody(bodyContent);
 
       // todo: make reactive to window resize
-      const windowHeight = ($(window).height() * 0.8) - 130 /* guide text height */;
+      const windowHeight = ($(window).height() * 0.8) - 100 /* guide text height */;
 
       $("#se_quickSlideID").height(windowHeight);
       $("#se_quickSlideID_2").height(windowHeight);
@@ -603,6 +603,7 @@ class SongEdit {
                       case 'v': res += '\v'; break;
                       case 't': res += '\t'; break;
                       case '\\': res += '\\'; break;
+                      case 's': res += ' '; break;
                       case '0': res += '\0'; break;
                       case 'x': {
                           res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 2), 16));

@@ -1,4 +1,4 @@
-var songListRemote = null;
+$RvW.songListRemote = null;
 
 class vvWebServer {
   constructor() {
@@ -202,7 +202,7 @@ class vvWebServer {
             case "18":
               $RvW.songManagerObj.getAllTitlesForWeb(n);
               $("#command18").on("click", function () {
-                B(songListRemote);
+                B($RvW.songListRemote);
               });
               break;
             case "20":

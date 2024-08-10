@@ -1,6 +1,6 @@
 // import SongEdit from '../song/edit.js';
 
-air.trace("Loaded rvw.js");
+air.trace("main.js");
 
 // TODO:
 // - Export global functions to be used in other files
@@ -401,8 +401,8 @@ $RvW.launch = function(g) {
     }
     p_text1_arr = b;
     p_text2_arr = a;
-    p_text1_font = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    p_text2_font = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    p_text1_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    p_text2_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
     p_title = p_title;
     p_footnote = $RvW.p_footer;
     p_current_index = k;
@@ -422,7 +422,7 @@ $RvW.launch = function(g) {
     presentation();
 }
 $RvW.loadBookNames = function(a) {
-    setPrimaryBooknames();
+    $RvW.setPrimaryBooknames();
 }
 $RvW.getSingleVerse = function(j, f, k, e) {
     var l;
@@ -431,9 +431,9 @@ $RvW.getSingleVerse = function(j, f, k, e) {
     var h = k * 1 + 1;
     var d = getVerseFromArray(g, a, h);
     if (e == 1) {
-        l = bibledbObj[1].getSingleVerseFromBuffer(d - 1);
+        l = $RvW.bibledbObj[1].getSingleVerseFromBuffer(d - 1);
     } else {
-        l = bibledbObj[2].getSingleVerseFromBuffer(d - 1);
+        l = $RvW.bibledbObj[2].getSingleVerseFromBuffer(d - 1);
     }
     return l;
 }
@@ -445,7 +445,7 @@ $RvW.present = function() {
     air.trace("Called in $RvW.present()");
     getdata();
     $RvW.p_footer = $RvW.getFooter();
-    p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+    p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
     disableNavButtons(false);
@@ -459,7 +459,7 @@ $RvW.present_external = function(a, h, e) {
     $RvW.verseIndex = e;
     getdataONLY();
     $RvW.p_footer = $RvW.getFooter();
-    p_title = booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
+    p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
     $RvW.bookIndex = g;
@@ -470,8 +470,8 @@ $RvW.present_external = function(a, h, e) {
 }
 $RvW.getFooter = function() {
     var b;
-    var a = bibleVersionArray[$RvW.vvConfigObj.get_version1()][3];
-    var c = bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
+    var a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3];
+    var c = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
     b = a + " / " + c;
     if (a == "public") {
         a = "Public Domain";
@@ -520,7 +520,7 @@ function presentTheme() {
     }
 }
 $RvW.setFontForList = function() {
-    var a = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    var a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     $("#bookList").css("font-family", a);
     $("#chapterList").css("font-family", a);
     $("#verseList").css("font-family", a);
@@ -529,16 +529,16 @@ $RvW.setFontForList = function() {
 $RvW.putbook = function() {
     clearSelectList("bookList");
     var a = $RvW.vvConfigObj.get_listinenglish();
-    var b = booknames.length;
+    var b = $RvW.booknames.length;
     for (i = 0; i < b; i++) {
         if (a) {
             document.getElementById("bookList").options[i] = new Option(
-                default_booknames[i],
+                $RvW.default_booknames[i],
                 i
             );
         } else {
             document.getElementById("bookList").options[i] = new Option(
-                booknames[i],
+                $RvW.booknames[i],
                 i
             );
         }
@@ -589,7 +589,7 @@ function updateRefMenu() {
     const bi = document.getElementById("bookList").selectedIndex;
     const ci = document.getElementById("chapterList").selectedIndex;
     const vi = document.getElementById("verseList").selectedIndex;
-    const e = booknames[bi] + " " + (ci + 1) + ":" + (vi + 1);
+    const e = $RvW.booknames[bi] + " " + (ci + 1) + ":" + (vi + 1);
     $("#book_name").text(e);
 }
 $RvW.highlightVerse = function(a) {
@@ -607,8 +607,8 @@ $RvW.highlightVerse = function(a) {
 }
 $RvW.updateVerseContainer = function() {
     previousSelVerse = 0;
-    $RvW.priFontName = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    $RvW.secFontName = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    $RvW.priFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    $RvW.secFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
     var a = document.getElementById("navDualLanguageID").checked;
     $RvW.vvConfigObj.set_navDualLanguage(a);
     $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
@@ -671,12 +671,12 @@ $RvW.updateVerseContainer_continue = function() {
         o[i].init(e, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
         c[i] = new verseClass();
         var l = $RvW.content1[i];
-        var k = bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+        var k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
         c[i].init(m, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
             b[i] = new verseClass();
             var l = $RvW.content2[i];
-            var k = bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+            var k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
             b[i].init(g, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
         }
     }
@@ -885,12 +885,12 @@ function setupTheme() {
 function setupTabContent() {
     $RvW.bibleVersionSelObj = new BibleVersionSelector($RvW.loadViewTemplate("setup_biblesel"));
 
-    $RvW.remoteVV_UI_Obj = new VvRemote($RvW.loadViewTemplate("setup_remote"));
+    $RvW.remoteVV_UI_Obj = new RvwRemote($RvW.loadViewTemplate("setup_remote"));
 
     setupTabViewTemplate("bible_verses", "bibleverseTab");
     setupTabViewTemplate("screens", "screenTab");
 
-    $RvW.updateVV_UI_Obj = new VvUpdate($RvW.loadViewTemplate("setup_update"));
+    $RvW.updateVV_UI_Obj = new RvwUpdate($RvW.loadViewTemplate("setup_update"));
 
     fillTabs('configTab');
     
@@ -901,27 +901,17 @@ function setupTabContent() {
     setupTabViewTemplate("song_nav", "songNavTab");
     setupTabViewTemplate("song_lyrics", "lyricsTab");
 
-    $RvW.notesManageObj = new manageNotes();
-    $RvW.notesManageObj.init(firstTimeFlag);
-
-    $RvW.notesObj = new notes($RvW.loadViewTemplate("notesui"));
-    $RvW.notesObj.setNotesContainerID("notesPanelID");
-
-    $RvW.searchObj = new vvsearch("./bible/" + getVersion1Filename());
-    $RvW.searchObj.init();
-
+    $RvW.notesManageObj = new NotesManager(firstTimeFlag);
+    $RvW.notesObj = new Notes($RvW.loadViewTemplate("notesui"), 'notesPanelID');
+    $RvW.searchObj = new RvwSearch("./bible/" + getVersion1Filename());
     $RvW.webServerObj = new vvWebServer();
     $RvW.webEngineObj = new vvWebEngine();
     $RvW.vvchatQObj = new chatQ();
     $RvW.bibleRefObj = new BibleReference();
     $RvW.songNumberObj = new songNumber();
-
     $RvW.songManagerObj = new SongManager(true, true);
-
     $RvW.songEditObj = new SongEdit($RvW.loadViewTemplate("song_edit"));
-
     $RvW.songNavObj = new SongNav();
-
     $RvW.helpObj = new RvwHelp($RvW.loadViewTemplate("help"));
     $RvW.graphicsObj = new GraphicsMgr($RvW.loadViewTemplate("graphics"));
     $RvW.chordsNavObj = new ChordsNav($RvW.loadViewTemplate("chords"));
@@ -1102,7 +1092,7 @@ function updateBookNameVar() {
         air.trace("********Processing bookname");
         var d = e.getElementsByTagName("b").length;
         for (var c = 0; c < d; c++) {
-            booknames[c] = e.getElementsByTagName("b")[c].textContent;
+            $RvW.booknames[c] = e.getElementsByTagName("b")[c].textContent;
         }
     }
 }
