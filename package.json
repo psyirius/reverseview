@@ -8,9 +8,6 @@
     "node": ">=20",
     "pnpm": ">=9"
   },
-  "browserslist": [
-    "ie 10"
-  ],
   "scripts": {
     "dev": "pnpm run build && pnpm run debug",
     "debug": "adl -profile extendedDesktop ./application.xml ./app",
@@ -21,11 +18,11 @@
     "build:swf": "amxmlc -o \"app/bin/AppEntry.swf\" \"as3/src/AppEntry.as\"",
     "build:views": "node build.views.js",
     "build:static": "node build.static.js",
-    "build:parcel": "parcel build src/app/index.html",
+    "build:parcel": "node build.parcel.js",
     "build:styles": "node build.styles.js",
     "build:remote": "node build.remote.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
-    "clean": "rimraf -g \"app/{js,css,network,bible,song,xml,views,bin,background,font,icons,lib,graphics,chords}\" \"app/*.{css,xml}\" \"dist/*.{air}\"",
+    "clean": "rimraf -g \"app/{js,css,network,bible,song,xml,views,bin,background,font,icons,lib,graphics,chords}\" \"app/*.{css,xml}\" \"dist/*\"",
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
@@ -33,7 +30,13 @@
     "@parcel/config-default": "^2.12.0",
     "@parcel/core": "^2.12.0",
     "@parcel/plugin": "^2.12.0",
-    "@parcel/transformer-typescript-tsc": "^2.12.0",
+    "@parcel/utils": "^2.12.0",
+    "@parcel/logger": "^2.12.0",
+    "@parcel/watcher": "^2.4.1",
+    "@parcel/workers": "^2.12.0",
+    "@parcel/events": "^2.12.0",
+    "@parcel/cache": "^2.12.0",
+    "@parcel/fs": "^2.12.0",
     "@types/dojo": "^1.9.48",
     "@types/jquery": "^3.5.30",
     "@types/lodash": "^4.17.7",
