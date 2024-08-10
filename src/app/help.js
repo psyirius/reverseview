@@ -1,7 +1,7 @@
-class RvwHelp {
-  constructor(bodyTemplate) {
-    // $Y.Handlebars.compile(bodyTemplate);
+// import HandleBars from 'handlebars';
 
+window.RvwHelp = class {
+  constructor(bodyTemplate) {
     this.m_body = bodyTemplate /*$Y.Handlebars.compile(bodyTemplate)({
       app: {
         name: 'ReVerseVIEW',

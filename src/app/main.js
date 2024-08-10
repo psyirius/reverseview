@@ -884,17 +884,14 @@ function setupTheme() {
 }
 
 function setupTabContent() {
-    $RvW.bibleVersionSelObj = new bibleVersionSelClass();
-    $RvW.bibleVersionSelObj.init($RvW.loadViewTemplate("setup_biblesel"));
+    $RvW.bibleVersionSelObj = new BibleVersionSelector($RvW.loadViewTemplate("setup_biblesel"));
 
-    $RvW.remoteVV_UI_Obj = new remoteVV_UI_Class();
-    $RvW.remoteVV_UI_Obj.init($RvW.loadViewTemplate("setup_remote"));
+    $RvW.remoteVV_UI_Obj = new VvRemote($RvW.loadViewTemplate("setup_remote"));
 
     setupTabViewTemplate("bible_verses", "bibleverseTab");
     setupTabViewTemplate("screens", "screenTab");
 
-    $RvW.updateVV_UI_Obj = new updateVV_UI_Class();
-    $RvW.updateVV_UI_Obj.init($RvW.loadViewTemplate("setup_update"));
+    $RvW.updateVV_UI_Obj = new VvUpdate($RvW.loadViewTemplate("setup_update"));
 
     fillTabs('configTab');
 
@@ -926,25 +923,17 @@ function setupTabContent() {
 
     $RvW.songEditObj = new SongEdit($RvW.loadViewTemplate("song_edit"));
 
-    $RvW.songNavObj = new songNavClass();
-    $RvW.songNavObj.init();
+    $RvW.songNavObj = new SongNav();
 
     $RvW.helpObj = new RvwHelp($RvW.loadViewTemplate("help"));
-
-    $RvW.graphicsObj = new graphicsClass();
-    $RvW.graphicsObj.init($RvW.loadViewTemplate("graphics"));
-
+    $RvW.graphicsObj = new GraphicsMgr($RvW.loadViewTemplate("graphics"));
     $RvW.chordsNavObj = new ChordsNav($RvW.loadViewTemplate("chords"));
+    $RvW.chordsEditObj = new ChordsEdit($RvW.loadViewTemplate("chords_edit"));
+    $RvW.chordsKeyboard = new ChordsVK($RvW.loadViewTemplate("chords_keyboard"));
 
-    $RvW.chordsEditObj = new chordsEditClass();
-    $RvW.chordsEditObj.init($RvW.loadViewTemplate("chords_edit"));
-
-    $RvW.chordsKeyboard = new chordsVirtualKeyboard();
-    $RvW.chordsKeyboard.init($RvW.loadViewTemplate("chords_keyboard"));
-
-    if (!isUpToDate() && task2Status() == false) {
+    if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
-        var b = backupWebroot();
+        const b = backupWebroot();
         if (b) {
             copyFile("network/webroot", "network/webroot");
             task2Complete();

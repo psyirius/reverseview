@@ -15,7 +15,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build cache (air packaging)
-.build
+.build/
+
+# Build cache (parcel)
+.parcel-cache/
 
 # Artifact files
 dist/
@@ -31,10 +34,11 @@ keystores/
 /app/js/
 /app/css/
 /app/bin/
+/app/network/
+/app/views/
 /as3/bin/
 /app/*.js
 /app/*.css
-!/app/js/.gitkeep
 
 # downloadable libs
 /app/lib/yui3/*

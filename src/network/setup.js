@@ -1,8 +1,8 @@
-class remoteVV_UI_Class {
-  constructor() {
-    this.init = w;
-    this.configure = A;
-    this.show = z;
+class VvRemote {
+  constructor(bodyContent) {
+    this.configure = configure;
+    this.show = show;
+
     var q = null;
     var v = null;
     var f = new Array();
@@ -10,7 +10,10 @@ class remoteVV_UI_Class {
     var p = "";
     var g = "";
     var s = true;
-    function w(B) {
+
+    init(bodyContent);
+
+    function init(B) {
       v = B;
       k();
       u();
@@ -43,7 +46,7 @@ class remoteVV_UI_Class {
     function m(B) {
       $("#remoteVVHint").html(f[B]);
     }
-    function A() {
+    function configure() {
       n();
       x();
     }
@@ -101,7 +104,7 @@ class remoteVV_UI_Class {
         l();
       });
     }
-    function z() {
+    function show() {
       q.show();
       q.bringToTop();
     }

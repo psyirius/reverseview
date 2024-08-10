@@ -7,9 +7,8 @@ var searchDelayTime = 600;
 // - YAHOO.widget.Paginator
 // - YAHOO.widget.DataTable
 
-class songNavClass {
+class SongNav {
   constructor() {
-    this.init = init;
     this.setFormats = setFormats;
     this.update_songList = update_songList;
     this.get_songList = get_songList;
@@ -47,6 +46,8 @@ class songNavClass {
     var B = null;
     var _shfi = false;
     var m_songTitle = [];
+
+    init();
 
     class Deferred {
       resolve = null;
