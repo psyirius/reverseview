@@ -1,7 +1,7 @@
 # remoteverseview
 Repository for implementing Remote VerseVIEW which is embedded with the VerseVIEW Windows/MAC application
 
-VerseVIEW PC application has a built in web server engine. The Remote VerseVIEW is a web interface that communicates to the web server on VerseVIEW PC application.
+VerseVIEW PC application has a built-in web server engine. The Remote VerseVIEW is a web interface that communicates to the web server on VerseVIEW PC application.
 
 
 The Remote VerseVIEW files are located in the following folder on Windows [C:\Users\[UserName]\AppData\Roaming\verseview7\Local Store\network\webroot\] and on MAC []

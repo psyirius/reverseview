@@ -1,3 +1,5 @@
+// shared in both main and presenter
+
 var p_text1_arr = [];
 var p_text2_arr = [];
 var p_text1_font = "";
@@ -38,6 +40,7 @@ var p_transparentBackground;
 var p_isArabic1 = false;
 var p_isArabic2 = false;
 var p_format = { mutipleLines: true };
+
 var timeValue = 0;
 var timeValueDefault = 150;
 var motionFlagState = false;
@@ -60,6 +63,16 @@ var specialFontList = ["JC_Malayalam",
   "Kerala"];
 var firstTime = true;
 var presentDebug = true;
+
+var canvas_top, canvas_left, canvas_height, canvas_width;
+var title_top, title_left, title_height, title_width;
+var c1_top, c1_left, c1_height, c1_width;
+var c2_top, c2_left, c2_height, c2_width;
+var f_top, f_left, f_height, f_width;
+var titleAllocation = 0.1;
+var contentAllocation = 0.85;
+var footerAllocation = 0.05;
+
 function initPresentation() {
   debugPrintPresent("*** Init Presentation****");
   passVariable(0);
@@ -103,14 +116,6 @@ function presentation_initEvent() {
 function clearPresenter() {
   window.close();
 }
-var canvas_top, canvas_left, canvas_height, canvas_width;
-var title_top, title_left, title_height, title_width;
-var c1_top, c1_left, c1_height, c1_width;
-var c2_top, c2_left, c2_height, c2_width;
-var f_top, f_left, f_height, f_width;
-var titleAllocation = 0.1;
-var contentAllocation = 0.85;
-var footerAllocation = 0.05;
 function setupBackground() {
   if (p_bkgnd_type == 1) {
     if (p_transparentBackground == true) {

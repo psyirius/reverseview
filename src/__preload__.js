@@ -37,45 +37,47 @@ window.global = new Function("return this;").apply(null);
 })();
 
 // init YUI 3
-((YUI, config, modules) => {
-    function checkModules(Y, modules) {
-        const loader = new Y.Loader({
-            base: Y.config.base,
-            require: [...modules],
-        });
+if (typeof YUI !== "undefined") {
+    ((YUI, config, modules) => {
+        function checkModules(Y, modules) {
+            const loader = new Y.Loader({
+                base: Y.config.base,
+                require: [...modules],
+            });
 
-        // Tell loader to calculate dependencies
-        loader.calculate();
+            // Tell loader to calculate dependencies
+            loader.calculate();
 
-        const out = loader.resolve();
-        // out: js, jsMods, css, cssMods
+            const out = loader.resolve();
+            // out: js, jsMods, css, cssMods
 
-        const { File } = air;
+            const { File } = air;
 
-        for (const filepath of [...out.js, ...out.css]) {
-            const file = new File(filepath);
-            if (!file.exists) {
-                air.trace(`YUI3 Dep missing: ${filepath}`);
+            for (const filepath of [...out.js, ...out.css]) {
+                const file = new File(filepath);
+                if (!file.exists) {
+                    air.trace(`YUI3 Dep missing: ${filepath}`);
+                }
             }
         }
-    }
 
-    const Y = YUI(config);
+        const Y = YUI(config);
 
-    checkModules(Y, modules);
+        checkModules(Y, modules);
 
-    Y.use(...modules, function(Y) {
-        global.$Y = Y;
+        Y.use(...modules, function(Y) {
+            global.$Y = Y;
 
-        air.trace("YUI3 loaded");
+            air.trace("YUI3 loaded");
 
-        if (typeof global.__yui3_loaded !== "undefined") {
-            global.__yui3_loaded.resolve(Y);
-        } else {
-            global.__yui3_loaded = Y;
-        }
-    });
-})(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
+            if (typeof global.__yui3_loaded !== "undefined") {
+                global.__yui3_loaded.resolve(Y);
+            } else {
+                global.__yui3_loaded = Y;
+            }
+        });
+    })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
+}
 
 // the global object to host the global variables
 rvw.provide("$RvW").global = {};
