@@ -84,6 +84,7 @@ function makeRelease() {
     const APP_FILES_CACHE_DIR = path.resolve(BUILD_DIR, 'cache');
 
     fs.mkdirSync(APP_FILES_CACHE_DIR, { recursive: true });
+    fs.mkdirSync(DIST_ROOT, { recursive: true });
 
     appFiles.forEach(p => fs.cpSync(
         path.resolve(SOURCE_ROOT, p),
