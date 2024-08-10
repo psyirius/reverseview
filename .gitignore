@@ -48,6 +48,7 @@ keystores/
 /as3/bin/
 /app/*.js
 /app/*.css
+/app/*.xml
 
 # downloadable libs
 /app/lib/yui3/*
