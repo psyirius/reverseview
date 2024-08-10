@@ -15,7 +15,7 @@
     "dev": "pnpm run build && pnpm run debug",
     "debug": "adl -profile extendedDesktop ./application.xml ./app",
     "start": "adl -profile extendedDesktop -nodebug ./application.xml ./app",
-    "build": "pnpm run build:src && pnpm run build:styles && pnpm run build:swf",
+    "build": "pnpm run build:src && pnpm run build:styles",
     "build:src": "tsc -p tsconfig.app.json",
     "build:as3": "asconfigc -p as3 --sdk \"D:/AirSDK/32.0.0.116\"",
     "build:swf": "amxmlc -source-path=\"./as3/src\" -o \"app/bin/AppEntry.swf\" \"as3/src/AppEntry.as\"",

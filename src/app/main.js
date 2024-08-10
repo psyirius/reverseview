@@ -898,6 +898,8 @@ function setupTabContent() {
 
     fillTabs('configTab');
 
+    setupTabViewTemplate("menubar", "menubar");
+    
     setupTabViewTemplate("nav", "navTab");
     setupTabViewTemplate("search", "searchField");
     setupTabViewTemplate("html", "notesTab");
