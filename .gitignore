@@ -36,6 +36,15 @@ keystores/
 /app/bin/
 /app/network/
 /app/views/
+/app/song/
+/app/xml/
+/app/font/
+/app/graphics/
+/app/icons/
+/app/lib/
+/app/background/
+/app/bible/
+/app/chords/
 /as3/bin/
 /app/*.js
 /app/*.css

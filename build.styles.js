@@ -5,7 +5,7 @@ import * as process from "node:process";
 import postcssrc from "postcss-load-config";
 
 const toBuild = {
-    'src/styles/main.pcss'          : 'app/css/main.css',
+    'src/styles/main.pcss'              : 'app/css/main.css',
 
     'src/styles/app.pcss'               : 'app/app.css',
     'src/styles/fonts.pcss'             : 'app/fonts.css',
