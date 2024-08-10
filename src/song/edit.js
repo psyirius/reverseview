@@ -579,15 +579,15 @@ class SongEdit {
         _debug("Trim Empty: " + trimEmpty);
         _debug("Trim Slides: " + trimSlides);
 
+        $("#se-slide-delimiter").val(_delimiter);
       $Y.one("#se-trim-empty").set('checked', trimEmpty);
-      $Y.one("#se-trim-slides").set('checked', trimEmpty);
-      $("#se-slide-delimiter").val(_delimiter);
+      $Y.one("#se-trim-slides").set('checked', trimSlides);
 
       const delimiter = _unescapeSlidesDelimiter(_delimiter);
 
       // write content to the textarea (primary and secondary)
-      document.getElementById("se_quickSlideID").value = primarySlidesList.join(delimiter).trim();
-      document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join(delimiter).trim();
+      document.getElementById("se_quickSlideID").value = primarySlidesList.join(delimiter);
+      document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join(delimiter);
 
       _createPanel.show();
       _createPanel.bringToTop();
@@ -633,6 +633,7 @@ class SongEdit {
 
           _debug("Delimiter: " + _delimiter);
           _debug("Trim Empty: " + trimEmpty);
+          _debug("Trim Slides: " + trimSlides);
 
           $RvW.rvwPreferences.set("app.state.song.create.delimiter", _delimiter);
           $RvW.rvwPreferences.set("app.state.song.create.trim_empty", trimEmpty);
