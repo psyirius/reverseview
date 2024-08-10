@@ -17,7 +17,7 @@ class SongEdit {
     let _fontsList = [];
     let _current_slide_num = 1;
 
-    this.init = function(bodyContent) {
+    function init(bodyContent) {
       _debug("Initialize Song Edit Panel");
 
       _fontsList = ["Arial", "Times New Roman", "Calibri"];
@@ -468,9 +468,8 @@ class SongEdit {
     }
     function onClick_addSlideButtonID() {
       _reset_seq_id();
-      var ad = null;
-      var ac = null;
-      _append_Slide(ad, ac);
+
+      _append_Slide(null, null);
     }
     function _append_Slide(slide1, slide2) {
       const slide1_id = `slide${_current_slide_num}`;
@@ -521,7 +520,7 @@ class SongEdit {
       const bodyContent = $RvW.loadViewTemplate('lyrics_create');
 
       const _createPanel = new YAHOO.widget.Panel("gpanelObj", {
-        width: "800px",
+        width: "820px",
         fixedcenter: true,
         modal: true,
         visible: false,
@@ -531,7 +530,8 @@ class SongEdit {
       _createPanel.setHeader("Generate Slides");
       _createPanel.setBody(bodyContent);
 
-      const windowHeight = $(window).height() * 0.8;
+      // todo: make reactive to window resize
+      const windowHeight = ($(window).height() * 0.8) - 130 /* guide text height */;
 
       $("#se_quickSlideID").height(windowHeight);
       $("#se_quickSlideID_2").height(windowHeight);
@@ -568,47 +568,119 @@ class SongEdit {
         secondarySlidesList.push(document.getElementById("slide" + slideIndex + "_2").value);
       }
 
+      const DEFAULT_DELIMITER = '\\n\\n\\n';
+
+      // LOAD SLIDES
+      const _delimiter = $RvW.rvwPreferences.get("app.state.song.create.delimiter", DEFAULT_DELIMITER);
+      const trimEmpty = $RvW.rvwPreferences.get("app.state.song.create.trim_empty", true);
+      const trimSlides = $RvW.rvwPreferences.get("app.state.song.create.trim_slides", true);
+
+        _debug("Delimiter: " + _delimiter);
+        _debug("Trim Empty: " + trimEmpty);
+        _debug("Trim Slides: " + trimSlides);
+
+      $Y.one("#se-trim-empty").set('checked', trimEmpty);
+      $Y.one("#se-trim-slides").set('checked', trimEmpty);
+      $("#se-slide-delimiter").val(_delimiter);
+
+      const delimiter = _unescapeSlidesDelimiter(_delimiter);
+
       // write content to the textarea (primary and secondary)
-      document.getElementById("se_quickSlideID").value = primarySlidesList.join("\n\n\n").trim();
-      document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join("\n\n\n").trim();
+      document.getElementById("se_quickSlideID").value = primarySlidesList.join(delimiter).trim();
+      document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join(delimiter).trim();
 
       _createPanel.show();
       _createPanel.bringToTop();
 
+      function _unescapeSlidesDelimiter(delimiter) {
+          let res = "";
+          for (let i = 0; i < delimiter.length; i++) {
+              if (delimiter[i] === '\\') {
+                  i++;
+                  switch (delimiter[i]) {
+                      case 'n': res += '\n'; break;
+                      case 'r': res += '\r'; break;
+                      case 'v': res += '\v'; break;
+                      case 't': res += '\t'; break;
+                      case '\\': res += '\\'; break;
+                      case '0': res += '\0'; break;
+                      case 'x': {
+                          res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 2), 16));
+                          i += 2;
+                          break;
+                      }
+                      case 'u': {
+                         res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 4), 16));
+                         i += 4;
+                         break;
+                      }
+                      default: res += delimiter[i]; break;
+                  }
+              } else {
+                  res += delimiter[i];
+              }
+          }
+          return res;
+      }
+
       function onClick_se_generateID() {
-        _current_slide_num = 1;
+          // GENERATE SLIDES
+          _current_slide_num = 1;
 
-        const av = document.getElementById("se_quickSlideID").value;
-        const az = av.split("\n\n\n");
-        const ar = az.length;
+          const trimEmpty = $Y.one("#se-trim-empty").get('checked');
+          const trimSlides = $Y.one("#se-trim-slides").get('checked');
+          const _delimiter = $("#se-slide-delimiter").val();
 
-        const au = document.getElementById("se_quickSlideID_2").value;
-        const at = au.split("\n\n\n");
-        const ay = at.length;
+          _debug("Delimiter: " + _delimiter);
+          _debug("Trim Empty: " + trimEmpty);
 
-        if (at[0] != null) {
-          _append_Slide(az[0], at[0]);
-        } else {
-          _append_Slide(az[0], null);
-        }
+          $RvW.rvwPreferences.set("app.state.song.create.delimiter", _delimiter);
+          $RvW.rvwPreferences.set("app.state.song.create.trim_empty", trimEmpty);
+          $RvW.rvwPreferences.set("app.state.song.create.trim_slides", trimSlides);
+          $RvW.rvwPreferences.commit();
+
+          const delimiter = _unescapeSlidesDelimiter(_delimiter);
+
+          const av = document.getElementById("se_quickSlideID").value;
+          let sl1 = av.split(delimiter);
+          const au = document.getElementById("se_quickSlideID_2").value;
+          let sl2 = au.split(delimiter);
+
+          if (trimSlides) {
+              sl1 = sl1.map((slide) => slide.trim());
+              sl2 = sl2.map((slide) => slide.trim());
+          }
+
+          if (trimEmpty) {
+              sl1 = sl1.filter((slide) => !!slide.trim());
+              sl2 = sl2.filter((slide) => !!slide.trim());
+          }
+
+          // FIXME: make it more efficient
+
+          if (sl2[0] != null) {
+              _append_Slide(sl1[0], sl2[0]);
+          } else {
+              _append_Slide(sl1[0], null);
+          }
 
           let aw = _slidesTabView.item(1);
           while (aw != null) {
-          _slidesTabView.remove(aw.get("index"));
-          aw = _slidesTabView.item(1);
-        }
-
-        _current_slide_num = 2;
-
-        for (let ax = 1; ax < ar; ax++) {
-          if (at[ax] != null) {
-            _append_Slide(az[ax], at[ax]);
-          } else {
-            _append_Slide(az[ax], null);
+              _slidesTabView.remove(aw.get("index"));
+              aw = _slidesTabView.item(1);
           }
-        }
 
-        onClick_se_generateCancelID();
+          _current_slide_num = 2;
+
+          for (let ix = 1; ix < sl1.length; ix++) {
+              if (sl2[ix] != null) {
+                  _append_Slide(sl1[ix], sl2[ix]);
+              } else {
+                  _append_Slide(sl1[ix], null);
+              }
+          }
+
+          onClick_se_generateCancelID();
       }
       function onClick_se_generateCancelID() {
         _setup_clickHandlers();
@@ -758,7 +830,7 @@ class SongEdit {
           sngObj.font2 = document.getElementById("se_fontID2_2").options[al].text;
         }
 
-        sngObj.timestamp = h();
+        sngObj.timestamp = _getTimestamp();
         sngObj.key = document.getElementById("se_keyID").value;
         sngObj.notes = document.getElementById("se_notesID").value;
         sngObj.rating = 5;
@@ -850,7 +922,7 @@ class SongEdit {
     }
     function _parse_yt_videoID(af) {
       var ae = af.replace(/ /gi, "");
-      if (ae == "") {
+      if (ae === "") {
         document.getElementById("se_yvideoID").value = "";
         return true;
       }
@@ -859,22 +931,22 @@ class SongEdit {
       document.getElementById("se_yvideoID").value = ae;
       ad = ae.split("?v=");
       var ac = "https://www.youtube.com/watch";
-      if (ad[0] != ac) {
+      if (ad[0] !== ac) {
         return false;
       } else {
         return true;
       }
     }
-    function h() {
-      var ai = new Date();
-      var ac = parseInt(ai.getMonth()) + 1;
-      var ae = ai.getDate();
-      var af = ai.getFullYear();
-      var ad = ai.getHours();
-      var ag = ai.getMinutes();
-      var ah = ac + "/" + ae + "/" + af + "  " + ad + ":" + ag;
-      _debug("Timestamp: " + ah);
-      return ah;
+    function _getTimestamp() {
+        const ai = new Date();
+        const ac = ai.getMonth() + 1;
+        const ae = ai.getDate();
+        const af = ai.getFullYear();
+        const ad = ai.getHours();
+        const ag = ai.getMinutes();
+        const ah = `${ac}/${ae}/${af}  ${ad}:${ag}`;
+        _debug("Timestamp: " + ah);
+        return ah;
     }
 
     function _debug(ac) {
@@ -883,6 +955,6 @@ class SongEdit {
       }
     }
 
-    this.init(bodyContent);
+    init(bodyContent);
   }
 }

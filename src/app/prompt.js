@@ -16,8 +16,22 @@ rvw.provide("rvw.ui").Prompt = {
                 header: ['close'],
                 footer: [
                     {
+                        name  : 'proceed',
+                        label : 'OK',
+                        action: (e) => {
+                            e.preventDefault();
+
+                            const dialog = this.__instance;
+
+                            (typeof this.__okCallback === 'function') && self.__okCallback();
+
+                            dialog.hide();
+                        }
+                    },
+                    {
                         name  : 'cancel',
                         label : 'Cancel',
+                        isDefault: true,
                         action: (e) => {
                             e.preventDefault();
 
@@ -28,20 +42,6 @@ rvw.provide("rvw.ui").Prompt = {
                             dialog.hide();
                         }
                     },
-                    {
-                        name  : 'proceed',
-                        label : 'OK',
-                        isDefault: true,
-                        action: (e) => {
-                            e.preventDefault();
-
-                            const dialog = this.__instance;
-
-                            (typeof this.__okCallback === 'function') && self.__okCallback();
-
-                            dialog.hide();
-                        }
-                    }
                 ]
             }
         });

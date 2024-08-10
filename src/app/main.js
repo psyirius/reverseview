@@ -340,16 +340,15 @@ $RvW.enterForBibleRef = false;
 $RvW.vvConfigObj = null;
 $RvW.highlightColor = "#BAD0EF";
 $RvW.scroll_to_view = false;
-
 $RvW.learner = null;
 $RvW.wordbrain = null;
+$RvW.rvwPreferences = null;
 
 let firstTimeFlag = false;
 let navWindowHeight = 1000;
 let navWindowWidth = 1000;
 let previousSelVerse = 0;
 let themeState = false;
-let rvwPreferences = null;
 
 $RvW.getBookValue = function() {
     return document.getElementById("bookList").selectedIndex;
@@ -701,7 +700,7 @@ function loadPreferences(callback) {
             return;
         }
 
-        rvwPreferences = store;
+        $RvW.rvwPreferences = store;
 
         callback(store);
     }
@@ -717,7 +716,7 @@ function activateMainWindow() {
     // load saved window state
     const { nativeWindow } = window;
 
-    const windowState = rvwPreferences.get("app.state.window");
+    const windowState = $RvW.rvwPreferences.get("app.state.window");
     if (windowState) {
         const { bounds, maximized } = windowState;
         const { NativeWindowDisplayState } = air;
@@ -1216,7 +1215,7 @@ function setupLeftTabFrame() {
 
     tabview.render('#container');
 
-    const lti = rvwPreferences.get('app.state.leftTabActiveIndex', 0);
+    const lti = $RvW.rvwPreferences.get('app.state.leftTabActiveIndex', 0);
     tabview.selectChild(lti);
 
     tabview.after('selectionChange', (e) => {
@@ -1279,7 +1278,7 @@ function setupRightTabFrame() {
 
     tabview.render('#container2');
 
-    const rti = rvwPreferences.get('app.state.rightTabActiveIndex', 0);
+    const rti = $RvW.rvwPreferences.get('app.state.rightTabActiveIndex', 0);
     tabview.selectChild(rti);
 
     function menuBarSync(currentTab) {
@@ -1331,10 +1330,10 @@ function beforeExit() {
     // save app state
     {
         const lti = $RvW.leftTabView.get('selection').get('index');
-        rvwPreferences.set('app.state.leftTabActiveIndex', lti);
+        $RvW.rvwPreferences.set('app.state.leftTabActiveIndex', lti);
 
         const rti = $RvW.rightTabView.get('selection').get('index');
-        rvwPreferences.set('app.state.rightTabActiveIndex', rti);
+        $RvW.rvwPreferences.set('app.state.rightTabActiveIndex', rti);
     }
 
     // main window state
@@ -1351,10 +1350,10 @@ function beforeExit() {
             maximized: nativeWindow.displayState === NativeWindowDisplayState.MAXIMIZED,
         }
 
-        rvwPreferences.set('app.state.window', windowState);
+        $RvW.rvwPreferences.set('app.state.window', windowState);
     }
 
-    rvwPreferences.commit();
+    $RvW.rvwPreferences.commit();
 }
 
 function processExit() {

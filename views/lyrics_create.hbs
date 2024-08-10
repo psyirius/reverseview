@@ -1,8 +1,30 @@
 <div class="style2">
-    <textarea id="se_quickSlideID" rows="20" style="width: 390px" class="textareaStyle4songslide"></textarea><textarea id="se_quickSlideID_2" rows="20" style="width: 390px" class="textareaStyle4songslide"></textarea><br>
-    <i>Seperate the slides with 2 new lines. </i><br><br><br>
-    <input type="button" id="se_generateID" value=" GENERATE SLIDES ">
+    <label for="se_quickSlideID"></label><textarea id="se_quickSlideID" style="width: 400px" class="textareaStyle4songslide"></textarea><label for="se_quickSlideID_2"></label><textarea id="se_quickSlideID_2" style="width: 400px" class="textareaStyle4songslide"></textarea>
 
+    <br>
+
+    <i>Separate the slides with the delimiter</i>
+
+    <br>
+
+    <i><code>\r</code> for CR (carriage return)</i>,&nbsp;
+    <i><code>\n</code> for LF (newline)</i>,&nbsp;
+    <i><code>\t</code> for TAB (tab space)</i>,&nbsp;
+    <i><code>\x??</code> for hex escape sequence</i>,&nbsp;
+    <i><code>\u????</code> for unicode escape sequence</i>
+
+    <br>
+
+    <label for="se-slide-delimiter">Delimiter</label>
+    <input type="text" id="se-slide-delimiter" value="\n\n\n">
+    <label for="se-trim-slides">Trim Slides</label>
+    <input type="checkbox" id="se-trim-slides">
+    <label for="se-trim-empty">Trim Empty</label>
+    <input type="checkbox" id="se-trim-empty">
+
+    <br>
+
+    <input type="button" id="se_generateID" value=" GENERATE SLIDES ">
     <input type="button" id="se_generateMunglishID" value=" TRANSLITERATE ">
     <input type="button" id="se_generateCancelID" value=" CANCEL ">
 </div>
