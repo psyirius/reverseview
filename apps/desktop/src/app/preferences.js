@@ -80,6 +80,11 @@ rvw.provide("rvw.store").Preferences = {
                 air.trace('Prefs::init: ' + err);
             });
         });
+
+        if (!file.parent.exists) {
+            file.parent.createDirectory();
+        }
+
         this.save(file, store, (err) => {
             callback(err, store);
         });

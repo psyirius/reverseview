@@ -186,6 +186,7 @@
     <script type="text/javascript" src="js/app/checkupdate.js"></script>
 
     <script type="text/javascript" src="js/app/main.js"></script>
+    <script type="text/javascript" src="js/app/sandbox.js"></script>
 
     <script type="text/javascript" src="js/const.js"></script>
     <script type="text/javascript" src="js/navigation.js"></script>
@@ -340,10 +341,11 @@
     <!-- Modal::Toast::End -->
 
     <!-- hidden iframe for classic sandbox bridging -->
+    <!-- TODO: inject it dynamically -->
     <iframe
       style="display:none"
       src="uix.html"
-      sandboxRoot="https://rvw.app/local/ui"
+      sandboxRoot="http://rvw.app/local/"
       documentRoot="app:/sandbox/"
       id="ui-sandbox"
       onload="sandboxLoaded()"

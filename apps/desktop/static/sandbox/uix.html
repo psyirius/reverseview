@@ -5,6 +5,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
+  <script type="application/javascript" src="js/app/uix.js"></script>
+
   <title>Tpl</title>
 
   <script type="text/javascript" charset="utf-8">
@@ -12,7 +14,7 @@
       // This is the function that the parent will call to send messages to the child
       sayHello: function(message) {
         // This is the function that the child will call to send messages to the parent
-        window.parentSandboxBridge.sayHello(message);
+        window.parentSandboxBridge.sayHello('through child: ' + message);
       }
     };
   </script>

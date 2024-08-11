@@ -1265,8 +1265,8 @@ function setupStageViewOptions() {
 }
 function stageShowTimeChangeEvent() {}
 
-// var portNumber = 50000;
-// var IPList = null;
+var portNumber = 50000;
+var IPList = null;
 function configInit() {
   document
     .getElementById("navDualLanguageID")

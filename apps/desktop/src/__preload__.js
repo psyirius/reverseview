@@ -1,6 +1,7 @@
 "use strict";
 
-window.global = new Function("return this;").apply(null);
+window.global ??= new Function("return this;").apply(null);
+window.globalThis ??= window.global;
 
 (() => {
     "use strict";
@@ -36,9 +37,39 @@ window.global = new Function("return this;").apply(null);
     provide("rvw").provide = provide;
 })();
 
+// console shim
+(() => {
+    "use strict";
+
+    const criticalTypes = ["error", "warn"];
+
+    const print = (type) => function () {
+        if (criticalTypes.indexOf(type) !== -1) {
+            if (typeof air.Introspector.Console !== "undefined") {
+                air.Introspector.Console[type].apply(air.Introspector.Console, arguments);
+                return;
+            }
+        }
+
+        const args = [...arguments];
+        air.trace(`[${type}]: ${args.join(" ")}`);
+    };
+
+    const console = {
+        log: print("log"),
+        warn: print("warn"),
+        info: print("info"),
+        debug: print("debug"),
+        error: print("error"),
+    };
+
+    global['console'] ??= console;
+})();
+
 // init YUI 3
 if (typeof YUI !== "undefined") {
     ((YUI, config, modules) => {
+        "use strict";
         function checkModules(Y, modules) {
             const loader = new Y.Loader({
                 base: Y.config.base,
@@ -79,5 +110,6 @@ if (typeof YUI !== "undefined") {
     })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
 }
 
+// TODO: remove it when the global denoising is over
 // the global object to host the global variables
 rvw.provide("$RvW").global = {};

@@ -1,25 +1,50 @@
+function remoteVV_IPList() {
+    const d = [];
+    const f = air.NetworkInfo.networkInfo.findInterfaces();
+
+    if (f != null) {
+        let c = 0;
+        for (let b = 0; b < f.length; b++) {
+            const e = f[b].active;
+            if (e) {
+                var a = f[b].addresses[0].address;
+                if (a !== "::1") {
+                    d[c] = a;
+                    c++;
+                }
+            }
+        }
+        d[c] = "127.0.0.1";
+        return d;
+    } else {
+        alert("No interface found");
+        return null;
+    }
+}
+
 class RvwRemote {
   constructor(bodyContent) {
     this.configure = configure;
     this.show = show;
 
-    var q = null;
-    var v = null;
-    var f = new Array();
-    var r = "";
-    var p = "";
-    var g = "";
-    var s = true;
+      let q = null;
+      let m_body = null;
+      const f = [];
+      let r = "";
+      let p = "";
+      let g = "";
+      const s = true;
 
-    init(bodyContent);
+      init(bodyContent);
 
     function init(B) {
-      v = B;
-      k();
+      m_body = B;
+      _setupUI();
       u();
       e();
     }
-    function k() {
+
+    function _setupUI() {
       q = new YAHOO.widget.Panel("panelObj3", {
         width: "700px",
         fixedcenter: true,
@@ -29,19 +54,16 @@ class RvwRemote {
       });
       q.render(document.body);
       q.setHeader("Remote VerseVIEW");
-      q.setBody(v);
+      q.setBody(m_body);
       q.hide();
       q.bringToTop();
     }
     function u() {
-      f[0] =
-        "Use IP address 127.0.0.1 if VerseVIEW and live stream software on the same computer. <br> Use the other IP address if remote access is required with multiple computers and devices";
+      f[0] = "Use IP address 127.0.0.1 if VerseVIEW and live stream software on the same computer. <br> Use the other IP address if remote access is required with multiple computers and devices";
       f[1] = "Enable this port numer with the firewall software";
-      f[2] =
-        "Messenger feature can be used to easily communicate between choir team members";
+      f[2] = "Messenger feature can be used to easily communicate between choir team members";
       f[3] = "The full address is displayed in the text box and the QR code";
-      f[4] =
-        "Enter the host name of the computer and toggle the Use Host name field";
+      f[4] = "Enter the host name of the computer and toggle the Use Host name field";
     }
     function m(B) {
       $("#remoteVVHint").html(f[B]);
@@ -128,7 +150,7 @@ class RvwRemote {
         document.getElementById("saveRemoteVVSettings").disabled = true;
       }
     }
-    function c() {
+    function _getSelectedIp() {
       var B = document.getElementById("configIPaddr").selectedIndex;
       if (B != null) {
         return IPList[B];
@@ -136,57 +158,57 @@ class RvwRemote {
         return false;
       }
     }
-    function b() {
-      var C = 50000;
-      var D = null;
-      if ($RvW.webServerObj.remoteVVStatus() == false) {
-        C = document.getElementById("configRemotePort").value;
-        D = c();
-        if (IsNumeric(C)) {
-          if (withinRange(49152, 65535, C)) {
-            portNumber = C;
-            var B = $RvW.webServerObj.init(portNumber, D);
-            if (B) {
-              t("DISABLE");
-              document.getElementById("configRemotePort").disabled = true;
-              document.getElementById("configIPaddr").disabled = true;
-              if (D != null) {
-                if (D.indexOf(":") > -1) {
-                  D = "[" + D + "]";
-                }
-                r = D;
-                p = portNumber;
-                d();
+      function b() {
+          let _port = 50000;
+          let _ipAddr = null;
+          if ($RvW.webServerObj.remoteVVStatus() === false) {
+              _port = document.getElementById("configRemotePort").value;
+              _ipAddr = _getSelectedIp();
+              if (IsNumeric(_port)) {
+                  if (withinRange(49152, 65535, _port)) {
+                      portNumber = _port;
+                      const B = $RvW.webServerObj.init(portNumber, _ipAddr);
+                      if (B) {
+                          _setBtnLabel("DISABLE");
+                          document.getElementById("configRemotePort").disabled = true;
+                          document.getElementById("configIPaddr").disabled = true;
+                          if (_ipAddr != null) {
+                              if (_ipAddr.indexOf(":") > -1) {
+                                  _ipAddr = "[" + _ipAddr + "]";
+                              }
+                              r = _ipAddr;
+                              p = portNumber;
+                              d();
+                          } else {
+                              e();
+                          }
+                      } else {
+                          e();
+                      }
+                  } else {
+                      rvw.ui.Toast.show(
+                          "Remote VerseVIEW",
+                          "Port Number: Out of Range. Valid range is 49152 to 65535."
+                      );
+                      document.getElementById("configRemotePort").value = portNumber;
+                      e();
+                  }
               } else {
-                e();
+                  rvw.ui.Toast.show(
+                      "Remote VerseVIEW",
+                      "Invalid Port Number. Valid range is 49152 to 65535."
+                  );
+                  document.getElementById("configRemotePort").value = portNumber;
+                  e();
               }
-            } else {
-              e();
-            }
           } else {
-            rvw.ui.Toast.show(
-              "Remote VerseVIEW",
-              "Port Number: Out of Range. Valid range is 49152 to 65535."
-            );
-            document.getElementById("configRemotePort").value = portNumber;
-            e();
+              $RvW.webServerObj.init(portNumber);
+              _setBtnLabel("ENABLE");
+              document.getElementById("configRemotePort").disabled = false;
+              document.getElementById("configIPaddr").disabled = false;
+              e();
           }
-        } else {
-          rvw.ui.Toast.show(
-            "Remote VerseVIEW",
-            "Invalid Port Number. Valid range is 49152 to 65535."
-          );
-          document.getElementById("configRemotePort").value = portNumber;
-          e();
-        }
-      } else {
-        $RvW.webServerObj.init(portNumber);
-        t("ENABLE");
-        document.getElementById("configRemotePort").disabled = false;
-        document.getElementById("configIPaddr").disabled = false;
-        e();
       }
-    }
     function e() {
       g = $RvW.vvConfigObj.get_myhostname();
       $("#configRemoteHostname").val(g);
@@ -264,7 +286,7 @@ class RvwRemote {
       $("#qrcode").html("");
       new QRCode(document.getElementById("qrcode"), B);
     }
-    function t(B) {
+    function _setBtnLabel(B) {
       $("#saveRemoteVVSettings").html(B);
     }
     function a(B) { }

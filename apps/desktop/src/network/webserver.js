@@ -1,116 +1,116 @@
 $RvW.songListRemote = null;
 
-class vvWebServer {
+// TODO: Implement an express fork using air apis
+class RvwWebServer {
   constructor() {
-    this.init = q;
-    this.remoteVVStatus = o;
-    var a = null;
-    var x = new Object();
-    var j = 50000;
-    var h = null;
-    var r = false;
-    var w;
-    var t;
-    var k;
-    var d;
-    var n;
-    var l;
-    var u = true;
-    var m = true;
-    function q(v, c) {
-      j = v;
-      h = c;
-      p();
-      i();
-      if (r == false) {
-        s();
-        var b = a.listening;
-        if (b) {
-          r = true;
+    this.init = init;
+    this.remoteVVStatus = remoteVVStatus;
+
+    let m_serverSocket = null;
+    let m_content_types = {};
+    let m_port = 50000;
+    let m_hostname = null;
+    let m_listening = false;
+    let d;
+    let n;
+    let l;
+    let __m_dbg = true;
+
+    function init(port, hostname) {
+      m_port = port;
+      m_hostname = hostname;
+
+      _load_content_types();
+      _ensure_serving_dir();
+
+      if (m_listening === false) {
+        _startListening();
+          const _isListening = m_serverSocket.listening;
+          if (_isListening) {
+          m_listening = true;
           return true;
         } else {
-          a.close();
+          m_serverSocket.close();
           alert("Remote VerseVIEW failed to initialize.");
           return false;
         }
       } else {
-        r = false;
-        a.close();
+        m_listening = false;
+        m_serverSocket.close();
         return true;
       }
     }
-    function o() {
-      return r;
+
+    function remoteVVStatus() {
+      return m_listening;
     }
-    function s() {
-      a = new air.ServerSocket();
-      a.addEventListener(air.Event.CONNECT, b);
-      a.bind(j, h);
-      a.listen();
-      function b(c) {
-        var E = c.socket;
-        E.addEventListener(air.ProgressEvent.SOCKET_DATA, A);
-        E.addEventListener(air.OutputProgressEvent.OUTPUT_PROGRESS, D);
-        E.addEventListener(air.Event.CLOSE, z);
-        function D(G) {
-          var F = E.bytesPending;
-          if (F == 0) {
-            E.close();
-          }
-        }
-        function z() {
-          E.close();
-        }
-        function A(J) {
-          var G = new air.ByteArray();
-          E.readBytes(G);
-          var I = "" + G;
-          var H = I.substring(4, I.indexOf("HTTP/") - 1);
-          var F = y(H);
-          if (!F) {
-            if (H == "/") {
-              H = "/index.html";
+
+    function _startListening() {
+      m_serverSocket = new air.ServerSocket();
+      m_serverSocket.addEventListener(air.Event.CONNECT, _socketOnConnect);
+      m_serverSocket.bind(m_port, m_hostname);
+      m_serverSocket.listen();
+
+      function _socketOnConnect(connection) {
+          const clientSocket = connection.socket;
+
+          clientSocket.addEventListener(air.ProgressEvent.SOCKET_DATA, _onIncoming);
+        clientSocket.addEventListener(air.OutputProgressEvent.OUTPUT_PROGRESS, _onOutGoing);
+        clientSocket.addEventListener(air.Event.CLOSE, _onClientSocketClose);
+
+        function _onOutGoing() {
+            if (clientSocket.bytesPending === 0) {
+                clientSocket.close();
             }
-            v(H);
+        }
+        function _onClientSocketClose() {
+          clientSocket.close();
+        }
+        function _onIncoming(J) {
+            const inBody = new air.ByteArray();
+            clientSocket.readBytes(inBody);
+
+            const bodyStr = String(inBody);
+
+            // parse http header
+            let path = bodyStr.substring(4, bodyStr.indexOf("HTTP/") - 1);
+            const hasUrlParams = _hasUrlParams(path);
+            if (!hasUrlParams) {
+            if (path === "/") {
+              path = "/index.html";
+            }
+            _sendFile(path);
           } else {
-            C(H);
+            C(path);
           }
         }
-        function y(H) {
-          var F = false;
-          var G = H.split("?");
-          if (G.length > 1) {
-            return true;
-          } else {
-            return false;
-          }
+        function _hasUrlParams(path) {
+            return path.split("?").length > 1;
         }
-        function v(F) {
-          var G = air.File.applicationStorageDirectory.resolvePath(
-            "webroot" + F
-          );
-          if (G.exists && !G.isDirectory) {
-            var I = new air.FileStream();
-            I.open(G, air.FileMode.READ);
-            var H = new air.ByteArray();
-            I.readBytes(H);
-            I.close();
-            E.writeUTFBytes("HTTP/1.1 200 OK\n");
-            E.writeUTFBytes("Content-Type: " + e(F) + "\n\n");
-            E.writeBytes(H);
-            E.flush();
+        function _sendFile(path) {
+            const path1 = air.File.applicationStorageDirectory.resolvePath("webroot" + path);
+            if (path1.exists && !path1.isDirectory) {
+                const fz = new air.FileStream();
+                fz.open(path1, air.FileMode.READ);
+                const fileDat = new air.ByteArray();
+                fz.readBytes(fileDat);
+            fz.close();
+            clientSocket.writeUTFBytes("HTTP/1.1 200 OK\n");
+            clientSocket.writeUTFBytes("Content-Type: " + e(path) + "\n\n");
+            clientSocket.writeBytes(fileDat);
+            clientSocket.flush();
           } else {
-            E.writeUTFBytes("HTTP/1.1 404 Not Found\n");
-            E.writeUTFBytes("Content-Type: text/html\n\n");
-            E.flush();
+            clientSocket.writeUTFBytes("HTTP/1.1 404 Not Found\n");
+            clientSocket.writeUTFBytes("Content-Type: text/html\n\n");
+            clientSocket.flush();
           }
         }
         function B(F) {
           if (F != null) {
-            E.writeUTFBytes("HTTP/1.1 200 OK\n");
-            E.writeUTFBytes("Content-Type: text/html\n\n");
-            E.writeUTFBytes(F);
-            E.flush();
+            clientSocket.writeUTFBytes("HTTP/1.1 200 OK\n");
+            clientSocket.writeUTFBytes("Content-Type: text/html\n\n");
+            clientSocket.writeUTFBytes(F);
+            clientSocket.flush();
           }
         }
         function C(N) {
@@ -218,11 +218,15 @@ class vvWebServer {
         }
       }
     }
-    function i() {
-      var b = air.File.applicationStorageDirectory.resolvePath("network");
-      if (!b.exists) {
-        air.File.applicationDirectory.resolvePath("webroot").copyTo(b);
-      }
+    function _ensure_serving_dir() {
+        const { File } = air;
+        const appDir = File.applicationDirectory;
+        const appStorageDir = File.applicationStorageDirectory;
+
+        const dest = appStorageDir.resolvePath("webroot");
+        if (!dest.exists) {
+            appDir.resolvePath("webroot").copyTo(dest);
+        }
     }
     function f(c) {
       var b = c.split("\n");
@@ -236,26 +240,26 @@ class vvWebServer {
         l = l.replace(/%20/g, " ");
       }
     }
-    function p() {
-      x[".css"] = "text/css";
-      x[".gif"] = "image/gif";
-      x[".htm"] = "text/html";
-      x[".html"] = "text/html";
-      x[".ico"] = "image/x-icon";
-      x[".jpg"] = "image/jpeg";
-      x[".js"] = "text/javascript";
-      x[".png"] = "image/png";
+    function _load_content_types() {
+      m_content_types[".css"] = "text/css";
+      m_content_types[".gif"] = "image/gif";
+      m_content_types[".htm"] = "text/html";
+      m_content_types[".html"] = "text/html";
+      m_content_types[".ico"] = "image/x-icon";
+      m_content_types[".jpg"] = "image/jpeg";
+      m_content_types[".js"] = "text/javascript";
+      m_content_types[".png"] = "image/png";
     }
     function e(c) {
       var v;
       var b = c.lastIndexOf(".");
       if (b > -1) {
-        v = x[c.substring(b)];
+        v = m_content_types[c.substring(b)];
       }
       return v == null ? "text/html" : v;
     }
     function g(b) {
-      if (m) {
+      if (__m_dbg) {
         air.trace("[WEB SERVER]: " + b);
       }
     }

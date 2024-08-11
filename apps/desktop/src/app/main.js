@@ -1,6 +1,6 @@
 // import SongEdit from '../song/edit.js';
 
-air.trace("main.js");
+console.log("main.js", $RvW);
 
 // TODO:
 // - Export global functions to be used in other files
@@ -692,7 +692,7 @@ $RvW.updateVerseContainer_continue = function() {
 
 function loadPreferences(callback) {
     const appStorageDir = air.File.applicationStorageDirectory;
-    const prefsFile = appStorageDir.resolvePath("preferences.json");
+    const prefsFile = appStorageDir.resolvePath("settings/prefs.json");
 
     const _cb = (e, store) => {
         if (e) {
@@ -904,8 +904,8 @@ function setupTabContent() {
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes($RvW.loadViewTemplate("notesui"), 'notesPanelID');
     $RvW.searchObj = new RvwSearch("./bible/" + getVersion1Filename());
-    $RvW.webServerObj = new vvWebServer();
-    $RvW.webEngineObj = new vvWebEngine();
+    $RvW.webServerObj = new RvwWebServer();
+    $RvW.webEngineObj = new RvwWebEngine();
     $RvW.vvchatQObj = new chatQ();
     $RvW.bibleRefObj = new BibleReference();
     $RvW.songNumberObj = new songNumber();
@@ -1389,7 +1389,7 @@ function setupVVersion() {
     createFolder("bible");
     createFolder("notes");
     createFolder("song");
-    createFolder("network");
+    createFolder("webroot");
     var a = copyFile("xml/version.xml", "xml/version.xml");
     if (!a) {
         return a;
@@ -1541,19 +1541,4 @@ export function start(Y) {
         $RvW.wordbrain = new vvbrain();
         $RvW.wordbrain.init();
     });
-}
-
-function sandboxLoaded() {
-    alert("sandboxLoaded");
-
-    document.getElementById("child").parentSandboxBridge = {
-        sayHello: function(message) {
-            alert("Hello through child: " + message);
-        }
-    };
-
-    // const { childSandboxBridge } = document.getElementById("ui-sandbox").contentWindow;
-    const { childSandboxBridge } = document.getElementById("ui-sandbox");
-
-    childSandboxBridge.sayHello("Hello from parent");
 }

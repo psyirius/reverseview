@@ -1,49 +1,52 @@
-class vvWebEngine {
+// remote actions
+class RvwWebEngine {
     constructor() {
-        this.nextSlide = c;
-        this.prevSlide = b;
-        this.closePresentation = j;
-        this.themePresentation = g;
-        this.logoPresentation = f;
-        this.blankPresentation = i;
-        this.processVerses = a;
-        this.processSong = h;
-        this.stageViewContent = e;
-        this.listOfSongs = k;
-        function c() {
+        this.nextSlide = nextSlide;
+        this.prevSlide = prevSlide;
+        this.closePresentation = closePresentation;
+        this.themePresentation = themePresentation;
+        this.logoPresentation = logoPresentation;
+        this.blankPresentation = blankPresentation;
+        this.processVerses = processVerses;
+        this.processSong = processSong;
+        this.stageViewContent = stageViewContent;
+        this.listOfSongs = listOfSongs;
+
+        function nextSlide() {
             call_nextSlide();
         }
-        function b() {
+        function prevSlide() {
             call_prevSlide();
         }
-        function j() {
+        function closePresentation() {
             call_closePresentation();
         }
-        function g() {
+        function themePresentation() {
             if ($RvW.newWindow != null) {
                 $RvW.newWindow.window.showThemeProcess();
             }
         }
-        function f() {
+        function logoPresentation() {
             showLogoSlide();
         }
-        function i() {
+        function blankPresentation() {
             blankSlide();
         }
-        function h(o) {
-            var s = "";
-            var l = o.name;
-            var m = o.font;
-            var q = o.font2;
-            var n = o.slides;
-            var t = o.slides2;
-            var r = n.length;
+        function processSong(song) {
+            let p;
+            let s = "";
+            const l = song.name;
+            const m = song.font;
+            const q = song.font2;
+            const n = song.slides;
+            const t = song.slides2;
+            const r = n.length;
             s = s + l + "<|>" + m + "<|>" + q + "<|>";
-            for (var p = 0; p < r; p++) {
+            for (p = 0; p < r; p++) {
                 s = s + n[p] + "<slide1>";
             }
             s = s + "<|>";
-            for (var p = 0; p < r; p++) {
+            for (p = 0; p < r; p++) {
                 if (t[p] != null) {
                     s = s + t[p] + "<slide2>";
                 } else {
@@ -52,25 +55,22 @@ class vvWebEngine {
             }
             return s;
         }
-        function a(q, n, m, s) {
-            var l = q.length;
-            var r = n + "<break>";
+        function processVerses(q, n, m, s) {
+            const l = q.length;
+            let r = n + "<break>";
             r = r + m + "<break>";
             r = r + s + "<break>";
-            for (var p = 0; p < l; p++) {
-                var o = q[p] + "<break>";
+            for (let p = 0; p < l; p++) {
+                const o = q[p] + "<break>";
                 r = r + o;
             }
             return r;
         }
-        function k(l) {
-            var m = "";
-            m = "Song 1 | Song 2 | Song 3";
-            return m;
+        function listOfSongs() {
+            return "Song 1 | Song 2 | Song 3";
         }
-        function e() {
+        function stageViewContent() {
             return $RvW.presentationContent;
         }
-        function d(l) { }
     }
 }
