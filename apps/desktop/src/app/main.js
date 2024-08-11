@@ -1542,3 +1542,18 @@ export function start(Y) {
         $RvW.wordbrain.init();
     });
 }
+
+function sandboxLoaded() {
+    alert("sandboxLoaded");
+
+    document.getElementById("child").parentSandboxBridge = {
+        sayHello: function(message) {
+            alert("Hello through child: " + message);
+        }
+    };
+
+    // const { childSandboxBridge } = document.getElementById("ui-sandbox").contentWindow;
+    const { childSandboxBridge } = document.getElementById("ui-sandbox");
+
+    childSandboxBridge.sayHello("Hello from parent");
+}

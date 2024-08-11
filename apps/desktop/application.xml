@@ -6,8 +6,7 @@
 	<description>Bible and Song Presentation Software</description>
 	<copyright>Copyright (c) 2024 ReVerseVIEW</copyright>
 	<programMenuFolder>ReVerseVIEW</programMenuFolder>
-    <extensions>
-    </extensions>
+    <supportedProfiles>extendedDesktop desktop</supportedProfiles>
 	<initialWindow>
 	    <content>app.html</content>
 	    <systemChrome>standard</systemChrome>
@@ -24,4 +23,6 @@
 		<image512x512>icons/icon512.png</image512x512>
 		<image1024x1024>icons/icon1024.png</image1024x1024>
 	</icon>
+    <customUpdateUI>false</customUpdateUI>
+    <allowBrowserInvocation>false</allowBrowserInvocation>
 </application>

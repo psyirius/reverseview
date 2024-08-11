@@ -6,7 +6,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "format": "biome format --write \"**/*.{js,jsx,ts,tsx}\""
+    "format": "biome format --write \"**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "turbo telemetry disable"
   },
   "devDependencies": {
     "turbo": "^2.0.12",

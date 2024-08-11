@@ -1,0 +1,1 @@
+adt -package -tsa none -storetype pkcs12 -keystore cert.pfx -storepass rvw -target native rvw.dmg app.xml index.html js css icons ext

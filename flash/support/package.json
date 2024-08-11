@@ -1,0 +1,10 @@
+{
+  "name": "@rvw/flash-support",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build:x": "ant",
+    "clean": "rimraf -g \"lib/*\""
+  }
+}

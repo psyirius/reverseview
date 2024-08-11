@@ -338,5 +338,15 @@
     <!-- Modal::Toast::Begin -->
     <div id="toast-container"></div>
     <!-- Modal::Toast::End -->
+
+    <!-- hidden iframe for classic sandbox bridging -->
+    <iframe
+      style="display:none"
+      src="uix.html"
+      sandboxRoot="https://rvw.app/local/ui"
+      documentRoot="app:/sandbox/"
+      id="ui-sandbox"
+      onload="sandboxLoaded()"
+    ></iframe>
   </body>
 </html>
