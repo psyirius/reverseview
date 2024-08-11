@@ -41,6 +41,18 @@ rvw.provide("rvw.window").Splash = {
                 /* bounds: */ centeredWindowRect,
             );
             htmlWindow.window.nativeWindow.alwaysInFront = true;
+            // this runs in non-application sandbox
+            // to run in application sandbox, use `htmlLoader.placeLoadStringContentInApplicationSandbox = true;`
+            // htmlWindow.loadString(`
+            //     <html lang="en">
+            //         <head>
+            //             <script type="text/javascript" charset="utf-8">
+            //                 alert(typeof window.runtime);
+            //             </script>
+            //         </head>
+            //         <body></body>
+            //     </html>
+            // `);
             htmlWindow.load(
                 new URLRequest("splash.htm")
             );

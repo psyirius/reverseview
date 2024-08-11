@@ -22,7 +22,7 @@
     "build:styles": "node build.styles.js",
     "build:remote": "node build.remote.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
-    "clean": "rimraf -g \"app/{js,css,network,bible,song,xml,views,bin,background,font,icons,lib,graphics,chords}\" \"app/*.{css,xml}\" \"dist/*\"",
+    "clean": "rimraf -g \"app/{js,css,network,bible,song,xml,views,bin,background,font,icons,lib,graphics,chords,sandbox}\" \"app/*.{css,xml,htm,html}\" \"dist/*\"",
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {

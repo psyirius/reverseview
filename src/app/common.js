@@ -524,13 +524,13 @@ function showLogoSlide() {
   presentation();
 }
 function blankSlide() {
-  if (presentWindowOpen) {
-    newWindow.window.showBlankProcess();
-    if (stageView && newStageWindow != null) {
-      newStageWindow.window.showBlankProcess();
+  if ($RvW.presentWindowOpen) {
+    $RvW.newWindow.window.showBlankProcess();
+    if ($RvW.stageView && $RvW.newStageWindow != null) {
+      $RvW.newStageWindow.window.showBlankProcess();
     }
   }
-  presentationContent = "";
+  $RvW.presentationContent = "";
 }
 function roundSearchBox(a) {
   a.style.borderRadius = "4px";

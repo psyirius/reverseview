@@ -20,8 +20,8 @@ class vvWebEngine {
             call_closePresentation();
         }
         function g() {
-            if (newWindow != null) {
-                newWindow.window.showThemeProcess();
+            if ($RvW.newWindow != null) {
+                $RvW.newWindow.window.showThemeProcess();
             }
         }
         function f() {
@@ -69,7 +69,7 @@ class vvWebEngine {
             return m;
         }
         function e() {
-            return presentationContent;
+            return $RvW.presentationContent;
         }
         function d(l) { }
     }

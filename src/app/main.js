@@ -1153,8 +1153,8 @@ function fillNav() {
         blankSlide();
     });
     $("#icon_theme").click(function () {
-        if (newWindow != null) {
-            newWindow.window.showThemeProcess();
+        if ($RvW.newWindow != null) {
+            $RvW.newWindow.window.showThemeProcess();
         }
     });
     $("#icon_logo").click(function () {
@@ -1349,18 +1349,18 @@ function beforeExit() {
 function processExit() {
     air.trace('Exit process');
 
-    if (presentWindowOpen) {
-        newWindow.window.nativeWindow.removeEventListener(
+    if ($RvW.presentWindowOpen) {
+        $RvW.newWindow.window.nativeWindow.removeEventListener(
             air.Event.CLOSE,
             presentWindowClosed
         );
-        newWindow.window.nativeWindow.close();
-        if (stageView && newStageWindow != null) {
-            newStageWindow.window.nativeWindow.removeEventListener(
+        $RvW.newWindow.window.nativeWindow.close();
+        if ($RvW.stageView && $RvW.newStageWindow != null) {
+            $RvW.newStageWindow.window.nativeWindow.removeEventListener(
                 air.Event.CLOSE,
                 presentWindowClosed
             );
-            newStageWindow.window.nativeWindow.close();
+            $RvW.newStageWindow.window.nativeWindow.close();
         }
     }
 }
