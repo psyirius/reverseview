@@ -3,8 +3,7 @@
 - [ ] Setup dojo build system to build dojo
 - [ ] remote using https with traefik.me
 - [ ] search song and bible in remote
-- [ ] remote project rebuild with modern web technologies
-- [ ] make it a yarn/turbo workspace
+- [ ] migrate webroot to remote project
 - [ ] use parcel with custom plugins to build the project in our own way
 - [ ] move all global variables to $RvW object
 - [ ] use non-application sandbox to render ui or eval restricted code
