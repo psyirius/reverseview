@@ -30,30 +30,12 @@ keystores/
 !keystores/.gitkeep
 !keystores/README.md
 
-# compiled js files (wip)
-/app/app.test.html
-/app/js/
-/app/css/
-/app/bin/
-/app/network/
-/app/views/
-/app/song/
-/app/xml/
-/app/font/
-/app/graphics/
-/app/icons/
-/app/lib/
-/app/background/
-/app/bible/
-/app/chords/
-/as3/bin/
-/app/*.js
-/app/*.css
-/app/*.xml
+# compiled files
+/app
 
 # downloadable libs
-/app/lib/yui3/*
-/app/lib/dojo/*
-/app/lib/dojox/*
-/app/lib/dijit/*
-/app/lib/alloyui/*
+/static/lib/yui3/*
+/static/lib/dojo/*
+/static/lib/dojox/*
+/static/lib/dijit/*
+/static/lib/alloyui/*
