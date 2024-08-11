@@ -1,16 +1,17 @@
 class schedule {
   constructor() {
-    this.init = T;
-    this.changeFontsizeScheduleTab = I;
-    this.processAddSong = o;
-    this.processAddVerse = S;
-    this.getScheduleText = m;
-    this.processRemotePresent = U;
-    this.getSongIndexFromSch = g;
-    this.processUp = s;
-    this.processDown = P;
-    this.processDelete = B;
-    this.processDeleteAll = q;
+    this.init = init;
+    this.changeFontsizeScheduleTab = changeFontsizeScheduleTab;
+    this.processAddSong = processAddSong;
+    this.processAddVerse = processAddVerse;
+    this.getScheduleText = getScheduleText;
+    this.processRemotePresent = processRemotePresent;
+    this.getSongIndexFromSch = getSongIndexFromSch;
+    this.processUp = processUp;
+    this.processDown = processDown;
+    this.processDelete = processDelete;
+    this.processDeleteAll = processDeleteAll;
+
     var M;
     var N = 0;
     var C = true;
@@ -22,13 +23,14 @@ class schedule {
     var c;
     var y = null;
     var t = null;
-    function T() {
+
+    function init() {
       A("Initializing Schedule");
       M = 0;
       v();
       w();
     }
-    function I() {
+    function changeFontsizeScheduleTab() {
       var X = $RvW.vvConfigObj.get_navFontSize();
       document.getElementById("sch_verseTextID").style.fontSize = X + "px";
     }
@@ -36,12 +38,12 @@ class schedule {
       document
         .getElementById("sch_selectID")
         .addEventListener("change", p, false);
-      document.getElementById("sch_upID").addEventListener("click", s, false);
-      document.getElementById("sch_downID").addEventListener("click", P, false);
-      document.getElementById("sch_deleteID").addEventListener("click", B, false);
+      document.getElementById("sch_upID").addEventListener("click", processUp, false);
+      document.getElementById("sch_downID").addEventListener("click", processDown, false);
+      document.getElementById("sch_deleteID").addEventListener("click", processDelete, false);
       document
         .getElementById("sch_deleteAllID")
-        .addEventListener("click", q, false);
+        .addEventListener("click", processDeleteAll, false);
       document
         .getElementById("sch_show_in_lyrics")
         .addEventListener("click", r, false);
@@ -83,11 +85,11 @@ class schedule {
         ""
       );
     }
-    function S(Z, Y, aa) {
+    function processAddVerse(Z, Y, aa) {
       var X = f();
       H(false, Z, Y, aa, 0, X);
     }
-    function o(Y) {
+    function processAddSong(Y) {
       var X = f();
       if (d(Y)) {
         H(true, 0, 0, 0, Y, X);
@@ -109,7 +111,7 @@ class schedule {
       }
       return ab;
     }
-    function s() {
+    function processUp() {
       var aa = document.getElementById("sch_selectID");
       var Z = aa.selectedIndex;
       A("Selected Index: " + Z);
@@ -125,7 +127,7 @@ class schedule {
         A("First record...Can not move up.");
       }
     }
-    function P() {
+    function processDown() {
       var ab = document.getElementById("sch_selectID");
       var Z = ab.selectedIndex;
       var aa = 0;
@@ -145,11 +147,11 @@ class schedule {
         A("Last record...Can not move down.");
       }
     }
-    function B() {
+    function processDelete() {
       A("About to delete Selected");
-      W(l());
+      W(getSelectedSchedule());
     }
-    function q() {
+    function processDeleteAll() {
       A("About to delete ALL Records from Selected DB. New confirm");
       var X = "SCHEDULE";
       var Y = "Are you sure you want to delete ALL schedule entries?";
@@ -175,7 +177,7 @@ class schedule {
         }
       }
     }
-    function U(Z, Y) {
+    function processRemotePresent(Z, Y) {
       if (t.data != null) {
         var X = t.data[Z];
         if (X.isSong) {
@@ -355,7 +357,7 @@ class schedule {
             }
             $("#sch_show_in_lyrics").text("Show in Lyrics Tab");
           } else {
-            B();
+            processDelete();
             $("#sch_show_in_lyrics").hide();
           }
         }
@@ -402,12 +404,15 @@ class schedule {
       }
       return Y;
     }
-    function l() {
-      var Y = document.getElementById("sch_selectID");
-      var X = Y.options[Y.selectedIndex].value;
-      return X;
+    function getSelectedSchedule() {
+        const Y = document.getElementById("sch_selectID");
+        if (Y.selectedIndex === -1) {
+            rvw.ui.Toast.show("Schedule", "Please select a Schedule");
+            return
+        }
+        return Y.options[Y.selectedIndex].value;
     }
-    function m(ab) {
+    function getScheduleText(ab) {
       var Y = "";
       if (t.data != null) {
         var Z = t.data.length;
@@ -429,7 +434,7 @@ class schedule {
       }
       return Y;
     }
-    function g(Y) {
+    function getSongIndexFromSch(Y) {
       if (t.data != null) {
         var X = t.data[Y];
         return X.songID;

@@ -17,6 +17,8 @@ var p_ver2ScaleFactor = 1;
 var p_bkgnd_color = "000000";
 var p_text_orientation = "0";
 var p_showDate = true;
+var p_window_Y_org = 0;
+
 var header_top = 0;
 var header_left = 0;
 var header_width = 0;
@@ -45,13 +47,15 @@ var footer_message = "";
 var messageFromMain = "";
 var calculateFontSize = false;
 var MIN_FONT_FOR_OUTLINE = 22;
-var p_window_Y_org = 0;
+
+var __debug = false;
 
 function initStageView() {
+    _debug_log('initStageView');
     passVariable(1);
     getDate();
     p_window_Y_org = p_window_Y;
-    setTimeout(updatePresentation, 20);
+    updatePresentation();
 }
 function updatePresentation() {
     var C = p_window_X / p_window_Y;
@@ -716,6 +720,11 @@ function formatReferenceWithFonts(i, c, b) {
         h += '<span style="font-family:' + c + ';">' + i + "</span>";
     }
     return h;
+}
+function _debug_log(msg) {
+    if (__debug) {
+        air.trace('StageView:....' + msg);
+    }
 }
 
 // user from parent

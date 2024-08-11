@@ -18,7 +18,8 @@
 
     <script>
       function init() {
-        // June 28, 2020 - Show black screen for 250ms before switching to green to avoid green sceen flash
+        document.body.addEventListener("keyup", onBodyKeyUp);
+        // June 28, 2020 - Show black screen for 250ms before switching to green to avoid green screen flash
         $("#backgroundLayer").css("background-color", "#01541f");
         setTimeout(initStageView, 250);
       }
@@ -29,7 +30,6 @@
     id="p_body"
     bgcolor="#00b140"
     text="#FFFFFF"
-    onkeyup="onBodyKeyUp(event)"
     style="overflow: hidden"
     onload="init()"
   >
