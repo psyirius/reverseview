@@ -293,7 +293,7 @@ function presentation() {
       $RvW.newStageWindow.window.nativeWindow.alwaysInFront = false;
       $RvW.newStageWindow.window.nativeWindow.stage.frameRate = 30;
       $RvW.newStageWindow.load(new air.URLRequest("app:/stageview.htm"));
-      // $RvW.newStageWindow.load(new air.URLRequest("http://localhost:80/index.html"));
+      // $RvW.newStageWindow.load(new air.URLRequest("http://localhost:80/uix.html"));
       $RvW.newStageWindow.window.iamclosingPresentation = function () {
         if ($RvW.newWindow != null) {
           $RvW.newWindow.window.nativeWindow.close();

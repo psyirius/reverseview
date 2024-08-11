@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <title>Tpl</title>
+
+  <script type="application/javascript" src="js/app/uix.js"></script>
+
+  <!-- Air libraries (JS) -->
+  <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
+
+  <!-- dojo toolkit v1.17.3 -->
+  <script type="text/javascript" data-dojo-config="async: true" src="lib/dojo/dojo.js"></script>
+  <!--    <script type="text/javascript" src="lib/dijit/dijit.js"></script>-->
+  <link rel="stylesheet" type="text/css" href="lib/dijit/themes/claro/claro.css"/>
+
+  <!-- app entrypoint (loaded with dojo) -->
+  <script type="text/javascript" src="js/app/boot.sb.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    // This is the function that the parent will call to send messages to the child
+    window.childSandboxBridge.sayHello = function (message) {
+      // This is the function that the child will call to send messages to the parent
+      window.parentSandboxBridge.sayHello("through the looking glass: " + message);
+    }
+  </script>
+</head>
+
+<body class="claro">
+
+</body>
+
+</html>

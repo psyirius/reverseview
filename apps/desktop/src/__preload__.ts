@@ -1,17 +1,18 @@
 "use strict";
 
-window.global ??= new Function("return this;").apply(null);
-window.globalThis ??= window.global;
+(window as any).global ??= new Function("return this;").apply(null);
+(window as any).self ??= window.global;
+(window as any).globalThis ??= window.global;
 
 (() => {
     "use strict";
 
-    const provide = (namespace) => {
+    const provide = (namespace: string): any => {
         // docs: create a namespace
         const nsl = namespace.split(".");
 
-        if (nsl.length > 1 && nsl[0] === "rvw" && nsl[1] === "provide") {
-            throw new Error("Namespace cannot be 'rvw.provide' which is reserved for the namespace provider.");
+        if ((nsl.length > 1) && nsl[0] === "rvw" && nsl[1] === "provide") {
+            throw new Error("Namespace 'rvw.provide' cannot be used which is only reserved for the namespace provider.");
         }
 
         let parent = global;
@@ -41,6 +42,7 @@ window.globalThis ??= window.global;
 (() => {
     "use strict";
 
+    const air = (global as any).air ??= {};
     const criticalTypes = ["error", "warn"];
 
     const print = (type) => function () {
@@ -51,7 +53,7 @@ window.globalThis ??= window.global;
             }
         }
 
-        const args = [...arguments];
+        const args = Array.prototype.slice.call(arguments);
         air.trace(`[${type}]: ${args.join(" ")}`);
     };
 
@@ -63,14 +65,15 @@ window.globalThis ??= window.global;
         error: print("error"),
     };
 
-    global['console'] ??= console;
+    (global as any).console ??= console;
 })();
 
 // init YUI 3
 if (typeof YUI !== "undefined") {
-    ((YUI, config, modules) => {
+    ((YUI, config: object, modules: string[]) => {
         "use strict";
-        function checkModules(Y, modules) {
+
+        function checkModules(Y, modules: string[]) {
             const loader = new Y.Loader({
                 base: Y.config.base,
                 require: [...modules],
@@ -97,19 +100,23 @@ if (typeof YUI !== "undefined") {
         checkModules(Y, modules);
 
         Y.use(...modules, function(Y) {
-            global.$Y = Y;
+            (global as any).$Y = Y;
 
             air.trace("YUI3 loaded");
 
             if (typeof global.__yui3_loaded !== "undefined") {
-                global.__yui3_loaded.resolve(Y);
+                (global as any).__yui3_loaded.resolve(Y);
             } else {
-                global.__yui3_loaded = Y;
+                (global as any).__yui3_loaded = Y;
             }
         });
-    })(YUI, global['$YUI3_CONFIG'] || {}, global['$YUI3_MODULES'] || []);
+    })(
+        (global as any).YUI,
+        (global as any)['$YUI3_CONFIG'] || {},
+        (global as any)['$YUI3_MODULES'] || [],
+    );
 }
 
 // TODO: remove it when the global denoising is over
 // the global object to host the global variables
-rvw.provide("$RvW").global = {};
+(global as any).rvw.provide("$RvW").global = global;

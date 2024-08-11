@@ -1,6 +1,7 @@
 // import SongEdit from '../song/edit.js';
 
-console.log("main.js", $RvW);
+console.log("Main.js", $RvW);
+console.log("NativeProcess support:", air.NativeProcess.isSupported);
 
 // TODO:
 // - Export global functions to be used in other files
@@ -904,7 +905,7 @@ function setupTabContent() {
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes($RvW.loadViewTemplate("notesui"), 'notesPanelID');
     $RvW.searchObj = new RvwSearch("./bible/" + getVersion1Filename());
-    $RvW.webServerObj = new RvwWebServer();
+    $RvW.webServerObj = new RvwWebServer('webroot');
     $RvW.webEngineObj = new RvwWebEngine();
     $RvW.vvchatQObj = new chatQ();
     $RvW.bibleRefObj = new BibleReference();

@@ -1,12 +1,15 @@
-class chordsWebInterfaceClass {
-  constructor() {
-    this.init = g;
-    this.getsong = e;
+class ChordsWebInterface {
+  constructor(xyz) {
+    this.getsong = getsong;
+
     var h = "";
     var b = 0;
     var d = null;
     var a = true;
-    function g(j) {
+
+    init(xyz);
+
+    function init(j) {
       h = "";
       b = 0;
       var i = j.split("|");
@@ -17,7 +20,7 @@ class chordsWebInterfaceClass {
         b = i[1] * 1;
       }
     }
-    function e() {
+    function getsong() {
       d = $RvW.chordsManagerObj.getChordsByTitle(h);
       c("Number of versions : " + d.length);
       if (d[b] == null) {

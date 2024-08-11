@@ -185,7 +185,8 @@
     <script type="text/javascript" src="js/app/help.js"></script>
     <script type="text/javascript" src="js/app/checkupdate.js"></script>
 
-    <script type="text/javascript" src="js/app/main.js"></script>
+    <!-- loaded by bootloader -->
+<!--    <script type="text/javascript" src="js/app/main.js"></script>-->
     <script type="text/javascript" src="js/app/sandbox.js"></script>
 
     <script type="text/javascript" src="js/const.js"></script>
@@ -224,11 +225,10 @@
     <script type="text/javascript" src="js/words/wordlearner.js"></script>
     <script type="text/javascript" src="js/words/vvbrain.js"></script>
 
-    <script type="text/javascript" src="js/network/setup.js"></script>
-    <script type="text/javascript" src="js/network/vvchatq.js"></script>
-    <script type="text/javascript" src="js/network/webserver.js"></script>
-    <script type="text/javascript" src="js/network/vvwebengine.js"></script>
-    <script type="text/javascript" src="js/network/support.js"></script>
+    <script type="text/javascript" src="js/remote/setup.js"></script>
+    <script type="text/javascript" src="js/remote/chatq.js"></script>
+    <script type="text/javascript" src="js/remote/webserver.js"></script>
+    <script type="text/javascript" src="js/remote/webengine.js"></script>
 
     <script type="text/javascript" src="js/song/obj.js"></script>
     <script type="text/javascript" src="js/song/edit.js"></script>
@@ -342,13 +342,13 @@
 
     <!-- hidden iframe for classic sandbox bridging -->
     <!-- TODO: inject it dynamically -->
-    <iframe
-      style="display:none"
-      src="uix.html"
-      sandboxRoot="http://rvw.app/local/"
-      documentRoot="app:/sandbox/"
-      id="ui-sandbox"
-      onload="sandboxLoaded()"
-    ></iframe>
+<!--    <iframe-->
+<!--      style="display: none"-->
+<!--      src="uix.html"-->
+<!--      sandboxRoot="http://rvw.app/"-->
+<!--      documentRoot="app:/"-->
+<!--      id="ui-sandbox"-->
+<!--      onload="sandboxLoaded()"-->
+<!--    ></iframe>-->
   </body>
 </html>

@@ -10,8 +10,8 @@
   },
   "scripts": {
     "dev": "pnpm run build && pnpm run debug",
-    "debug": "adl -profile extendedDesktop ./application.xml ./.air",
-    "start": "adl -profile extendedDesktop -nodebug ./application.xml ./.air",
+    "debug": "adl ./application.xml ./.air",
+    "start": "adl -nodebug ./application.xml ./.air",
     "build": "concurrently \"pnpm run build:src\" \"pnpm run build:styles\" \"pnpm run build:views\" \"pnpm run build:remote\" \"pnpm run build:static\"",
     "build:src": "tsc -p tsconfig.app.json",
     "build:views": "node build.views.js",
