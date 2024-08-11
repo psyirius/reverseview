@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import ignore from "ignore";
-import recache from 'recache';
 import { globSync } from "glob";
 import MapGroupBy from 'map.groupby';
 import { spawn } from "node:child_process";
@@ -14,13 +13,13 @@ MapGroupBy.shim();
 const PROJECT_ROOT = path.resolve(import.meta.dirname, "..", '..');
 
 const DIST_ROOT = path.resolve(PROJECT_ROOT, "dist");
-const SOURCE_ROOT = path.resolve(PROJECT_ROOT, "app");
-// const RUNTIMES_ROOT = path.resolve(PROJECT_ROOT, "runtimes");
+const SOURCE_ROOT = path.resolve(PROJECT_ROOT, ".air");
+const RUNTIMES_ROOT = path.resolve(PROJECT_ROOT, "runtimes");
 const KEYSTORES_ROOT = path.resolve(PROJECT_ROOT, "keystores");
 
-const APP_DESC_PATH = path.resolve(PROJECT_ROOT, "application.xml");
 const BUILD_DIR = path.resolve(PROJECT_ROOT, ".build");
 const IGNORE_FILEPATH = path.resolve(SOURCE_ROOT, ".airignore");
+const APP_DESC_PATH = path.resolve(PROJECT_ROOT, "application.xml");
 const KEYSTORE_FILEPATH = path.resolve(KEYSTORES_ROOT, "signing-release.p12");
 const OUTPUT_FILEPATH = 'ReVerseVIEW.air';
 

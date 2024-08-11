@@ -15,7 +15,7 @@ const alloyUIBaseURL = `https://cdn.jsdelivr.net/npm/alloy-ui@${alloyUIVersion}/
 async function downloadModule(moduleName, extension = 'js', minified = true, filename = null) {
     try {
         filename ??= `${moduleName}${minified ? '-min' : ''}.${extension}`
-        const outputPath = path.join(path.dirname(import.meta.dirname), `app/lib/yui3`, moduleName, filename);
+        const outputPath = path.join(path.dirname(import.meta.dirname), `static/lib/yui3`, moduleName, filename);
         if (fs.existsSync(outputPath)) {
             // console.warn("Skipping module '" + moduleName + "'");
             return;

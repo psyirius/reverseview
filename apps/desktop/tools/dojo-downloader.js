@@ -16,7 +16,7 @@ const baseURL = `https://downloads.dojotoolkit.org/release-${dojoVersion}/dojo-r
 async function downloadModule(packageName = 'dojo', moduleName, extension = 'js', minified = true, filename = null) {
     try {
         filename ??= `${moduleName}${minified ? '' : '.uncompressed.js'}.${extension}`
-        const outputPath = path.join(path.dirname(import.meta.dirname), `app/lib/${packageName}`, moduleName, filename);
+        const outputPath = path.join(path.dirname(import.meta.dirname), `static/lib/${packageName}`, moduleName, filename);
         if (fs.existsSync(outputPath)) {
             // console.warn("Skipping module '" + moduleName + "'");
             return;

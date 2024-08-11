@@ -5,13 +5,13 @@ import * as process from "node:process";
 import postcssrc from "postcss-load-config";
 
 const toBuild = {
-    'styles/app.pcss'               : 'app/css/app.css',
-    'styles/main.pcss'              : 'app/css/main.css',
-    'styles/fonts.pcss'             : 'app/css/fonts.css',
-    'styles/graphics.pcss'          : 'app/css/graphics.css',
+    'styles/app.pcss'               : '.air/css/app.css',
+    'styles/main.pcss'              : '.air/css/main.css',
+    'styles/fonts.pcss'             : '.air/css/fonts.css',
+    'styles/graphics.pcss'          : '.air/css/graphics.css',
 
-    'styles/stageview.pcss'         : 'app/css/stageview.css',
-    'styles/presentation.pcss'      : 'app/css/presentation.css',
+    'styles/stageview.pcss'         : '.air/css/stageview.css',
+    'styles/presentation.pcss'      : '.air/css/presentation.css',
 }
 
 /** @type {import('postcss-load-config').ConfigContext} */

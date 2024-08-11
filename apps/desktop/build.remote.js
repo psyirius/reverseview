@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 const pathMap = {
-    'webroot'          : 'app/network/webroot',
+    'webroot'          : '.air/webroot',
 }
 
 for (const [from, to] of Object.entries(pathMap)) {

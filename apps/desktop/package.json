@@ -1,5 +1,5 @@
 {
-  "name": "reverseview",
+  "name": "@rvw/desktop",
   "version": "8.5.0",
   "description": "Rebirth of the old-school VerseVIEW 8",
   "private": true,
@@ -10,19 +10,17 @@
   },
   "scripts": {
     "dev": "pnpm run build && pnpm run debug",
-    "debug": "adl -profile extendedDesktop ./application.xml ./app",
-    "start": "adl -profile extendedDesktop -nodebug ./application.xml ./app",
+    "debug": "adl -profile extendedDesktop ./application.xml ./.air",
+    "start": "adl -profile extendedDesktop -nodebug ./application.xml ./.air",
     "build": "concurrently \"pnpm run build:src\" \"pnpm run build:styles\" \"pnpm run build:views\" \"pnpm run build:remote\" \"pnpm run build:static\"",
     "build:src": "tsc -p tsconfig.app.json",
-    "build:as3": "asconfigc -p as3 --sdk \"D:/AirSDK/32.0.0.116\"",
-    "build:swf": "amxmlc -o \"app/bin/AppEntry.swf\" \"as3/src/AppEntry.as\"",
     "build:views": "node build.views.js",
     "build:static": "node build.static.js",
     "build:parcel": "node build.parcel.js",
     "build:styles": "node build.styles.js",
     "build:remote": "node build.remote.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
-    "clean": "rimraf -g \"app/{js,css,network,bible,song,xml,views,bin,background,font,icons,lib,graphics,chords,sandbox}\" \"app/*.{css,xml,htm,html}\" \"dist/*\"",
+    "clean": "rimraf -g \"./.air\" \"./dist\"",
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
@@ -71,7 +69,6 @@
     "preact": "^10.23.1",
     "prim": "^1.0.0",
     "recache": "^0.6.0",
-    "rimraf": "^6.0.1",
     "sass": "^1.77.8",
     "stylelint": "^16.8.1",
     "tailwindcss": "^3.4.9",

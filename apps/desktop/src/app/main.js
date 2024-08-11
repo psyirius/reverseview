@@ -922,7 +922,7 @@ function setupTabContent() {
         air.trace("About to copy webroot files...");
         const b = backupWebroot();
         if (b) {
-            copyFile("network/webroot", "network/webroot");
+            copyFile("webroot", "webroot");
             task2Complete();
         }
         checkVerUpdateFlags();
@@ -1398,7 +1398,7 @@ function setupVVersion() {
     if (!a) {
         return a;
     }
-    var a = copyFile("network/webroot", "network/webroot");
+    var a = copyFile("webroot", "webroot");
     if (!a) {
         return a;
     }

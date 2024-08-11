@@ -5,10 +5,13 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "clean": "turbo clean",
+    "format": "biome format --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
-    "turbo": "^2.0.12"
+    "turbo": "^2.0.12",
+    "@biomejs/biome": "^1.8.3",
+    "rimraf": "^6.0.1"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

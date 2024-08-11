@@ -87,7 +87,7 @@ class vvWebServer {
         }
         function v(F) {
           var G = air.File.applicationStorageDirectory.resolvePath(
-            "network/webroot" + F
+            "webroot" + F
           );
           if (G.exists && !G.isDirectory) {
             var I = new air.FileStream();
@@ -221,7 +221,7 @@ class vvWebServer {
     function i() {
       var b = air.File.applicationStorageDirectory.resolvePath("network");
       if (!b.exists) {
-        air.File.applicationDirectory.resolvePath("network/webroot").copyTo(b);
+        air.File.applicationDirectory.resolvePath("webroot").copyTo(b);
       }
     }
     function f(c) {

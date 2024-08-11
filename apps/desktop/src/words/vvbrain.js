@@ -11,13 +11,14 @@ class vvbrain {
     var k = null;
     var m_sqlQuery = null;
     var q = "./song/words.db";
-    var z = new Array();
+    var z = [];
     var c = "";
     var e;
     var C;
     var s;
     var m = null;
     var v = true;
+
     function init() {
       a = false;
       d();

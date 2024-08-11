@@ -1,6 +1,0 @@
-{
-    "$schema": "https://raw.githubusercontent.com/lukaw3d/parcel-bundler-json-schemas/main/config_schema.json",
-    "extends": "@parcel/config-default",
-    "transformers": {
-    }
-}

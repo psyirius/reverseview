@@ -51,10 +51,10 @@ function copyFile(d, c) {
 function backupWebroot() {
   air.trace("Came to backup Webroot...");
   var c = air.File.applicationStorageDirectory;
-  c = c.resolvePath("network/webroot");
+  c = c.resolvePath("webroot");
   if (c.exists) {
     var a = air.File.applicationStorageDirectory;
-    a = a.resolvePath("network/webroot_backup6");
+    a = a.resolvePath("webroot_backup6");
     if (!a.exists) {
       try {
         c.moveTo(a, true);
