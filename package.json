@@ -1,5 +1,5 @@
 {
-  "name": "@rvw/repo",
+  "name": "@rvw/monorepo",
   "private": true,
   "scripts": {
     "build": "turbo build",
