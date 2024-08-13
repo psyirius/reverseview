@@ -21,6 +21,5 @@ if (Array.isArray(remotePkg.files)) {
 
 for (const [from, to] of Object.entries(pathMap)) {
     fs.mkdirSync(path.dirname(to), { recursive: true });
-    console.log(`Copying ${from} to ${to}`);
     fs.cpSync(from, to, { recursive: true, force: true });
 }

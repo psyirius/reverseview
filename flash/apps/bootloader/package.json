@@ -1,0 +1,16 @@
+{
+  "name": "@rvw/flash-bootloader",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -F=. run --parallel \"/^build:.*/\"",
+    "build:as3": "dotenvx run --verbose --env \"FLEX_HOME=${AIR_SDK}\" --overload -- asconfigc --verbose",
+    "build:swf": "amxmlc -o \"bin/AppEntry.swf\" \"src/AppEntry.as\"",
+    "clean": "rimraf -g \"./bin/*\""
+  },
+  "devDependencies": {
+    "asconfigc": "^1.8.1"
+  }
+}

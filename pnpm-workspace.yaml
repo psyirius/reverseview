@@ -1,4 +1,10 @@
 packages:
+  # main apps & packages
   - "apps/*"
-  - "flash/*"
   - "packages/*"
+  # air tooling apps & packages
+  - "air/apps/*"
+  - "air/packages/*"
+  # flash apps, libraries & packages
+  - "flash/apps/*"
+  - "flash/packages/*"

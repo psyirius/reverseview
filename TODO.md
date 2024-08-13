@@ -17,6 +17,11 @@
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f11.html
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7e5a.html
 
+https://github.com/shockpkg
+https://github.com/shockpkg/packages/tree/master/packages/
+https://github.com/shockpkg/packages/blob/master/packages/air-sdk
+https://github.com/shockpkg/packages/tree/master/packages/air-runtime
+https://github.com/erikyuzwa/node-air-sdk
 https://github.com/shunia/flying
 https://github.com/leopoldodonnell/airhttp
 https://github.com/Alexx999/swfinvestigator
