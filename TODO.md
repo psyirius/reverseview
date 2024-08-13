@@ -17,6 +17,8 @@
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f11.html
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7e5a.html
 
+https://github.com/shunia/flying
+https://github.com/leopoldodonnell/airhttp
 https://github.com/Alexx999/swfinvestigator
 https://github.com/funkatron/spazmk1-titanium
 https://github.com/yaniswang/hostsPlus

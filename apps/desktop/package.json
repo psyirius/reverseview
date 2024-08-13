@@ -27,6 +27,7 @@
     "concurrently": "^8.2.2",
     "@parcel/config-default": "^2.12.0",
     "@shockpkg/ria-packager": "^4.0.4",
+    "@rvw/remote-legacy": "workspace:*",
     "@parcel/core": "^2.12.0",
     "@parcel/plugin": "^2.12.0",
     "@parcel/utils": "^2.12.0",
