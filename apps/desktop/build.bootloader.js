@@ -10,6 +10,7 @@ const flashSupportPkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/pa
 const flashSupportPkgRoot = path.dirname(flashSupportPkgPath);
 const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgPath, 'utf8'));
 
+/** @type {Record<string, string>} */
 const pathMap = {};
 
 if (Array.isArray(flashSupportPkg.files)) {

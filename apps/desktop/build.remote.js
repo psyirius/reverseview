@@ -10,6 +10,7 @@ const remotePkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.
 const remotePkgRoot = path.dirname(remotePkgPath);
 const remotePkg = JSON.parse(fs.readFileSync(remotePkgPath, 'utf8'));
 
+/** @type {Record<string, string>} */
 const pathMap = {};
 
 if (Array.isArray(remotePkg.files)) {

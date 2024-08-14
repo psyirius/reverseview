@@ -20,6 +20,7 @@ const compilers = {
     },
 }
 
+/** @type {Record<string, string>} */
 const pathMap = {
     'views'          : '.air/views',
 }

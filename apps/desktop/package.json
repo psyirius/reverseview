@@ -26,6 +26,7 @@
     "build:styles": "node build.styles.js",
     "build:remote": "node build.remote.js",
     "build:support": "node build.support.js",
+    "build:databases": "node build.databases.js",
     "build:bootloader": "node build.bootloader.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
     "clean": "rimraf -g \"./.air\" \"./dist\"",

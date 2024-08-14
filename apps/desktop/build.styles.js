@@ -4,6 +4,7 @@ import * as path from "node:path";
 import * as process from "node:process";
 import postcssrc from "postcss-load-config";
 
+/** @type {Record<string, string>} */
 const toBuild = {
     'styles/app.pcss'               : '.air/css/app.css',
     'styles/main.pcss'              : '.air/css/main.css',
