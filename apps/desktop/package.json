@@ -32,6 +32,7 @@
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
+    "jsdoc": "^4.0.3",
     "@shockpkg/ria-packager": "^4.0.4",
     "@types/dojo": "^1.9.48",
     "@types/jquery": "^3.5.30",

@@ -13,17 +13,12 @@
     "baseUrl": "./src",
     "moduleResolution": "Node",
     "paths": {
-      "@lib/*": ["lib/*"],
-      "@app/*": ["app/*"]
+      "@lib/*": ["lib/*"], //
+      "@app/*": ["app/*"], //
     },
-    "typeRoots": [
-//      "types",
-    ],
+    "typeRoots": [],
     "lib": [
-//      "ES5",
-//      "DOM",
-      "ScriptHost", // maps to "@typescript/lib-scripthost" -> "@rvw/air-types"
-//      "ES2015.Promise",
+      "ScriptHost", // resolves to "@typescript/lib-scripthost" -> "@rvw/air-types"
     ],
     "allowUmdGlobalAccess": true,
 //    "resolveJsonModule": true,

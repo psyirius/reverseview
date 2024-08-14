@@ -10,4 +10,4 @@
 // TODO: Verify that all are available in the Air Runtime
 /// <reference lib="dom" />
 
-/// <reference path="globals.d.ts" />
+/// <reference types="./types/air" />
