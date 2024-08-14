@@ -7,16 +7,16 @@ try {
     // const classPath = 'flash.utils.ByteArray';
     const classPath = 'a.b.c.As3Lib';
 
-    let val = window.runtime;
+    let as3Val = window.runtime;
 
     const splits = classPath.split('.');
     while (splits.length > 0) {
-        val = val[splits.shift()];
+        as3Val = as3Val[splits.shift()];
     }
 
-    air.trace('[[[.....As3.....]]]: ' + String(val));
+    air.trace('[[[.....As3.....]]]: ' + String(as3Val));
 
-    const obj = new val();
+    const obj = new as3Val();
 } catch (e) {
     alert(">>>Error in As3 Object Resolver<<<: " + e);
 }
@@ -549,7 +549,7 @@ $RvW.putbook = function() {
     clearSelectList("bookList");
     var a = $RvW.vvConfigObj.get_listinenglish();
     var b = $RvW.booknames.length;
-    for (i = 0; i < b; i++) {
+    for (let i = 0; i < b; i++) {
         if (a) {
             document.getElementById("bookList").options[i] = new Option(
                 $RvW.default_booknames[i],
@@ -646,7 +646,7 @@ $RvW.updateVerseContainer_continue = function() {
     } else {
         n = n + '<tr><td width="4%"></td><td width="96%"></td></tr>';
     }
-    for (i = 0; i < p; i++) {
+    for (let i = 0; i < p; i++) {
         var a = "TC_" + i;
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
             n = n + '<tr class="vcClass" id="' + a + '"><td width="4%">';
@@ -682,7 +682,7 @@ $RvW.updateVerseContainer_continue = function() {
     var o = [];
     var c = [];
     var b = [];
-    for (i = 0; i < p; i++) {
+    for (let i = 0; i < p; i++) {
         var m = "VC1_" + i;
         var g = "VC2_" + i;
         var e = "NC_" + i;

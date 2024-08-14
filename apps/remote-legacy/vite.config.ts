@@ -12,7 +12,6 @@ export default defineConfig({
     publicDir: projectPath('static'),
     envDir: projectPath('.'),
     envPrefix: 'RVW_',
-    appType: 'mpa',
     build: {
         emptyOutDir: true,
         assetsDir: 'assets',
@@ -22,7 +21,7 @@ export default defineConfig({
         outDir: projectPath('dist'),
         rollupOptions: {
             input: {
-                ['main']: projectPath('src/index.html'),
+                _index: projectPath('src/_index.html'),
             },
             output: {
                 assetFileNames: 'assets/[name]-[hash][extname]',

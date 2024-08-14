@@ -7,6 +7,7 @@
     "lib"
   ],
   "scripts": {
+    "dev": "pnpm run build",
     "build": "pnpm -F=. run --parallel \"/^build:.*/\"",
     "build:as3": "dotenvx run --verbose -- asconfigc --verbose",
     "dump:swf": "swfdump \"lib/library.swf\"",
