@@ -1,5 +1,7 @@
 // import SongEdit from '../song/edit.js';
 
+// NOTE: DISABLE IF PROD
+$RvW.isDev = true;
 
 if ($RvW.isDev) {
     console.log("Main.js", $RvW);
@@ -23,6 +25,7 @@ if ($RvW.isDev) {
         alert(">>>Error in As3 Object Resolver<<<: " + e);
     }
 
+    // Make sure the remote is up-to-date
     copyFile2AppStorage("webroot", "webroot");
 }
 
