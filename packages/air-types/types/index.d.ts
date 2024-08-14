@@ -4,7 +4,7 @@
 /// <reference types="./jsx" />
 
 declare global {
-    function require(...args: any[]): any;
+    // function require(...args: any[]): any;
 }
 
 export {}

@@ -12,7 +12,9 @@
 - [ ] pretty new @shockpkg/ria-packager
 - [ ] prisma schemas for local dbs
 - [ ] add Apache Flex, FlexJS
+- [ ] add asconfig json schema
 - [ ] move air types to typescript lib
+- [ ] compile bible and songbooks from readable src
 - [ ] compile assets and fonts into swf bundle
 - [ ] add astro to the remote project if needed
 - [ ] utilize application sandboxing to unlock the full potential of the application

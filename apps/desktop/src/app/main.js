@@ -1530,7 +1530,7 @@ export function start(Y) {
 
     // load swf
     try {
-        const { Loader, URLRequest } = air;
+        // const { Loader, URLRequest } = air;
 
         // const loader = new Loader();
         // loader.load(new URLRequest("./bin/AppEntry.swf"));

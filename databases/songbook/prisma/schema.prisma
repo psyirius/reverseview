@@ -1,0 +1,62 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Album {
+  id          Int     @id @default(autoincrement())
+  title       String
+  volume      Int
+  description String?
+  locale      String
+  author      String
+  copyright   String
+
+  songs      Song[]
+  categories Category[]
+
+  @@map(name: "albums")
+}
+
+model Category {
+  id          Int     @id @default(autoincrement())
+  description String?
+  songs       Song[]
+
+  album   Album @relation(fields: [albumId], references: [id])
+  albumId Int
+
+  @@map(name: "categories")
+}
+
+model Song {
+  id     Int @id @default(autoincrement())
+  serial Int // song number
+
+  title   String
+  titleEn String // title in english
+
+  tags     String? // to use with grouping
+  keywords String? // to use with search | comma seperated
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  album   Album @relation(fields: [albumId], references: [id])
+  albumId Int
+
+  genre String
+  key   String // song key
+  bpm   String // tempo
+
+  lyrics   String // each slide is seperated by ''
+  lyricsEn String?
+
+  note String? // some notes about the verse
+
+  @@map(name: "songs")
+}

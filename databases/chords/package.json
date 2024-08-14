@@ -1,0 +1,16 @@
+{
+  "name": "@rvw/chords-db",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "db:make": "ts-node src/index.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio",
+    "prisma:init": "prisma migrate dev --name init"
+  },
+  "devDependencies": {
+    "prisma": "^5.18.0",
+    "sqlite3": "^5.1.7"
+  }
+}

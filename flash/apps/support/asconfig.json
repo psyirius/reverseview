@@ -1,6 +1,6 @@
 {
   "type": "lib",
-  "config": "air",
+  "config": "flex",
   "compilerOptions": {
     "source-path": [
       "src"
@@ -8,6 +8,12 @@
     "include-sources": [
       "src"
     ],
+    "default-size": {
+      "width": 20,
+      "height": 20
+    },
+    "strict": true,
+    "debug": false,
     "directory": true,
     "output": "lib"
   }

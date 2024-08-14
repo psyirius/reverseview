@@ -8,9 +8,10 @@
   ],
   "scripts": {
     "build": "pnpm -F=. run --parallel \"/^build:.*/\"",
-    "build:as3": "dotenvx run --verbose -- asconfigc --verbose",
+    "build:as3": "dotenvx run -- asconfigc --verbose",
     "dump:swf": "swfdump \"lib/library.swf\"",
     "dump:swf-abc": "swfdump -abc \"lib/library.swf\"",
+    "compile-swc": "acompc -debug=false -source-path src -include-sources src -directory -output lib",
     "clean": "rimraf -g \"lib/*\""
   },
   "devDependencies": {
