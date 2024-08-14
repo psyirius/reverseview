@@ -1,0 +1,9 @@
+{
+  "name": "@rvw/air-types",
+  "description": "",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "main": "",
+  "types": "index.d.ts"
+}

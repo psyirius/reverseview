@@ -36,7 +36,7 @@ class chordsDatabaseClass {
     var A;
     var H = null;
     var J = 0;
-    var s = true;
+    var s = false;
     function M() {
       v("Initialize Chords DATABASE");
       H = new chordsObjClass();

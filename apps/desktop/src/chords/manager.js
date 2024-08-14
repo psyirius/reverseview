@@ -20,7 +20,7 @@ class chordsManagerClass {
     this.updateChords = j;
     this.taskcomplete = k;
     var i = null;
-    var b = true;
+    var b = false;
     function l() {
       a("Initialize Chords Manager");
       $RvW.chordsDatabaseObj = new chordsDatabaseClass();

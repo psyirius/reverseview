@@ -8,7 +8,7 @@ class dbUpdater {
     var j = false;
     var g = null;
     var k = "./song/default.db";
-    var c = true;
+    var c = false;
     this.init = m;
     function m() {
       j = false;

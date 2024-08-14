@@ -9,9 +9,10 @@
     "pnpm": ">=9"
   },
   "dependencies": {
-    "@rvw/remote-legacy": "workspace:*",
+    "@rvw/flash-bootloader": "workspace:*",
     "@rvw/flash-support": "workspace:*",
-    "@rvw/flash-bootloader": "workspace:*"
+    "@rvw/remote-legacy": "workspace:*",
+    "@typescript/lib-scripthost": "workspace:@rvw/air-types@*"
   },
   "scripts": {
     "dev": "pnpm run build && pnpm run debug",
@@ -19,6 +20,7 @@
     "start": "adl -nodebug ./application.xml ./.air",
     "build": "pnpm -F=. run --parallel \"/^build:.*/\"",
     "build:src": "tsc -p tsconfig.app.json",
+    "build-trace-resolutions:src": "tsc --traceResolution -p tsconfig.app.json",
     "build:views": "node build.views.js",
     "build:static": "node build.static.js",
     "build:styles": "node build.styles.js",
@@ -30,7 +32,6 @@
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
-    "dts2as": "^0.13.0",
     "@shockpkg/ria-packager": "^4.0.4",
     "@types/dojo": "^1.9.48",
     "@types/jquery": "^3.5.30",
@@ -46,6 +47,7 @@
     "dojo": "^1.17.3",
     "dojo-dstore": "^1.2.1",
     "dojox": "^1.17.3",
+    "dts2as": "^0.13.0",
     "glob": "^11.0.0",
     "handlebars": "^4.7.8",
     "ignore": "^5.3.1",
@@ -66,6 +68,7 @@
     "tailwindcss": "^3.4.9",
     "teoria": "^2.5.0",
     "tslib": "^2.6.3",
+    "tsup": "^8.2.4",
     "typescript": "~5.4.5",
     "yui": "^3.18.1"
   }

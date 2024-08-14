@@ -157,7 +157,7 @@ class valsonachanTransliteration {
       "ou",
       "ri"
     );
-    var b = true;
+    var b = false;
     function j() { }
     function f(p) {
       var o = p.split(" ");

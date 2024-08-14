@@ -40,7 +40,7 @@ class SongNav {
     var m_suggestion_defer = null;
     var aa = 30;
     var ag = false;
-    const m_isDebug = true;
+    const m_isDebug = false;
     var L = false;
     var m = "";
     var B = null;

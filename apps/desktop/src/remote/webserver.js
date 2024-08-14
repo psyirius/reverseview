@@ -24,7 +24,7 @@ class WebRequestHandler {
 
         this.m_clientSocket.addEventListener(air.Event.CLOSE, () => this._onClientSocketClose());
 
-        this.m_debug = true;
+        this.m_debug = false;
     }
 
     _onOutGoing() {
@@ -258,7 +258,7 @@ class RvwWebServer {
         this.m_listening = false;
         this.m_staticDir = staticDir;
 
-        this.m_debug = true;
+        this.m_debug = false;
     }
 
     init(port, hostname) {

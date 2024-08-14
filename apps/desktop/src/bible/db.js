@@ -51,7 +51,7 @@ class BibleDB {
     var x;
     var k = false;
     var O = 500;
-    var __is_debug = true;
+    var __is_debug = false;
 
     function __debug(ai) {
       if (__is_debug) {

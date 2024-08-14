@@ -17,7 +17,7 @@ class vvbrain {
     var C;
     var s;
     var m = null;
-    var v = true;
+    var v = false;
 
     function init() {
       a = false;

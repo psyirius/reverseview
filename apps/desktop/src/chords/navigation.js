@@ -37,7 +37,7 @@ class ChordsNav {
         var m_el_delete;
         var m_el_close;
 
-        const m_isDebug = true;
+        const m_isDebug = false;
 
         init();
 

@@ -14,7 +14,7 @@ class schedule {
 
     var M;
     var N = 0;
-    var C = true;
+    var C = false;
     var K = "./xml/schedule.db";
     var R;
     var E;

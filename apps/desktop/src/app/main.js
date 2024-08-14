@@ -1,24 +1,29 @@
 // import SongEdit from '../song/edit.js';
 
-console.log("Main.js", $RvW);
-console.log("NativeProcess support:", air.NativeProcess.isSupported);
 
-try {
-    // const classPath = 'flash.utils.ByteArray';
-    const classPath = 'a.b.c.As3Lib';
+if ($RvW.isDev) {
+    console.log("Main.js", $RvW);
+    console.log("NativeProcess support:", air.NativeProcess.isSupported);
 
-    let as3Val = window.runtime;
+    try {
+        // const classPath = 'flash.utils.ByteArray';
+        const classPath = 'a.b.c.As3Lib';
 
-    const splits = classPath.split('.');
-    while (splits.length > 0) {
-        as3Val = as3Val[splits.shift()];
+        let as3Val = window.runtime;
+
+        const splits = classPath.split('.');
+        while (splits.length > 0) {
+            as3Val = as3Val[splits.shift()];
+        }
+
+        air.trace('[[[.....As3.....]]]: ' + String(as3Val));
+
+        const obj = new as3Val();
+    } catch (e) {
+        alert(">>>Error in As3 Object Resolver<<<: " + e);
     }
 
-    air.trace('[[[.....As3.....]]]: ' + String(as3Val));
-
-    const obj = new as3Val();
-} catch (e) {
-    alert(">>>Error in As3 Object Resolver<<<: " + e);
+    copyFile2AppStorage("webroot", "webroot");
 }
 
 // TODO:
@@ -353,6 +358,7 @@ $RvW.bibleVersionSelObj = null;
 $RvW.remoteVV_UI_Obj = null;
 $RvW.updateVV_UI_Obj = null;
 $RvW.editVerse_UI_Obj = null;
+$RvW.version_UI_Content = null;
 $RvW.newUpdateObj = null;
 $RvW.enterForSearchActive = true;
 $RvW.enterForBibleRef = false;
@@ -902,14 +908,15 @@ function setupTheme() {
 }
 
 function setupTabContent() {
-    $RvW.bibleVersionSelObj = new BibleVersionSelector($RvW.loadViewTemplate("setup_biblesel"));
+    $RvW.bibleVersionSelObj = new BibleVersionSelector(loadViewTemplate("setup_biblesel"));
 
-    $RvW.remoteVV_UI_Obj = new RvwRemote($RvW.loadViewTemplate("setup_remote"));
+    $RvW.remoteVV_UI_Obj = new RvwRemote(loadViewTemplate("setup_remote"));
+    $RvW.version_UI_Content = loadViewTemplate('version');
 
     setupTabViewTemplate("bible_verses", "bibleverseTab");
     setupTabViewTemplate("screens", "screenTab");
 
-    $RvW.updateVV_UI_Obj = new RvwUpdate($RvW.loadViewTemplate("setup_update"));
+    $RvW.updateVV_UI_Obj = new RvwUpdate(loadViewTemplate("setup_update"));
 
     fillTabs('configTab');
     
@@ -921,7 +928,7 @@ function setupTabContent() {
     setupTabViewTemplate("song_lyrics", "lyricsTab");
 
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
-    $RvW.notesObj = new Notes($RvW.loadViewTemplate("notesui"), 'notesPanelID');
+    $RvW.notesObj = new Notes(loadViewTemplate("notesui"), 'notesPanelID');
     $RvW.searchObj = new RvwSearch("./bible/" + getVersion1Filename());
     $RvW.webServerObj = new RvwWebServer('webroot');
     $RvW.webEngineObj = new RvwWebEngine();
@@ -929,13 +936,13 @@ function setupTabContent() {
     $RvW.bibleRefObj = new BibleReference();
     $RvW.songNumberObj = new songNumber();
     $RvW.songManagerObj = new SongManager(true, true);
-    $RvW.songEditObj = new SongEdit($RvW.loadViewTemplate("song_edit"));
+    $RvW.songEditObj = new SongEdit(loadViewTemplate("song_edit"), loadViewTemplate('lyrics_create'));
     $RvW.songNavObj = new SongNav();
-    $RvW.helpObj = new RvwHelp($RvW.loadViewTemplate("help"));
-    $RvW.graphicsObj = new GraphicsMgr($RvW.loadViewTemplate("graphics"));
-    $RvW.chordsNavObj = new ChordsNav($RvW.loadViewTemplate("chords"));
-    $RvW.chordsEditObj = new ChordsEdit($RvW.loadViewTemplate("chords_edit"));
-    $RvW.chordsKeyboard = new ChordsVK($RvW.loadViewTemplate("chords_keyboard"));
+    $RvW.helpObj = new RvwHelp(loadViewTemplate("help"));
+    $RvW.graphicsObj = new GraphicsMgr(loadViewTemplate("graphics"));
+    $RvW.chordsNavObj = new ChordsNav(loadViewTemplate("chords"));
+    $RvW.chordsEditObj = new ChordsEdit(loadViewTemplate("chords_edit"));
+    $RvW.chordsKeyboard = new ChordsVK(loadViewTemplate("chords_keyboard"));
 
     if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
@@ -948,7 +955,7 @@ function setupTabContent() {
     }
 }
 
-$RvW.loadViewTemplate = function(name) {
+const loadViewTemplate = function (name) {
     const filepath = `./views/${name}.hbs`;
 
     const { File, FileStream, FileMode } = air;
@@ -965,7 +972,7 @@ $RvW.loadViewTemplate = function(name) {
 }
 
 function setupTabViewTemplate(name, mountPoint) {
-    document.getElementById(mountPoint).innerHTML = $RvW.loadViewTemplate(name);
+    document.getElementById(mountPoint).innerHTML = loadViewTemplate(name);
     fillTabs(mountPoint);
 }
 function fillTabs(a) {

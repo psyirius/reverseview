@@ -12,6 +12,7 @@
 - [ ] pretty new @shockpkg/ria-packager
 - [ ] prisma schemas for local dbs
 - [ ] add Apache Flex, FlexJS
+- [ ] move air types to typescript lib
 - [ ] compile assets and fonts into swf bundle
 - [ ] add astro to the remote project if needed
 - [ ] utilize application sandboxing to unlock the full potential of the application
@@ -40,3 +41,6 @@ https://help.adobe.com/en_US/air/html/dev/WS9936fa0d5984e93b-3d590ddd1272a3584c3
 https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7ec2.html
 
 Environment: https://help.adobe.com/en_US/air/html/dev/WSb2ba3b1aad8a27b0-67c0013e126afbe6c4d-8000.html
+
+https://github.com/microsoft/TypeScript/pull/45771#issuecomment-919273950
+https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules

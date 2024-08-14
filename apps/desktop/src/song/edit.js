@@ -2,14 +2,15 @@
 // - YAHOO.widget.Panel
 
 class SongEdit {
-  constructor(bodyContent) {
-    const _isDebug = true;
+  constructor(bodyContent, lyricsCreateContent) {
+    const _isDebug = false;
 
     let b = false;
     let v = -1;
     let _primaryKey = -1;
     let Z = false;
-    let _bodyContent = "";
+    let _bodyContent = bodyContent;
+    let _lyricsCreateContent = lyricsCreateContent;
     let _panel = null;
     let _slidesTabView;
     let u = "";
@@ -17,12 +18,10 @@ class SongEdit {
     let _fontsList = [];
     let _current_slide_num = 1;
 
-    function init(bodyContent) {
+    function init() {
       _debug("Initialize Song Edit Panel");
 
       _fontsList = ["Arial", "Times New Roman", "Calibri"];
-
-      _bodyContent = bodyContent;
 
       _setupPanel();
       _loadUsedFonts();
@@ -517,8 +516,6 @@ class SongEdit {
     function onClick_createSlidesButtonID() {
       _reset_seq_id();
 
-      const bodyContent = $RvW.loadViewTemplate('lyrics_create');
-
       const _createPanel = new YAHOO.widget.Panel("gpanelObj", {
         width: "820px",
         fixedcenter: true,
@@ -528,7 +525,7 @@ class SongEdit {
       });
       _createPanel.render(document.body);
       _createPanel.setHeader("Generate Slides");
-      _createPanel.setBody(bodyContent);
+      _createPanel.setBody(_lyricsCreateContent);
 
       // todo: make reactive to window resize
       const windowHeight = ($(window).height() * 0.8) - 100 /* guide text height */;
@@ -704,12 +701,12 @@ class SongEdit {
       }
 
       function onClick_se_generateMunglishID() {
-        var at = document.getElementById("se_quickSlideID").value;
-        var ax = at.split("\n");
-        var ar = ax.length;
-        var av = new valsonachanTransliteration();
-        var aw = "";
-        for (var au = 0; au < ar; au++) {
+          const at = document.getElementById("se_quickSlideID").value;
+          const ax = at.split("\n");
+          const ar = ax.length;
+          let av = new valsonachanTransliteration();
+          let aw = "";
+          for (let au = 0; au < ar; au++) {
           aw += av.munglishLine(ax[au]) + "\n";
         }
         av = null;
@@ -865,9 +862,8 @@ class SongEdit {
     }
     function onClick_songEdit_saveButtonID() {
       _debug("Process Save button");
-      var ac = new songObj();
-      ac = _dumpSong();
-      if (ac != false) {
+        let ac = _dumpSong();
+      if (ac !== false) {
         if (!b) {
           _debug("Adding song..");
           $RvW.songManagerObj.addSong(ac, true, false);
@@ -884,24 +880,24 @@ class SongEdit {
       }
     }
     function onClick_songAsNewEdit_saveButtonID() {
-      var ac = b;
-      b = false;
+        const ac = b;
+        b = false;
       if (!onClick_songEdit_saveButtonID()) {
         b = ac;
       }
     }
     function onClick_category2() {
-      var ac = $("#songnav_category2 option:selected").text();
-      if (specialCategory(ac)) {
+        const ac = $("#songnav_category2 option:selected").text();
+        if (specialCategory(ac)) {
         $("#songEdit_saveButtonID").hide();
       } else {
         $("#songEdit_saveButtonID").show();
       }
     }
     function onClick_cancelButtonID() {
-      var ac = "Song Add/Edit";
-      var ad = "Do you want to CANCEL from Add/Edit Song panel?";
-      rvw.ui.Prompt.exec(ac, ad, _close_panel);
+        const ac = "Song Add/Edit";
+        const ad = "Do you want to CANCEL from Add/Edit Song panel?";
+        rvw.ui.Prompt.exec(ac, ad, _close_panel);
     }
 
     function _close_panel() {
@@ -923,21 +919,17 @@ class SongEdit {
       document.getElementById("se_sequenceID").value = "";
     }
     function _parse_yt_videoID(af) {
-      var ae = af.replace(/ /gi, "");
-      if (ae === "") {
+        let ae = af.replace(/ /gi, "");
+        if (ae === "") {
         document.getElementById("se_yvideoID").value = "";
         return true;
       }
-      var ad = ae.split("&");
-      ae = ad[0];
+        let ad = ae.split("&");
+        ae = ad[0];
       document.getElementById("se_yvideoID").value = ae;
       ad = ae.split("?v=");
-      var ac = "https://www.youtube.com/watch";
-      if (ad[0] !== ac) {
-        return false;
-      } else {
-        return true;
-      }
+        const ac = "https://www.youtube.com/watch";
+        return ad[0] === ac;
     }
     function _getTimestamp() {
         const ai = new Date();
@@ -957,6 +949,6 @@ class SongEdit {
       }
     }
 
-    init(bodyContent);
+    init();
   }
 }

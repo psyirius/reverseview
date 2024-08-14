@@ -77,7 +77,7 @@ rvw.provide("rvw.store").Preferences = {
     init(file, callback) {
         const store = this.__Store.fromJSON(this.defaults(), (store) => {
             this.save(file, store, (err) => {
-                air.trace('Prefs::init: ' + err);
+                if (err) air.trace('Prefs::init: ' + err);
             });
         });
 
@@ -100,7 +100,7 @@ rvw.provide("rvw.store").Preferences = {
 
             callback(null, this.__Store.fromJSON(JSON.parse(data), (store) => {
                 this.save(file, store, (err) => {
-                    air.trace('Prefs::load: ' + err);
+                    if (err) air.trace('Prefs::load: ' + err);
                 });
             }));
         } catch (e) {

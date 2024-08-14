@@ -52,7 +52,7 @@ class RvwRemote {
         let m_customHostName = "";
         let portNumber = 50000;
         let ipList = null;
-        const m_debug = true;
+        const m_debug = false;
 
         _setupUI();
         _setupHints();

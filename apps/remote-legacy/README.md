@@ -13,7 +13,7 @@ Update the files from and copy to the webroot folder in VerseVIEW to use it.
 - index.html - Initial launch file for controlling presentation
 - fonts.css - CSS file with Font mappings
 - vv.css - CSS file for the remote VerseVIEW design
-- bible_present.js - JS file that handles remote VerseVIEW page
+- present.js - JS file that handles remote VerseVIEW page
 - ./jslib/ - Includes UI and JavaScript library such as OnSenUI, Jquery (Future implementation with Bootstrap)
 - ./images/ - Icons used in the remote application
 - ./font/ - Fonts used for VerseVIEW, including custom fonts
@@ -54,7 +54,7 @@ Update the files from and copy to the webroot folder in VerseVIEW to use it.
 * OTHER COMMANDS WILL BE DOCUMENTED SOON
 
 ## Libraries
-Initial implementation uses Jquery and Jquery Mobile. Future implemenation with a modern UI framework like bootstrap
+Initial implementation uses Jquery and Jquery Mobile. Future implementation with a modern UI framework like bootstrap
 
 ## Contact
 Please email verseview@gmail.com for any questions, comments or suggestions. Thank you very much for your support in making VerseVIEW better.

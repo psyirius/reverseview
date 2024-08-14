@@ -11,19 +11,20 @@
     "module": "UMD", // out loader is AMD
     "rootDir": "./src",
     "baseUrl": "./src",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "paths": {
       "@lib/*": ["lib/*"],
       "@app/*": ["app/*"]
     },
     "typeRoots": [
-      "types",
+//      "types",
     ],
-//    "lib": [
+    "lib": [
 //      "ES5",
 //      "DOM",
-////      "ES2015.Promise"
-//    ],
+      "ScriptHost", // maps to "@typescript/lib-scripthost" -> "@rvw/air-types"
+//      "ES2015.Promise",
+    ],
     "allowUmdGlobalAccess": true,
 //    "resolveJsonModule": true,
 

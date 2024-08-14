@@ -13,7 +13,7 @@ var format;
 var bibleDB;
 var dbFilename_hold = "";
 var verFile = null;
-var vdebug = true;
+var vdebug = false;
 function loadBibleVersion() {
   var c;
   var b = "xml/version.xml";
@@ -139,11 +139,6 @@ function saveVersionSelection() {
   $RvW.putch();
   $RvW.vvConfigObj.save();
   $RvW.updateVerseContainer();
-}
-function readPanelContent(a) {
-  versionManageDialog.setBody($RvW.loadViewTemplate(a));
-  fillVersionPanel();
-  hideFontVersionBox();
 }
 function fillVersionPanel() {
   document.getElementById("selectVersionList").width = 80;
@@ -550,10 +545,11 @@ function hideFontVersionBox() {
   $("#addFontVersionButton").show();
 }
 function manageVersion() {
-  versionManageDialog.show();
   versionManageDialog.setHeader("Bible Version Manager");
-  versionManageDialog.setBody("");
-  readPanelContent("version", "versionManageDialog");
+    versionManageDialog.setBody($RvW.version_UI_Content);
+    versionManageDialog.show();
+    fillVersionPanel();
+    hideFontVersionBox();
 }
 function processSingleVersion() {
   var a = document.getElementById("singleVersionBoxID").checked;

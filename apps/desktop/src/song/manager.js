@@ -27,7 +27,7 @@ class SongManager {
     this.test2_updateRecords = test2_updateRecords;
     this.test2_getOrgsonglist = test2_getOrgsonglist;
 
-    var m_isDebug = true;
+    var m_isDebug = false;
     var ax = false;
     var ad = "./song/default.db";
     var m_sqlConnection = null;

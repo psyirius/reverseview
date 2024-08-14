@@ -38,7 +38,7 @@ class ChordsEdit {
     var u;
     var J;
     var a = true;
-    var B = true;
+    var B = false;
 
     init(bodyContent);
 

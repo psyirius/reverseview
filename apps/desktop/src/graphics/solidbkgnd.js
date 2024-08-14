@@ -3,7 +3,7 @@ class solidBkgndColorClass {
     this.init = k;
     this.assignSolidColor = j;
     var e;
-    var a = true;
+    var a = false;
     function k() {
       c();
       g();

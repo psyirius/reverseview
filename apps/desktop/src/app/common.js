@@ -43,34 +43,32 @@ function clearSelectList(a) {
 function copyFile2AppStorage(d, c) {
     let b = air.File.applicationDirectory.resolvePath(d);
     let a = air.File.applicationStorageDirectory.resolvePath(c);
-  b.copyTo(a, true);
-  return a.exists;
+    b.copyTo(a, true);
+    return a.exists;
 }
 function backupWebroot() {
-  air.trace("Came to backup Webroot...");
-  var c = air.File.applicationStorageDirectory;
-  c = c.resolvePath("webroot");
-  if (c.exists) {
-    var a = air.File.applicationStorageDirectory;
-    a = a.resolvePath("webroot_backup6");
-    if (!a.exists) {
-      try {
-        c.moveTo(a, true);
-        return true;
-      } catch (b) {
-        rvw.ui.Toast.show(
-          "Creating Webroot Backup",
-          b.message + " Files in use by another application"
-        );
-        return false;
-      }
+    air.trace("Came to backup Webroot...");
+    const c = air.File.applicationStorageDirectory.resolvePath("webroot");
+    if (c.exists) {
+        const a = air.File.applicationStorageDirectory.resolvePath("webroot_backup6");
+        if (!a.exists) {
+            try {
+                c.moveTo(a, true);
+                return true;
+            } catch (b) {
+                rvw.ui.Toast.show(
+                    "Creating Webroot Backup",
+                    b.message + " Files in use by another application"
+                );
+                return false;
+            }
+        } else {
+            rvw.ui.Toast.show("Creating Webroot Backup", "Backup already exists.");
+            return true;
+        }
     } else {
-      rvw.ui.Toast.show("Creating Webroot Backup", "Backup already exists.");
-      return true;
+        return true;
     }
-  } else {
-    return true;
-  }
 }
 function extractFileName(d) {
   var c = air.Capabilities.manufacturer;
@@ -262,7 +260,7 @@ function BibleReference() {
   var p = null;
   var e = null;
   var k = "";
-  var j = true;
+  var j = false;
   function o(u) {
     f = u;
     k = "";
