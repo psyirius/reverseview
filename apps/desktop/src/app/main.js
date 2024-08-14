@@ -959,7 +959,7 @@ function setupTabContent() {
 }
 
 const loadViewTemplate = function (name) {
-    const filepath = `./views/${name}.hbs`;
+    const filepath = `./views/${name}.html`;
 
     const { File, FileStream, FileMode } = air;
     const { applicationDirectory: appDir } = File;
@@ -1528,16 +1528,6 @@ export function start(Y) {
         );
     }
 
-    // {
-    //   // Register a {{{link}}} helper for creating HTML links.
-    //   $Y.Handlebars.registerHelper('link', function (text, url) {
-    //     text = $Y.Escape.html(text);
-    //     url  = $Y.Escape.html(url);
-    //
-    //     return new $Y.Handlebars.SafeString(`<a href="${url}">${text}</a>`);
-    //   });
-    // }
-
     // load swf
     try {
         const { Loader, URLRequest } = air;
@@ -1550,6 +1540,8 @@ export function start(Y) {
         const { stage } = nativeWindow;
 
         // stage.addChild(loader);
+
+        console.log('Stage:', stage);
     } catch (e) {
         air.trace(e);
     }

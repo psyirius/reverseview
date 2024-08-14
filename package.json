@@ -10,15 +10,15 @@
     "prepare": "turbo telemetry disable"
   },
   "devDependencies": {
-    "zx": "^8.1.4",
-    "tsx": "^4.17.0",
-    "ts-node": "^10.9.2",
-    "swc-node": "^1.0.0",
-    "turbo": "^2.0.12",
-    "@types/node": "^20.14.15",
     "@biomejs/biome": "^1.8.3",
     "@dotenvx/dotenvx": "^1.7.0",
-    "rimraf": "^6.0.1"
+    "@types/node": "^20.14.15",
+    "rimraf": "^6.0.1",
+    "swc-node": "^1.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.17.0",
+    "turbo": "^2.0.13",
+    "zx": "^8.1.4"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
