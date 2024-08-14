@@ -3,11 +3,12 @@ import * as path from "node:path";
 import { fileURLToPath } from 'url'
 
 const SWF_LIB_ROOT = '.air/swf/lib';
+const DEP_PACKAGE = '@rvw/flash-support';
 
-const flashSupportPkgPath = fileURLToPath(import.meta.resolve('@rvw/flash-support'));
+const flashSupportPkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.json'));
 
 const flashSupportPkgRoot = path.dirname(flashSupportPkgPath);
-const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgRoot, 'utf8'));
+const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgPath, 'utf8'));
 
 const pathMap = {};
 

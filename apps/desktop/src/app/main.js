@@ -3,6 +3,24 @@
 console.log("Main.js", $RvW);
 console.log("NativeProcess support:", air.NativeProcess.isSupported);
 
+try {
+    // const classPath = 'flash.utils.ByteArray';
+    const classPath = 'a.b.c.As3Lib';
+
+    let val = window.runtime;
+
+    const splits = classPath.split('.');
+    while (splits.length > 0) {
+        val = val[splits.shift()];
+    }
+
+    air.trace('[[[.....As3.....]]]: ' + String(val));
+
+    const obj = new val();
+} catch (e) {
+    alert(">>>Error in As3 Object Resolver<<<: " + e);
+}
+
 // TODO:
 // - Export global functions to be used in other files
 

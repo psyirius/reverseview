@@ -3,8 +3,9 @@ import * as path from "node:path";
 import { fileURLToPath } from 'url'
 
 const WEB_ROOT = '.air/webroot';
+const DEP_PACKAGE = '@rvw/remote-legacy';
 
-const remotePkgPath = fileURLToPath(import.meta.resolve('@rvw/remote-legacy/package.json'));
+const remotePkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.json'));
 
 const remotePkgRoot = path.dirname(remotePkgPath);
 const remotePkg = JSON.parse(fs.readFileSync(remotePkgPath, 'utf8'));

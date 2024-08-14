@@ -9,7 +9,7 @@ package a.b.c
 		
 		public function As3Lib() 
 		{
-			
+			trace("As3Lib constructor");
 		}
 		
 	}
