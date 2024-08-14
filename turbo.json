@@ -17,7 +17,8 @@
         "@rvw/flash-bootloader#build",
         "@rvw/flash-support#build",
         "@rvw/remote-legacy#build"
-      ]
+      ],
+      "cache": false
     },
     "lint": {
       "dependsOn": ["^lint"]
