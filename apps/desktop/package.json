@@ -18,6 +18,8 @@
     "build:static": "node build.static.js",
     "build:styles": "node build.styles.js",
     "build:remote": "node build.remote.js",
+    "build:support.flash": "node build.support.flash.js",
+    "build:bootloader.flash": "node build.bootloader.flash.js",
     "watch:src": "tsc -p tsconfig.app.json --watch",
     "clean": "rimraf -g \"./.air\" \"./dist\"",
     "package": "pnpm run build && node tools/releng/package.js"
@@ -26,6 +28,8 @@
     "dts2as": "^0.13.0",
     "@shockpkg/ria-packager": "^4.0.4",
     "@rvw/remote-legacy": "workspace:*",
+    "@rvw/flash-support": "workspace:*",
+    "@rvw/flash-bootloader": "workspace:*",
     "@types/dojo": "^1.9.48",
     "@types/jquery": "^3.5.30",
     "@types/sizzle": "^2.3.4",

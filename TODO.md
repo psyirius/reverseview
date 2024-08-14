@@ -11,6 +11,7 @@
 - [ ] use preloader in flash to show splash screen
 - [ ] pretty new @shockpkg/ria-packager
 - [ ] prisma schemas for local dbs
+- [ ] add Apache Flex, FlexJS
 - [ ] utilize application sandboxing to unlock the full potential of the application
   - https://help.adobe.com/en_US/air/html/security/WS485a42d56cd1964150c3d3a8124ef1cbd62-7ffe.html
   - https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f08.html
@@ -29,6 +30,9 @@ https://github.com/funkatron/spazmk1-titanium
 https://github.com/yaniswang/hostsPlus
 https://github.com/ydoug33/ts4air
 https://github.com/hydroper
+https://github.com/yui/yui3-swfs
+
+https://nextgenactionscript.com/tools-and-utilities/
 
 https://help.adobe.com/en_US/air/html/dev/WS9936fa0d5984e93b-3d590ddd1272a3584c3-8000.html
 https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7ec2.html

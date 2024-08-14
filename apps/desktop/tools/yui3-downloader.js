@@ -61,6 +61,8 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'transition',
             'io-queue',
             'dump',
+            'swf',
+            'swfdetect',
             'queue-promote',
             'gesture-simulate',
             'tabview',

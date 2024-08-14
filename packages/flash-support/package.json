@@ -1,0 +1,19 @@
+{
+  "name": "@rvw/flash-support",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "pnpm -F=. run --parallel \"/^build:.*/\"",
+    "build:as3": "dotenvx run --verbose -- asconfigc --verbose",
+    "dump:swf": "swfdump \"lib/library.swf\"",
+    "dump:swf-abc": "swfdump -abc \"lib/library.swf\"",
+    "clean": "rimraf -g \"lib/*\""
+  },
+  "devDependencies": {
+    "asconfigc": "^1.8.1"
+  }
+}
