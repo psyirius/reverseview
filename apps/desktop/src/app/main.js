@@ -797,7 +797,7 @@ function vvinit_continue() {
     setTimeout(function () {
         var b = $RvW.vvConfigObj.get_chordsDBVersion() * 1;
         if (b == 1 && !firstTimeFlag) {
-            var c = copyFile("chords/chords.db", "song/chords.db");
+            var c = copyFile2AppStorage("chords/chords.db", "song/chords.db");
             if (c) {
                 rvw.ui.Toast.show("Chords", "Updated Chords database");
                 $RvW.vvConfigObj.set_chordsDBVersion(2);
@@ -805,9 +805,9 @@ function vvinit_continue() {
         }
         var a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
         if (a == 1 && !firstTimeFlag) {
-            var c = copyFile("xml/version.xml", "xml/version.xml");
+            var c = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
             if (c) {
-                c = copyFile("bible", "bible");
+                c = copyFile2AppStorage("bible", "bible");
                 if (c) {
                     $RvW.vvConfigObj.set_version1(1);
                     $RvW.vvConfigObj.set_version2(2);
@@ -941,7 +941,7 @@ function setupTabContent() {
         air.trace("About to copy webroot files...");
         const b = backupWebroot();
         if (b) {
-            copyFile("webroot", "webroot");
+            copyFile2AppStorage("webroot", "webroot");
             task2Complete();
         }
         checkVerUpdateFlags();
@@ -1409,38 +1409,38 @@ function setupVVersion() {
     createFolder("notes");
     createFolder("song");
     createFolder("webroot");
-    var a = copyFile("xml/version.xml", "xml/version.xml");
+    var a = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
     if (!a) {
         return a;
     }
-    var a = copyFile("bible", "bible");
+    var a = copyFile2AppStorage("bible", "bible");
     if (!a) {
         return a;
     }
-    var a = copyFile("webroot", "webroot");
+    var a = copyFile2AppStorage("webroot", "webroot");
     if (!a) {
         return a;
     }
-    var a = copyFile("song/default.db", "song/default.db");
+    var a = copyFile2AppStorage("song/default.db", "song/default.db");
     if (!a) {
         return a;
     }
-    var a = copyFile("song/words.db", "song/words.db");
+    var a = copyFile2AppStorage("song/words.db", "song/words.db");
     if (!a) {
         return a;
     }
-    var a = copyFile("chords/chords.db", "song/chords.db");
+    var a = copyFile2AppStorage("chords/chords.db", "song/chords.db");
     if (!a) {
         return a;
     }
     return a;
 }
 function setupVBkgnd() {
-    var a = copyFile("xml/backgroundlist.xml", "xml/backgroundlist.xml");
+    var a = copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
     if (!a) {
         return a;
     }
-    var a = copyFile("background", "background");
+    var a = copyFile2AppStorage("background", "background");
     if (!a) {
         return a;
     }
@@ -1495,7 +1495,7 @@ function onMainWindowKeyUp(evt) {
 }
 
 function setupVConfig() {
-    const a = copyFile("xml/config.xml", "xml/config.xml");
+    const a = copyFile2AppStorage("xml/config.xml", "xml/config.xml");
     if (!a) {
         return a;
     }

@@ -1,18 +1,17 @@
 {
-  "name": "@rvw/flash-bootloader",
+  "name": "@rvw/flash-support",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "files": [
-    "bin"
+    "lib"
   ],
   "scripts": {
-    "dev": "pnpm run build",
     "build": "pnpm -F=. run --parallel \"/^build:.*/\"",
     "build:as3": "dotenvx run --verbose -- asconfigc --verbose",
-    "dump:swf": "swfdump \"bin/AppEntry.swf\"",
-    "dump:swf-abc": "swfdump -abc \"bin/AppEntry.swf\"",
-    "clean": "rimraf -g \"./bin/*\""
+    "dump:swf": "swfdump \"lib/library.swf\"",
+    "dump:swf-abc": "swfdump -abc \"lib/library.swf\"",
+    "clean": "rimraf -g \"lib/*\""
   },
   "devDependencies": {
     "asconfigc": "^1.8.1"

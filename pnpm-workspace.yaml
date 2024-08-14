@@ -1,3 +1,7 @@
 packages:
   - "apps/*"
   - "packages/*"
+  - "flash/apps/*"
+  - "flash/packages/*"
+  - "air/tools/*"
+  - "air/packages/*"

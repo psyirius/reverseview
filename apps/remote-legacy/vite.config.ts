@@ -11,6 +11,7 @@ export default defineConfig({
     root: projectPath('src'),
     publicDir: projectPath('static'),
     envDir: projectPath('.'),
+    appType: 'mpa',
     envPrefix: 'RVW_',
     build: {
         emptyOutDir: true,

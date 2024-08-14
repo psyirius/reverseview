@@ -8,6 +8,11 @@
     "node": ">=20",
     "pnpm": ">=9"
   },
+  "dependencies": {
+    "@rvw/remote-legacy": "workspace:*",
+    "@rvw/flash-support": "workspace:*",
+    "@rvw/flash-bootloader": "workspace:*"
+  },
   "scripts": {
     "dev": "pnpm run build && pnpm run debug",
     "debug": "adl ./application.xml ./.air",
@@ -27,9 +32,6 @@
   "devDependencies": {
     "dts2as": "^0.13.0",
     "@shockpkg/ria-packager": "^4.0.4",
-    "@rvw/remote-legacy": "workspace:*",
-    "@rvw/flash-support": "workspace:*",
-    "@rvw/flash-bootloader": "workspace:*",
     "@types/dojo": "^1.9.48",
     "@types/jquery": "^3.5.30",
     "@types/sizzle": "^2.3.4",

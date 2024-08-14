@@ -3,8 +3,21 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".air/**", "!.air/cache/**"]
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
+    },
+    "@rvw/desktop#build": {
+      "dependsOn": [
+        "@rvw/flash-bootloader#build",
+        "@rvw/flash-support#build",
+        "@rvw/remote-legacy#build"
+      ]
+    },
+    "@rvw/desktop#dev": {
+      "dependsOn": [
+        "@rvw/flash-bootloader#build",
+        "@rvw/flash-support#build",
+        "@rvw/remote-legacy#build"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

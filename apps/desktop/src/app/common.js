@@ -40,11 +40,9 @@ function clearSelectList(a) {
     return false;
   }
 }
-function copyFile(d, c) {
-  var b = air.File.applicationDirectory;
-  b = b.resolvePath(d);
-  var a = air.File.applicationStorageDirectory;
-  a = a.resolvePath(c);
+function copyFile2AppStorage(d, c) {
+    let b = air.File.applicationDirectory.resolvePath(d);
+    let a = air.File.applicationStorageDirectory.resolvePath(c);
   b.copyTo(a, true);
   return a.exists;
 }
@@ -574,37 +572,22 @@ function specialCategory(d) {
 }
 var apple = false;
 function pluckapple() {
-  var a = $("#nav_bibleRefID").val();
-  if (a == "admin") {
+    const a = $("#nav_bibleRefID").val();
+    if (a === "admin") {
     apple = true;
     $("#nav_bibleRefID").val("");
   }
 }
 function presentationContentString(d, b, f, c, a) {
-  if (c == "" && a == "") {
+  if (c === "" && a === "") {
     return "";
   }
-  var e =
-    d +
-    "<newelement>" +
-    b +
-    "<newelement>" +
-    f +
-    "<newelement>" +
-    c +
-    "<newelement>" +
-    a;
-  return e;
+    return `${d}<newelement>${b}<newelement>${f}<newelement>${c}<newelement>${a}`;
 }
 function fixHTTPS_Link(a) {
   return a.replace("http:", "https:");
 }
 function isBlank(b) {
-  var a = b.replace(/\s/g, "");
-  a = a.replace(/<BR>/g, "");
-  if (a.length > 0) {
-    return false;
-  } else {
-    return true;
-  }
+  var a = b.replace(/\s/g, "").replace(/<BR>/g, "");
+  return a.length <= 0;
 }
