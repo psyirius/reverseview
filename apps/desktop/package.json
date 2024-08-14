@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "jsdoc": "^4.0.3",
+    "yaml": "^2.5.0",
     "@shockpkg/ria-packager": "^4.0.4",
     "@types/dojo": "^1.9.48",
     "@types/jquery": "^3.5.30",
