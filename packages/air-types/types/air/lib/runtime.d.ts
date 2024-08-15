@@ -24,7 +24,7 @@ declare global {
             }
 
             namespace filesystem {
-                declare class File {
+                class File {
                     constructor(path?: string);
 
                     static readonly userDirectory: File;

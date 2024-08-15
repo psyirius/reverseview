@@ -38,6 +38,12 @@ importers:
 
   apps/desktop:
     dependencies:
+      '@rvw/bible-db':
+        specifier: workspace:*
+        version: link:../../databases/bible
+      '@rvw/chords-db':
+        specifier: workspace:*
+        version: link:../../databases/chords
       '@rvw/flash-bootloader':
         specifier: workspace:*
         version: link:../../flash/apps/bootloader
@@ -47,6 +53,9 @@ importers:
       '@rvw/remote-legacy':
         specifier: workspace:*
         version: link:../remote-legacy
+      '@rvw/songs-db':
+        specifier: workspace:*
+        version: link:../../databases/songs
       '@typescript/lib-scripthost':
         specifier: workspace:@rvw/air-types@*
         version: link:../../packages/air-types
@@ -235,8 +244,6 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(typescript@5.5.4)(vite@5.4.0(@types/node@20.14.15)(lightningcss@1.26.0)(sass@1.77.8)(terser@5.31.6))
 
-  apps/vv10-remote: {}
-
   databases/bible:
     devDependencies:
       prisma:
@@ -255,7 +262,7 @@ importers:
         specifier: ^5.1.7
         version: 5.1.7
 
-  databases/songbook:
+  databases/songs:
     devDependencies:
       prisma:
         specifier: ^5.18.0

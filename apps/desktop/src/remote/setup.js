@@ -277,18 +277,18 @@ class RvwRemote {
             let remoteUrl = `http://${hostname}:${m_port}`;
 
             // TODO: make it auto-generated on build
-            switch ($("#remoteVVRemoteFunc").val()) {
-                case "1": default:  remoteUrl += "/";                               break;
-                case "2":           remoteUrl += `/stageview/fullscreen1/c.html`;   break;
-                case "3":           remoteUrl += `/stageview/fullscreen2/c.html`;   break;
-                case "4":           remoteUrl += `/lowerthird/theme6/a/a.html`;     break;
-                case "5":           remoteUrl += `/lowerthird/theme6/b/b.html`;     break;
-                case "6":           remoteUrl += `/lowerthird/theme6/c/c.html`;     break;
-                case "7":           remoteUrl += `/lowerthird/theme6/d/d.html`;     break;
-                case "8":           remoteUrl += `/lowerthird/theme6/e/e.html`;     break;
-                case "9":           remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
-                case "10":          remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
-                case "11":          remoteUrl += `/stageview/chords/c.html`;        break;
+            switch (parseInt($("#remoteVVRemoteFunc").val())) {
+                default:        remoteUrl += `/404.html`;                       break;
+                case 1:         remoteUrl += `/control.html`;                   break;
+                case 2:         remoteUrl += `/stageview/fullscreen1/c.html`;   break;
+                case 3:         remoteUrl += `/stageview/fullscreen2/c.html`;   break;
+                case 4:         remoteUrl += `/lowerthird/theme6/a/a.html`;     break;
+                case 5:         remoteUrl += `/lowerthird/theme6/b/b.html`;     break;
+                case 6:         remoteUrl += `/lowerthird/theme6/c/c.html`;     break;
+                case 7:         remoteUrl += `/lowerthird/theme6/d/d.html`;     break;
+                case 8:         remoteUrl += `/lowerthird/theme6/e/e.html`;     break;
+                case 9:         remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
+                case 10:        remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
             }
 
             $("#configRemoteLink").val(remoteUrl);
@@ -302,8 +302,7 @@ class RvwRemote {
         }
 
         function y() {
-            const B = $("#fixedWordListDiv").is(":hidden");
-            if (B) {
+            if ($("#fixedWordListDiv").is(":hidden")) {
                 $("#fixedWordListDiv").show();
                 _setKeywordsLabel("Hide Messenger Keywords");
             } else {

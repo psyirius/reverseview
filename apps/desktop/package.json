@@ -12,6 +12,9 @@
     "@rvw/flash-bootloader": "workspace:*",
     "@rvw/flash-support": "workspace:*",
     "@rvw/remote-legacy": "workspace:*",
+    "@rvw/bible-db": "workspace:*",
+    "@rvw/chords-db": "workspace:*",
+    "@rvw/songs-db": "workspace:*",
     "@typescript/lib-scripthost": "workspace:@rvw/air-types@*"
   },
   "scripts": {

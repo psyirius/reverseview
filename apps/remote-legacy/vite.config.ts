@@ -22,7 +22,7 @@ export default defineConfig({
         outDir: projectPath('dist'),
         rollupOptions: {
             input: {
-                _index: projectPath('src/_index.html'),
+                index: projectPath('src/index.html'),
             },
             output: {
                 assetFileNames: 'assets/[name]-[hash][extname]',

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 const pathMap = {
     '@rvw/bible-db'     : '.air/bible',
     '@rvw/chords-db'    : '.air/chords',
-    '@rvw/songbook-db'  : '.air/song',
+    '@rvw/songs-db'     : '.air/song',
 }
 
 for (const [pkg, dest] of Object.entries(pathMap)) {

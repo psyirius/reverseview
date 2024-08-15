@@ -8,11 +8,141 @@ const mimeTypeMap = {
     '.gif'  : 'image/gif',
     '.htm'  : 'text/html',
     '.html' : 'text/html',
+    '.ttf'  : 'font/ttf',
+    '.woff' : 'font/woff',
+    '.woff2': 'font/woff2',
     '.ico'  : 'image/x-icon',
     '.jpg'  : 'image/jpeg',
     '.png'  : 'image/png',
+    '.svg'  : 'image/svg+xml',
     '.js'   : 'text/javascript',
+    '.json' : 'application/json',
 };
+
+class HttpHeaders {
+    /**
+     * @param {string[]} lines
+     */
+    constructor(lines) {
+        /** @type {Record<string, string | string[]>} */
+        this._headers = {};
+
+        lines.forEach(line => {
+            const [key, value] = line.split(": ");
+            const values = value.split(";").map(e => e.trim());
+
+            this.add(key.toLowerCase(), values.length > 1 ? values : values[0]);
+        })
+    }
+
+    add(key, value) {
+        this._headers[key.toLowerCase()] = value;
+    }
+
+    get(key) {
+        return this._headers[key.toLowerCase()];
+    }
+
+    get headers() {
+        return {...this._headers};
+    }
+}
+
+// TODO: Implement a proper http request parser
+class HttpRequest {
+    /**
+     * @param {string} raw
+     */
+    constructor(raw) {
+        this._request = null;
+
+        this._parseHead(raw);
+    }
+
+    get method() {
+        return this._request?.method;
+    }
+
+    get path() {
+        return this._request?.url.path;
+    }
+
+    get fullpath() {
+        return this._request?.fullpath;
+    }
+
+    get params() {
+        return this._request?.url.params;
+    }
+
+    get protocol() {
+        return this._request?.protocol;
+    }
+
+    get headers() {
+        return this._request?.headers;
+    }
+
+    get(header) {
+        return this._request?.headers.get(header);
+    }
+
+    get body() {
+        return this._request?.body;
+    }
+
+    _parseUrl(url) {
+        const [pathWithParams, hash] = url.split("#");
+        const [path, paramString] = pathWithParams.split("?");
+
+        const params = {};
+        if (paramString) {
+            paramString.split("&").forEach(param => {
+                const [key, value] = param.split("=");
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            });
+        }
+
+        return {
+            path: decodeURIComponent(path),
+            params,
+            hash: hash ? decodeURIComponent(hash) : null
+        };
+    }
+
+    _parseHead(raw) {
+        const lines = raw.split("\r\n");
+
+        if (lines.length > 0) {
+            const [requestLine, ...headerLines] = lines;
+
+            const [method, fullpath, version] = requestLine.split(" ");
+
+            const headers = [];
+            let body = "";
+            let isBody = false;
+
+            headerLines.forEach(line => {
+                if (line === "") {
+                    isBody = true;
+                } else if (isBody) {
+                    body += line;
+                } else {
+                    headers.push(line);
+                }
+            });
+
+            this._request = {
+                method,
+                fullpath,
+                url: this._parseUrl(fullpath),
+                version,
+                headers: new HttpHeaders(headers),
+                body,
+            };
+        }
+    }
+}
 
 class WebRequestHandler {
     constructor(connection, staticDir) {
@@ -24,7 +154,7 @@ class WebRequestHandler {
 
         this.m_clientSocket.addEventListener(air.Event.CLOSE, () => this._onClientSocketClose());
 
-        this.m_debug = false;
+        this.m_debug = true;
     }
 
     _onOutGoing() {
@@ -43,15 +173,26 @@ class WebRequestHandler {
 
         const bodyStr = String(inBody);
 
-        // parse http header
-        let urlPath = bodyStr.substring(4, bodyStr.indexOf("HTTP/") - 1);
-        if (!this._isApiPath(urlPath)) {
-            if (urlPath === "/") {
-                urlPath = "/index.html";
+        const req = new HttpRequest(bodyStr);
+
+        this._debug_log(`${req.method}: ${req.path}${(() => {
+            if (Object.keys(req.params).length > 0) {
+                return '\n' + JSON.stringify(req.params);
             }
-            this._handleStaticFileRequest(urlPath);
-        } else {
-            this._handleApiRequest(urlPath);
+            return '';
+        })()}`);
+
+        switch (req.path) {
+            case "/action": {
+                this._handleApiRequest(req.params);
+                break;
+            }
+            default: {
+                let path = req.path;
+                if (path === "/") { path = "/index.html" }
+                this._handleStaticFileRequest(path);
+                break;
+            }
         }
     }
 
@@ -65,10 +206,6 @@ class WebRequestHandler {
         return mimeTypeMap['.txt'];
     }
 
-    _isApiPath(path) {
-        return path.split("?").length > 1;
-    }
-
     _handleStaticFileRequest(path) {
         const clientSocket = this.m_clientSocket;
 
@@ -76,6 +213,8 @@ class WebRequestHandler {
         const appStorageDir = File.applicationStorageDirectory;
 
         const fxp = appStorageDir.resolvePath(this.m_staticDir + path);
+
+        // this._debug_log(`Serving static file: ${fxp.nativePath} | ${fxp.exists}`);
 
         if (fxp.exists && !fxp.isDirectory) {
             const fz = new air.FileStream();
@@ -105,14 +244,62 @@ class WebRequestHandler {
         }
     }
 
-    _handleApiRequest(urlPath) {
-        const [cmd_action, cmd_args, slide_num] = this._parseCommand(urlPath);
+    _handleApiRequest(params) {
+        const {cmd, args} = params;
 
-        this._debug_log(`Command: '${cmd_action}' Args: '${cmd_args}' XYZ: '${slide_num}'`);
+        this._debug_log(`Command<${cmd}>: ${JSON.stringify(args)}`);
 
-        switch (cmd_action) {
+        switch (parseInt(cmd)) {
+            // NEW COMMANDS
+            // Bible Ref : Search Chapter
+            // Bible Ref : Present Verse
+
+            // Menu: Blank
+            // Menu: Logo
+            // Menu: Close
+            // Menu: Next
+            // Menu: Previous
+
+            // Songs: Search
+            // Songs: Get Lyrics
+            // Songs: Add to Schedule
+
+            // Schedule: Fetch
+            // Schedule: Get Content
+
+            case 8: { // Present Verse
+                const [book, chapter, verse] = args.ref.split(":");
+                $RvW.present_external(book, chapter, verse);
+                this._sendTextHtml("Presenting Verse...");
+                break;
+            }
+            case 30: { // Get Schedule
+                const res = $RvW.scheduleObj.getScheduleText(0);
+                this._sendTextHtml(res);
+                break;
+            }
+            case 31: { // Get Schedule Content
+                const songId = $RvW.scheduleObj.getSongIndexFromSch(parseInt(args.index));
+                const song = $RvW.songManagerObj.getSongObjWithID(songId);
+                const songDate = $RvW.webEngineObj.processSong(song);
+                this._sendTextHtml(songDate);
+                break;
+            }
+            case 17: { // Present Song Slide
+                break;
+            }
+            case 10: { // Present Schedule
+                break;
+            }
+
+            default: {
+                this._debug_log(`Unknown command: ${cmd}`);
+                break;
+            }
+
+            // OLD COMMANDS
             case "1": { // Present Bible Verse
-                if ($RvW.bibleRefObj.init(cmd_args)) {
+                if ($RvW.bibleRefObj.init(cmd_arg1)) {
                     $RvW.bibleRefObj.present();
                     this._sendTextHtml("Presenting verse...");
                 } else {
@@ -150,17 +337,13 @@ class WebRequestHandler {
                 this._sendTextHtml("Blank Activated");
                 break;
             }
-            case "6": { // Get Schedule
-                this._sendTextHtml($RvW.scheduleObj.getScheduleText(parseInt(cmd_args)));
-                break;
-            }
             case "10": { // Present Schedule
-                $RvW.scheduleObj.processRemotePresent(cmd_args);
+                $RvW.scheduleObj.processRemotePresent(cmd_arg1);
                 this._sendTextHtml("Presenting from Schedule");
                 break;
             }
             case "7": { // Present Bible Chapter
-                if ($RvW.bibleRefObj.init(cmd_args)) {
+                if ($RvW.bibleRefObj.init(cmd_arg1)) {
                     const vf = $RvW.bibleRefObj.getVerseFont();
                     const book = $RvW.bibleRefObj.getBook();
                     const chapter = $RvW.bibleRefObj.getChapter();
@@ -172,22 +355,9 @@ class WebRequestHandler {
                 }
                 break;
             }
-            case "16": { // Present Schedule Song
-                const songId = $RvW.scheduleObj.getSongIndexFromSch(cmd_args);
-                const song = $RvW.songManagerObj.getSongObjWithID(songId);
-                const songDate = $RvW.webEngineObj.processSong(song);
-                this._sendTextHtml(songDate);
-                break;
-            }
             case "17": { // Present Song Slide
-                $RvW.scheduleObj.processRemotePresent(cmd_args, slide_num);
+                $RvW.scheduleObj.processRemotePresent(cmd_arg1, cmd_arg2);
                 this._sendTextHtml("Presenting song slide");
-                break;
-            }
-            case "8": { // Present Verse
-                const bibleRef = cmd_args.split(":");
-                $RvW.present_external(bibleRef[0], bibleRef[1], bibleRef[2]);
-                this._sendTextHtml("Presenting Verse...");
                 break;
             }
             case "9": { // Get Stage View Content
@@ -199,47 +369,47 @@ class WebRequestHandler {
                 break;
             }
             case "11": { // Send Chat Message
-                this._sendTextHtml("11<command>" + $RvW.vvchatQObj.getMsgFromID(cmd_args));
+                this._sendTextHtml("11<command>" + $RvW.vvchatQObj.getMsgFromID(cmd_arg1));
                 break;
             }
             case "12": { // Add Chat Message
-                const msgXY = cmd_args.split("|");
+                const msgXY = cmd_arg1.split("|");
                 $RvW.vvchatQObj.addMsg(msgXY[0], msgXY[1]);
                 this._sendTextHtml("12<command>Mission Accomplished");
                 break;
             }
             case "18": { // Get All Songs
-                $RvW.songManagerObj.getAllTitlesForWeb(cmd_args);
+                $RvW.songManagerObj.getAllTitlesForWeb(cmd_arg1);
                 $("#command18").on("click", () => {
                     this._sendTextHtml($RvW.songListRemote);
                 });
                 break;
             }
             case "20": { // Get Chords
-                const cwi = new ChordsWebInterface(cmd_args);
+                const cwi = new ChordsWebInterface(cmd_arg1);
                 this._sendTextHtml(cwi.getsong());
                 break;
             }
         }
     }
 
-    _parseCommand(urlPath) {
+    getPathValue(urlPath) {
         let b = urlPath.split("\n");
         b = b[0].split("?");
         b = b[1].split("&");
 
         const action = b[0].split("=")[1];
 
-        let argz = b[1].split("=")[1];
-        argz = argz.replace(/%20/g, " ");
+        let arg1 = b[1].split("=")[1];
+        arg1 = arg1.replace(/%20/g, " ");
 
-        let extraArg = null;
+        let arg2 = null;
         if (b[2] != null) {
-            extraArg = b[2].split("=")[1];
-            extraArg = extraArg.replace(/%20/g, " ");
+            arg2 = b[2].split("=")[1];
+            arg2 = arg2.replace(/%20/g, " ");
         }
 
-        return [action, argz, extraArg];
+        return [action, arg1, arg2];
     }
 
     _debug_log(msg) {

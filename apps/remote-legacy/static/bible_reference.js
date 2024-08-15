@@ -253,6 +253,11 @@ var default_booknames = [
     "Revelation",
 ];
 
+var bookIndex = null;
+var chapterIndex = null;
+var verseIndex = null;
+var p_footer = null;
+
 class BibleReference {
     constructor() {
         this.init = init;
@@ -350,7 +355,7 @@ class BibleReference {
                     _0x1f5418 = "Invalid verse number.";
                     _0x21d96a = false;
                 } else {
-                    if (_0x494f99 == -0x1) {
+                    if (_0x494f99 === -0x1) {
                         _0x1f5418 = "Did not find matching book name to " + _0x460ff1;
                         _0x21d96a = false;
                     } else {
