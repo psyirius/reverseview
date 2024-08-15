@@ -1,3 +1,4 @@
+// TODO: connect all the commands to the server handler
 (function (exports) {
     var command;
     var items;

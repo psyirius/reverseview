@@ -247,7 +247,7 @@ class WebRequestHandler {
     _handleApiRequest(params) {
         const {cmd, args} = params;
 
-        this._debug_log(`Command<${cmd}>: ${JSON.stringify(args)}`);
+        this._debug_log(`Command<${cmd}>: ${JSON.stringify(args, null, 2)}`);
 
         switch (parseInt(cmd)) {
             // NEW COMMANDS
