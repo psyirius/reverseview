@@ -75,3 +75,8 @@
 	-webkit-text-fill-color: yellow;
 	-webkit-text-stroke: 2px black;
 }
+
+.hstyle {
+	background-color: black;
+  	line-height: 2
+}

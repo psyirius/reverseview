@@ -47,7 +47,7 @@ function processLower3rdResponse(){
 
 	//console.log(p_text1);
 	if (p_text1 == "") {
-		console.log("blank");
+		//console.log("blank");
 	}
 
 

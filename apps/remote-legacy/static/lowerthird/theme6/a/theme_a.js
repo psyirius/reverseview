@@ -25,7 +25,7 @@ function processLower3rdResponse(){
 	$(".textStyle").css("-webkit-text-stroke", textOutline);
 
 	if (backgroundImage){
-		console.log(backgroundFilename);
+		//console.log(backgroundFilename);
 		$(".theme1").css("background-image", "url(" + backgroundFilename + ")");
 	} else {
 		$(".theme1").css("background-image", "none");
@@ -37,7 +37,7 @@ function processLower3rdResponse(){
 	}
 
 	if (p_title != "") {		//Detect it is a verse and add the book name and chapter
-		p_text1 = p_title + "<br>" + p_text1;
+		p_text1 = p_title + ":" + p_text1;
 		//p_text2 = p_title + ":" + p_text2;
 	}
 

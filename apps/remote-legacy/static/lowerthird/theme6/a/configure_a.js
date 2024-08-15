@@ -35,12 +35,12 @@ var vv_width = 1500;
 var vv_height = 200;
 
 
-var showBothTranslations = true;	//Change to true to show both translations 
+var showBothTranslations = false;	//Change to true to show both translations 
 
 var vv_text_color = "white";
 
 var backgroundImage = true;
-var backgroundFilename = '../img/a1.png';		//a1,a2,a3,a4,a5.png
+var backgroundFilename = '../img/a7.png';		//a1,a2,a3,a4,a5.png
 
 var textShadow = "0px 0px #000000";     //"2px 2px #000000"
 var textOutline = "0px black";          //"2px black"

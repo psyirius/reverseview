@@ -48,18 +48,18 @@ function getStageViewContent() {
 /* PROCESS THE REPONSE AND ASSIGN THE RIGHT STRINGS */
 function parseLower3rdResponse(txt) {			//Process correctly for the screen resoluton and add headers and footers
 		$("#mainContainer").show();
-		var t = txt.split("<newelement>");		//Used to be |, June 23, 2020
+		var t = JSON.parse(txt);
+		//var t = txt.split("<newelement>");		//Used to be |, June 23, 2020
 		p_title = "";
 		p_text1 = "";
 		p_text2 = "";
 
-		p_title = t[0];
-		p_font1 = t[1];
-		p_font2 = t[2];
-		p_text1 = t[3];
-		p_text2 = t[4];
+		p_title = t.title;
+		p_font1 = t.font1;
+		p_font2 = t.font2;
+		p_text1 = t.content1;
+		p_text2 = t.content2;
 
-	
 }
 
 
@@ -75,7 +75,7 @@ function ajax(str) {
 				if (command == 9) {
 					//console.log(data);
 					//data = ""
-					if (data == "") {
+					if (JSON.parse(data).content1 == "") {
 						//hide box
 						//console.log("hidding green screen");
 						$(".greenScreenColor").css("background-image", "url(" + "../img/green.png" + ")");	//when no data, it will just blank
@@ -96,9 +96,10 @@ function ajax(str) {
 		error: function (data) {
 			if (data !== undefined) {
 				//$("#resultID").html(data.statusText);
-				console.log(data.statusText);
+				//console.log(data.statusText);
+				$(".greenScreenColor").css("background-image", "url(" + "../img/green.png" + ")");	//when no data, it will just blank
 				$("#mainContainer").hide();
-				startTimer();
+				stopTimer();
 			}
 		}
 	});
