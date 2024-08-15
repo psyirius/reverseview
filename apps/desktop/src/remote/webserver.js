@@ -438,87 +438,71 @@ class WebRequestHandler {
                 break;
             }
 
+            // Stage View: Get Content (9)
+            // Stage View: Get Settings (10)
+
             default: {
                 this._debug_log(`Unknown command: ${cmd}`);
                 break;
             }
 
             // OLD COMMANDS
-            case "1": { // Present Bible Verse
-                if ($RvW.bibleRefObj.init(cmd_arg1)) {
-                    $RvW.bibleRefObj.present();
-                    this._sendTextHtml("Presenting verse...");
-                } else {
-                    this._sendTextHtml($RvW.bibleRefObj.getErrorMessage());
-                }
-                break;
-            }
-            case "13": { // Theme Slide
-                $RvW.webEngineObj.themePresentation();
-                this._sendTextHtml("Theme Activated");
-                break;
-            }
-            case "10": { // Present Schedule
-                $RvW.scheduleObj.processRemotePresent(cmd_arg1);
-                this._sendTextHtml("Presenting from Schedule");
-                break;
-            }
-            case "7": { // Present Bible Chapter
-                if ($RvW.bibleRefObj.init(cmd_arg1)) {
-                    const vf = $RvW.bibleRefObj.getVerseFont();
-                    const book = $RvW.bibleRefObj.getBook();
-                    const chapter = $RvW.bibleRefObj.getChapter();
-                    const versesFromChapter = getAllVersesFromChapter(book, chapter - 1);
-                    const verses = $RvW.webEngineObj.processVerses(versesFromChapter, vf, book, chapter);
-                    this._sendTextHtml(verses);
-                } else {
-                    this._sendTextHtml($RvW.bibleRefObj.getErrorMessage());
-                }
-                break;
-            }
-            case "9": { // Get Stage View Content
-                this._sendTextHtml($RvW.webEngineObj.stageViewContent());
-                break;
-            }
-            case "19": { // Get Chat Keywords
-                this._sendTextHtml("19<command>" + $RvW.vvchatQObj.getKeywords());
-                break;
-            }
-            case "11": { // Send Chat Message
-                this._sendTextHtml("11<command>" + $RvW.vvchatQObj.getMsgFromID(cmd_arg1));
-                break;
-            }
-            case "12": { // Add Chat Message
-                const msgXY = cmd_arg1.split("|");
-                $RvW.vvchatQObj.addMsg(msgXY[0], msgXY[1]);
-                this._sendTextHtml("12<command>Mission Accomplished");
-                break;
-            }
-            case "20": { // Get Chords
-                const cwi = new ChordsWebInterface(cmd_arg1);
-                this._sendTextHtml(cwi.getsong());
-                break;
-            }
+            // case "1": { // Present Bible Verse
+            //     if ($RvW.bibleRefObj.init(cmd_arg1)) {
+            //         $RvW.bibleRefObj.present();
+            //         this._sendTextHtml("Presenting verse...");
+            //     } else {
+            //         this._sendTextHtml($RvW.bibleRefObj.getErrorMessage());
+            //     }
+            //     break;
+            // }
+            // case "13": { // Theme Slide
+            //     $RvW.webEngineObj.themePresentation();
+            //     this._sendTextHtml("Theme Activated");
+            //     break;
+            // }
+            // case "10": { // Present Schedule
+            //     $RvW.scheduleObj.processRemotePresent(cmd_arg1);
+            //     this._sendTextHtml("Presenting from Schedule");
+            //     break;
+            // }
+            // case "7": { // Present Bible Chapter
+            //     if ($RvW.bibleRefObj.init(cmd_arg1)) {
+            //         const vf = $RvW.bibleRefObj.getVerseFont();
+            //         const book = $RvW.bibleRefObj.getBook();
+            //         const chapter = $RvW.bibleRefObj.getChapter();
+            //         const versesFromChapter = getAllVersesFromChapter(book, chapter - 1);
+            //         const verses = $RvW.webEngineObj.processVerses(versesFromChapter, vf, book, chapter);
+            //         this._sendTextHtml(verses);
+            //     } else {
+            //         this._sendTextHtml($RvW.bibleRefObj.getErrorMessage());
+            //     }
+            //     break;
+            // }
+            // case "9": { // Get Stage View Content
+            //     this._sendTextHtml($RvW.webEngineObj.stageViewContent());
+            //     break;
+            // }
+            // case "19": { // Get Chat Keywords
+            //     this._sendTextHtml("19<command>" + $RvW.vvchatQObj.getKeywords());
+            //     break;
+            // }
+            // case "11": { // Send Chat Message
+            //     this._sendTextHtml("11<command>" + $RvW.vvchatQObj.getMsgFromID(cmd_arg1));
+            //     break;
+            // }
+            // case "12": { // Add Chat Message
+            //     const msgXY = cmd_arg1.split("|");
+            //     $RvW.vvchatQObj.addMsg(msgXY[0], msgXY[1]);
+            //     this._sendTextHtml("12<command>Mission Accomplished");
+            //     break;
+            // }
+            // case "20": { // Get Chords
+            //     const cwi = new ChordsWebInterface(cmd_arg1);
+            //     this._sendTextHtml(cwi.getsong());
+            //     break;
+            // }
         }
-    }
-
-    getPathValue(urlPath) {
-        let b = urlPath.split("\n");
-        b = b[0].split("?");
-        b = b[1].split("&");
-
-        const action = b[0].split("=")[1];
-
-        let arg1 = b[1].split("=")[1];
-        arg1 = arg1.replace(/%20/g, " ");
-
-        let arg2 = null;
-        if (b[2] != null) {
-            arg2 = b[2].split("=")[1];
-            arg2 = arg2.replace(/%20/g, " ");
-        }
-
-        return [action, arg1, arg2];
     }
 
     _debug_log(msg) {

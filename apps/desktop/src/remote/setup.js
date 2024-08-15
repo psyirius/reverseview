@@ -279,16 +279,24 @@ class RvwRemote {
             // TODO: make it auto-generated on build
             switch (parseInt($("#remoteVVRemoteFunc").val())) {
                 default:        remoteUrl += `/404.html`;                       break;
+
                 case 1:         remoteUrl += `/control.html`;                   break;
+
                 case 2:         remoteUrl += `/stageview/fullscreen1/c.html`;   break;
                 case 3:         remoteUrl += `/stageview/fullscreen2/c.html`;   break;
-                case 4:         remoteUrl += `/lowerthird/theme6/a/a.html`;     break;
-                case 5:         remoteUrl += `/lowerthird/theme6/b/b.html`;     break;
-                case 6:         remoteUrl += `/lowerthird/theme6/c/c.html`;     break;
-                case 7:         remoteUrl += `/lowerthird/theme6/d/d.html`;     break;
-                case 8:         remoteUrl += `/lowerthird/theme6/e/e.html`;     break;
-                case 9:         remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
-                case 10:        remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
+                case 4:         remoteUrl += `/stageview/fullscreen3/c.html`;   break;
+
+                case 5:         remoteUrl += `/lowerthird/theme6/a/a.html`;     break;
+                case 6:         remoteUrl += `/lowerthird/theme6/a2/a.html`;    break;
+                case 7:         remoteUrl += `/lowerthird/theme6/b/b.html`;     break;
+                case 8:         remoteUrl += `/lowerthird/theme6/c/c.html`;     break;
+                case 9:         remoteUrl += `/lowerthird/theme6/c1/c.html`;    break;
+                case 10:        remoteUrl += `/lowerthird/theme6/d/d.html`;     break;
+                case 11:        remoteUrl += `/lowerthird/theme6/d2/d.html`;    break;
+                case 12:        remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
+                case 13:        remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
+                case 14:        remoteUrl += `/lowerthird/theme6/h1/h.html`;    break;
+                case 15:        remoteUrl += `/lowerthird/theme6/ga/g.html`;    break;
             }
 
             $("#configRemoteLink").val(remoteUrl);

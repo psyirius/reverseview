@@ -423,9 +423,6 @@
             })
             .catch(error => {
                 showToast("Remote VerseVIEW", "API Error.. " + error);
-                if (error !== undefined) {
-                    $("#resultID").html(error.statusText);
-                }
             });
     }
 

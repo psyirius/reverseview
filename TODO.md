@@ -17,6 +17,8 @@
 - [ ] compile bible and songbooks from readable src
 - [ ] compile assets and fonts into swf bundle
 - [ ] add astro to the remote project if needed
+- [ ] TODO: Fix remote stageview and lowerthird
+- [ ] Run remote server in a worker 
 - [ ] utilize application sandboxing to unlock the full potential of the application
   - https://help.adobe.com/en_US/air/html/security/WS485a42d56cd1964150c3d3a8124ef1cbd62-7ffe.html
   - https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f08.html
