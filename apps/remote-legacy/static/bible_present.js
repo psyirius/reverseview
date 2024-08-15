@@ -1,82 +1,73 @@
-// TODO: connect all the commands to the server handler
 (function (exports) {
-    var command;
-    var items;
-    var len;
-    var verses;
-    var font;
-    var b;
-    var c;
+    let command;
 
-    var colorlist = ["red", "black", "green", "blue", "magenta"];
-    var numColor = colorlist.length;
+    const colorList = ["red", "black", "green", "blue", "magenta"];
+    const numColor = colorList.length;
 
-    var b_colorlist = ["black", "#0000FF"];
-    var b_numColor = b_colorlist.length;
+    const b_colorList = ["black", "#0000FF"];
+    const b_numColor = b_colorList.length;
 
-    var verseObjArray = [];
+    function setupVerseClick(container, verseText, verseBook, verseChapter, verseVerse, verseFont) {
+        document.getElementById(container).style.fontFamily = verseFont;
+        document.getElementById(container).innerHTML = `<div href="javascript:void(0)">${verseText}</div>`;
 
-    // FIXME: it's just a function, not a class
-    class Verse {
-        constructor(container, text, book, chapter, verse, font) {
-            this.verseText = text;
-            this.verseBook = book;
-            this.verseChapter = chapter;
-            this.verseVerse = verse;
-            this.container = container;
-            this.font = font;
+        // document.getElementById(container).style.color = "magenta";
 
-            document.getElementById(container).style.fontFamily = this.font;
-
-            document.getElementById(container).innerHTML = '<div href="javascript:void(0)">' + this.verseText + "</div>";
-
-            // document.getElementById(container).style.color = "magenta";
-
-            document.getElementById(this.container).addEventListener(
-                "click",
-                function () {
-                    command = 8;
-                    apiCall({
-                        cmd: command,
-                        ref: `${this.verseBook}:${this.verseChapter}:${this.verseVerse}`
-                    });
-                },
-                false,
-            );
-        }
+        document.getElementById(container).addEventListener("click", function () {
+            // OK
+            apiCall({
+                cmd: 8,
+                ref: [verseBook, verseChapter, verseVerse],
+            }, ({ok, data, error}) => {
+                if (!ok) {
+                    showToast("Bible", error);
+                } else {
+                    console.log("Bible", data);
+                }
+            });
+        }, false);
     }
 
+    // OK
     exports.getSch = function getSch() {
-        command = 30;
-        apiCall({
-            cmd: command,
+        apiCall({ cmd: 30 }, ({ok, data, error}) => {
+            if (!ok) {
+                showToast("Schedule", error);
+            } else {
+                fillSch(data);
+            }
         });
     }
 
+    // OK
     exports.getSchContent = function getSchContent() {
         //getConfigValue();
         const selectedSchIndex = document.getElementById("schID").value;
-        command = 31;
-        apiCall({
-            cmd: command,
-            index: selectedSchIndex,
-        });
+
+        const [schIndex, songId] = selectedSchIndex.split(':').map(x => parseInt(x));
+
+        // if anything is selected
+        if (selectedSchIndex) {
+            apiCall({
+                cmd: 31,
+                index: schIndex,
+            }, ({ok, data, error}) => {
+                if (!ok) {
+                    showToast("Get Schedule Content", error);
+                } else {
+                    processSongResponse(songId, data, true);
+                }
+            });
+        } else {
+            showToast("Schedule", "Select a schedule to fetch!");
+        }
     }
 
     function getConfigValue() {
-        command = 40;
         apiCall({
-            cmd: command,
+            cmd: 40,
             key: 'something',
         });
-    }
-
-    function showSchSongLyrics(data) {
-        const dataobj = JSON.parse(data);
-
-        processSchSongResponse(dataobj);
-
-        //console.log("Value from server: " + dataobj[0].cat);
     }
 
     /*
@@ -153,343 +144,254 @@
         }
     }
 
-    function processSchSongResponse(data) {
-        var name = data[0].name;
-        var font1 = data[0].font;
-        var font2 = data[0].font2;
-        var lyrics1 = data[0].lyrics;
-        var lyrics2 = data[0].lyrics2;
+    function fillSch(schList) {
+        const el = document.getElementById("schID");
 
-        var slidesArr1 = lyrics1.split("<slide>");
-        var slidesArr2 = lyrics2.split("<slide>");
+        el.innerHTML = ""; // Clear the list
 
-        var twoLine = $("#twoLinePresent").is(":checked");
-        if (twoLine) {
-            slidesArr1 = splitIN2(slidesArr1);
-            slidesArr2 = splitIN2(slidesArr2);
-        }
-
-        var numofSlides = slidesArr1.length;
-
-        document.getElementById('resultSongtitleID').innerHTML = `<h2>${name}</h2>`;
-        document.getElementById('resultSongID').innerHTML = (""); //Blank out the content before new
-        document.getElementById('resultSongID2').innerHTML = (""); //Blank out the content before new
-
-        //console.log(font1);
-        //twoLinePresent
-
-        const resultSongID = $("#resultSongID");
-        const resultSongID2 = $("#resultSongID2");
-
-        for (let i = 0; i < numofSlides; i++) {
-            const unit = $(`<div class='vcClass' style='color:${colorlist[i % numColor]}'></div>`);
-            unit.appendTo(resultSongID);
-
-            unit.css("font-family", font1);
-
-            //alert(slidesArr1[i]);
-            unit.html(getFirstLine(slidesArr1[i]));
-            //unit.html(slidesArr1[i].slice(0,15));
-
-            unit.data("index", i);
-
-            unit.click(function () {
-                const slidenum = $(this).data("index"); //Set the index
-                const schIndex = document.getElementById("schID").selectedIndex;
-                const val = document.getElementById("schID").options[schIndex].value;
-                const str = `action?command=17&value=${val}&value2=${slidenum}?`; //Need index in schedule list and slide number
-                //console.log("val1:" + val + "  val2:" + slidenum);
-                command = 17;
-                apiCall(str);
-            });
-
-            const unit2 = $(`<div class='vcClass' style='color:${colorlist[i % numColor]}'></div>`);
-            //unit2.style.color = "red";
-            unit2.appendTo(resultSongID2);
-
-            unit2.css("font-family", font2);
-
-            unit2.html(getFirstLine(slidesArr2[i]));
-            //unit2.html(slidesArr2[i].slice(0,15));
-
-            unit2.data("index", i);
-
-            unit2.click(function () {
-                const slidenum = $(this).data("index"); //Set the index
-                const schIndex = document.getElementById("schID").selectedIndex;
-                const val = document.getElementById("schID").options[schIndex].value;
-                const str = `action?command=17&value=${val}&value2=${slidenum}?`; //Need index in schedule list and slide number
-                command = 17;
-                apiCall(str);
-            });
-        }
-    }
-
-    function fillSch(data) {
-        const dataobj = JSON.parse(data);
-
-        var itemsLength = dataobj.length;
-        $("#schID").empty(); //Clear the list
-        var options = "";
-        for (var i = 0; i < itemsLength; i++) {
-            if (dataobj[i].contenttype == 0) {
-                //console.log("ID: " + dataobj[i].songid)
-                options += '<option value="' + dataobj[i].songid + '">' + dataobj[i].songname + "</option>";
+        const options = [];
+        for (let i = 0; i < schList.length; i++) {
+            if (schList[i].type === 0) { // songs only
+                options.push(`<option value="${schList[i].index}:${schList[i].id}">${schList[i].name}</option>`);
             }
         }
-        $("#schID").html(options);
+
+        el.innerHTML = options.join('');
+
+        showToast('Schedule', `Schedule list updated! (${options.length} items)`);
     }
 
-    function presentSch() {
-        var schIndex = document.getElementById("schID").selectedIndex;
-        var val = document.getElementById("schID").options[schIndex].value;
-        var str = "action?command=10&value=" + val + "?"; //Might just need the index
-        command = 10;
-        apiCall(str);
-    }
-
+    // OK
     exports.getBibleRef = function getBibleRef() {
+        getVerses();
+
         const ref = document.getElementById("remote_bibleRefID").value;
 
-        const bibleRefObj = new BibleReference(); //Bible Reference object
+        const bibleRefObj = new BibleReference();
 
         if (!bibleRefObj.init(ref)) {
             showToast("Bible", bibleRefObj.getErrorMessage());
         } else {
-            command = 8;
             apiCall({
-                cmd: command,
-                ref: `${bibleRefObj.getBook()}:${bibleRefObj.getChapter()}:${bibleRefObj.getVerse() - 1}`,
+                cmd: 8,
+                ref: [bibleRefObj.getBook(), bibleRefObj.getChapter(), bibleRefObj.getVerse()],
+            }, ({ok, data, error}) => {
+                if (!ok) {
+                    showToast("Bible", error);
+                } else {
+                    console.log("Bible", data);
+                }
             });
         }
     }
 
-    exports.getNextBibleRef = function getNextBibleRef() {
-        var str = "action?command=2&value=0?";
-        command = 2;
-        apiCall(str);
+    // OK
+    exports.goNext = function getNextBibleRef() {
+        apiCall({ cmd: 2 });
     }
 
-    exports.getPrevBibleRef = function getPrevBibleRef() {
-        var str = "action?command=3&value=0?";
-        command = 3;
-        apiCall(str);
+    // OK
+    exports.goPrevious = function getPrevBibleRef() {
+        apiCall({ cmd: 3 });
     }
 
+    // OK
     exports.blankPresentWindow = function blankPresentWindow() {
-        var str = "action?command=15&value=0?";
-        command = 15;
-        apiCall(str);
+        apiCall({ cmd: 15 });
     }
 
+    // OK
     exports.logoPresentWindow = function logoPresentWindow() {
-        var str = "action?command=14&value=0?";
-        command = 14;
-        apiCall(str);
+        apiCall({ cmd: 14 });
     }
 
-    function themePresentWindow() {
-        var str = "action?command=13&value=0?";
-        command = 13;
-        apiCall(str);
-    }
-
+    // OK
     exports.closePresentWindow = function closePresentWindow() {
-        var str = "action?command=4&value=0?";
-        command = 4;
-        apiCall(str);
+        apiCall({ cmd: 4 });
     }
 
+    // OK
     exports.getSongList = function getSongList() {
-        var ref = document.getElementById("remote_songSearchID").value;
-        //alert(ref);
-        //ref = ref.replace(/%20/g, " ");
-        var str = "action?command=20&value=" + ref + "?";
-        command = 20;
-        apiCall(str);
+        const query = document.getElementById("remote_songSearchID").value;
+
+        apiCall({
+            cmd: 20,
+            query,
+        }, ({ok, data, error}) => {
+            if (!ok) {
+                showToast("Song Search", error);
+            } else {
+                fillSongs(data);
+            }
+        });
     }
 
+    // OK
     exports.setSongBookmark = function setSongBookmark() {
-        var selectedSchIndex = $("#songID").val();
-        //console.log("Setting bookmark: " + selectedSchIndex);
+        const selectedSchIndex = document.getElementById("songID").value;
 
-        if (selectedSchIndex != null) {
-            var str = "action?command=22&value=" + selectedSchIndex + "?";
-            command = 22;
-            apiCall(str);
-            showToast("Bookmark", "Selected song added to the bookmark.");
-        } else {
+        if (!selectedSchIndex) {
             showToast("Bookmark", "Select a song to bookmark.");
+            return;
         }
+
+        const songId = parseInt(selectedSchIndex);
+
+        apiCall({
+            cmd: 22,
+            id: songId,
+        }, ({ok, data, error}) => {
+            if (!ok) {
+                showToast("Bookmark", error);
+            } else {
+                showToast("Bookmark", "Song bookmarked!");
+            }
+        });
     }
 
+    // OK
     exports.getVerses = function getVerses() {
-        var ref = document.getElementById("remote_bibleRefID").value;
+        const ref = document.getElementById("remote_bibleRefID").value;
 
-        const bibleRefObj = new BibleReference(); //Bible Reference object
+        const bibleRefObj = new BibleReference();
 
-        const isGoodRef = bibleRefObj.init(ref);
-        //const isGoodRef = true;
-        if (!isGoodRef) {
+        if (!bibleRefObj.init(ref)) { // local check
             showToast("Bible", bibleRefObj.getErrorMessage());
         } else {
-            ref = ref.replace(/%20/g, " ");
-            var str = "action?command=7&value=" + ref + "?";
-            command = 7;
-            apiCall(str);
+            apiCall({
+                cmd: 7,
+                ref,
+            }, (json) => {
+                const {ok, data, error} = json;
+
+                if (!ok) {
+                    showToast("Bible", error);
+                } else {
+                    processVerseResponse(data);
+                }
+            });
         }
     }
 
-    function activateClicks() {
-        for (var i = 0; i < len; i++) {
-            var containerId = "VC_" + i;
-            var verseText = i + 1 + " " + verses[i].word;
-            verseObjArray[i] = new Verse(containerId, verseText, b * 1, c * 1, i, font);
-        }
-    }
-
-//*******************************************
-//  Process the Verse text for webpage
-//*******************************************
     function processVerseResponse(data) {
-        const dataobj = JSON.parse(data);
+        const verses = data.verses;
+        const book = data.book;
+        const chapter = data.chapter;
+        const font = data.font;
 
-        verses = dataobj;
+        const vDivs = [];
 
-        //console.log("Book: " + dataobj[0].bValue);
-
-        b = dataobj[0].bValue;
-        c = dataobj[0].chValue;
-
-        var str = "";
-        len = dataobj.length;
-
-        for (var i = 0; i < len; i++) {
-            var containerId = "VC_" + i;
-            //str = str + '<div class="vcClass" id="' + containerId + '" style="color:' + b_colorlist[i%b_numColor] + '">' +  dataobj[i].word + '</div>';
-            str =
-                str +
-                '<div class="vcClass" id="' +
-                containerId +
-                '" style="color:' +
-                b_colorlist[i % b_numColor] +
-                '"></div>';
+        for (let i = 0; i < verses.length; i++) {
+            const containerId = `VC_${i}`;
+            vDivs.push(`<div class="vcClass" id="${containerId}" style="color:${b_colorList[i % b_numColor]}"></div>`);
         }
 
-        return str;
-    }
+        document.getElementById("resultID").innerHTML = vDivs.join('');
 
-    function showSongList(data) {
-        const dataobj = JSON.parse(data);
-
-        fillSongs(dataobj);
+        // activateClicks
+        for (let i = 0; i < verses.length; i++) {
+            const containerId = `VC_${i}`;
+            setupVerseClick(containerId, verses[i], book * 1, chapter * 1, i + 1, font);
+        }
     }
 
     function fillSongs(data) {
-        var datalen = data.length;
-        $("#songID").empty(); //Clear the list
-        var options = "";
-        for (var i = 0; i < datalen; i++) {
-            options += '<option value="' + data[i].id + '">' + data[i].name + "</option>";
+        const el = document.getElementById("songID");
+
+        el.innerHTML = ""; // Clear the list
+
+        let options = [];
+        for (let i = 0; i < data.length; i++) {
+            options.push(`<option value="${data[i].id}">${data[i].name}</option>`);
         }
-        $("#songID").html(options);
+
+        el.innerHTML = options.join('');
     }
 
+    // OK
     exports.getSongContent = function getSongContent() {
-        //Get the index of the selected list
-        var selectedSchIndex = $("#songID").val();
-        var str = "action?command=21&value=" + selectedSchIndex + "?";
-        command = 21;
-        apiCall(str);
+        const selectedSchIndex = document.getElementById("songID").value;
+
+        if (!selectedSchIndex) {
+            showToast("Song Content", "Select a song to fetch!");
+            return;
+        }
+
+        const songId = parseInt(selectedSchIndex);
+
+        apiCall({
+            cmd: 21,
+            id: songId,
+        }, ({ok, data, error}) => {
+            if (!ok) {
+                showToast("Song Content", error);
+            } else {
+                processSongResponse(songId, data, false);
+            }
+        });
     }
 
-    function showSongLyrics(data) {
-        const dataobj = JSON.parse(data);
+    function onSongSlideClick() {
+        const slideIdx = $(this).data("index");
+        const songId = $(this).data("songId");
 
-        processSongResponse(dataobj);
-
-        //console.log("Value from server: " + dataobj[0].cat);
+        // Need index in schedule list and slide number
+        apiCall({
+            cmd: 17,
+            id: parseInt(songId),
+            index: parseInt(slideIdx),
+        });
     }
 
-    function processSongResponse(data) {
-        var name = data[0].name;
-        var font1 = data[0].font;
-        var font2 = data[0].font2;
-        var lyrics1 = data[0].lyrics;
-        var lyrics2 = data[0].lyrics2;
+    function processSongResponse(songId, songObj, isSchedule = false) {
+        const name = songObj.name;
+        const font1 = songObj.font;
+        const font2 = songObj.font2;
+        const lyrics1 = songObj.slides;
+        const lyrics2 = songObj.slides2;
 
-        var slidesArr1 = lyrics1.split("<slide>");
-        var slidesArr2 = lyrics2.split("<slide>");
+        let slidesArr1 = lyrics1;
+        let slidesArr2 = lyrics2;
 
-        var twoLine = $("#twoLinePresent2").is(":checked");
+        const twoLine = $(isSchedule ? '#twoLinePresent' : "#twoLinePresent2").is(":checked");
         if (twoLine) {
             slidesArr1 = splitIN2(slidesArr1);
             slidesArr2 = splitIN2(slidesArr2);
         }
 
-        var numofSlides = slidesArr1.length;
+        const songTitle = $(isSchedule ? '#resultSongtitleID' : '#songresultTitleID');
+        songTitle.html(`<h2>${name}</h2>`);
 
-        var resultSongtitleID = $("#songresultTitleID");
-        resultSongtitleID.html("<h2>" + name + "</h2>");
+        const resultSongID = $(isSchedule ? "#resultSongID" : '#songresultID');
+        resultSongID.html("");
 
-        var resultSongID = $("#songresultID");
-        resultSongID.html(""); //Blank out the content before new
-        //resultSongID.html("<h2>" + name + "</h2>");
+        const resultSongID2 = $(isSchedule ? "#resultSongID2" : '#songresultID2');
+        resultSongID2.html("");
 
-        var resultSongID2 = $("#songresultID2");
-        resultSongID2.html(""); //Blank out the content before new
-        //resultSongID2.html("<h2>" + name + "</h2>");
-
-        //console.log(font1);
-        for (var i = 0; i < numofSlides; i++) {
-            var unit = $("<div class='vcClass' style='color:" + colorlist[i % numColor] + "'></div>");
+        for (let i = 0; i < slidesArr1.length; i++) {
+            const unit = $(`<div class='vcClass' style='color:${colorList[i % numColor]}'></div>`);
             unit.appendTo(resultSongID);
-
             unit.css("font-family", font1);
-
-            //alert(slidesArr1[i]);
             unit.html(getFirstLine2(slidesArr1[i]));
-            //unit.html(slidesArr1[i].slice(0,15));
-
             unit.data("index", i);
+            unit.data("songId", songId);
+            unit.click(onSongSlideClick);
 
-            unit.click(function () {
-                var slidenum = $(this).data("index"); //Set the index
-                var schIndex = document.getElementById("songID").selectedIndex;
-                var val = document.getElementById("songID").options[schIndex].value;
-                var str = "action?command=17&value=" + val + "&value2=" + slidenum + "?"; //Need index in schedule list and slide number
-                //console.log("val1:" + val + "  val2:" + slidenum);
-                command = 17;
-                apiCall(str);
-            });
-
-            var unit2 = $("<div class='vcClass' style='color:" + colorlist[i % numColor] + "'></div>");
-            //unit2.style.color = "red";
+            const unit2 = $(`<div class='vcClass' style='color:${colorList[i % numColor]}'></div>`);
             unit2.appendTo(resultSongID2);
-
             unit2.css("font-family", font2);
-
             unit2.html(getFirstLine2(slidesArr2[i]));
-            //unit2.html(slidesArr2[i].slice(0,15));
-
             unit2.data("index", i);
-
-            unit2.click(function () {
-                var slidenum = $(this).data("index"); //Set the index
-                var schIndex = document.getElementById("songID").selectedIndex;
-                var val = document.getElementById("songID").options[schIndex].value;
-                var str = "action?command=17&value=" + val + "&value2=" + slidenum + "?"; //Need index in schedule list and slide number
-                command = 17;
-                apiCall(str);
-            });
+            unit2.data("songId", songId);
+            unit2.click(onSongSlideClick);
         }
     }
 
     function getFirstLine(x) {
-        var singleLine = $("#singleLine").is(":checked");
+        const singleLine = $("#singleLine").is(":checked");
         //console.log(singleLine);
         if (singleLine) {
-            var t = x.split("<BR>");
+            const t = x.split("<BR>");
             return t[0];
         } else {
             return x;
@@ -497,10 +399,10 @@
     }
 
     function getFirstLine2(x) {
-        var singleLine = $("#singleLine2").is(":checked");
+        const singleLine = $("#singleLine2").is(":checked");
         //console.log(singleLine);
         if (singleLine) {
-            var t = x.split("<BR>");
+            const t = x.split("<BR>");
             return t[0];
         } else {
             return x;
@@ -508,68 +410,19 @@
     }
 
     function apiCall(params, callback = null) {
-        const url = ['/action', new URLSearchParams(params).toString()].join("?");
+        const url = ['/action', new URLSearchParams({
+            data: btoa(JSON.stringify(params)),
+        }).toString()].join("?");
 
         fetch(url)
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                if (data !== undefined) {
-                    if (command == 16) {
-                        processSchSongResponse(data); //Process and put data here
-                    }
-
-                    if (command == 7) {
-                        console.log(data);
-                        const dataobj = JSON.parse(data);
-                        if (!dataobj[0]["goodref"]) {
-                            showToast("Bible", "Invalid Reference");
-                        } else {
-                            $("#resultID").html(processVerseResponse(data));
-                            activateClicks();
-                        }
-                    } else {
-                        if (command == 1) {
-                            if (data != "Presenting verse...") {
-                                //$( "#resultID" ).html( data );
-                                //alert("presenting : " + data);
-                            }
-                        }
-                    }
-
-                    if (command == 20) {
-                        //alert("Getting songs");
-                        //console.log(data);
-                        showSongList(data);
-                    }
-
-                    if (command == 21) {
-                        //console.log("Got song by ID" + data);
-
-                        showSongLyrics(data);
-                    }
-
-                    if (command == 30) {
-                        //console.log("Schedule received: " + data);
-                        fillSch(data);
-                    }
-
-                    if (command == 31) {
-                        //console.log("Got song by ID" + data);
-                        showSchSongLyrics(data);
-                    }
-
-                    if (command == 40) {
-                        //alert("Got config" + data);
-                    }
-
-                    if (command == 18) {
-                        //command to get song list based on search value
-                        fillSongList(data); //Defined in songs.js remote
-                    }
+                if (typeof callback === "function") {
+                    callback(data);
                 }
             })
             .catch(error => {
-                showToast("Remote VerseVIEW", "Error.. " + error);
+                showToast("Remote VerseVIEW", "API Error.. " + error);
                 if (error !== undefined) {
                     $("#resultID").html(error.statusText);
                 }
@@ -577,12 +430,13 @@
     }
 
     function showToast(title, message) {
+        const t = $(".toast");
+        t.hide();
+
         $("#toastTitle").html(title);
         $("#toastBody").html(message);
 
-        $(".toast").show();
-        setTimeout(function () {
-            $(".toast").hide();
-        }, 2000);
+        t.show();
+        setTimeout( () => t.hide(), 3000);
     }
 }(window));

@@ -26,6 +26,8 @@ a:link {
 
 .vcClass {
     padding: 6px;
+    cursor: pointer;
+    user-select: none;
 }
 
 /*  .ui-grid-d img {

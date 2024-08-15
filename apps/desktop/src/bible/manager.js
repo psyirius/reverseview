@@ -68,7 +68,7 @@ function getdataONLY() {
   $RvW.content2 = d;
 }
 function getAllVersesFromChapter(d, k) {
-  var h = new Array();
+  var h = [];
   var j = d * 1 + 1;
   var a = k * 1 + 1;
   vx = 1;

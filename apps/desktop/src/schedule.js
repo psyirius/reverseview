@@ -5,6 +5,7 @@ class schedule {
     this.processAddSong = processAddSong;
     this.processAddVerse = processAddVerse;
     this.getScheduleText = getScheduleText;
+    this.getScheduleList = getScheduleList;
     this.processRemotePresent = processRemotePresent;
     this.getSongIndexFromSch = getSongIndexFromSch;
     this.processUp = processUp;
@@ -434,6 +435,50 @@ class schedule {
       }
       return Y;
     }
+    function getScheduleList(type) {
+        let res = [];
+
+        if (t.data != null) {
+            for (let aa = 0; aa < t.data.length; aa++) {
+                const schItem = t.data[aa];
+                const name = b(schItem.isSong, schItem.book, schItem.ch, schItem.ver, schItem.songID);
+                switch (type) {
+                    case 1: {
+                        if (schItem.isSong) {
+                            res.push({
+                                type: schItem.isSong ? 0 : 1,
+                                name,
+                                id: schItem.isSong ? schItem.songID : `${schItem.book}.${schItem.ch}.${schItem.ver}`,
+                                index: aa,
+                            });
+                        }
+                        break;
+                    }
+                    case 2: {
+                        if (!schItem.isSong) {
+                            res.push({
+                                type: schItem.isSong ? 0 : 1,
+                                name,
+                                id: schItem.isSong ? schItem.songID : `${schItem.book}.${schItem.ch}.${schItem.ver}`,
+                                index: aa,
+                            });
+                        }
+                        break;
+                    }
+                    default: {
+                        res.push({
+                            type: schItem.isSong ? 0 : 1,
+                            name,
+                            id: schItem.isSong ? schItem.songID : `${schItem.book}.${schItem.ch}.${schItem.ver}`,
+                            index: aa,
+                        });
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
     function getSongIndexFromSch(Y) {
       if (t.data != null) {
         var X = t.data[Y];
@@ -559,7 +604,7 @@ class schedule {
         Y.removeEventListener(air.SQLEvent.RESULT, X);
         Y.removeEventListener(air.SQLErrorEvent.ERROR, aa);
         if (t.data != null) {
-          numofRecords = t.data.length;
+          const numofRecords = t.data.length;
           if (M == numofRecords - 1) {
             M--;
           }

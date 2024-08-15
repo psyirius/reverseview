@@ -1,5 +1,3 @@
-$RvW.songListRemote = null;
-
 // TODO: Implement an express fork using air apis
 
 const mimeTypeMap = {
@@ -56,7 +54,7 @@ class HttpRequest {
     constructor(raw) {
         this._request = null;
 
-        this._parseHead(raw);
+        this._parse(raw);
     }
 
     get method() {
@@ -110,7 +108,7 @@ class HttpRequest {
         };
     }
 
-    _parseHead(raw) {
+    _parse(raw) {
         const lines = raw.split("\r\n");
 
         if (lines.length > 0) {
@@ -175,7 +173,7 @@ class WebRequestHandler {
 
         const req = new HttpRequest(bodyStr);
 
-        this._debug_log(`${req.method}: ${req.path}${(() => {
+        this._debug_log(`${req.method}: ${req.fullpath}${(() => {
             if (Object.keys(req.params).length > 0) {
                 return '\n' + JSON.stringify(req.params);
             }
@@ -244,51 +242,199 @@ class WebRequestHandler {
         }
     }
 
-    _handleApiRequest(params) {
-        const {cmd, args} = params;
+    _sendJSON(data = {}) {
+        const clientSocket = this.m_clientSocket;
+
+        clientSocket.writeUTFBytes("HTTP/1.1 200 OK\n");
+        clientSocket.writeUTFBytes(`Content-Type: ${mimeTypeMap['.json']}\n\n`);
+        clientSocket.writeUTFBytes(JSON.stringify(data));
+        clientSocket.flush();
+    }
+
+    _handleApiRequest({ data }) {
+        const {cmd, ...args} = JSON.parse(atob(data));
 
         this._debug_log(`Command<${cmd}>: ${JSON.stringify(args, null, 2)}`);
 
         switch (parseInt(cmd)) {
             // NEW COMMANDS
-            // Bible Ref : Search Chapter
-            // Bible Ref : Present Verse
 
             // Menu: Blank
+            case 15: {
+                $RvW.webEngineObj.blankPresentation();
+                this._sendJSON({
+                    ok: true,
+                    data: 'Blank activated',
+                });
+                break;
+            }
             // Menu: Logo
+            case 14: {
+                $RvW.webEngineObj.logoPresentation();
+                this._sendJSON({
+                    ok: true,
+                    data: "Logo Activated",
+                });
+                break;
+            }
             // Menu: Close
-            // Menu: Next
-            // Menu: Previous
+            case 4: {
+                $RvW.webEngineObj.closePresentation();
+                this._sendJSON({
+                    ok: true,
+                    data: "Close Activated",
+                });
+                break;
+            }
+            // Menu: Previous Verse/Slide
+            case 3: {
+                $RvW.webEngineObj.prevSlide();
+                this._sendJSON({
+                    ok: true,
+                    data: "Previous Slide OK..",
+                });
+                break;
+            }
+            // Menu: Next Verse/Slide
+            case 2: {
+                $RvW.webEngineObj.nextSlide();
+                this._sendJSON({
+                    ok: true,
+                    data: "Next slide OK..",
+                });
+                break;
+            }
+
+            // Bible Ref : Search Chapter
+            case 7: {
+                if ($RvW.bibleRefObj.init(args.ref)) {
+                    const font = $RvW.bibleRefObj.getVerseFont();
+                    const book = $RvW.bibleRefObj.getBook();
+                    const chapter = $RvW.bibleRefObj.getChapter();
+                    const verses = getAllVersesFromChapter(book, chapter - 1);
+
+                    this._sendJSON({
+                        ok: true,
+                        data: {
+                            verses,
+                            book,
+                            font,
+                            chapter,
+                        }
+                    });
+                } else {
+                    this._sendJSON(({
+                        ok: false,
+                        error: $RvW.bibleRefObj.getErrorMessage()
+                    }));
+                }
+
+                break;
+            }
+            // Bible Ref : Present Verse
+            case 8: {
+                const [book, chapter, verse] = args.ref;
+
+                // convert to indexes
+                $RvW.present_external(book - 1, chapter - 1, verse - 1);
+
+                this._sendJSON({
+                    ok: true,
+                    data: 'Presenting verse...'
+                });
+
+                break;
+            }
 
             // Songs: Search
-            // Songs: Get Lyrics
+            case 20: {
+                $RvW.songManagerObj.getAllTitlesForWeb(args.query, (err, res) => {
+                    if (err) {
+                        this._sendJSON({
+                            ok: false,
+                            error: err,
+                        });
+                    } else {
+                        air.trace(JSON.stringify(res));
+
+                        this._sendJSON({
+                            ok: true,
+                            data: res,
+                        });
+                    }
+                });
+
+                break;
+            }
+            // Songs: Get Content
+            case 21: {
+                const song = $RvW.songManagerObj.getSongObjWithID(args.id);
+
+                this._sendJSON({
+                    ok: true,
+                    data: {
+                        id: song.id,
+                        name: song.name,
+                        font: song.font,
+                        font2: song.font2,
+                        slides: song.slides,
+                        slides2: song.slides2,
+                    },
+                });
+
+                break;
+            }
             // Songs: Add to Schedule
+            case 22: {
+                $RvW.scheduleObj.processAddSong(args.id);
+
+                this._sendJSON({
+                    ok: true,
+                    data: 'Song added to schedule...',
+                });
+                break;
+            }
+            // Songs: Present Slide
+            case 17: { // Present Song Slide
+                const song = $RvW.songManagerObj.getSongObjWithID(args.id);
+                air.trace('Song: ' + JSON.stringify(song));
+                const spo = new songPresentObj();
+                spo.init(song);
+                spo.present(args.index);
+
+                this._sendJSON({
+                    ok: true,
+                    data: 'Presenting song slide...'
+                });
+                break;
+            }
 
             // Schedule: Fetch
-            // Schedule: Get Content
+            case 30: {
+                const res = $RvW.scheduleObj.getScheduleList(0 /* All */);
 
-            case 8: { // Present Verse
-                const [book, chapter, verse] = args.ref.split(":");
-                $RvW.present_external(book, chapter, verse);
-                this._sendTextHtml("Presenting Verse...");
+                this._sendJSON({
+                    ok: true,
+                    data: res,
+                });
                 break;
             }
-            case 30: { // Get Schedule
-                const res = $RvW.scheduleObj.getScheduleText(0);
-                this._sendTextHtml(res);
-                break;
-            }
-            case 31: { // Get Schedule Content
-                const songId = $RvW.scheduleObj.getSongIndexFromSch(parseInt(args.index));
+            // Schedule: Get Content
+            case 31: { // Only for lyrics
+                const songId = $RvW.scheduleObj.getSongIndexFromSch(args.index);
                 const song = $RvW.songManagerObj.getSongObjWithID(songId);
-                const songDate = $RvW.webEngineObj.processSong(song);
-                this._sendTextHtml(songDate);
-                break;
-            }
-            case 17: { // Present Song Slide
-                break;
-            }
-            case 10: { // Present Schedule
+
+                this._sendJSON({
+                    ok: true,
+                    data: {
+                        id: song.id,
+                        name: song.name,
+                        font: song.font,
+                        font2: song.font2,
+                        slides: song.slides,
+                        slides2: song.slides2,
+                    },
+                });
                 break;
             }
 
@@ -307,34 +453,9 @@ class WebRequestHandler {
                 }
                 break;
             }
-            case "2": { // Next Slide
-                $RvW.webEngineObj.nextSlide();
-                this._sendTextHtml("Next slide OK....");
-                break;
-            }
-            case "3": { // Previous Slide
-                $RvW.webEngineObj.prevSlide();
-                this._sendTextHtml("Previous Slide OK..");
-                break;
-            }
-            case "4": { // Close Presentation
-                $RvW.webEngineObj.closePresentation();
-                this._sendTextHtml("Close Activated");
-                break;
-            }
             case "13": { // Theme Slide
                 $RvW.webEngineObj.themePresentation();
                 this._sendTextHtml("Theme Activated");
-                break;
-            }
-            case "14": { // Logo Slide
-                $RvW.webEngineObj.logoPresentation();
-                this._sendTextHtml("Logo Activated");
-                break;
-            }
-            case "15": { // Blank Slide
-                $RvW.webEngineObj.blankPresentation();
-                this._sendTextHtml("Blank Activated");
                 break;
             }
             case "10": { // Present Schedule
@@ -355,11 +476,6 @@ class WebRequestHandler {
                 }
                 break;
             }
-            case "17": { // Present Song Slide
-                $RvW.scheduleObj.processRemotePresent(cmd_arg1, cmd_arg2);
-                this._sendTextHtml("Presenting song slide");
-                break;
-            }
             case "9": { // Get Stage View Content
                 this._sendTextHtml($RvW.webEngineObj.stageViewContent());
                 break;
@@ -376,13 +492,6 @@ class WebRequestHandler {
                 const msgXY = cmd_arg1.split("|");
                 $RvW.vvchatQObj.addMsg(msgXY[0], msgXY[1]);
                 this._sendTextHtml("12<command>Mission Accomplished");
-                break;
-            }
-            case "18": { // Get All Songs
-                $RvW.songManagerObj.getAllTitlesForWeb(cmd_arg1);
-                $("#command18").on("click", () => {
-                    this._sendTextHtml($RvW.songListRemote);
-                });
                 break;
             }
             case "20": { // Get Chords

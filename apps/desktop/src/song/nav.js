@@ -310,29 +310,38 @@ class SongNav {
       }
       U();
     }
-    function get_songList(am, aq, at) {
-      var al = "";
-      if (am.data != null) {
-        var ao = am.data.length;
-        for (var ap = 0; ap < ao; ap++) {
-          if (aq == "_ALL") {
-            var ar = am.data[ap].name;
-            var an = C(ar, at);
-            if (an) {
-              al = al + ar + "|";
+    function get_songList(sqlResult, category, query) {
+        let res = [];
+
+        if (sqlResult.data != null) {
+            const { data } = sqlResult;
+
+            for (let ii = 0; ii < data.length; ii++) {
+                if (category === "_ALL") {
+                    const ar = data[ii].name;
+                    const an = C(ar, query);
+                    if (an) {
+                        res.push({
+                            id: data[ii].id,
+                            name: ar
+                        })
+                    }
+                } else {
+                    if (data[ii].cat === category) {
+                        const ar = data[ii].name;
+                        const an = C(ar, query);
+                        if (an) {
+                            res.push({
+                                id: data[ii].id,
+                                name: ar
+                            })
+                        }
+                    }
+                }
             }
-          } else {
-            if (am.data[ap].cat == aq) {
-              var ar = am.data[ap].name;
-              var an = C(ar, at);
-              if (an) {
-                al = al + ar + "|";
-              }
-            }
-          }
         }
-      }
-      return al;
+
+        return res;
     }
     function update_CategoryList(ap) {
       var ao = ap;
