@@ -54,7 +54,7 @@
 
     exports.getSchContent = function getSchContent() {
         //getConfigValue();
-        const selectedSchIndex = $("#schID").val();
+        const selectedSchIndex = document.getElementById("schID").value;
         command = 31;
         apiCall({
             cmd: command,
@@ -170,21 +170,18 @@
 
         var numofSlides = slidesArr1.length;
 
-        var resultSongtitleID = $("#resultSongtitleID");
-        resultSongtitleID.html("<h2>" + name + "</h2>");
-
-        var resultSongID = $("#resultSongID");
-        resultSongID.html(""); //Blank out the content before new
-        //resultSongID.html("<h2>" + name + "</h2>");
-
-        var resultSongID2 = $("#resultSongID2");
-        resultSongID2.html(""); //Blank out the content before new
-        //resultSongID2.html("<h2>" + name + "</h2>");
+        document.getElementById('resultSongtitleID').innerHTML = `<h2>${name}</h2>`;
+        document.getElementById('resultSongID').innerHTML = (""); //Blank out the content before new
+        document.getElementById('resultSongID2').innerHTML = (""); //Blank out the content before new
 
         //console.log(font1);
         //twoLinePresent
-        for (var i = 0; i < numofSlides; i++) {
-            var unit = $("<div class='vcClass' style='color:" + colorlist[i % numColor] + "'></div>");
+
+        const resultSongID = $("#resultSongID");
+        const resultSongID2 = $("#resultSongID2");
+
+        for (let i = 0; i < numofSlides; i++) {
+            const unit = $(`<div class='vcClass' style='color:${colorlist[i % numColor]}'></div>`);
             unit.appendTo(resultSongID);
 
             unit.css("font-family", font1);
@@ -196,16 +193,16 @@
             unit.data("index", i);
 
             unit.click(function () {
-                var slidenum = $(this).data("index"); //Set the index
-                var schIndex = document.getElementById("schID").selectedIndex;
-                var val = document.getElementById("schID").options[schIndex].value;
-                var str = "action?command=17&value=" + val + "&value2=" + slidenum + "?"; //Need index in schedule list and slide number
+                const slidenum = $(this).data("index"); //Set the index
+                const schIndex = document.getElementById("schID").selectedIndex;
+                const val = document.getElementById("schID").options[schIndex].value;
+                const str = `action?command=17&value=${val}&value2=${slidenum}?`; //Need index in schedule list and slide number
                 //console.log("val1:" + val + "  val2:" + slidenum);
                 command = 17;
                 apiCall(str);
             });
 
-            var unit2 = $("<div class='vcClass' style='color:" + colorlist[i % numColor] + "'></div>");
+            const unit2 = $(`<div class='vcClass' style='color:${colorlist[i % numColor]}'></div>`);
             //unit2.style.color = "red";
             unit2.appendTo(resultSongID2);
 
@@ -217,10 +214,10 @@
             unit2.data("index", i);
 
             unit2.click(function () {
-                var slidenum = $(this).data("index"); //Set the index
-                var schIndex = document.getElementById("schID").selectedIndex;
-                var val = document.getElementById("schID").options[schIndex].value;
-                var str = "action?command=17&value=" + val + "&value2=" + slidenum + "?"; //Need index in schedule list and slide number
+                const slidenum = $(this).data("index"); //Set the index
+                const schIndex = document.getElementById("schID").selectedIndex;
+                const val = document.getElementById("schID").options[schIndex].value;
+                const str = `action?command=17&value=${val}&value2=${slidenum}?`; //Need index in schedule list and slide number
                 command = 17;
                 apiCall(str);
             });
