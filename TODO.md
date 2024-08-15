@@ -19,6 +19,8 @@
 - [ ] add astro to the remote project if needed
 - [ ] TODO: Fix remote stageview and lowerthird
 - [ ] Run remote server in a worker 
+- [ ] Remove included images and keep 1 or two images for basic usage
+- [ ] Add motion backgrounds
 - [ ] Run presentation rendering in a worker and stream it to the screen
 - [ ] utilize application sandboxing to unlock the full potential of the application
   - https://help.adobe.com/en_US/air/html/security/WS485a42d56cd1964150c3d3a8124ef1cbd62-7ffe.html
