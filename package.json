@@ -6,6 +6,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "clean": "turbo clean",
+    "package": "turbo package",
     "format": "biome format --write \"**/*.{js,jsx,ts,tsx}\"",
     "prepare": "turbo telemetry disable"
   },

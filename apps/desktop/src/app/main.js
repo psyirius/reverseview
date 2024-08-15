@@ -1,7 +1,7 @@
 // import SongEdit from '../song/edit.js';
 
 // NOTE: DISABLE IF PROD
-$RvW.isDev = true;
+$RvW.isDev = false;
 
 if ($RvW.isDev) {
     console.log("Main.js", $RvW);
