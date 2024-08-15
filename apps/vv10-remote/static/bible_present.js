@@ -133,7 +133,7 @@ function splitIN2(s) {
 	//console.log("Slide: " + s);
 
 	var len = s.length;
-	var newSlides = new Array();
+	var newSlides = [];
 	//console.log("Slide length " + len);
 
 	for (var i = 0; i < len; i++) {
