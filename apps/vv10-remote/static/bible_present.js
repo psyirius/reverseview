@@ -28,9 +28,7 @@ var numColor = colorlist.length;
 var b_colorlist = ["black","#0000FF"];
 var b_numColor = b_colorlist.length;
 
-var verseObjArray = new Array();
-
-
+var verseObjArray = [];
 
 function verseClass() {
 	this.init = init;
