@@ -19,6 +19,7 @@
 - [ ] add astro to the remote project if needed
 - [ ] TODO: Fix remote stageview and lowerthird
 - [ ] Run remote server in a worker 
+- [ ] Run presentation rendering in a worker and stream it to the screen
 - [ ] utilize application sandboxing to unlock the full potential of the application
   - https://help.adobe.com/en_US/air/html/security/WS485a42d56cd1964150c3d3a8124ef1cbd62-7ffe.html
   - https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f08.html
@@ -38,6 +39,38 @@ https://github.com/yaniswang/hostsPlus
 https://github.com/ydoug33/ts4air
 https://github.com/hydroper
 https://github.com/yui/yui3-swfs
+https://github.com/MaxDidIt/firetype
+https://github.com/rakuten/MovieSheet
+https://github.com/deminearchiver/Depth3D
+https://github.com/shoito/as3webstorage
+https://github.com/Korilakkuma/HTMLMediaElementSimulator
+https://github.com/EtherDream/webworker.swc
+https://github.com/adobe-research/ActionScript4
+https://github.com/HaxeFoundation/as3hx
+https://github.com/renaun/ActionScriptExamples
+https://github.com/arthur-debert/BulkLoader
+https://github.com/sephiroth74/purePDF
+https://github.com/minimalcomps/minimalcomps
+https://github.com/nshen/as2ts
+https://github.com/charlesbihis/actionscript-notification-engine
+https://github.com/mherkender/actionjson
+https://github.com/drewbourne/asx
+https://github.com/stevewoolcock/AssetManager
+https://github.com/jeremyruppel/as3-router
+https://github.com/swellee/LeUI
+https://github.com/airsdk/apm
+https://github.com/nidin/as3-image-library
+https://github.com/nihen/JSocket
+https://github.com/degdeg/as3socket
+https://github.com/chadrem/amf_socket
+https://github.com/suxianbaozi/websocket4ie
+https://github.com/Corsaair/spitfire
+https://github.com/AS3Commons/as3commons-collections
+https://github.com/mikechambers/as3corelib
+https://github.com/CC-Archived/promise-as3
+https://github.com/theturtle32/AS3WebSocket
+https://github.com/richardlord/Actionscript-Toolkit
+https://github.com/jacksonkr/actionscript
 
 https://nextgenactionscript.com/tools-and-utilities/
 

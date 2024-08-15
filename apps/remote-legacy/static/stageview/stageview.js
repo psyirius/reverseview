@@ -6,8 +6,6 @@ var maxfont = 50;
 var firstTime = true;
 
 /* FORMATTING CODE STARTS HERE */
-var command;
-
 var timeVar;
 
 var p_title;
@@ -19,11 +17,6 @@ var p_text2;
 var greenScreen = false;
 var showdatetime = false;
 var alertmessage = "";
-
-/* USE TO IMPLEMENT A GO HOME BUTTON */
-function goHome() {
-    location.href = "index.html";
-}
 
 /* SETUP THE AJAX PARAMETERS */
 function getStageViewContent() {
@@ -53,6 +46,7 @@ function getStageViewContent() {
             } else {
                 $("#mainContainer").fadeIn();
                 parseLower3rdResponse(data);
+                processLower3rdResponse(); // in theme js files
             }
             startTimer();
         });

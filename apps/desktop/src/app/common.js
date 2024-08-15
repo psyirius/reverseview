@@ -577,9 +577,9 @@ function pluckapple() {
   }
 }
 function presentationContentString(d, b, f, c, a) {
-  if (c === "" && a === "") {
-    return "";
-  }
+    if (c === "" && a === "") {
+        return "";
+    }
     return `${d}<newelement>${b}<newelement>${f}<newelement>${c}<newelement>${a}`;
 }
 function fixHTTPS_Link(a) {

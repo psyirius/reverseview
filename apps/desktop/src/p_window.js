@@ -41,8 +41,8 @@ function passVariable(o) {
     this.p_font_color = p_font_color;
     this.p_font_color2 = p_font_color2;
     this.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
-    if (o == 1) {
-        var f = $("#thirdview_fcolor").val();
+    if (o === 1) {
+        const f = $("#thirdview_fcolor").val();
         this.p_font_color = $RvW.colorChart[f];
         this.p_font_color2 = $RvW.colorChart[f];
     }

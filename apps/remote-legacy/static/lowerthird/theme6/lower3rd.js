@@ -4,8 +4,6 @@ var minfont = 20; /* Adjust as needed */
 var maxfont = 50;
 
 /* FORMATTING CODE STARTS HERE */
-var command;
-
 var timeVar;
 
 var p_title;
@@ -14,17 +12,9 @@ var p_font2;
 var p_text1;
 var p_text2;
 
-/* USE TO IMPLEMENT A GO HOME BUTTON */
-function goHome() {
-    location.href = "index.html";
-}
-
 /* SETUP THE AJAX PARAMETERS */
 function getStageViewContent() {
     stopTimer();
-    var str = "/action?cmd=9"; //Command to get the content of the presentation
-    command = 9;
-    ajax(str);
 
     // Command to get the content of the presentation
     apiCall({ cmd: 9 }, ({ ok, error, data }) => {
@@ -45,7 +35,7 @@ function getStageViewContent() {
             $("#mainContainer").fadeIn();
             $("body").addClass("greenScreenColor");
             parseLower3rdResponse(data);
-            processLower3rdResponse();
+            processLower3rdResponse(); // in theme js files
         }
         startTimer();
     });
