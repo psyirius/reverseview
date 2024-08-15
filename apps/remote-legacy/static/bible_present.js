@@ -509,14 +509,9 @@
     function apiCall(params, callback = null) {
         const url = ['/action', new URLSearchParams(params).toString()].join("?");
 
-        $.ajax({
-            type: "GET",
-            url,
-            async: true,
-            dataType: "text",
-            success: function (data) {
-                //alert("success");
-
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
                 if (data !== undefined) {
                     if (command == 16) {
                         processSchSongResponse(data); //Process and put data here
@@ -571,14 +566,13 @@
                         fillSongList(data); //Defined in songs.js remote
                     }
                 }
-            },
-            error: function (data) {
-                showToast("Remote VerseVIEW", "Error.. " + data);
-                if (data !== undefined) {
-                    $("#resultID").html(data.statusText);
+            })
+            .catch(error => {
+                showToast("Remote VerseVIEW", "Error.. " + error);
+                if (error !== undefined) {
+                    $("#resultID").html(error.statusText);
                 }
-            },
-        });
+            });
     }
 
     function showToast(title, message) {
