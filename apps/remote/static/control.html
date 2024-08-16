@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ReVerseVIEW Remote</title>
+
+    <link rel="stylesheet" href="jslib/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="vv.css" />
+    <link rel="stylesheet" href="fonts.css" />
+  </head>
+
+  <body>
+    <div class="container-fluid h-100">
+      <!-- Tab Headers -->
+      <ul class="nav nav-tabs" id="ControlTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="bible-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#bible-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="bible-tab-pane"
+            aria-selected="true"
+          >
+            BIBLE
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="songs-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#songs-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="songs-tab-pane"
+            aria-selected="false"
+          >
+            SONGS
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="schedule-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#schedule-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="schedule-tab-pane"
+            aria-selected="false"
+          >
+            SCHEDULE
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active bible-tab-pane"
+          id="bible-tab-pane"
+          role="tabpanel"
+          aria-labelledby="bible-tab"
+          tabindex="0"
+        >
+          <label class="fw-semibold">Reference</label>
+          <div class="row py-2">
+            <div class="col-5">
+              <input type="text" class="form-control form-control-lg" id="remote_bibleRefID" placeholder="" />
+            </div>
+
+            <div class="col-5">
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_bible_get"
+                onClick="getVerses()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Get the whole chapter"
+              >
+                <img src="icons/search.svg" alt="" />
+              </a>
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_bible_present"
+                onClick="getBibleRef()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Present Verse"
+              >
+                <img src="icons/tv.svg" alt="" />
+              </a>
+            </div>
+          </div>
+
+          <div class="row py-2">
+            <div class="col-5">
+              <div class="btn-group btn-group-lg" role="group" aria-label="Control">
+                <button
+                  type="button"
+                  id="iconBlank0"
+                  class="btn btn-light"
+                  onClick="blankPresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Blank Presentation"
+                >
+                  <img src="icons/tv.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconLogo0"
+                  class="btn btn-light"
+                  onClick="logoPresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Logo Presentation"
+                >
+                  <img src="icons/image.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconClose0"
+                  class="btn btn-light"
+                  onClick="closePresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Close Presentation"
+                >
+                  <img src="icons/x-square.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconPrev0"
+                  class="btn btn-light"
+                  onClick="goPrevious()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Previous Slide"
+                >
+                  <img src="icons/arrow-left-circle.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconNext0"
+                  class="btn btn-light"
+                  onClick="goNext()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Next Slide"
+                >
+                  <img src="icons/arrow-right-circle.svg" alt="" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row py-2">
+            <div class="col-12">
+              <div id="resultID" class="verseStyle"></div>
+            </div>
+            <div class="row"><br /><br /></div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade songs-tab-pane"
+          id="songs-tab-pane"
+          role="tabpanel"
+          aria-labelledby="songs-tab"
+          tabindex="0"
+        >
+          <label class="fw-semibold">Search Song</label>
+
+          <div class="row py-2">
+            <div class="col-5">
+              <input type="text" class="form-control form-control-lg" id="remote_songSearchID" placeholder="" />
+            </div>
+
+            <div class="col-6">
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_song_search"
+                onClick="getSongList()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Search for songs"
+              >
+                <img src="icons/search.svg" alt="" />
+              </a>
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_song_get"
+                onClick="getSongContent()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Get Song Lyrics"
+              >
+                <img src="icons/cloud-download.svg" alt="" />
+              </a>
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_song_bookmark"
+                onClick="setSongBookmark()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Bookmark song"
+              >
+                <img src="icons/bookmark-plus.svg" alt="" />
+              </a>
+            </div>
+          </div>
+
+          <div class="row py-2">
+            <div class="col-10">
+              <select
+                class="form-select form-select-lg"
+                size="1"
+                id="songID"
+                aria-label="size 3 select example"
+              ></select>
+            </div>
+          </div>
+
+          <div class="col-5">
+            <input type="checkbox" id="singleLine2" /> First Line
+
+            <input type="checkbox" id="twoLinePresent2" /> Two Line Presentation
+          </div>
+
+          <div class="row py-2">
+            <div class="col-5">
+              <div class="btn-group btn-group-lg" role="group" aria-label="Control">
+                <button
+                  type="button"
+                  id="iconBlank1"
+                  class="btn btn-light"
+                  onClick="blankPresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Blank Presentation"
+                >
+                  <img src="icons/tv.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconLogo1"
+                  class="btn btn-light"
+                  onClick="logoPresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Logo Presentation"
+                >
+                  <img src="icons/image.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconClose1"
+                  class="btn btn-light"
+                  onClick="closePresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Close Presentation"
+                >
+                  <img src="icons/x-square.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconPrev1"
+                  class="btn btn-light"
+                  onClick="goPrevious()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Previous Slide"
+                >
+                  <img src="icons/arrow-left-circle.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconNext1"
+                  class="btn btn-light"
+                  onClick="goNext()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Next Slide"
+                >
+                  <img src="icons/arrow-right-circle.svg" alt="" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row py-2">
+            <div class="col-12">
+              <div id="songresultTitleID"></div>
+
+              <div class="row">
+                <div id="songresultID" class="column"></div>
+                <div id="songresultID2" class="column"></div>
+              </div>
+              <div class="row"><br /><br /></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade schedule-tab-pane"
+          id="schedule-tab-pane"
+          role="tabpanel"
+          aria-labelledby="schedule-tab"
+          tabindex="0"
+        >
+          <div class="row py-2">
+            <div class="col-6">
+              <select
+                class="form-select form-select-lg"
+                size="1"
+                id="schID"
+                aria-label="size 3 select example"
+              ></select>
+            </div>
+
+            <div class="col-5">
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_sch_get"
+                onClick="getSch()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Get the schedule"
+              >
+                <img src="icons/arrow-repeat.svg" alt="" />
+              </a>
+              <a
+                href="#"
+                class="btn btn-light btn-lg"
+                id="remote_sch_present"
+                onClick="getSchContent()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Get the lyrics"
+              >
+                <img src="icons/cloud-download.svg" alt="" />
+              </a>
+            </div>
+
+            <div class="col-5">
+              <input type="checkbox" id="singleLine" /> First Line
+
+              <input type="checkbox" id="twoLinePresent" /> Two Line Presentation
+            </div>
+          </div>
+
+          <div class="row py-2">
+            <div class="col-5">
+              <div class="btn-group btn-group-lg" role="group" aria-label="Control">
+                <button
+                  type="button"
+                  id="iconBlank2"
+                  class="btn btn-light"
+                  onClick="blankPresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Blank Presentation"
+                >
+                  <img src="icons/tv.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconLogo2"
+                  class="btn btn-light"
+                  onClick="logoPresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Logo Presentation"
+                >
+                  <img src="icons/image.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconClose2"
+                  class="btn btn-light"
+                  onClick="closePresentWindow()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Close Presentation"
+                >
+                  <img src="icons/x-square.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconPrev2"
+                  class="btn btn-light"
+                  onClick="goPrevious()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Previous Slide"
+                >
+                  <img src="icons/arrow-left-circle.svg" alt="" />
+                </button>
+
+                <button
+                  type="button"
+                  id="iconNext2"
+                  class="btn btn-light"
+                  onClick="goNext()"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Next Slide"
+                >
+                  <img src="icons/arrow-right-circle.svg" alt="" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row py-2">
+            <div class="col-12">
+              <div id="resultSongtitleID"></div>
+
+              <div class="row">
+                <div id="resultSongID" class="column"></div>
+                <div id="resultSongID2" class="column"></div>
+              </div>
+              <div class="row"><br /><br /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto" id="toastTitle"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toastBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="jslib/jquery.slim.min.js"></script>
+
+    <script type="text/javascript" src="jslib/popper.min.js"></script>
+    <script type="text/javascript" src="jslib/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="bible_reference.js"></script>
+    <script type="text/javascript" src="bible_present.js"></script>
+  </body>
+</html>

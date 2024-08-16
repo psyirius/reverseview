@@ -11,7 +11,7 @@
   "dependencies": {
     "@rvw/flash-bootloader": "workspace:*",
     "@rvw/flash-support": "workspace:*",
-    "@rvw/remote-legacy": "workspace:*",
+    "@rvw/remote": "workspace:*",
     "@rvw/bible-db": "workspace:*",
     "@rvw/chords-db": "workspace:*",
     "@rvw/songs-db": "workspace:*",

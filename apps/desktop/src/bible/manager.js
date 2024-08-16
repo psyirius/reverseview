@@ -2,23 +2,22 @@ $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;
 
 function loadSQLBible(c, b) {
-  $RvW.bibledbObj[b] = new BibleDB();
-  var a = null;
-  if ($RvW.bibleVersionArray[c] == null) {
-    c = 1;
-    rvw.ui.Toast.show("Bible Database", "Please select the Bible translation of choice");
-    if (b == 1) {
-      $RvW.vvConfigObj.set_version1(1);
-    } else {
-      $RvW.vvConfigObj.set_version2(1);
+    $RvW.bibledbObj[b] = new BibleDB();
+    if ($RvW.bibleVersionArray[c] == null) {
+        c = 1;
+        rvw.ui.Toast.show("Bible Database", "Please select the Bible translation of choice");
+        if (b === 1) {
+            $RvW.vvConfigObj.set_version1(1);
+        } else {
+            $RvW.vvConfigObj.set_version2(1);
+        }
     }
-  }
-  a = "./bible/" + $RvW.bibleVersionArray[c][1];
-  $RvW.bibledbObj[b].init(a);
+    const a = `./bible/${$RvW.bibleVersionArray[c][1]}`;
+    $RvW.bibledbObj[b].init(a);
 }
 function getdata(j) {
-  var g = new Array();
-  var f = new Array();
+  var g = [];
+  var f = [];
   var e = $RvW.bookIndex * 1 + 1;
   var a = $RvW.chapterIndex * 1 + 1;
   vx = 1;

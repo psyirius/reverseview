@@ -9,14 +9,14 @@
       "dependsOn": [
         "@rvw/flash-bootloader#build",
         "@rvw/flash-support#build",
-        "@rvw/remote-legacy#build"
+        "@rvw/remote#build"
       ]
     },
     "@rvw/desktop#dev": {
       "dependsOn": [
         "@rvw/flash-bootloader#build",
         "@rvw/flash-support#build",
-        "@rvw/remote-legacy#build"
+        "@rvw/remote#build"
       ],
       "cache": false
     },

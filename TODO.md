@@ -13,7 +13,6 @@
 - [ ] prisma schemas for local dbs
 - [ ] add Apache Flex, FlexJS
 - [ ] add asconfig json schema
-- [ ] move air types to typescript lib
 - [ ] compile bible and songbooks from readable src
 - [ ] compile assets and fonts into swf bundle
 - [ ] add astro to the remote project if needed
@@ -21,6 +20,11 @@
 - [ ] Run remote server in a worker 
 - [ ] Remove included images and keep 1 or two images for basic usage
 - [ ] Add motion backgrounds
+- [ ] Checkout flash.media.StageWebView
+- [ ] A Http server in actionscript
+- [ ] A Websocket server in actionscript
+- [ ] A Socket.io server in actionscript
+- [ ] Use WebSockets in the remote viewers
 - [ ] Run presentation rendering in a worker and stream it to the screen
 - [ ] utilize application sandboxing to unlock the full potential of the application
   - https://help.adobe.com/en_US/air/html/security/WS485a42d56cd1964150c3d3a8124ef1cbd62-7ffe.html
@@ -28,6 +32,8 @@
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f11.html
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7e5a.html
 
+https://github.com/Corsaair/httplib
+https://github.com/gimite/web-socket-js
 https://github.com/shockpkg
 https://github.com/shockpkg/packages/tree/master/packages/
 https://github.com/shockpkg/packages/blob/master/packages/air-sdk
@@ -52,6 +58,7 @@ https://github.com/HaxeFoundation/as3hx
 https://github.com/renaun/ActionScriptExamples
 https://github.com/arthur-debert/BulkLoader
 https://github.com/sephiroth74/purePDF
+https://github.com/benkuper/AIR-NativeExtensions
 https://github.com/minimalcomps/minimalcomps
 https://github.com/nshen/as2ts
 https://github.com/charlesbihis/actionscript-notification-engine
@@ -63,7 +70,7 @@ https://github.com/swellee/LeUI
 https://github.com/airsdk/apm
 https://github.com/nidin/as3-image-library
 https://github.com/nihen/JSocket
-https://github.com/degdeg/as3socket
+https://github.com/fminzoni/ActionBSON
 https://github.com/chadrem/amf_socket
 https://github.com/suxianbaozi/websocket4ie
 https://github.com/Corsaair/spitfire

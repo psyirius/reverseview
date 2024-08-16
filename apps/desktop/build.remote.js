@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { fileURLToPath } from 'url'
 
 const WEB_ROOT = '.air/webroot';
-const DEP_PACKAGE = '@rvw/remote-legacy';
+const DEP_PACKAGE = '@rvw/remote';
 
 const remotePkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.json'));
 

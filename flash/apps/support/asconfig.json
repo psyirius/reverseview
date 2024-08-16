@@ -1,6 +1,6 @@
 {
   "type": "lib",
-  "config": "flex",
+  "config": "air",
   "compilerOptions": {
     "source-path": [
       "src"
@@ -15,6 +15,6 @@
     "strict": true,
     "debug": false,
     "directory": true,
-    "output": "lib"
+    "output": "bin"
   }
 }

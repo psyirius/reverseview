@@ -134,7 +134,7 @@ class BibleDB {
     }
     function E() {
       var ai = ag.data.length;
-      var al = new Array();
+      var al = [];
       for (var ak = 0; ak < ai; ak++) {
         var aj = ag.data[ak];
         al.push(aj.verseNum + " " + aj.word);
@@ -143,7 +143,7 @@ class BibleDB {
     }
     function J() {
       var ai = S.data.length;
-      var al = new Array();
+      var al = [];
       for (var ak = 0; ak < ai; ak++) {
         var aj = S.data[ak];
         al.push(aj.verseNum + " " + aj.word);
