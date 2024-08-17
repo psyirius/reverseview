@@ -94,7 +94,7 @@ class SongNav {
 
       inputNode.ac.on("select", (e) => {
         __debug("AC Select => " + e.itemNode.get("text"));
-        this.sn_searchSong();
+        sn_searchSong();
       });
 
       Z();
@@ -107,30 +107,30 @@ class SongNav {
       s = true;
     }
     function Z() {
-      var al = new ImageIcon(
+      new ImageIcon(
         "songnav_searchbutton",
         " SEARCH Song Lyrics ",
         "graphics/icon/search_32.png",
         "graphics/icon/search_32.png",
         ""
       );
-      var al = new ImageIcon(
+      new ImageIcon(
         "songnav_searchauthorbutton",
         " SEARCH Song by Author ",
         "graphics/icon/search_author_32.png",
         "graphics/icon/search_author_32.png",
         ""
       );
-      var am = new ImageIcon(
+      new ImageIcon(
         "songnav_clearbutton",
         " CLEAR Search ",
         "graphics/icon/clearsearch_32.png",
         "graphics/icon/clearsearch_32.png",
         ""
       );
+
       roundSearchBox(document.getElementById("songnav_filterbox"));
-      document.getElementById("songnav_filterbox").style.margin =
-        "2px 0px 0px 10px";
+      document.getElementById("songnav_filterbox").style.margin = "2px 0px 0px 10px";
       roundSearchBox(document.getElementById("songnav_editbox"));
     }
     function l() {
