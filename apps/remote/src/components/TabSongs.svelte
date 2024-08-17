@@ -29,7 +29,10 @@
         });
         songMeta = new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve({ title: e.target.innerText, description: e.target.innerText });
+                resolve({
+                    title: e.target.innerText,
+                    description: e.target.innerText,
+                });
             }, 1000);
         });
         slidesPaneCollapsed = false;
@@ -133,9 +136,10 @@
                                             <Separator class="my-2" />
                                         {/if}
                                         <div
-                                            class="cursor-pointer bg-opacity-50 flex flex-row justify-between items-center gap-2"
+                                            class="bg-opacity-50 flex flex-row justify-between items-center gap-2"
                                         >
                                             <div
+                                                class="cursor-pointer"
                                                 on:click={openSlidePanel}
                                                 on:keyup={openSlidePanel}
                                                 role="button"
@@ -184,43 +188,46 @@
                         bind:pane={slideListPane}
                     >
                         <div class="flex flex-col gap-0 h-full">
-                            <div class=" flex flex-row gap-2 justify-between items-center py-2 px-4 bgx-gray-100">
-                                <div class="p-0">
-                                    <!-- FIXME: Skeleton not loading -->
-                                    {#await songMeta}
-                                        <div class="p-0 items-center space-y-1.5">
+                            <div class="flex flex-row space-y-2 justify-between py-2 px-4 bg-gray-50 bg-opacity-50">
+                                <div class="w-full h-full">
+                                    <div class="space-y-1 w-full" transition:fade={{ delay: 0, duration: 250 }}>
+                                        {#await songMeta}
                                             <Skeleton class="h-4 w-2/4" />
-                                            <Skeleton class="h-3 w-3/4" />
-                                        </div>
-                                    {:then meta}
-                                        <div class="p-0" transition:fade={{ delay: 0, duration: 250 }}>
+                                            <Skeleton class="h-4 w-10/12" />
+                                        {:then meta}
                                             <h4 class="text-sm font-medium leading-none truncate">{meta.title}</h4>
                                             <p class="text-muted-foreground text-sm truncate">{meta.description}</p>
-                                        </div>
-                                    {:catch err}
-                                        <div class="p-0" transition:fade={{ delay: 0, duration: 250 }}>
-                                            <h4 class="text-sm font-medium leading-none text-red-600 truncate">{'!!! Failed to Load Song Lyrics !!!'}</h4>
+                                        {:catch err}
+                                            <h4 class="text-sm font-medium leading-none text-red-600 truncate">
+                                                {'!!! Failed to Load Song Lyrics !!!'}
+                                            </h4>
                                             <p class="text-muted-foreground text-sm truncate">{err.message}</p>
-                                        </div>
-                                    {/await}
+                                        {/await}
+                                    </div>
+                                </div>
+
+                                <div class="relative text-muted-foreground flex">
+                                    <div class="absolute top-0 right-0">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            class="size-6"
+                                            on:click={() => {
+                                            slidesPaneCollapsed = !slidesPaneCollapsed;
+                                        }}
+                                        >
+                                            <XIcon size="16" />
+                                        </Button>
+                                    </div>
                                 </div>
 
                                 <!-- absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full text-vermilion-800 hover:bg-vermilion-100 focus:shadow-vermilion-400 focus:outline-none focus:ring-2 focus:ring-black -->
-                                <div class="relative p-0 m-0 flex">
+<!--                                <div class="relative p-0 m-0 flex">-->
 <!--                                    <button class="absolute right-0 text-muted-foreground">-->
 <!--                                        <XIcon size="16" />-->
 <!--                                    </button>-->
 
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        on:click={() => {
-                                            slidesPaneCollapsed = !slidesPaneCollapsed;
-                                        }}
-                                    >
-                                        <XIcon size="16" />
-                                    </Button>
-                                </div>
+<!--                                </div>-->
                             </div>
 
                             <Separator class="" />

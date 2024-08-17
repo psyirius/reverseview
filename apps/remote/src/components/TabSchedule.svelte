@@ -36,7 +36,7 @@
     let scheduleList: PromiseLike<any[]> = new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(_schedule);
-        }, 3000);
+        }, 10000);
     });
 </script>
 
@@ -75,11 +75,13 @@
                                 {#if i > 0}
                                     <Separator class="my-2" />
                                 {/if}
-                                <div class="flex items-center justify-between gap-4">
-                                    <div class="flex items-center w-full h-full gap-2">
-                                        <Skeleton class="size-8 rounded-full" />
+                                <div class="flex items-center justify-between gap-8">
+                                    <div class="flex items-center w-full gap-2">
+                                        <div>
+                                            <Skeleton class="size-8 rounded-full" />
+                                        </div>
                                         <div class="space-y-2 w-full">
-                                            <Skeleton class="h-4 w-full" />
+                                            <Skeleton class="h-3 w-full" />
                                             <Skeleton class="h-3 w-3/4" />
                                         </div>
                                     </div>
