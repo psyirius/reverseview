@@ -10,14 +10,37 @@
     import { Checkbox } from "$lib/components/ui/checkbox";
     import { Skeleton } from "$lib/components/ui/skeleton";
     import type { PaneAPI } from "paneforge";
+    import { XIcon, BookmarkPlusIcon, BookmarkCheckIcon, BookmarkMinusIcon } from "lucide-svelte";
+    import { flyAndScale } from "$lib/utils";
+    import { fade, fly, scale, slide } from "svelte/transition";
+    import { flip } from 'svelte/animate'
 
     import {
         SearchIcon,
         MonitorUpIcon,
     } from 'lucide-svelte';
+    import {toast} from "svelte-sonner";
+
+    function openSlidePanel(e: any) {
+        slidesList = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(_slides);
+            }, 2000);
+        });
+        songMeta = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({ title: e.target.innerText, description: e.target.innerText });
+            }, 1000);
+        });
+        slidesPaneCollapsed = false;
+    }
 
     const _songs = Array.from({ length: 50 }).map(
-        (_, i, a) => `v1.2.0-beta.${a.length - i}`
+        (_, i, a) => ({
+            title: `Sing song song ${a.length - i}`,
+            description: `Sing song song ${a.length - i}`,
+            bookmarked: Math.random() > 0.5,
+        })
     );
 
     const _slides = Array.from({ length: 50 }).map(
@@ -43,6 +66,11 @@
             resolve(_slides);
         }, 3000);
     });
+    let songMeta: PromiseLike<any> = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve({ title, description });
+        }, 3000);
+    });
 </script>
 
 <div class="container">
@@ -66,18 +94,6 @@
                         <p>Search Reference</p>
                     </Tooltip.Content>
                 </Tooltip.Root>
-
-                <Tooltip.Root>
-                    <Tooltip.Trigger asChild let:builder>
-                        <Button builders={[builder]} variant="default">
-                            <MonitorUpIcon />
-                        </Button>
-                    </Tooltip.Trigger>
-
-                    <Tooltip.Content>
-                        <p>Present Verse</p>
-                    </Tooltip.Content>
-                </Tooltip.Root>
             </Card.Description>
         </Card.Header>
 
@@ -90,7 +106,7 @@
                 class="rounded-md border"
             >
                 <Resizable.Pane
-                    defaultSize={40}
+                    defaultSize={35}
                     collapsible={true}
                     collapsedSize={0}
                     minSize={25}
@@ -111,13 +127,43 @@
                                     {/each}
                                 </div>
                             {:then songs}
-                                <div class="p-4">
+                                <div class="p-4" transition:fade={{ delay: 0, duration: 250 }}>
                                     {#each songs as song, i (song)}
                                         {#if i > 0}
                                             <Separator class="my-2" />
                                         {/if}
-                                        <div class="text-sm bg-opacity-50 cursor-pointer overflow-ellipsis">
-                                            {song}
+                                        <div
+                                            class="cursor-pointer bg-opacity-50 flex flex-row justify-between items-center gap-2"
+                                        >
+                                            <div
+                                                on:click={openSlidePanel}
+                                                on:keyup={openSlidePanel}
+                                                role="button"
+                                                tabindex="0"
+                                            >
+                                                <h4 class="text-sm font-medium leading-none truncate">{song.title}</h4>
+                                                <p class="text-muted-foreground text-sm truncate">{song.description}</p>
+                                            </div>
+
+                                            <div>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    on:click={() => {
+                                                        if (song.bookmarked) {
+                                                            toast.success('Song removed from bookmarks');
+                                                        } else {
+                                                            toast.success('Song added to bookmarks');
+                                                        }
+                                                    }}
+                                                >
+                                                    {#if !song.bookmarked}
+                                                        <BookmarkPlusIcon size="16" />
+                                                    {:else}
+                                                        <BookmarkMinusIcon size="16" />
+                                                    {/if}
+                                                </Button>
+                                            </div>
                                         </div>
                                     {/each}
                                 </div>
@@ -133,13 +179,85 @@
                 {#if !slidesPaneCollapsed}
                     <Resizable.Handle withHandle />
                     <Resizable.Pane
-                        defaultSize={60}
+                        defaultSize={65}
                         minSize={40}
                         bind:pane={slideListPane}
                     >
-                        <div class="pt-3">
-                            <h4 class="text-sm font-medium leading-none">{title}</h4>
-                            <p class="text-muted-foreground text-sm">{description}</p>
+                        <div class="flex flex-col gap-0 h-full">
+                            <div class=" flex flex-row gap-2 justify-between items-center py-2 px-4 bgx-gray-100">
+                                <div class="p-0">
+                                    <!-- FIXME: Skeleton not loading -->
+                                    {#await songMeta}
+                                        <div class="p-0 items-center space-y-1.5">
+                                            <Skeleton class="h-4 w-2/4" />
+                                            <Skeleton class="h-3 w-3/4" />
+                                        </div>
+                                    {:then meta}
+                                        <div class="p-0" transition:fade={{ delay: 0, duration: 250 }}>
+                                            <h4 class="text-sm font-medium leading-none truncate">{meta.title}</h4>
+                                            <p class="text-muted-foreground text-sm truncate">{meta.description}</p>
+                                        </div>
+                                    {:catch err}
+                                        <div class="p-0" transition:fade={{ delay: 0, duration: 250 }}>
+                                            <h4 class="text-sm font-medium leading-none text-red-600 truncate">{'!!! Failed to Load Song Lyrics !!!'}</h4>
+                                            <p class="text-muted-foreground text-sm truncate">{err.message}</p>
+                                        </div>
+                                    {/await}
+                                </div>
+
+                                <!-- absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full text-vermilion-800 hover:bg-vermilion-100 focus:shadow-vermilion-400 focus:outline-none focus:ring-2 focus:ring-black -->
+                                <div class="relative p-0 m-0 flex">
+<!--                                    <button class="absolute right-0 text-muted-foreground">-->
+<!--                                        <XIcon size="16" />-->
+<!--                                    </button>-->
+
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        on:click={() => {
+                                            slidesPaneCollapsed = !slidesPaneCollapsed;
+                                        }}
+                                    >
+                                        <XIcon size="16" />
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <Separator class="" />
+
+                            <!-- Use Sheet in or BottomPane in Mobile -->
+                            <div class="relative flex h-full max-h-full m-0 p-0">
+                                <ScrollArea class="absolute flex flex-col h-full w-full">
+                                    {#await slidesList}
+                                        <div class="p-4">
+                                            {#each { length: numSongSkeletons } as _, i}
+                                                <div class="items-center space-y-2">
+                                                    {#if i > 0}
+                                                        <Separator class="my-3" />
+                                                    {/if}
+                                                    <Skeleton class="h-4 w-full" />
+                                                    <Skeleton class="h-3 w-3/4" />
+                                                </div>
+                                            {/each}
+                                        </div>
+                                    {:then slides}
+                                        <div class="p-4">
+                                            {#each slides as slide, i (slide)}
+                                                {#if i > 0}
+                                                    <Separator class="my-2" />
+                                                {/if}
+                                                <div class="text-sm bg-opacity-50 cursor-pointer overflow-ellipsis">
+                                                    {slide}
+                                                </div>
+                                            {/each}
+                                        </div>
+                                    {:catch someError}
+                                        <div class="py-2 px-4">
+                                            System error: {someError.message}.
+                                        </div>
+                                    {/await}
+                                </ScrollArea>
+                            </div>
                         </div>
                     </Resizable.Pane>
                 {/if}

@@ -14,11 +14,11 @@
     } from 'lucide-svelte';
 
     const verses = Array.from({ length: 50 }).map(
-        (_, i, a) => `v1.2.0-beta.${a.length - i}`
+        (_, i, a) => `${i + 1}. In the beginning...`
     );
 
-    let title = "Reference";
-    let description = "An open-source UI component library.";
+    let title = "Genesis";
+    let description = "1:1-50";
 </script>
 
 <div class="container">
