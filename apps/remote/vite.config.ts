@@ -23,6 +23,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: projectPath('src/index.html'),
+                control: projectPath('src/control.html'),
             },
             output: {
                 assetFileNames: 'assets/[name]-[hash][extname]',

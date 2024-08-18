@@ -1,0 +1,19 @@
+- [ ] Js compilation
+  - [ ] Typescript
+  - [ ] Drop labels
+  - [ ] Tree shaking
+  - [ ] JSX using custom-preact
+  - [ ] Minification
+  - [ ] Source maps
+  - [ ] Code splitting
+  - [ ] Dynamic imports
+  - [ ] Shims/Polyfills
+  - [ ] Auto inject js
+  - [ ] import loaders
+  - [ ] env define
+  - [ ] plugins
+  - [ ] support block https://esbuild.github.io/api/#supported
+- [ ] Css compilation
+- [ ] Html compilation
+- [ ] Watch mode
+- [ ] Hot reload

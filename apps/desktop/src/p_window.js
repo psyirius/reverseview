@@ -12,7 +12,6 @@ var pWindowY = "100";
 var stageViewWindowX = "100";
 var stageViewWindowY = "100";
 var dualScreen = true;
-var screenList = null;
 var stageViewScreenIndex = 2;
 var index_for_presentationContent = 0;
 
@@ -130,68 +129,72 @@ function getCurrentScreen() {
   return b;
 }
 function getScreenList() {
-  screenList = air.Screen.screens;
+  return air.Screen.screens;
 }
-function fillScreenList() {
-  var f = screenList.length;
-  var c = "";
-  var b, e;
-  var a, g;
-  clearSelectList("selectScreenID");
-  clearSelectList("selectStageScreenID");
-  for (var d = 0; d < f; d++) {
-    b = screenList[d].bounds.width;
-    e = screenList[d].bounds.height;
-    a = screenList[d].bounds.x;
-    g = screenList[d].bounds.y;
-    c = "Screen  " + (d + 1) + " " + b + "x" + e + " @ " + a + "," + g;
-    document.getElementById("selectScreenID").options[d] = new Option(c, d);
-    document.getElementById("selectStageScreenID").options[d] = new Option(
-      c,
-      d
-    );
-  }
-  setScreenIndex($RvW.vvConfigObj.get_selectedScreenIndex(), f);
-  setStageScreenIndex($RvW.vvConfigObj.get_selectedStageScreenIndex(), f);
+function fillScreenList(idSel, savedIndex) {
+    const screens = getScreenList();
+
+    clearSelectList(idSel);
+
+    {
+        function isSameRect(rect1, rect2) {
+            return rect1.height === rect2.height &&
+                rect1.width === rect2.width &&
+                rect1.x === rect2.x &&
+                rect1.y === rect2.y;
+        }
+
+        function isSameScreen(screen1, screen2) {
+            return isSameRect(screen1.bounds, screen2.bounds);
+        }
+
+        const { Screen } = air;
+        const { mainScreen, screens } = Screen;
+
+        for (let i = 0; i < screens.length; i++) {
+            const { bounds } = screens[i];
+            const { height, width, x, y } = bounds;
+            const isMain = isSameScreen(screens[i], mainScreen) ? " (main)" : "";
+
+            let c = `Screen ${i + 1}${isMain}: ${width}x${height} @ ${x},${y}`;
+
+            document.getElementById(idSel).options[i] = new Option(c, i);
+        }
+    }
+
+    setScreenIndex(idSel, savedIndex, screens.length);
 }
 function getSelectedScreenIndex() {
-  var a = document.getElementById("selectScreenID").selectedIndex;
-  $RvW.vvConfigObj.set_selectedScreenIndex(a);
+    const a = document.getElementById("selectScreenID").selectedIndex;
+  $RvW.rvwPreferences.set("app.settings.screen.main.index", a);
 }
 function getSelectedStageScreenIndex() {
-  var a = document.getElementById("selectStageScreenID").selectedIndex;
-  $RvW.vvConfigObj.set_selectedStageScreenIndex(a);
+    const a = document.getElementById("selectStageScreenID").selectedIndex;
+    $RvW.rvwPreferences.set("app.settings.screen.stage.index", a);
 }
-function setScreenIndex(a, b) {
+function setScreenIndex(sel, a, b) {
   if (a < b) {
-    document.getElementById("selectScreenID").selectedIndex = a;
+    document.getElementById(sel).selectedIndex = a;
   } else {
-    document.getElementById("selectScreenID").selectedIndex = 0;
-  }
-}
-function setStageScreenIndex(a, b) {
-  if (a < b) {
-    document.getElementById("selectStageScreenID").selectedIndex = a;
-  } else {
-    document.getElementById("selectStageScreenID").selectedIndex = 0;
+    document.getElementById(sel).selectedIndex = 0;
   }
 }
 function addScreenSelectionEvent() {
   document
     .getElementById("selectScreenID")
-    .addEventListener("change", processScreenSelChange, false);
+    .addEventListener("change", function processScreenSelChange() {
+        getSelectedScreenIndex();
+        $RvW.vvConfigObj.save();
+    }, false);
   document
     .getElementById("selectStageScreenID")
-    .addEventListener("change", processStageScreenSelChange, false);
+    .addEventListener("change", function processStageScreenSelChange() {
+        getSelectedStageScreenIndex();
+        $RvW.vvConfigObj.save();
+    }, false);
 }
-function processScreenSelChange() {
-  getSelectedScreenIndex();
-  $RvW.vvConfigObj.save();
-}
-function processStageScreenSelChange() {
-  getSelectedStageScreenIndex();
-  $RvW.vvConfigObj.save();
-}
+
+
 function presentation() {
   $RvW.stageView = $("#stageConfigEnable").is(":checked");
   var k = new air.NativeWindowInitOptions();
@@ -202,16 +205,16 @@ function presentation() {
   var j = air.Screen.screens;
   var c;
   var i;
-  stageViewScreenIndex = $RvW.vvConfigObj.get_selectedStageScreenIndex();
+  stageViewScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0);
   if (j[stageViewScreenIndex] == null) {
     stageViewScreenIndex = 0;
-    $RvW.vvConfigObj.set_selectedStageScreenIndex(stageViewScreenIndex);
+    $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
   }
   $RvW.stageView = $RvW.stageView && j[stageViewScreenIndex] != null;
-  var e = $RvW.vvConfigObj.get_selectedScreenIndex();
+  var e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
   if (j[e] == null) {
     e = 0;
-    $RvW.vvConfigObj.set_selectedScreenIndex(e);
+    $RvW.rvwPreferences.set("app.settings.screen.main.index", e);
   }
   if (dualScreen && j[e] != null) {
     c = j[e].bounds;

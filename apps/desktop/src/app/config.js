@@ -1355,17 +1355,35 @@ function configInit() {
     var k = $RvW.vvConfigObj.get_showDateTime();
     var g = $RvW.vvConfigObj.get_showVVLogo();
     var b = $RvW.vvConfigObj.get_showCustomLogo();
-    document.getElementById("presentConfigShowDateTime").checked = k == true;
+
+    document.getElementById("presentConfigShowDateTime").checked = k === true;
     document.getElementById("presentConfigShowVVLogo").checked = !!g;
     document.getElementById("presentConfigShowCustomLogo").checked = !!b;
+
     $RvW.remoteVV_UI_Obj.configure();
-    getScreenList();
-    fillScreenList();
-    addScreenSelectionEvent();
-    var e = new fontSizeSlider();
+
+    {
+        fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
+        fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
+        addScreenSelectionEvent();
+    }
+
+    // Refreshes the screens list on clicking the select menus
+    {
+        document.getElementById("refresh-screens-main").addEventListener('click', function () {
+            fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
+        });
+        document.getElementById("refresh-screens-stage").addEventListener('click', function () {
+            fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
+        });
+    }
+
+    const e = new fontSizeSlider();
     e.init();
-    var i = new vvupdate();
+
+    const i = new vvupdate();
     i.init();
+
     document.getElementById("thirdview_opacity").value =
         $RvW.vvConfigObj.get_svOpacity();
     document.getElementById("thirdview_height").value =
@@ -1386,21 +1404,25 @@ function configInit() {
         $RvW.vvConfigObj.get_svShowDate();
     document.getElementById("stageConfigMessage").value =
         $RvW.vvConfigObj.get_svMessage();
+
     $("#thirdview_opacity").change(svParameterSaveEvent);
     $("#thirdview_height").change(svParameterSaveEvent);
     $("#thirdview_fcolor").change(svParameterSaveEvent);
+
     $("#thirdview_primary").change(function () {
         if (!$RvW.vvConfigObj.get_svShowPrimary()) {
             document.getElementById("thirdview_secondary").checked = false;
         }
         svParameterSaveEvent();
     });
+
     $("#thirdview_secondary").change(function () {
         if (!$RvW.vvConfigObj.get_svShowSecondary()) {
             document.getElementById("thirdview_primary").checked = false;
         }
         svParameterSaveEvent();
     });
+
     $("#stageviewWindow").change(svParameterSaveEvent);
     $("#stageviewGreenWindow").change(svParameterSaveEvent);
     $("#thirdview_position").change(svParameterSaveEvent);
@@ -1415,6 +1437,7 @@ function configInit() {
     $("#thirdview_alignCenter").change(svParameterSaveEvent);
     $("#thirdview_showTexture").change(svParameterSaveEvent);
     $("#thirdview_alignHorizontal").change(svParameterSaveEvent);
+
     getTags2Array();
     fillTagList();
 }

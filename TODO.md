@@ -83,6 +83,9 @@ https://github.com/jacksonkr/actionscript
 
 https://nextgenactionscript.com/tools-and-utilities/
 
+ANE:
+https://github.com/benkuper/AIR-NativeExtensions/tree/master/AIRVirtualMIDI/ane_src
+
 https://help.adobe.com/en_US/air/html/dev/WS9936fa0d5984e93b-3d590ddd1272a3584c3-8000.html
 https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7ec2.html
 
