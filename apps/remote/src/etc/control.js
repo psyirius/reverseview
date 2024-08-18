@@ -853,8 +853,8 @@ function getFirstLine2(x) {
  * @param {ApiCallCallback?} callback
  */
 function apiCall(params, callback = null) {
-    // const baseUrl = '';
-    const baseUrl = '//localhost:50000';
+    const baseUrl = '';
+    // const baseUrl = '//localhost:50000';
     const url = [`${baseUrl}/action`, new URLSearchParams({
         data: btoa(JSON.stringify(params)),
     }).toString()].join("?");

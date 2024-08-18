@@ -1,3 +1,13 @@
+- [ ] REMOTE
+  - [ ] highlight currently presenting
+  - [ ] UI/UX FIX
+  - [ ] adapter to connect to the backend
+    - [ ] air bridge (integrated web environment)
+    - [ ] electron bridge (integrated web environment)
+    - [ ] http rest (detached)
+    - [ ] websocket (detached)
+    - [ ] socket.io (detached)
+  - [ ] common interface for the adaptor
 - [ ] Add a script to crete the preact es3 jsx runtime.
 - [ ] Check parcel if it can be used for building or as build tool
 - [ ] Setup dojo build system to build dojo
