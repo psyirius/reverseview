@@ -15,78 +15,78 @@ $RvW.setupMenu = function() {
 }
 
 function song_new_menu(a) {
-  if ($RvW.songNavObj != null) {
-    $RvW.songNavObj.sn_newSong();
-  }
+    if ($RvW.songNavObj != null) {
+        $RvW.songNavObj.sn_newSong();
+    }
 }
 function song_edit_menu(a) {
-  if ($RvW.songNavObj != null) {
-    $RvW.songNavObj.sn_editSong();
-  }
+    if ($RvW.songNavObj != null) {
+        $RvW.songNavObj.sn_editSong();
+    }
 }
 function song_delete_menu(a) {
-  if ($RvW.songNavObj != null) {
-    $RvW.songNavObj.sn_deleteSong();
-  }
+    if ($RvW.songNavObj != null) {
+        $RvW.songNavObj.sn_deleteSong();
+    }
 }
 function song_delete_cat_menu(a) {
-  if ($RvW.songNavObj != null) {
-    $RvW.songNavObj.sn_deleteSongByCat();
-  }
+    if ($RvW.songNavObj != null) {
+        $RvW.songNavObj.sn_deleteSongByCat();
+    }
 }
 function songDB_Export_all_db() {
-  $RvW.songNavObj.processExportSongDB();
+    $RvW.songNavObj.processExportSongDB();
 }
 function songDB_Export_all_xml() {
-  $RvW.songManagerObj.processExportSongXML();
+    $RvW.songManagerObj.processExportSongXML();
 }
 function songDB_Export_cat_xml() {
-  $RvW.songManagerObj.processExportCatXML();
+    $RvW.songManagerObj.processExportCatXML();
 }
 function songDB_Import_db() {
-  $RvW.songManagerObj.processImportSongDB();
+    $RvW.songManagerObj.processImportSongDB();
 }
 function songDB_Import_xml() {
-  $RvW.songManagerObj.processImportSongXML();
+    $RvW.songManagerObj.processImportSongXML();
 }
 function setup_bible_version() {
-  $RvW.bibleVersionSelObj.show();
+    $RvW.bibleVersionSelObj.show();
 }
 function add_bible_version() {
-  manageVersion();
-  showBrowse();
+    manageVersion();
+    showBrowse();
 }
 function show_bible_manage() {
-  manageVersion();
+    manageVersion();
 }
 function show_editVerse_UI() {
-  setupVerseEditObject();
-  $RvW.editVerse_UI_Obj.show();
+    setupVerseEditObject();
+    $RvW.editVerse_UI_Obj.show();
 }
 function remoteVV_UI() {
-  $RvW.remoteVV_UI_Obj.show();
+    $RvW.remoteVV_UI_Obj.show();
 }
 function show_present_setup_UI() {}
 function show_updateVV_UI() {
-  $RvW.newUpdateObj.checkForUpdates();
+    $RvW.newUpdateObj.checkForUpdates();
 }
 function verseviewExit() {
-  processExit();
-  window.nativeWindow.close();
+    processExit();
+    window.nativeWindow.close();
 }
 function addBkgndMenu() {
-  bkgnd.showBrowse();
+    bkgnd.showBrowse();
 }
 function deleteBkgndMenu() {
-  bkgnd.delBkgnd();
+    bkgnd.delBkgnd();
 }
 function showHelp_menu() {
-  // TODO: make it a separate tool window
-  $RvW.helpObj.show();
+    // TODO: make it a separate tool window
+    $RvW.helpObj.show();
 }
 function vvPromote_menu1() {
-  promoteVV(1);
+    promoteVV(1);
 }
 function vvPromote_menu2() {
-  promoteVV(2);
+    promoteVV(2);
 }

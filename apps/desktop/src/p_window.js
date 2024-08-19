@@ -123,13 +123,13 @@ function passVariable(o) {
     }
 }
 function getCurrentScreen() {
-  var b;
-  var a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
-  a.length > 0 ? (b = a[0]) : (b = air.Screen.mainScreen);
-  return b;
+    var b;
+    var a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
+    a.length > 0 ? (b = a[0]) : (b = air.Screen.mainScreen);
+    return b;
 }
 function getScreenList() {
-  return air.Screen.screens;
+    return air.Screen.screens;
 }
 function fillScreenList(idSel, savedIndex) {
     const screens = getScreenList();
@@ -166,242 +166,242 @@ function fillScreenList(idSel, savedIndex) {
 }
 function getSelectedScreenIndex() {
     const a = document.getElementById("selectScreenID").selectedIndex;
-  $RvW.rvwPreferences.set("app.settings.screen.main.index", a);
+    $RvW.rvwPreferences.set("app.settings.screen.main.index", a);
 }
 function getSelectedStageScreenIndex() {
     const a = document.getElementById("selectStageScreenID").selectedIndex;
     $RvW.rvwPreferences.set("app.settings.screen.stage.index", a);
 }
 function setScreenIndex(sel, a, b) {
-  if (a < b) {
-    document.getElementById(sel).selectedIndex = a;
-  } else {
-    document.getElementById(sel).selectedIndex = 0;
-  }
+    if (a < b) {
+        document.getElementById(sel).selectedIndex = a;
+    } else {
+        document.getElementById(sel).selectedIndex = 0;
+    }
 }
 function addScreenSelectionEvent() {
-  document
-    .getElementById("selectScreenID")
-    .addEventListener("change", function processScreenSelChange() {
-        getSelectedScreenIndex();
-        $RvW.vvConfigObj.save();
-    }, false);
-  document
-    .getElementById("selectStageScreenID")
-    .addEventListener("change", function processStageScreenSelChange() {
-        getSelectedStageScreenIndex();
-        $RvW.vvConfigObj.save();
-    }, false);
+    document
+        .getElementById("selectScreenID")
+        .addEventListener("change", function processScreenSelChange() {
+            getSelectedScreenIndex();
+            $RvW.vvConfigObj.save();
+        }, false);
+    document
+        .getElementById("selectStageScreenID")
+        .addEventListener("change", function processStageScreenSelChange() {
+            getSelectedStageScreenIndex();
+            $RvW.vvConfigObj.save();
+        }, false);
 }
 
 
 function presentation() {
-  $RvW.stageView = $("#stageConfigEnable").is(":checked");
-  var k = new air.NativeWindowInitOptions();
-  k.systemChrome = "none";
-  k.type = "lightweight";
-  k.transparent = true;
-  var g = getCurrentScreen();
-  var j = air.Screen.screens;
-  var c;
-  var i;
-  stageViewScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0);
-  if (j[stageViewScreenIndex] == null) {
-    stageViewScreenIndex = 0;
-    $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
-  }
-  $RvW.stageView = $RvW.stageView && j[stageViewScreenIndex] != null;
-  var e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
-  if (j[e] == null) {
-    e = 0;
-    $RvW.rvwPreferences.set("app.settings.screen.main.index", e);
-  }
-  if (dualScreen && j[e] != null) {
-    c = j[e].bounds;
-    pWindowX = j[e].bounds.width;
-    pWindowY = j[e].bounds.height;
-  } else {
-    c = j[0].bounds;
-    pWindowX = j[0].bounds.width;
-    pWindowY = j[0].bounds.height;
-    air.trace("p window singl " + pWindowX + " " + pWindowY);
-  }
-  if (!$RvW.presentWindowOpen) {
-    $RvW.newWindow = air.HTMLLoader.createRootWindow(true, k, true, c);
-    var b = $("#mainConfigEnable").is(":checked");
-    $RvW.newWindow.visible = b;
-    $RvW.newWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
-    $RvW.newWindow.window.nativeWindow.addEventListener(
-      air.Event.CLOSE,
-      presentWindowClosed
-    );
-    $RvW.newWindow.window.nativeWindow.alwaysInFront =
-      $RvW.vvConfigObj.get_presentationOnTop();
-    $RvW.newWindow.window.nativeWindow.stage.frameRate = 30;
-    $RvW.newWindow.load(new air.URLRequest("presentation.htm"));
-    $RvW.newWindow.window.iamclosingStage = function () {
-      if ($RvW.stageView && $RvW.newStageWindow != null) {
-        $RvW.newStageWindow.window.nativeWindow.close();
-      }
-    };
-    $RvW.newWindow.window.goToNextSlide = function () {
-      if ($RvW.stageView && $RvW.newStageWindow != null) {
-        $RvW.newStageWindow.window.nextSlide();
-      }
-      updatePresentationContent(true);
-    };
-    $RvW.newWindow.window.goToPrevSlide = function () {
-      if ($RvW.stageView && $RvW.newStageWindow != null) {
-        $RvW.newStageWindow.window.prevSlide();
-      }
-      updatePresentationContent(false);
-    };
-    if ($RvW.stageView) {
-      var h = new air.NativeWindowInitOptions();
-      var a = $RvW.vvConfigObj.get_svWindow();
-      i = j[stageViewScreenIndex].bounds;
-      if (a) {
-        h.resizable = false;
-        h.maximizable = false;
-        h.minimizable = false;
-        var f = $("#stageviewMiniWindow").is(":checked");
-        if (j[stageViewScreenIndex].bounds.width < 1900) {
-          i.width = 1280 / 2;
-          i.height = 720 / 2;
-        } else {
-          i.width = 1280;
-          i.height = 720;
-        }
-        if (f) {
-          i.width /= 1.5;
-          i.height /= 1.5;
-        }
-      } else {
-        h.systemChrome = "none";
-        h.type = "lightweight";
-        h.transparent = true;
-        h.renderMode = "direct";
-      }
-      stageViewWindowX = j[stageViewScreenIndex].bounds.width;
-      stageViewWindowY = j[stageViewScreenIndex].bounds.height;
-      $RvW.newStageWindow = air.HTMLLoader.createRootWindow(true, h, true, i);
-      $RvW.newStageWindow.addEventListener(
-        "htmlDOMInitialize",
-        DOMIntializeStageViewCallback
-      );
-      $RvW.newStageWindow.window.nativeWindow.addEventListener(
-        air.Event.CLOSING,
-        closePresentWindowMain
-      );
-      $RvW.newStageWindow.window.nativeWindow.alwaysInFront = false;
-      $RvW.newStageWindow.window.nativeWindow.stage.frameRate = 30;
-      $RvW.newStageWindow.load(new air.URLRequest("app:/stageview.htm"));
-      // $RvW.newStageWindow.load(new air.URLRequest("http://localhost:80/uix.html"));
-      $RvW.newStageWindow.window.iamclosingPresentation = function () {
-        if ($RvW.newWindow != null) {
-          $RvW.newWindow.window.nativeWindow.close();
-        }
-      };
+    $RvW.stageView = $("#stageConfigEnable").is(":checked");
+    var k = new air.NativeWindowInitOptions();
+    k.systemChrome = "none";
+    k.type = "lightweight";
+    k.transparent = true;
+    var g = getCurrentScreen();
+    var j = air.Screen.screens;
+    var c;
+    var i;
+    stageViewScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0);
+    if (j[stageViewScreenIndex] == null) {
+        stageViewScreenIndex = 0;
+        $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
+    }
+    $RvW.stageView = $RvW.stageView && j[stageViewScreenIndex] != null;
+    var e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
+    if (j[e] == null) {
+        e = 0;
+        $RvW.rvwPreferences.set("app.settings.screen.main.index", e);
+    }
+    if (dualScreen && j[e] != null) {
+        c = j[e].bounds;
+        pWindowX = j[e].bounds.width;
+        pWindowY = j[e].bounds.height;
     } else {
-      $RvW.newStageWindow = null;
+        c = j[0].bounds;
+        pWindowX = j[0].bounds.width;
+        pWindowY = j[0].bounds.height;
+        air.trace("p window singl " + pWindowX + " " + pWindowY);
     }
-    $RvW.presentWindowOpen = true;
-  } else {
-    try {
-      $RvW.newWindow.window.passVariable(0);
-      $RvW.newWindow.window.updatePresentation();
-      $RvW.newWindow.window.updateContent();
-    } catch (d) {
-      air.trace("Possible double click... NewWindow is still getting ready..");
-    }
-    if ($RvW.stageView && $RvW.newStageWindow != null) {
-      try {
-        $RvW.newStageWindow.window.passVariable(1);
-        $RvW.newStageWindow.window.updatePresentation();
-        $RvW.newStageWindow.window.updateContent();
-      } catch (d) {
-        air.trace(
-          "Possible double click... NewStageWindow is still getting ready.."
+    if (!$RvW.presentWindowOpen) {
+        $RvW.newWindow = air.HTMLLoader.createRootWindow(true, k, true, c);
+        var b = $("#mainConfigEnable").is(":checked");
+        $RvW.newWindow.visible = b;
+        $RvW.newWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
+        $RvW.newWindow.window.nativeWindow.addEventListener(
+            air.Event.CLOSE,
+            presentWindowClosed
         );
-      }
+        $RvW.newWindow.window.nativeWindow.alwaysInFront =
+            $RvW.vvConfigObj.get_presentationOnTop();
+        $RvW.newWindow.window.nativeWindow.stage.frameRate = 30;
+        $RvW.newWindow.load(new air.URLRequest("presentation.htm"));
+        $RvW.newWindow.window.iamclosingStage = function () {
+            if ($RvW.stageView && $RvW.newStageWindow != null) {
+                $RvW.newStageWindow.window.nativeWindow.close();
+            }
+        };
+        $RvW.newWindow.window.goToNextSlide = function () {
+            if ($RvW.stageView && $RvW.newStageWindow != null) {
+                $RvW.newStageWindow.window.nextSlide();
+            }
+            updatePresentationContent(true);
+        };
+        $RvW.newWindow.window.goToPrevSlide = function () {
+            if ($RvW.stageView && $RvW.newStageWindow != null) {
+                $RvW.newStageWindow.window.prevSlide();
+            }
+            updatePresentationContent(false);
+        };
+        if ($RvW.stageView) {
+            var h = new air.NativeWindowInitOptions();
+            var a = $RvW.vvConfigObj.get_svWindow();
+            i = j[stageViewScreenIndex].bounds;
+            if (a) {
+                h.resizable = false;
+                h.maximizable = false;
+                h.minimizable = false;
+                var f = $("#stageviewMiniWindow").is(":checked");
+                if (j[stageViewScreenIndex].bounds.width < 1900) {
+                    i.width = 1280 / 2;
+                    i.height = 720 / 2;
+                } else {
+                    i.width = 1280;
+                    i.height = 720;
+                }
+                if (f) {
+                    i.width /= 1.5;
+                    i.height /= 1.5;
+                }
+            } else {
+                h.systemChrome = "none";
+                h.type = "lightweight";
+                h.transparent = true;
+                h.renderMode = "direct";
+            }
+            stageViewWindowX = j[stageViewScreenIndex].bounds.width;
+            stageViewWindowY = j[stageViewScreenIndex].bounds.height;
+            $RvW.newStageWindow = air.HTMLLoader.createRootWindow(true, h, true, i);
+            $RvW.newStageWindow.addEventListener(
+                "htmlDOMInitialize",
+                DOMIntializeStageViewCallback
+            );
+            $RvW.newStageWindow.window.nativeWindow.addEventListener(
+                air.Event.CLOSING,
+                closePresentWindowMain
+            );
+            $RvW.newStageWindow.window.nativeWindow.alwaysInFront = false;
+            $RvW.newStageWindow.window.nativeWindow.stage.frameRate = 30;
+            $RvW.newStageWindow.load(new air.URLRequest("app:/stageview.htm"));
+            // $RvW.newStageWindow.load(new air.URLRequest("http://localhost:80/uix.html"));
+            $RvW.newStageWindow.window.iamclosingPresentation = function () {
+                if ($RvW.newWindow != null) {
+                    $RvW.newWindow.window.nativeWindow.close();
+                }
+            };
+        } else {
+            $RvW.newStageWindow = null;
+        }
+        $RvW.presentWindowOpen = true;
+    } else {
+        try {
+            $RvW.newWindow.window.passVariable(0);
+            $RvW.newWindow.window.updatePresentation();
+            $RvW.newWindow.window.updateContent();
+        } catch (d) {
+            air.trace("Possible double click... NewWindow is still getting ready..");
+        }
+        if ($RvW.stageView && $RvW.newStageWindow != null) {
+            try {
+                $RvW.newStageWindow.window.passVariable(1);
+                $RvW.newStageWindow.window.updatePresentation();
+                $RvW.newStageWindow.window.updateContent();
+            } catch (d) {
+                air.trace(
+                    "Possible double click... NewStageWindow is still getting ready.."
+                );
+            }
+        }
     }
-  }
 }
 function closePresentWindowMain() {
-  if ($RvW.presentWindowOpen) {
-    $RvW.newWindow.window.nativeWindow.close();
-    $RvW.newWindow = null;
-    if (!$RvW.vvConfigObj.get_mainConfigEnable()) {
-      $RvW.presentWindowOpen = false;
+    if ($RvW.presentWindowOpen) {
+        $RvW.newWindow.window.nativeWindow.close();
+        $RvW.newWindow = null;
+        if (!$RvW.vvConfigObj.get_mainConfigEnable()) {
+            $RvW.presentWindowOpen = false;
+        }
     }
-  }
-  if ($RvW.stageView && $RvW.newStageWindow != null) {
-    $RvW.newStageWindow.window.nativeWindow.close();
-    $RvW.newStageWindow = null;
-  }
-  $RvW.presentationContent = "";
+    if ($RvW.stageView && $RvW.newStageWindow != null) {
+        $RvW.newStageWindow.window.nativeWindow.close();
+        $RvW.newStageWindow = null;
+    }
+    $RvW.presentationContent = "";
 }
 function presentWindowClosed() {
-  $RvW.presentWindowOpen = false;
-  $RvW.newWindow = null;
-  disableNavButtons(true);
+    $RvW.presentWindowOpen = false;
+    $RvW.newWindow = null;
+    disableNavButtons(true);
 }
 function DOMIntializeCallback(a) {
-  $RvW.newWindow.window.passVariable = passVariable;
+    $RvW.newWindow.window.passVariable = passVariable;
 }
 function DOMIntializeStageViewCallback(a) {
-  $RvW.newStageWindow.window.passVariable = passVariable;
+    $RvW.newStageWindow.window.passVariable = passVariable;
 }
 function updatePresentationContent(b) {
-  var a = p_text1_arr.length;
-  if (b) {
-    index_for_presentationContent++;
-    if (index_for_presentationContent >= a) {
-      index_for_presentationContent = 0;
+    var a = p_text1_arr.length;
+    if (b) {
+        index_for_presentationContent++;
+        if (index_for_presentationContent >= a) {
+            index_for_presentationContent = 0;
+        }
+    } else {
+        index_for_presentationContent--;
+        if (index_for_presentationContent < 0) {
+            index_for_presentationContent = a - 1;
+        }
     }
-  } else {
-    index_for_presentationContent--;
-    if (index_for_presentationContent < 0) {
-      index_for_presentationContent = a - 1;
-    }
-  }
-  $RvW.presentationContent = presentationContentString(
-    p_title,
-    p_text1_font,
-    p_text2_font,
-    p_text1_arr[index_for_presentationContent],
-    p_text2_arr[index_for_presentationContent]
-  );
+    $RvW.presentationContent = presentationContentString(
+        p_title,
+        p_text1_font,
+        p_text2_font,
+        p_text1_arr[index_for_presentationContent],
+        p_text2_arr[index_for_presentationContent]
+    );
 }
 function call_nextSlide() {
-  if ($RvW.presentWindowOpen) {
-    $RvW.newWindow.window.nextSlide();
-    if ($RvW.stageView) {
-      $RvW.newStageWindow.window.nextSlide();
+    if ($RvW.presentWindowOpen) {
+        $RvW.newWindow.window.nextSlide();
+        if ($RvW.stageView) {
+            $RvW.newStageWindow.window.nextSlide();
+        }
     }
-  }
-  updatePresentationContent(true);
+    updatePresentationContent(true);
 }
 function call_prevSlide() {
-  if ($RvW.presentWindowOpen) {
-    $RvW.newWindow.window.prevSlide();
-    if ($RvW.stageView) {
-      $RvW.newStageWindow.window.prevSlide();
+    if ($RvW.presentWindowOpen) {
+        $RvW.newWindow.window.prevSlide();
+        if ($RvW.stageView) {
+            $RvW.newStageWindow.window.prevSlide();
+        }
     }
-  }
-  updatePresentationContent(false);
+    updatePresentationContent(false);
 }
 function call_showTheme() {
-  if ($RvW.newWindow != null) {
-    $RvW.newWindow.window.showThemeProcess();
-  }
+    if ($RvW.newWindow != null) {
+        $RvW.newWindow.window.showThemeProcess();
+    }
 }
 function call_closePresentation() {
-  if ($RvW.presentWindowOpen) {
-    $RvW.newWindow.window.clearPresenter();
-    if ($RvW.stageView) {
-      $RvW.newStageWindow.window.nativeWindow.close();
+    if ($RvW.presentWindowOpen) {
+        $RvW.newWindow.window.clearPresenter();
+        if ($RvW.stageView) {
+            $RvW.newStageWindow.window.nativeWindow.close();
+        }
     }
-  }
-  $RvW.presentationContent = "";
+    $RvW.presentationContent = "";
 }

@@ -771,7 +771,7 @@ function setupTabContent() {
     $RvW.updateVV_UI_Obj = new RvwUpdate(loadViewTemplate("setup_update"));
 
     fillTabs('configTab');
-    
+
     setupTabViewTemplate("nav", "navTab");
     setupTabViewTemplate("search", "searchField");
     setupTabViewTemplate("html", "notesTab");
