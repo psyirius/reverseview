@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url'
 /** @type {Record<string, string>} */
 const pathMap = {
     '@rvw/bible-db'     : '.air/bible',
-    '@rvw/chords-db'    : '.air/chords',
     '@rvw/songs-db'     : '.air/song',
 }
 

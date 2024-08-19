@@ -162,7 +162,6 @@ class SongNav {
       YAHOO.util.Event.addListener("songnav_editbox", "focus", ad);
       $("#songnav_editbox").keyup(sn_searchSong);
       document.getElementById("ly_edit").addEventListener("click", x, false);
-      document.getElementById("ly_chords").addEventListener("click", I, false);
       document
         .getElementById("ly_add2schedule")
         .addEventListener("click", F, false);
@@ -188,12 +187,6 @@ class SongNav {
     }
     function r() {
       $RvW.songNavObj.sn_presentSong();
-    }
-    function I() {
-      if ($RvW.chordsNavObj != null) {
-        $RvW.chordsNavObj.setSongValues(y.name, y.slides, y.slides2);
-        $RvW.chordsNavObj.showChordsPanelForSong(y.name, y.slides, y.slides2, 1);
-      }
     }
     function setFormats() {
       v = parseInt(($RvW.tabHeight - 300) / 22);
@@ -773,7 +766,6 @@ function hideLyricsElements() {
   $("#ly_edit").hide();
   $("#ly_add2schedule").hide();
   $("#ly_present").hide();
-  $("#ly_chords").hide();
   $("#ly_slide").hide();
   $("#ly_tags").hide();
   $("#ly_cat").hide();
@@ -788,7 +780,6 @@ function showLyricsElements() {
   $("#ly_edit").show();
   $("#ly_add2schedule").show();
   $("#ly_present").show();
-  $("#ly_chords").show();
   $("#ly_slide").show();
   $("#ly_tags").show();
   $("#ly_cat").show();

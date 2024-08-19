@@ -1,3 +1,4 @@
+- [ ] Zefania XML : Checkup & Externalize
 - [ ] REMOTE
   - [ ] highlight currently presenting
   - [ ] UI/UX FIX

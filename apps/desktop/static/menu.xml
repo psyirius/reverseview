@@ -31,11 +31,6 @@
 			<menuItem label="Selected Category" onSelect="songDB_Export_cat_xml" />
 		</menu>
 		<menuItem label="Import Lyrics" onSelect="songDB_Import_xml" />
-
-		<menuItem type="separator" />
-
-		<menuItem label="Export Chords" onSelect="exportchords" />
-		<menuItem label="Import Chords" onSelect="importchords" />
 	</menu>
 
 	<menu label="Help">

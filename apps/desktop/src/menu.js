@@ -80,16 +80,6 @@ function addBkgndMenu() {
 function deleteBkgndMenu() {
   bkgnd.delBkgnd();
 }
-function resetFGMenu() {
-}
-function exportchords() {
-  air.trace("Export Chords");
-  export_chords();
-}
-function importchords() {
-  air.trace("Import Chords");
-  importnew_chords();
-}
 function showHelp_menu() {
   // TODO: make it a separate tool window
   $RvW.helpObj.show();

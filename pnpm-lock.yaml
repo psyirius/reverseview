@@ -44,9 +44,6 @@ importers:
       '@rvw/bible-db':
         specifier: workspace:*
         version: link:../../databases/bible
-      '@rvw/chords-db':
-        specifier: workspace:*
-        version: link:../../databases/chords
       '@rvw/flash-bootloader':
         specifier: workspace:*
         version: link:../../flash/bootloader
@@ -305,15 +302,6 @@ importers:
       axios:
         specifier: ^1.7.4
         version: 1.7.4
-      prisma:
-        specifier: ^5.18.0
-        version: 5.18.0
-      sqlite3:
-        specifier: ^5.1.7
-        version: 5.1.7
-
-  databases/chords:
-    devDependencies:
       prisma:
         specifier: ^5.18.0
         version: 5.18.0

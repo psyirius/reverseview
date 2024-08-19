@@ -209,9 +209,6 @@ $RvW.bibleRefObj = null;
 $RvW.songEditObj = null;
 $RvW.songManagerObj = null;
 $RvW.songNumberObj = null;
-$RvW.chordsNavObj = null;
-$RvW.chordsEditObj = null;
-$RvW.chordsKeyboard = null;
 $RvW.chordsManagerObj = null;
 $RvW.chordsDatabaseObj = null;
 $RvW.chordsImportExportObj = null;
@@ -664,14 +661,6 @@ function vvinit_continue() {
     // rvw.ui.Overlay.setup();
 
     setTimeout(function () {
-        var b = $RvW.vvConfigObj.get_chordsDBVersion() * 1;
-        if (b == 1 && !firstTimeFlag) {
-            var c = copyFile2AppStorage("chords/chords.db", "song/chords.db");
-            if (c) {
-                rvw.ui.Toast.show("Chords", "Updated Chords database");
-                $RvW.vvConfigObj.set_chordsDBVersion(2);
-            }
-        }
         var a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
         if (a == 1 && !firstTimeFlag) {
             var c = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
@@ -803,9 +792,6 @@ function setupTabContent() {
     $RvW.songNavObj = new SongNav();
     $RvW.helpObj = new RvwHelp(loadViewTemplate("help"));
     $RvW.graphicsObj = new GraphicsMgr(loadViewTemplate("graphics"));
-    $RvW.chordsNavObj = new ChordsNav(loadViewTemplate("chords"));
-    $RvW.chordsEditObj = new ChordsEdit(loadViewTemplate("chords_edit"));
-    $RvW.chordsKeyboard = new ChordsVK(loadViewTemplate("chords_keyboard"));
 
     if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
@@ -1279,38 +1265,34 @@ function setupVVersion() {
     createFolder("notes");
     createFolder("song");
     createFolder("webroot");
-    var a = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
+    let a = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
     if (!a) {
         return a;
     }
-    var a = copyFile2AppStorage("bible", "bible");
+    a = copyFile2AppStorage("bible", "bible");
     if (!a) {
         return a;
     }
-    var a = copyFile2AppStorage("webroot", "webroot");
+    a = copyFile2AppStorage("webroot", "webroot");
     if (!a) {
         return a;
     }
-    var a = copyFile2AppStorage("song/default.db", "song/default.db");
+    a = copyFile2AppStorage("song/default.db", "song/default.db");
     if (!a) {
         return a;
     }
-    var a = copyFile2AppStorage("song/words.db", "song/words.db");
-    if (!a) {
-        return a;
-    }
-    var a = copyFile2AppStorage("chords/chords.db", "song/chords.db");
+    a = copyFile2AppStorage("song/words.db", "song/words.db");
     if (!a) {
         return a;
     }
     return a;
 }
 function setupVBkgnd() {
-    var a = copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
+    let a = copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
     if (!a) {
         return a;
     }
-    var a = copyFile2AppStorage("background", "background");
+    a = copyFile2AppStorage("background", "background");
     if (!a) {
         return a;
     }
