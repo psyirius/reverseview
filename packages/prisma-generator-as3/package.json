@@ -4,18 +4,18 @@
   "description": "Prisma AS3 Generator",
   "private": true,
   "type": "module",
-  "main": "dist/generator.cjs",
-  "module": "dist/generator.mjs",
+  "main": "./dist/generator.cjs",
+  "module": "./dist/generator.mjs",
   "bin": {
-    "prisma-generator-as3": "dist/generator.cjs",
-    "prisma-client-as3": "dist/generator.cjs"
+    "prisma-generator-as3": "./dist/generator.cjs",
+    "prisma-client-as3": "./dist/generator.cjs"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsup",
-    "clean": "rimraf -g \"dist/*\""
+    "clean": "rimraf -g \"./dist/*\""
   },
   "dependencies": {
     "@prisma/generator-helper": "^5.18.0"

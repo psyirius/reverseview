@@ -10,9 +10,12 @@
     "prisma:pull": "prisma db pull",
     "prisma:init": "prisma migrate dev --name init"
   },
+  "dependencies": {
+    "prisma-generator-as3": "workspace:*"
+  },
   "devDependencies": {
+    "axios": "^1.7.4",
     "prisma": "^5.18.0",
-    "prisma-generator-as3": "workspace:*",
     "sqlite3": "^5.1.7"
   }
 }
