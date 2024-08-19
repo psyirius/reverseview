@@ -22,6 +22,7 @@ const IGNORE_FILEPATH = path.resolve(SOURCE_ROOT, ".airignore");
 const APP_DESC_PATH = path.resolve(PROJECT_ROOT, "application.xml");
 const KEYSTORE_FILEPATH = path.resolve(KEYSTORES_ROOT, "signing-release.p12");
 const OUTPUT_FILEPATH = 'ReVerseVIEW.air';
+const TSA = 'http://timestamp.digicert.com';
 
 function cacheAndCollectAppFiles() {
     const ig = ignore();
@@ -100,17 +101,13 @@ function makeRelease() {
     const args = [
         "-package",
 
-        "-storetype",
-        "PKCS12",
+        "-storetype", "PKCS12",
 
-        "-keystore",
-        keystorePath,
+        "-keystore", keystorePath,
+        "-storepass", keystorePassword,
+        "-tsa", TSA,
 
-        "-storepass",
-        keystorePassword,
-
-        "-target",
-        "air",
+        "-target", "air",
 
         outputPath,
 
