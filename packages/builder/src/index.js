@@ -140,30 +140,42 @@ const prepareDefine = (env) => Object.fromEntries(
     }
 
     // pass: swc
+    // - make it a module
+    // - make it es3 compliant
     {
         for (const [name, { source }] of Object.entries(files)) {
             const result = await swc.transform(source, {
                 jsc: {
+                    parser: {
+                        syntax: 'ecmascript',
+                    },
                     target: 'es3',
                     loose: true,
-                    // externalHelpers: true,
+                    externalHelpers: true,
                     preserveAllComments: true,
+                    transform: {
+                        useDefineForClassFields: true,
+                    }
                 },
-                module: {
-                    type: 'amd',
-                    moduleId: name,
-                    importInterop: 'node',
-                },
+                // module: {
+                //     type: 'amd',
+                //     moduleId: name,
+                //     importInterop: 'node',
+                // },
                 minify: false,
                 isModule: 'unknown',
             })
 
             files[name] = {
                 ...files[name],
-                // source: result.code,
+                source: result.code,
             }
         }
     }
+
+    // TODO: remap imports to our own implementation
+    // TODO: inject / import shims
+    // TODO: bundle
 
     // pass: dump
     {

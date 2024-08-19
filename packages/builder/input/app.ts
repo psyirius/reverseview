@@ -1,13 +1,3 @@
-function LogMethod(
-    target: any,
-    propertyKey: string | symbol,
-    descriptor: PropertyDescriptor
-) {
-    console.log(target);
-    console.log(propertyKey);
-    console.log(descriptor);
-}
-
 export class Deferred {
     resolve = null;
     reject = null;
@@ -33,11 +23,6 @@ export class Deferred {
         yield 1;
         yield 2;
         yield 3;
-    }
-
-    @LogMethod
-    func(abc) {
-
     }
 }
 
