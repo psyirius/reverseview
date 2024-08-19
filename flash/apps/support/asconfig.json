@@ -8,6 +8,14 @@
     "include-sources": [
       "src"
     ],
+    "library-path": [
+      "libs"
+    ],
+    "include-classes": [
+      "air.net.websockets.WebSocketServer",
+      "air.net.websockets.events.ServerEvent",
+      "air.net.websockets.events.ClientEvent"
+    ],
     "default-size": {
       "width": 20,
       "height": 20

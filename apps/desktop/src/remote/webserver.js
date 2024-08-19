@@ -15,7 +15,11 @@ const mimeTypeMap = {
     '.svg'  : 'image/svg+xml',
     '.js'   : 'text/javascript',
     '.json' : 'application/json',
+    '.bin'  : 'application/octet-stream',
 };
+
+const CRLF = '\r\n';
+const WS_PORT = 26302;
 
 class HttpHeaders {
     /**
@@ -109,7 +113,7 @@ class HttpRequest {
     }
 
     _parse(raw) {
-        const lines = raw.split("\r\n");
+        const lines = raw.split(CRLF);
 
         if (lines.length > 0) {
             const [requestLine, ...headerLines] = lines;
@@ -143,7 +147,8 @@ class HttpRequest {
 }
 
 class WebRequestHandler {
-    constructor(connection, staticDir) {
+    constructor(connection, staticDir, ws) {
+        this._ws = ws;
         this.m_clientSocket = connection.socket;
         this.m_staticDir = staticDir;
 
@@ -201,7 +206,15 @@ class WebRequestHandler {
             return mimeTypeMap[filename.substring(ext)];
         }
 
-        return mimeTypeMap['.txt'];
+        return mimeTypeMap['.bin'];
+    }
+
+    _writeLine(socket, data = '') {
+        socket.writeUTFBytes(data + CRLF);
+    }
+
+    _writeHeader(socket, key, value) {
+        this._writeLine(socket, `${key}: ${value}`);
     }
 
     _handleStaticFileRequest(path) {
@@ -220,23 +233,27 @@ class WebRequestHandler {
             const fileDat = new air.ByteArray();
             fz.readBytes(fileDat);
             fz.close();
-            clientSocket.writeUTFBytes("HTTP/1.1 200 OK\n");
-            clientSocket.writeUTFBytes("Content-Type: " + this._getContentType(path) + "\n\n");
+            this._writeLine(clientSocket, "HTTP/1.1 200 OK");
+            this._writeHeader(clientSocket, "Content-Type", this._getContentType(path));
+            // this._writeHeader(clientSocket, "Access-Control-Allow-Origin", `:${WS_PORT}`);
+            this._writeLine(clientSocket);
             clientSocket.writeBytes(fileDat);
             clientSocket.flush();
         } else {
-            clientSocket.writeUTFBytes("HTTP/1.1 404 Not Found\n");
-            clientSocket.writeUTFBytes("Content-Type: text/html\n\n");
+            this._writeLine(clientSocket, "HTTP/1.1 404 Not Found");
+            this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
+            this._writeLine(clientSocket);
             clientSocket.flush();
         }
     }
 
-    _sendTextHtml(text) {
+    _sendText(text) {
         const clientSocket = this.m_clientSocket;
 
         if (text != null) {
-            clientSocket.writeUTFBytes("HTTP/1.1 200 OK\n");
-            clientSocket.writeUTFBytes("Content-Type: text/html\n\n");
+            this._writeLine(clientSocket, "HTTP/1.1 200 OK");
+            this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
+            this._writeLine(clientSocket);
             clientSocket.writeUTFBytes(text);
             clientSocket.flush();
         }
@@ -245,8 +262,9 @@ class WebRequestHandler {
     _sendJSON(data = {}) {
         const clientSocket = this.m_clientSocket;
 
-        clientSocket.writeUTFBytes("HTTP/1.1 200 OK\n");
-        clientSocket.writeUTFBytes(`Content-Type: ${mimeTypeMap['.json']}\n\n`);
+        this._writeLine(clientSocket, "HTTP/1.1 200 OK");
+        this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.json']);
+        this._writeLine(clientSocket);
         clientSocket.writeUTFBytes(JSON.stringify(data));
         clientSocket.flush();
     }
@@ -262,6 +280,7 @@ class WebRequestHandler {
             // Menu: Blank
             case 15: {
                 $RvW.webEngineObj.blankPresentation();
+                this._ws.sendALL(JSON.stringify({msg: 'Blank activated'}));
                 this._sendJSON({
                     ok: true,
                     data: 'Blank activated',
@@ -271,6 +290,7 @@ class WebRequestHandler {
             // Menu: Logo
             case 14: {
                 $RvW.webEngineObj.logoPresentation();
+                this._ws.sendALL(JSON.stringify({msg: 'Logo Activated'}));
                 this._sendJSON({
                     ok: true,
                     data: "Logo Activated",
@@ -280,6 +300,7 @@ class WebRequestHandler {
             // Menu: Close
             case 4: {
                 $RvW.webEngineObj.closePresentation();
+                this._ws.sendALL(JSON.stringify({msg: 'Close Activated'}));
                 this._sendJSON({
                     ok: true,
                     data: "Close Activated",
@@ -289,6 +310,7 @@ class WebRequestHandler {
             // Menu: Previous Verse/Slide
             case 3: {
                 $RvW.webEngineObj.prevSlide();
+                this._ws.sendALL(JSON.stringify({msg: 'Previous Slide'}));
                 this._sendJSON({
                     ok: true,
                     data: "Previous Slide OK..",
@@ -298,6 +320,7 @@ class WebRequestHandler {
             // Menu: Next Verse/Slide
             case 2: {
                 $RvW.webEngineObj.nextSlide();
+                this._ws.sendALL(JSON.stringify({msg: 'Next Slide'}));
                 this._sendJSON({
                     ok: true,
                     data: "Next slide OK..",
@@ -479,6 +502,17 @@ class WebRequestHandler {
 
                 break;
             }
+            // WebSockets: Get Config
+            case 89: {
+                this._sendJSON({
+                    ok: true,
+                    data: {
+                        port: WS_PORT,
+                    },
+                });
+
+                break;
+            }
 
             default: {
                 this._debug_log(`Unknown command: ${cmd}`);
@@ -498,16 +532,58 @@ class WebRequestHandler {
     }
 }
 
+class WebSocketHandler {
+    constructor(server) {
+        this._server = server;
+        this._debug = false;
+    }
+
+    init() {
+        const { ServerEvent, ClientEvent } = window.runtime.air.net.websockets.events;
+
+        this._server.addEventListener(
+            ServerEvent.SERVER_BOUND_SUCCESS, (e) => this._onServerIsReady(e));
+        this._server.addEventListener(
+            ClientEvent.CLIENT_CONNECT_EVENT, (e) => this._onClientConnect(e));
+        this._server.addEventListener(
+            ClientEvent.CLIENT_MESSAGE_EVENT, (e) => this._onClientMessage(e));
+        this._server.addEventListener(
+            ClientEvent.CLIENT_DISCONNECT_EVENT, (e) => this._onClientDisconnect(e));
+    }
+
+    _debug_log(...msg) {
+        if (this._debug_log) {
+            air.trace(`[WebSocketHandler]: `, ...msg);
+        }
+    }
+
+    _onServerIsReady(e) {
+        this._debug_log("Ready!");
+    }
+
+    _onClientConnect(e) {
+        this._debug_log("Connected: ", `${e.socket.remoteAddress}:${e.socket.remotePort}`);
+    }
+
+    _onClientMessage(e) {
+        const location = this._server.getClientKeyBySocket(e.socket);
+        this._debug_log("Client message from ", location, e.msg);
+    }
+
+    _onClientDisconnect(e) {
+        this._debug_log("Disconnected: ", `${e.socket.remoteAddress}:${e.socket.remotePort}`);
+    }
+}
+
 class RvwWebServer {
     constructor(staticDir) {
-        this.m_port = 50000;
+        this.m_port = null;
         this.m_hostname = null;
 
         this.m_serverSocket = null;
+        this.m_serverWebSocket = null;
         this.m_listening = false;
         this.m_staticDir = staticDir;
-
-        this.m_debug = false;
     }
 
     init(port, hostname) {
@@ -538,10 +614,24 @@ class RvwWebServer {
     }
 
     _startListening() {
-        this.m_serverSocket = new air.ServerSocket();
-        this.m_serverSocket.addEventListener(air.Event.CONNECT, (c) => new WebRequestHandler(c, this.m_staticDir));
-        this.m_serverSocket.bind(this.m_port, this.m_hostname);
-        this.m_serverSocket.listen();
+        {
+            const { WebSocketServer } = window.runtime.air.net.websockets;
+
+            this.m_serverWebSocket = new WebSocketServer();
+            this.m_serverWebSocket.attemptBind(WS_PORT, this.m_hostname);
+
+            this.m_serverWebSocket_ = new WebSocketHandler(this.m_serverWebSocket);
+            this.m_serverWebSocket_.init();
+        }
+
+        {
+            this.m_serverSocket = new air.ServerSocket();
+            this.m_serverSocket.addEventListener(air.Event.CONNECT, (connection) => {
+                new WebRequestHandler(connection, this.m_staticDir, this.m_serverWebSocket);
+            });
+            this.m_serverSocket.bind(this.m_port, this.m_hostname);
+            this.m_serverSocket.listen();
+        }
     }
 
     _ensure_serving_dir() {
@@ -552,12 +642,6 @@ class RvwWebServer {
         const dest = appStorageDir.resolvePath(this.m_staticDir);
         if (!dest.exists) {
             appDir.resolvePath(this.m_staticDir).copyTo(dest);
-        }
-    }
-
-    _debug_log(msg) {
-        if (this.m_debug) {
-            air.trace(`[WebServer]: ${msg}`);
         }
     }
 }

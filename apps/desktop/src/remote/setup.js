@@ -1,36 +1,35 @@
-function getNetworkInterfaceList() {
-    const { NetworkInfo } = air;
-
-    if (!NetworkInfo.isSupported) {
-        throw new Error('NetworkInfo is not supported');
-    }
-
-    const interfaces = NetworkInfo.networkInfo.findInterfaces();
-
-    const result = [];
-
-    for (const nwi of interfaces) {
-        const item = {};
-
-        item['guid'] = nwi.name;
-        item['name'] = nwi.displayName;
-        item['active'] = nwi.active;
-        item['macaddr'] = nwi.hardwareAddress;
-
-        const addresses = [];
-        for (const addr of nwi.addresses) {
-            addresses.push([addr.ipVersion, addr.address]);
-        }
-        item['addresses'] = addresses;
-
-        result.push(item);
-    }
-
-    return result;
-}
-
-// Remove Control Panel
 function getAvailableNwIpList() {
+    function getNetworkInterfaceList() {
+        const { NetworkInfo } = air;
+
+        if (!NetworkInfo.isSupported) {
+            throw new Error('NetworkInfo is not supported');
+        }
+
+        const interfaces = NetworkInfo.networkInfo.findInterfaces();
+
+        const result = [];
+
+        for (const nwi of interfaces) {
+            const item = {};
+
+            item['guid'] = nwi.name;
+            item['name'] = nwi.displayName;
+            item['active'] = nwi.active;
+            item['macaddr'] = nwi.hardwareAddress;
+
+            const addresses = [];
+            for (const addr of nwi.addresses) {
+                addresses.push([addr.ipVersion, addr.address]);
+            }
+            item['addresses'] = addresses;
+
+            result.push(item);
+        }
+
+        return result;
+    }
+
     return getNetworkInterfaceList()
         .filter(e => e.active)
         .map(e => e.addresses
@@ -330,7 +329,7 @@ class RvwRemote {
 
         function _debug_log(msg) {
             if (m_debug) {
-                air.trace("[RemoteUI]: " + msg);
+                air.trace("[Remote]: " + msg);
             }
         }
     }

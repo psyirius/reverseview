@@ -9,7 +9,7 @@ if ($RvW.isDev) {
 
     try {
         // const classPath = 'flash.utils.ByteArray';
-        const classPath = 'a.b.c.As3Lib';
+        const classPath = 'air.net.websockets.WebSocketServer';
 
         let as3Val = window.runtime;
 

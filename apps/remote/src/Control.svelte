@@ -19,15 +19,11 @@
         // stores
         scheduleSelect,
         scheduleSelectOptions,
-        scheduleTwoLinePresent,
         songsSelect,
         songsSelectOptions,
-        songsFirstLine,
-        scheduleFirstLine,
-        songsTwoLinePresent,
         bibleSearchQuery,
         songsSearchQuery,
-        versesResult,
+        versesContent,
         scheduleLyricsContent,
         songsLyricsContent,
     } from "./etc/control";
@@ -111,7 +107,7 @@
 
                 <ControlMenu />
 
-                <VerseListContent content={versesResult} />
+                <VerseListContent content={versesContent} />
             </div>
         </Tabs.Content>
 
@@ -135,30 +131,6 @@
                         <Button.Root on:click={getSchContent}>
                             <ArrowDownToLineIcon />
                         </Button.Root>
-                    </div>
-
-                    <div class="">
-                        <!-- #singleLine -->
-                        <div class="">
-                            <input type="checkbox" bind:checked={$scheduleFirstLine} />
-                            <Label
-                                for=""
-                                class=""
-                            >
-                                First Line
-                            </Label>
-                        </div>
-
-                        <!-- #twoLinePresent -->
-                        <div class="">
-                            <input type="checkbox" bind:checked={$scheduleTwoLinePresent} />
-                            <Label
-                                for=""
-                                class=""
-                            >
-                                Present Two Lines
-                            </Label>
-                        </div>
                     </div>
                 </div>
 
@@ -202,35 +174,11 @@
 
                 <div class="">
                     <div class="">
-                        <select class="" id="songID" bind:this={$songsSelect}>
+                        <select class="" bind:this={$songsSelect}>
                             {#each $songsSelectOptions as option (option.value)}
                                 <option value={option.value}>{option.label}</option>
                             {/each}
                         </select>
-                    </div>
-                </div>
-
-                <div class="">
-                    <!-- #singleLine2 -->
-                    <div class="">
-                        <input type="checkbox" bind:checked={$songsFirstLine} />
-                        <Label
-                            for=""
-                            class=""
-                        >
-                            First Line
-                        </Label>
-                    </div>
-
-                    <!-- #twoLinePresent2 -->
-                    <div class="">
-                        <input type="checkbox" bind:checked={$songsTwoLinePresent} />
-                        <Label
-                            for=""
-                            class=""
-                        >
-                            Present Two Lines
-                        </Label>
                     </div>
                 </div>
 

@@ -1,45 +1,32 @@
 import { toast } from "svelte-sonner";
-import { writable} from "svelte/store";
-import * as store from "svelte/store";
+import * as $ from "svelte/store";
 
 /** @type {import("svelte/store").Writable<HTMLSelectElement>} */
-export const songsSelect = writable();
+export const songsSelect = $.writable();
 
 /** @type {import("svelte/store").Writable<HTMLSelectElement>} */
-export const scheduleSelect = writable();
+export const scheduleSelect = $.writable();
 
 /** @type {import("svelte/store").Writable<HTMLOptionElement[]>} */
-export const songsSelectOptions = writable([]);
+export const songsSelectOptions = $.writable([]);
 
 /** @type {import("svelte/store").Writable<HTMLOptionElement[]>} */
-export const scheduleSelectOptions = writable([]);
-
-/** @type {import("svelte/store").Writable<boolean>} */
-export const songsFirstLine = writable(false);
-
-/** @type {import("svelte/store").Writable<boolean>} */
-export const songsTwoLinePresent = writable(false);
-
-/** @type {import("svelte/store").Writable<boolean>} */
-export const scheduleFirstLine = writable(false);
-
-/** @type {import("svelte/store").Writable<boolean>} */
-export const scheduleTwoLinePresent = writable(false);
+export const scheduleSelectOptions = $.writable([]);
 
 /** @type {import("svelte/store").Writable<string>} */
-export const bibleSearchQuery = writable('');
+export const bibleSearchQuery = $.writable('');
 
 /** @type {import("svelte/store").Writable<string>} */
-export const songsSearchQuery = writable('');
+export const songsSearchQuery = $.writable('');
 
 /** @type {import("svelte/store").Writable<PromiseLike<any>>} */
-export const versesResult = writable();
+export const versesContent = $.writable();
 
 /** @type {import("svelte/store").Writable<PromiseLike<any>>} */
-export const songsLyricsContent = writable();
+export const songsLyricsContent = $.writable();
 
-/** @type {import("svelte/store").Writable<PromiseLike<any[]>>} */
-export const scheduleLyricsContent = writable(Promise.resolve([]));
+/** @type {import("svelte/store").Writable<PromiseLike<any>>} */
+export const scheduleLyricsContent = $.writable();
 
 // TODO: remove and rely on the backend
 const BibleReference = (function () {
@@ -448,12 +435,6 @@ const BibleReference = (function () {
     return BibleReference;
 }());
 
-const colorList = ["red", "black", "green", "blue", "magenta"];
-const numColor = colorList.length;
-
-const b_colorList = ["black", "#0000FF"];
-const b_numColor = b_colorList.length;
-
 // OK
 export function getSch() {
     const t = toast.loading('Fetching Schedule...');
@@ -471,7 +452,7 @@ export function getSch() {
 
 // OK
 export function getSchContent() {
-    const selectedScheduleValue = store.get(scheduleSelect).value;
+    const selectedScheduleValue = $.get(scheduleSelect).value;
 
     const [schIndex, songId] = selectedScheduleValue.split(':').map(x => parseInt(x));
 
@@ -588,7 +569,7 @@ function fillSch(schList) {
 export function getBibleRef() {
     getVerses();
 
-    const ref = store.get(bibleSearchQuery);
+    const ref = $.get(bibleSearchQuery);
 
     const bibleRefObj = new BibleReference();
 
@@ -641,7 +622,7 @@ export function closePresentWindow() {
 
 // OK
 export function getSongList() {
-    const query = store.get(songsSearchQuery);
+    const query = $.get(songsSearchQuery);
 
     const t = toast.loading('Searching Songs...');
 
@@ -661,7 +642,7 @@ export function getSongList() {
 
 // OK
 export function setSongBookmark() {
-    const selectedScheduleValue = store.get(songsSelect).value;
+    const selectedScheduleValue = $.get(songsSelect).value;
 
     if (!selectedScheduleValue) {
         toast.warning('Select a song to bookmark.');
@@ -684,7 +665,7 @@ export function setSongBookmark() {
 
 // OK
 export function getVerses() {
-    const query = store.get(bibleSearchQuery);
+    const query = $.get(bibleSearchQuery);
 
     const bibleRefObj = new BibleReference();
 
@@ -731,15 +712,26 @@ export function loadBibleRef(book, chapter, verse) {
 /**
  * @param {number} index
  * */
-export function getColor(index) {
-    return b_colorList[index % b_numColor];
+export function getColorVerse(index) {
+    const b_colorList = ["black", "#0000FF"];
+
+    return b_colorList[index % b_colorList.length];
+}
+
+/**
+ * @param {number} index
+ * */
+export function getColorLyrics(index) {
+    const colorList = ["red", "black", "green", "blue", "magenta"];
+
+    return colorList[index % colorList.length];
 }
 
 /**
  * @param {Record<string, any>} data
  * */
 function processVerseResponse(data) {
-    versesResult.set(
+    versesContent.set(
         Promise.resolve(data)
     );
 }
@@ -762,7 +754,7 @@ function fillSongs(songs) {
 
 // OK
 export function getSongContent() {
-    const selectedSchIndex = store.get(songsSelect).value;
+    const selectedSchIndex = $.get(songsSelect).value;
 
     if (!selectedSchIndex) {
         toast.warning('Select a song to fetch.');
@@ -820,30 +812,6 @@ function processSongResponse(songId, songObj, isSchedule = false) {
 }
 
 /**
- * @param {string} x
- * */
-function getFirstLine(x) {
-    if (store.get(scheduleFirstLine)) {
-        const t = x.split("<BR>");
-        return t[0];
-    }
-
-    return x;
-}
-
-/**
- * @param {string} x
- * */
-function getFirstLine2(x) {
-    if (store.get(songsFirstLine)) {
-        const t = x.split("<BR>");
-        return t[0];
-    }
-
-    return x;
-}
-
-/**
  * @callback ApiCallCallback
  * @param {{ok: boolean, data?: any, error?: string}} response
  * */
@@ -871,4 +839,63 @@ function apiCall(params, callback = null) {
                 description: error.toString()
             });
         });
+}
+
+export function initWebSocket() {
+    apiCall({
+        cmd: 89,
+    }, ({ok, data, error}) => {
+        if (!ok) {
+            toast.error('Failed to connect to WebSocket!');
+        } else {
+            /**
+             * @type {ReturnType<setInterval>}
+             */
+            let timer;
+
+            toast.success('WebSocket config!', {
+                description: JSON.stringify(data),
+            });
+
+            // Connect to WebSocket server on port 1235
+            const socket = new WebSocket(`ws://${window.location.hostname}:${data.port}`);
+
+            // Connection opened
+            socket.addEventListener("open", function (event) {
+                toast.success('WebSocket connected!');
+
+                timer = setInterval(() => {
+                    socket.send(new Uint8Array([0x61, 0x20, 0x41]));
+                }, 1000);
+            });
+
+            // Listen for messages
+            socket.addEventListener("message", function (event) {
+                console.log("Message from server ", event.data);
+
+                toast.info('Message!', {
+                    description: JSON.stringify(event.data),
+                });
+            });
+
+            // Listen for messages
+            socket.addEventListener("close", function (event) {
+                console.log("Connection closed");
+
+                toast.error('Connection closed!')
+
+                clearInterval(timer);
+            });
+
+            // Listen for messages
+            socket.addEventListener("error", function (event) {
+                console.log("Error: ", event);
+
+                toast.error('Error connecting websocket')
+            });
+
+            // Close the connection
+            // socket.close();
+        }
+    });
 }

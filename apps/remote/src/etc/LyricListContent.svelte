@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Writable } from "svelte/store";
     import {
-        getColor,
+        getColorLyrics,
         presentSongSlide
     } from "./control";
 
@@ -12,8 +12,8 @@
     {#if $content}
         {#await $content}
             <p>Loading</p>
-        {:then lyricsContent}
-            {@const { id, name, font, slides, font2, slides2 } = lyricsContent}
+        {:then content}
+            {@const { id, name, font, slides, font2, slides2 } = content}
 
             <h2>{name}</h2>
 
@@ -24,7 +24,7 @@
                     <!-- Slide 1 -->
                     <div
                         class=""
-                        style:color={getColor(i)}
+                        style:color={getColorLyrics(i)}
                         style:font-family={font}
                     >
                         <div
@@ -42,7 +42,7 @@
                     <!-- Slide 2 -->
                     <div
                         class=""
-                        style:color={getColor(i)}
+                        style:color={getColorLyrics(i)}
                         style:font-family={font2}
                     >
                         <div

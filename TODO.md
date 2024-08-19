@@ -26,8 +26,10 @@
 - [ ] compile bible and songbooks from readable src
 - [ ] compile assets and fonts into swf bundle
 - [ ] add astro to the remote project if needed
-- [ ] TODO: Fix remote stageview and lowerthird
+- [ ] Fix remote stageview and lowerthird
+- [ ] Implement the WebSocket protocol (RFC 6455) [Server & Client]
 - [ ] Run remote server in a worker 
+- [ ] Run remote HTTP and WEBSOCKET ON SAME PORT
 - [ ] Remove included images and keep 1 or two images for basic usage
 - [ ] Add motion backgrounds
 - [ ] Checkout flash.media.StageWebView
@@ -56,6 +58,9 @@ https://github.com/funkatron/spazmk1-titanium
 https://github.com/yaniswang/hostsPlus
 https://github.com/ydoug33/ts4air
 https://github.com/hydroper
+https://github.com/st3v0/msgpack-as3
+https://github.com/loteixeira/as3-msgpack
+https://github.com/Nekuromento/msgpack-as3
 https://github.com/yui/yui3-swfs
 https://github.com/MaxDidIt/firetype
 https://github.com/rakuten/MovieSheet
@@ -90,6 +95,9 @@ https://github.com/CC-Archived/promise-as3
 https://github.com/theturtle32/AS3WebSocket
 https://github.com/richardlord/Actionscript-Toolkit
 https://github.com/jacksonkr/actionscript
+https://github.com/flashflashrevolution/rCubed/tree/main/src/com/worlize/websocket
+https://github.com/flashflashrevolution/rCubed/tree/main/src/com/flashfla
+https://github.com/childoftv/as3-websocket-server
 
 https://nextgenactionscript.com/tools-and-utilities/
 

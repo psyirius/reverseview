@@ -1,6 +1,9 @@
 <script lang="ts">
     import type {Writable} from "svelte/store";
-    import {getColor, loadBibleRef} from "./control.js";
+    import {
+        getColorVerse,
+        loadBibleRef
+    } from "./control";
 
     export let content: Writable<PromiseLike<any>>
 </script>
@@ -9,8 +12,8 @@
     {#if $content}
         {#await $content}
             <p>Loading</p>
-        {:then verseRes}
-            {@const { verses, font, book, chapter } = verseRes}
+        {:then content}
+            {@const { verses, font, book, chapter } = content}
 
             <h2>{book}:{chapter}</h2>
 
@@ -18,7 +21,7 @@
                 {@const cb = () => loadBibleRef(parseInt(book), parseInt(chapter), i + 1)}
 
                 <div
-                    style:color={getColor(i)}
+                    style:color={getColorVerse(i)}
                     style:font-family={font}
                 >
                     <div
