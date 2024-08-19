@@ -105,7 +105,7 @@ function unzip(u, d) {
   var u = u;
   var d = d;
   var m = new air.ByteArray();
-  var v = new String();
+  var v = '';
   var s;
   var p;
   var e;

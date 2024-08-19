@@ -111,3 +111,6 @@ Environment: https://help.adobe.com/en_US/air/html/dev/WSb2ba3b1aad8a27b0-67c001
 
 https://github.com/microsoft/TypeScript/pull/45771#issuecomment-919273950
 https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules
+
+### DB
+https://gist.github.com/deckchairlabs/8a11c33311c01273deec7e739417dbc9

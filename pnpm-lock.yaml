@@ -304,6 +304,9 @@ importers:
       prisma:
         specifier: ^5.18.0
         version: 5.18.0
+      prisma-generator-as3:
+        specifier: workspace:*
+        version: link:../prisma-generator-as3
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7
@@ -316,6 +319,16 @@ importers:
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7
+
+  databases/prisma-generator-as3:
+    dependencies:
+      '@prisma/generator-helper':
+        specifier: ^5.18.0
+        version: 5.18.0
+    devDependencies:
+      tsup:
+        specifier: ^8.2.4
+        version: 8.2.4(@swc/core@1.7.11(@swc/helpers@0.5.12))(jiti@1.21.6)(postcss@8.4.41)(tsx@4.17.0)(typescript@5.5.4)(yaml@2.5.0)
 
   databases/songs:
     devDependencies:
@@ -1653,6 +1666,9 @@ packages:
 
   '@prisma/fetch-engine@5.18.0':
     resolution: {integrity: sha512-I/3u0x2n31rGaAuBRx2YK4eB7R/1zCuayo2DGwSpGyrJWsZesrV7QVw7ND0/Suxeo/vLkJ5OwuBqHoCxvTHpOg==}
+
+  '@prisma/generator-helper@5.18.0':
+    resolution: {integrity: sha512-3ffmrd9KE8ssg/fwyvfwMxrDAunLF8DLFjfwYnDRE7VaNIhkUVZwB77jAwpMCtukvCsAp14WGWu4itvLMzH3GQ==}
 
   '@prisma/get-platform@5.18.0':
     resolution: {integrity: sha512-Tk+m7+uhqcKDgnMnFN0lRiH7Ewea0OEsZZs9pqXa7i3+7svS3FSCqDBCaM9x5fmhhkufiG0BtunJVDka+46DlA==}
@@ -6722,6 +6738,10 @@ snapshots:
       '@prisma/debug': 5.18.0
       '@prisma/engines-version': 5.18.0-25.4c784e32044a8a016d99474bd02a3b6123742169
       '@prisma/get-platform': 5.18.0
+
+  '@prisma/generator-helper@5.18.0':
+    dependencies:
+      '@prisma/debug': 5.18.0
 
   '@prisma/get-platform@5.18.0':
     dependencies:
