@@ -3214,7 +3214,6 @@ packages:
   haxe@5.2.1:
     resolution: {integrity: sha512-Kc8tjvaU/KWwuRBZ/dcjikj9YWSuKgOYS8CQYa+u6/owcVn3bNRwMavRbNvoG6tXkz+WEhy2B41UDSnSYdf0LA==}
     engines: {node: '>=8.0.0'}
-    cpu: [x64, ia32]
     os: [win32, win64, darwin, linux]
     hasBin: true
 
