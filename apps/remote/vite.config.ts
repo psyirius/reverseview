@@ -32,6 +32,14 @@ export default defineConfig({
             }
         },
     },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:50000',
+                changeOrigin: true,
+            },
+        },
+    },
     css: {
         transformer: 'postcss',
     },

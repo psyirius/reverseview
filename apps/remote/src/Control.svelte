@@ -46,7 +46,7 @@
         { id: 'songs', title: 'Songs' },
     ];
 
-    let selectedTab = 'schedule';
+    let selectedTab = 'bible';
 
     function onBibleSearchKeyUp(event: KeyboardEvent) {
         if (event.key === 'Enter') {
@@ -64,37 +64,31 @@
 <main>
     <Tabs.Root
         bind:value={selectedTab}
-        class=""
+        class="h-full w-full flex flex-col gap-2"
     >
-        <Tabs.List class="">
+        <Tabs.List class="grid grid-cols-3 w-full">
             {#each tabs as tab}
-                <Tabs.Trigger
-                    value={tab.id}
-                    class=""
-                >
-                    {tab.title}
-                </Tabs.Trigger>
+                <Tabs.Trigger value={tab.id}>{tab.title}</Tabs.Trigger>
             {/each}
         </Tabs.List>
 
         <!-- Tab: Bible -->
-        <Tabs.Content value="bible" class="">
-            <div class="" >
+        <Tabs.Content value="bible" class="m-0 h-full">
+            <div class="tab-content">
                 <Label>Reference</Label>
 
-                <div class="">
-                    <div class="">
-                        <!-- #remote_bibleRefID -->
+                <div class="flex flex-row justify-between gap-2">
+                    <div class="flex w-full">
                         <input
                             type="text"
-                            class=""
+                            class="w-full border rounded-md"
                             bind:value={$bibleSearchQuery}
                             on:keyup={onBibleSearchKeyUp}
                             placeholder=""
                         />
                     </div>
 
-                    <div class="">
+                    <div class="flex flex-row gap-2">
                         <Button.Root on:click={getVerses}>
                             <SearchIcon />
                         </Button.Root>
@@ -112,18 +106,20 @@
         </Tabs.Content>
 
         <!-- Tab: Schedule -->
-        <Tabs.Content value="schedule" class="">
-            <div class="">
-                <div class="">
-                    <div class="">
-                        <select class="" bind:this={$scheduleSelect}>
+        <Tabs.Content value="schedule" class="m-0 h-full">
+            <div class="tab-content">
+                <Label>Scheduled Songs</Label>
+
+                <div class="flex flex-row justify-between gap-2">
+                    <div class="flex w-full">
+                        <select class="w-full border rounded-md" bind:this={$scheduleSelect}>
                             {#each $scheduleSelectOptions as option (option.value)}
                                 <option value={option.value}>{option.text}</option>
                             {/each}
                         </select>
                     </div>
 
-                    <div class="">
+                    <div class="flex flex-row gap-2">
                         <Button.Root on:click={getSch}>
                             <RefreshCcwIcon />
                         </Button.Root>
@@ -141,23 +137,30 @@
         </Tabs.Content>
 
         <!-- Tab: Songs -->
-        <Tabs.Content value="songs" class="">
-            <div class="" >
+        <Tabs.Content value="songs" class="m-0 h-full">
+            <div class="tab-content" >
                 <Label>Search Song</Label>
 
-                <div class="">
-                    <div class="">
-                        <!-- #remote_songSearchID -->
+                <div class="flex flex-row justify-between gap-2">
+                    <div class="flex w-full flex-row gap-2">
                         <input
                             type="text"
-                            class=""
+                            class="w-full border rounded-md"
                             bind:value={$songsSearchQuery}
                             on:keyup={onSongSearchKeyUp}
                             placeholder=""
                         />
+
+                        <div class="flex w-full">
+                            <select class="w-full border rounded-md" bind:this={$songsSelect}>
+                                {#each $songsSelectOptions as option (option.value)}
+                                    <option value={option.value}>{option.label}</option>
+                                {/each}
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="">
+                    <div class="flex flex-row gap-2">
                         <Button.Root on:click={getSongList} >
                             <SearchIcon />
                         </Button.Root>
@@ -172,16 +175,6 @@
                     </div>
                 </div>
 
-                <div class="">
-                    <div class="">
-                        <select class="" bind:this={$songsSelect}>
-                            {#each $songsSelectOptions as option (option.value)}
-                                <option value={option.value}>{option.label}</option>
-                            {/each}
-                        </select>
-                    </div>
-                </div>
-
                 <ControlMenu />
 
                 <LyricListContent content={songsLyricsContent} />
@@ -191,3 +184,23 @@
 
     <Toaster position="bottom-center" richColors />
 </main>
+
+<style lang="scss">
+    main {
+        @apply flex;
+        @apply flex-col;
+        @apply gap-4;
+        @apply p-2;
+        //@apply border-2 border-red-200;
+        @apply h-full w-full;
+        @apply justify-between;
+    }
+
+    .tab-content {
+        @apply flex flex-col;
+        @apply gap-2;
+        @apply p-0 m-0;
+        @apply w-full;
+        @apply h-full;
+    }
+</style>

@@ -439,7 +439,7 @@ const BibleReference = (function () {
 export function getSch() {
     const t = toast.loading('Fetching Schedule...');
 
-    apiCall({ cmd: 30 }, ({ok, data, error}) => {
+    callRemoteAction({ cmd: 30 }, ({ok, data, error}) => {
         toast.dismiss(t);
 
         if (!ok) {
@@ -460,7 +460,7 @@ export function getSchContent() {
 
     // if anything is selected
     if (selectedScheduleValue) {
-        apiCall({
+        callRemoteAction({
             cmd: 31,
             index: schIndex,
         }, ({ok, data, error}) => {
@@ -580,7 +580,7 @@ export function getBibleRef() {
     } else {
         const t = toast.loading('Loading Bible Reference...');
 
-        apiCall({
+        callRemoteAction({
             cmd: 8,
             ref: [bibleRefObj.getBook(), bibleRefObj.getChapter(), bibleRefObj.getVerse()],
         }, ({ok, data, error}) => {
@@ -597,27 +597,27 @@ export function getBibleRef() {
 
 // OK
 export function goNext() {
-    apiCall({ cmd: 2 });
+    callRemoteAction({ cmd: 2 });
 }
 
 // OK
 export function goPrevious() {
-    apiCall({ cmd: 3 });
+    callRemoteAction({ cmd: 3 });
 }
 
 // OK
 export function blankPresentWindow() {
-    apiCall({ cmd: 15 });
+    callRemoteAction({ cmd: 15 });
 }
 
 // OK
 export function logoPresentWindow() {
-    apiCall({ cmd: 14 });
+    callRemoteAction({ cmd: 14 });
 }
 
 // OK
 export function closePresentWindow() {
-    apiCall({ cmd: 4 });
+    callRemoteAction({ cmd: 4 });
 }
 
 // OK
@@ -626,7 +626,7 @@ export function getSongList() {
 
     const t = toast.loading('Searching Songs...');
 
-    apiCall({
+    callRemoteAction({
         cmd: 20,
         query,
     }, ({ok, data, error}) => {
@@ -651,7 +651,7 @@ export function setSongBookmark() {
 
     const songId = parseInt(selectedScheduleValue);
 
-    apiCall({
+    callRemoteAction({
         cmd: 22,
         id: songId,
     }, ({ok, error}) => {
@@ -676,7 +676,7 @@ export function getVerses() {
     } else {
         const t = toast.loading('Loading Verses...');
 
-        apiCall({
+        callRemoteAction({
             cmd: 7,
             ref: query,
         }, ({ok, data, error}) => {
@@ -697,7 +697,7 @@ export function getVerses() {
  * @param {number} verse (non-index)
  * */
 export function loadBibleRef(book, chapter, verse) {
-    apiCall({
+    callRemoteAction({
         cmd: 8,
         ref: [book, chapter, verse],
     }, ({ok, data, error}) => {
@@ -765,7 +765,7 @@ export function getSongContent() {
 
     const t = toast.loading('Loading Song Lyrics...');
 
-    apiCall({
+    callRemoteAction({
         cmd: 21,
         id: songId,
     }, ({ok, data, error}) => {
@@ -784,7 +784,7 @@ export function getSongContent() {
  * @param {number} slideIdx
  */
 export function presentSongSlide(songId, slideIdx) {
-    apiCall({
+    callRemoteAction({
         cmd: 17,
         id: songId,
         index: slideIdx,
@@ -812,29 +812,34 @@ function processSongResponse(songId, songObj, isSchedule = false) {
 }
 
 /**
- * @callback ApiCallCallback
+ * @callback RemoteActionCallback
  * @param {{ok: boolean, data?: any, error?: string}} response
  * */
 
 /**
  * @param {any} params
- * @param {ApiCallCallback?} callback
+ * @param {RemoteActionCallback?} callback
  */
-function apiCall(params, callback = null) {
-    const baseUrl = '';
-    // const baseUrl = '//localhost:50000';
-    const url = [`${baseUrl}/action`, new URLSearchParams({
+function callRemoteAction(params, callback = null) {
+    const url = [`/api/action`, new URLSearchParams({
         data: btoa(JSON.stringify(params)),
     }).toString()].join("?");
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
+    fetch(url, {
+        mode: 'no-cors',
+    })
+        .then(response => {
+            if (!response.ok) {
+                toast.error('Network response was not ok!');
+                return;
+            }
+
             if (typeof callback === "function") {
-                callback(data);
+                response.json().then(callback);
             }
         })
         .catch(error => {
+            console.log(error);
             toast.error('API Error!', {
                 description: error.toString()
             });
@@ -842,7 +847,7 @@ function apiCall(params, callback = null) {
 }
 
 export function initWebSocket() {
-    apiCall({
+    callRemoteAction({
         cmd: 89,
     }, ({ok, data, error}) => {
         if (!ok) {

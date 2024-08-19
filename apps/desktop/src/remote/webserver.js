@@ -185,17 +185,18 @@ class WebRequestHandler {
             return '';
         })()}`);
 
-        switch (req.path) {
-            case "/action": {
-                this._handleApiRequest(req.params);
-                break;
-            }
-            default: {
-                let path = req.path;
-                if (path === "/") { path = "/index.html" }
-                this._handleStaticFileRequest(path);
-                break;
-            }
+        // apply url normalization
+        const pathSegments = req.path.split('/').filter(e => !!e.trim());
+
+        if (pathSegments[0] === 'api') {
+            this._handleApi(
+                '/' + pathSegments.slice(1).join('/'),
+                req.params,
+            );
+        } else {
+            this._handleStatic(
+                '/' + (pathSegments.join('/') || 'index.html')
+            );
         }
     }
 
@@ -217,7 +218,7 @@ class WebRequestHandler {
         this._writeLine(socket, `${key}: ${value}`);
     }
 
-    _handleStaticFileRequest(path) {
+    _handleStatic(path) {
         const clientSocket = this.m_clientSocket;
 
         const { File } = air;
@@ -235,7 +236,14 @@ class WebRequestHandler {
             fz.close();
             this._writeLine(clientSocket, "HTTP/1.1 200 OK");
             this._writeHeader(clientSocket, "Content-Type", this._getContentType(path));
-            // this._writeHeader(clientSocket, "Access-Control-Allow-Origin", `:${WS_PORT}`);
+
+            // DEV: {
+            //     if (this._getContentType(path) === 'text/html') {
+            //         this._writeHeader(clientSocket, "Access-Control-Allow-Origin", '*');
+            //     }
+            //     break DEV;
+            // }
+
             this._writeLine(clientSocket);
             clientSocket.writeBytes(fileDat);
             clientSocket.flush();
@@ -253,6 +261,7 @@ class WebRequestHandler {
         if (text != null) {
             this._writeLine(clientSocket, "HTTP/1.1 200 OK");
             this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
+            // this._writeHeader(clientSocket, "Content-Length", text.length);
             this._writeLine(clientSocket);
             clientSocket.writeUTFBytes(text);
             clientSocket.flush();
@@ -261,15 +270,33 @@ class WebRequestHandler {
 
     _sendJSON(data = {}) {
         const clientSocket = this.m_clientSocket;
+        const json = JSON.stringify(data);
 
         this._writeLine(clientSocket, "HTTP/1.1 200 OK");
         this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.json']);
+        // this._writeHeader(clientSocket, "Content-Length", json.length);
         this._writeLine(clientSocket);
-        clientSocket.writeUTFBytes(JSON.stringify(data));
+        clientSocket.writeUTFBytes(json);
         clientSocket.flush();
     }
 
-    _handleApiRequest({ data }) {
+    _notFound() {
+        const clientSocket = this.m_clientSocket;
+
+        this._writeLine(clientSocket, "HTTP/1.1 404 Not Found");
+        this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
+        this._writeLine(clientSocket);
+
+        clientSocket.flush();
+    }
+
+    _handleApi(path, { data }) {
+        if (path !== '/action') {
+            this._debug_log(`Invalid URI: ${path}`);
+            this._notFound();
+            return;
+        }
+
         const {cmd, ...args} = JSON.parse(atob(data));
 
         this._debug_log(`Command<${cmd}>: ${JSON.stringify(args, null, 2)}`);

@@ -4,6 +4,7 @@
         getColorLyrics,
         presentSongSlide
     } from "./control";
+    import Label from "../lib/components/ui/label/label.svelte";
 
     export let content: Writable<PromiseLike<any>>
 </script>
@@ -15,7 +16,7 @@
         {:then content}
             {@const { id, name, font, slides, font2, slides2 } = content}
 
-            <h2>{name}</h2>
+            <Label>{name}</Label>
 
             {#each slides as slide, i (i)}
                 {@const cb = () => presentSongSlide(id, i)}

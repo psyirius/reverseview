@@ -4,6 +4,7 @@
         getColorVerse,
         loadBibleRef
     } from "./control";
+    import Label from "../lib/components/ui/label/label.svelte";
 
     export let content: Writable<PromiseLike<any>>
 </script>
@@ -15,7 +16,7 @@
         {:then content}
             {@const { verses, font, book, chapter } = content}
 
-            <h2>{book}:{chapter}</h2>
+            <Label>{book}:{chapter}</Label>
 
             {#each verses as verse, i (i)}
                 {@const cb = () => loadBibleRef(parseInt(book), parseInt(chapter), i + 1)}
