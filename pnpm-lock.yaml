@@ -46,10 +46,10 @@ importers:
         version: link:../../databases/chords
       '@rvw/flash-bootloader':
         specifier: workspace:*
-        version: link:../../flash/apps/bootloader
+        version: link:../../flash/bootloader
       '@rvw/flash-support':
         specifier: workspace:*
-        version: link:../../flash/apps/support
+        version: link:../../flash/support
       '@rvw/remote':
         specifier: workspace:*
         version: link:../remote
@@ -339,13 +339,13 @@ importers:
         specifier: ^5.1.7
         version: 5.1.7
 
-  flash/apps/bootloader:
+  flash/bootloader:
     devDependencies:
       asconfigc:
         specifier: ^1.8.1
         version: 1.8.1
 
-  flash/apps/support:
+  flash/support:
     devDependencies:
       asconfigc:
         specifier: ^1.8.1
