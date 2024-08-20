@@ -1,0 +1,22 @@
+{
+  "name": "as3-codegen",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "run": "node ./src/index.js"
+  },
+  "dependencies": {
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "unist-util-inspect": "^8.1.0",
+    "unist-util-map": "^4.0.0",
+    "unist-builder": "^4.0.0",
+    "unist-util-is": "^6.0.0",
+    "zwitch": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/unist": "^3.0.3"
+  }
+}
