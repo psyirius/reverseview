@@ -64,3 +64,10 @@ for (const s of str) {
         break DEV;
     }
 }
+
+const f = Symbol(1);
+const g = Symbol(1);
+
+// if (f instanceof Symbol) {
+//     console.log(typeof g);
+// }

@@ -2,8 +2,8 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import * as ts from 'typescript'
-import * as esbuild from 'esbuild'
 import * as swc from '@swc/core'
+import * as esbuild from 'esbuild'
 
 /**
  * @param {{[p: string]: any}} env
@@ -84,7 +84,7 @@ const prepareDefine = (env) => Object.fromEntries(
         for (const [name, { path, source }] of Object.entries(files)) {
             const result = ts.transpileModule(source, {
                 compilerOptions: {
-                    target: ts.ScriptTarget.ES5,
+                    target: ts.ScriptTarget.ES2015,
                     // Preserve generating invalid code
                     module: ts.ModuleKind.ESNext,
                     newLine: ts.NewLineKind.LineFeed,
@@ -115,7 +115,7 @@ const prepareDefine = (env) => Object.fromEntries(
     {
         for (const [name, { filename, source }] of Object.entries(files)) {
             const result = await esbuild.transform(source, {
-                target: 'es5',
+                target: 'ES2015',
                 format: 'esm',
                 platform: 'browser',
                 sourcefile: filename,
@@ -143,7 +143,7 @@ const prepareDefine = (env) => Object.fromEntries(
     // - make it a module
     // - make it es3 compliant
     {
-        for (const [name, { source }] of Object.entries(files)) {
+        for (const [name, { filename, source }] of Object.entries(files)) {
             const result = await swc.transform(source, {
                 jsc: {
                     parser: {
@@ -153,9 +153,25 @@ const prepareDefine = (env) => Object.fromEntries(
                     loose: true,
                     externalHelpers: true,
                     preserveAllComments: true,
-                    transform: {
-                        useDefineForClassFields: true,
+                    experimental: {
+                        plugins: [
+                            // [
+                            //     '@swc/plugin-transform-imports',
+                            //     {
+                            //         "tslib": {
+                            //             "transform": "phew/_/{{member}}"
+                            //         }
+                            //     }
+                            // ]
+                        ]
                     }
+                },
+                // env: {},
+                filename,
+                plugin(module) {
+                    console.log(module);
+
+                    return module;
                 },
                 // module: {
                 //     type: 'amd',

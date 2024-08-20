@@ -104,6 +104,9 @@ https://github.com/childoftv/as3-websocket-server
 https://github.com/ianharrigan/hxWebSockets
 https://github.com/thomasuster/haxe-websocket-server
 
+https://github.com/rousan/symbol-es6
+https://github.com/seanmonstar/symbol
+
 https://nextgenactionscript.com/tools-and-utilities/
 
 ANE:

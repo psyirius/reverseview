@@ -8,7 +8,7 @@
     "jsxImportSource": "@lib/zrx",
 
     /* Modules */
-    "module": "UMD", // out loader is AMD
+    "module": "UMD", // our loader is AMD
     "rootDir": "./src",
     "baseUrl": "./src",
     "moduleResolution": "Node",

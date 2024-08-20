@@ -1,9 +1,21 @@
 // import SongEdit from '../song/edit.js';
 
-// NOTE: DISABLE IF PROD
-$RvW.isDev = true;
+// import RvwWordBrain from '../words/vvbrain';
+// import RvwWordLearner from '../words/wordlearner.js';
 
-if ($RvW.isDev) {
+// import * as k from './preferences';
+//
+// air.trace('^^^^^^^^^^^^^^^^^^:', k);
+
+// require(['./preferences'], () => {
+//     air.trace('^^^^^^^^^^^^^^^^^^');
+// });
+
+import * as $ from 'jquery';
+
+DEV: {
+    break DEV;
+
     console.log("Main.js", $RvW);
     console.log("NativeProcess support:", air.NativeProcess.isSupported);
 
@@ -1504,6 +1516,12 @@ GROUP BY
 $RvW.booknames = [];
 $RvW.english_booknames = [];
 
+function arrayDeDup(arr) {
+    return arr.filter(function(item, index) {
+        return arr.indexOf(item, index + 1) === -1;
+    });
+}
+
 // body: onload
 // FIXME: fix the callback hell
 export function start(Y) {
@@ -1543,14 +1561,16 @@ export function start(Y) {
         $RvW.vvConfigObj = new RvwConfig();
         $RvW.vvConfigObj.load(vvinit_continue);
 
-        $RvW.learner = new wordlearner();
+        $RvW.learner = new RvwWordLearner();
 
-        $RvW.wordbrain = new vvbrain();
+        $RvW.wordbrain = new RvwWordBrain();
         $RvW.wordbrain.init();
     }
 
     loadPreferences(() => {
-        $RvW.systemFontList = loadInstalledFonts().map((font) => font.fontName);
+        $RvW.systemFontList = $RvW.systemFontList.concat([
+            ...loadInstalledFonts().map((font) => font.fontName),
+        ]);
 
         setupTabViewTemplate("menubar", "menubar");
 

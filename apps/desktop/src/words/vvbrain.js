@@ -1,4 +1,4 @@
-class vvbrain {
+class RvwWordBrain {
     constructor() {
         this.init = init;
         this.addRecord = addRecord;
@@ -185,3 +185,5 @@ class vvbrain {
         }
     }
 }
+
+// export default RvwWordBrain;
