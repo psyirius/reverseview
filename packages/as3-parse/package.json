@@ -1,0 +1,14 @@
+{
+  "name": "as3-parse",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "run": "node src/index.js"
+  },
+  "dependencies": {
+    "peggy": "^4.0.3"
+  }
+}

@@ -14,7 +14,7 @@
 import * as $ from 'jquery';
 
 DEV: {
-    break DEV;
+    // break DEV;
 
     console.log("Main.js", $RvW);
     console.log("NativeProcess support:", air.NativeProcess.isSupported);
