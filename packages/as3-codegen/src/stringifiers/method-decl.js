@@ -32,13 +32,13 @@ export default function(node, parent, ctx) {
     let results = []
 
     if (modifiers) {
-        results.push(...node.modifiers.map((m) => ctx.$(m)))
+        results.push(...node.modifiers.map((m) => ctx.$(m, node)))
     }
 
-    const params = signature.parameters.map((p) => `${ctx.$(p.name)}:${ctx.$(p.type)}`)
-    const rt = signature.returns ? `:${ctx.$(signature.returns)}` : ''
+    const params = signature.parameters.map((p) => ctx.$(p, node))
+    const rt = signature.returns ? `:${ctx.$(signature.returns, node)}` : ''
 
-    results.push(`function ${ctx.$(name)}(${params.join(', ')})${rt}`)
+    results.push(`function ${ctx.$(name, node)}(${params.join(', ')})${rt}`)
 
     results = [results.join(' ')]
 

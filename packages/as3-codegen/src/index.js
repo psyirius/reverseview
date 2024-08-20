@@ -8,31 +8,61 @@ import stringifiers from './stringifiers/index.js'
 
 const id = (name) => ({ type: 'Identifier', name })
 const ns = (name) => ({ type: 'Namespace', name })
-const tr = (name) => ({ type: 'TypeReference', name })
+const ty = (name) => ({ type: 'TypeReference', name })
 const kw = (name) => ({ type: 'Keyword', name })
 const lit = (value) => ({ type: 'Literal', value })
 
 const tree = u('Program', {
     kind: 'package',
-    namespace: ns('com.example'),
+    // namespace: ns('com.example'),
 }, [
     u('ImportDeclaration', { package: ns('com.example.other'), specifier: id('Other') }),
 
+    // class: Example
     u('ClassDeclaration', {
         name: id('Example'),
-        extends: tr('a.b.c.XoXo'),
+        extends: ty('a.b.c.XoXo'),
         implements: [
-            tr('a.b.c.XoXo')
+            ty('a.b.c.XoXo')
         ],
     }, [
+        // constructor
         u('MethodDeclaration', {
             name: id('Example'),
-            modifiers: [kw('public'), /*kw('static')*/],
+            modifiers: [kw('public')],
             constructor: true,
             signature: u('FunctionSignature', {
-                // returns: tr('void'),
+                returns: null,
                 parameters: [
-                    { name: id('args'), type: tr('String[]') }
+                    u('Parameter', { name: id('args'), typeName: ty('String[]') })
+                ]
+            })
+        }, [
+            u('ImportDeclaration', {
+                package: ns('com.example.other'),
+                wildcard: true,
+            }),
+
+            u('ExpressionStatement', {
+                expr: u('CallExpression', {
+                    expr: id('trace'),
+                    arguments: [
+                        lit('Hello, world!'),
+                        id('args')
+                    ]
+                })
+            }),
+        ]),
+
+        // method: main
+        u('MethodDeclaration', {
+            name: id('main'),
+            modifiers: [kw('public'), kw('static')],
+            constructor: false,
+            signature: u('FunctionSignature', {
+                returns: kw('void'),
+                parameters: [
+                    u('Parameter', { name: id('args'), typeName: ty('String[]') })
                 ]
             })
         }, [
@@ -43,7 +73,8 @@ const tree = u('Program', {
                     expr: id('trace'),
                     arguments: [
                         lit('Hello, world!'),
-                        id('args')
+                        lit(100),
+                        id('window')
                     ]
                 })
             }),

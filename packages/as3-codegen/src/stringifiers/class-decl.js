@@ -1,12 +1,12 @@
 export default function(node, parent, ctx) {
-    const { name, extends: _extends, implements: _implements, body } = node
+    const { name, extends: _extends, implements: _implements } = node
 
     let results = []
 
     results.push(`class ${ctx.$(name)}`)
 
     if (_extends) {
-        results.push(`extends ${ctx.$(_extends, parent)}`)
+        results.push(`extends ${ctx.$(_extends, node)}`)
     }
 
     if (_implements) {

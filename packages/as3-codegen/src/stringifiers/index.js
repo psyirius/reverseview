@@ -9,12 +9,14 @@ import TypeReference from "./type-ref.js";
 import Namespace from "./namespace.js";
 import Keyword from "./keyword.js";
 import Literal from "./literal.js";
+import Parameter from "./parameter.js";
 
 export default {
     Program,
     Keyword,
     Literal,
     Namespace,
+    Parameter,
     Identifier,
     TypeReference,
     ImportDeclaration,
