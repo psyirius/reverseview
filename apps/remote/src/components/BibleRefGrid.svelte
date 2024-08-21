@@ -12,12 +12,15 @@
     import type { PaneAPI } from "paneforge";
     import {
     } from 'lucide-svelte';
+    import { Grid, Row, Column } from "carbon-components-svelte";
 
     import { flyAndScale } from "$lib/utils";
     import { flip } from 'svelte/animate'
     import { fade, fly, scale, slide } from "svelte/transition";
 
     import { toast } from "svelte-sonner";
+    import {writable} from "svelte/store";
+    import {onMount} from "svelte";
 
     function getBooks() {
         return [                                                /* [bg, fg] */
@@ -83,8 +86,7 @@
     function getChapters(selectedBook: number) {
         return Array.from({ length: 50 }).map((_, i, a) => ({
             id: i + 1,
-            title: `Chapter ${i + 1}`,
-            description: `Chapter ${i + 1}`,
+            title: `${i + 1}`,
             kind: 'chapter',
         }));
     }
@@ -92,8 +94,7 @@
     function getVerses(selectedBook: number, selectedChapter: number) {
         return Array.from({ length: 50 }).map((_, i, a) => ({
             id: i + 1,
-            title: `Verse ${i + 1}`,
-            description: `Verse ${i + 1}`,
+            title: `${i + 1}`,
             kind: 'verse',
         }));
     }
@@ -127,26 +128,56 @@
     let selectedBook = 0;
     let selectedChapter = 0;
     let selectedVerse = 0;
+
+    let xGridTpl = 'repeat(auto-fill, minmax(3.5rem, 1fr))';
+
+    let booksContainer: HTMLDivElement;
+
+    onMount(() => {
+        const observer = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                const cr = entry.contentRect;
+                const width = cr.width;
+                const height = cr.height;
+
+                const totalCells = getBooks().length;
+
+                // calculate the size of each cell (square) to contain all cells
+                const xSize = Math.floor(Math.sqrt((width * height) / totalCells));
+
+                xGridTpl = `repeat(auto-fill, minmax(${Math.max(xSize, 50)}px, 1fr))`;
+                // xGridTpl = `repeat(auto-fill, minmax(${40}px, 1fr))`;
+                // xGridTpl = `repeat(auto-fill, minmax(${3.5}rem, 1fr))`;
+
+                // (entry.target as HTMLDivElement).style.fontSize = `${xSize / 5}px`;
+
+                toast.message(`Resized: ${cr.height}x${cr.width} => ${xSize}px`);
+            }
+        });
+
+        observer.observe(booksContainer);
+    })
 </script>
 
 <div class="h-full flex flex-col w-full rounded-md border p-0.5 select-none">
     <Resizable.PaneGroup direction="vertical" class="border rounded-[0.2rem]" autoSaveId="bibleGridPaneGroup">
         <Resizable.Pane defaultSize={50} bind:pane={booksPane}>
-            <div class="relative flex h-full max-h-full m-0 p-0">
+            <div class="relative flex h-full max-h-full m-0 p-0" bind:this={booksContainer}>
                 <ScrollArea class="absolute flex flex-col h-full w-full">
-                    <div class="x-grid books">
+                    <div class="x-grid books" style:grid-template-columns={xGridTpl}>
                         {#each getBooks() as book (book.id)}
                             <div
-                                class="x-box bg-opacity-80 cursor-pointer hover:bg-gray-600 transition aspect-square"
+                                class="x-box bg-opacity-50 cursor-pointer hover:bg-gray-600 transition aspect-[10/9] justify-center"
                                 class:bg-black={selectedBook === book.id}
-                                style:background={book.color[0]}
+                                style:color={book.color[1] || 'white'}
+                                style:background-color={book.color[0]}
                                 on:click={() => setBook(book.id)}
                                 on:keyup={(e) => e.key === 'Enter' && setBook(book.id)}
                                 tabindex="0"
                                 role="button"
                             >
-                                <h4>{book.sym}</h4>
-                                <span>{book.name}</span>
+                                <p class="font-semibold text-md">{book.sym}</p>
+                                <span class="font-light text-xs truncate">{book.name}</span>
                             </div>
                         {/each}
                     </div>
@@ -214,13 +245,13 @@
     .x-grid {
         @apply grid;
         //@apply grid-cols-10;
-        grid-template-columns: repeat(auto-fill, minmax(3.5rem, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
         gap: 0.1rem;
 
         & > .x-box {
             display: grid;
             place-content: center;
-            @apply bg-gray-600;
+            //@apply flex flex-col justify-center items-center text-ellipsis;
         }
     }
 </style>

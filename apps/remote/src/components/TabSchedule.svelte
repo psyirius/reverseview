@@ -133,7 +133,7 @@
                                             variant="ghost"
                                             size="sm"
                                             on:click={() => {
-                                                toast.success('Opening item...');
+                                                toast.loading('Opening item...');
                                             }}
                                         >
                                             <CircleArrowRightIcon size="16" />

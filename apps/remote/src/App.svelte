@@ -1,11 +1,14 @@
 <script lang="ts">
     import Content from "./components/Content.svelte";
     import { Toaster } from "$lib/components/ui/sonner";
+    import { ModeWatcher } from "mode-watcher";
 </script>
 
 <main>
+    <Toaster position="bottom-center" richColors />
+<!--    <ModeWatcher />-->
+
     <Content />
-    <Toaster />
 </main>
 
 <style lang="scss">

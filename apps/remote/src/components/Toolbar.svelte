@@ -32,31 +32,25 @@
     ];
 </script>
 
-<div class="container">
-    {#each buttons as { icon, tooltip, onClick, variant }}
-        <Tooltip.Root>
-            <Tooltip.Trigger asChild let:builder>
-                <Button
-                    builders={[builder]}
-                    variant={variant}
-                    class="px-4"
-                    on:click={onClick}
-                >
-                    <svelte:component this={icon} />
-                </Button>
-            </Tooltip.Trigger>
+<div class="flex flex-row justify-center">
+    <div class="flex flex-row justify-center gap-2 border rounded-xl p-2 shadow" role="group" aria-label="Control">
+        {#each buttons as { icon, tooltip, onClick, variant }}
+            <Tooltip.Root>
+                <Tooltip.Trigger asChild let:builder>
+                    <Button
+                        builders={[builder]}
+                        variant={variant}
+                        class="px-4"
+                        on:click={onClick}
+                    >
+                        <svelte:component this={icon} />
+                    </Button>
+                </Tooltip.Trigger>
 
-            <Tooltip.Content>
-                <p>{tooltip}</p>
-            </Tooltip.Content>
-        </Tooltip.Root>
-    {/each}
+                <Tooltip.Content>
+                    <p>{tooltip}</p>
+                </Tooltip.Content>
+            </Tooltip.Root>
+        {/each}
+    </div>
 </div>
-
-<style lang="scss">
-    .container {
-        @apply m-0 p-0;
-        @apply flex flex-row justify-center;
-        @apply gap-2;
-    }
-</style>
