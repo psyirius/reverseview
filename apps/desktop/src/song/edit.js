@@ -1,7 +1,8 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-class SongEdit {
+!(function (exports) {
+    class SongEdit {
     constructor(bodyContent, lyricsCreateContent) {
         const _isDebug = false;
 
@@ -33,7 +34,7 @@ class SongEdit {
             _primaryKey = value;
         }
 
-        this.showEditPanel = function(songObj, ad, ae, af) {
+        this.showEditPanel = function(song, ad, ae, af) {
             b = ad;
             v = ae;
             _primaryKey = null;
@@ -41,7 +42,7 @@ class SongEdit {
             if (af == null) {
                 Z = false;
             }
-            _loadSong(songObj);
+            _loadSong(song);
             _panel.show();
         }
 
@@ -761,7 +762,7 @@ class SongEdit {
                 rvw.ui.Toast.show("Add Edit Songs", "Enter a valid Song Name");
                 return false;
             } else {
-                const sngObj = new songObj();
+                const sngObj = new rvw.song.Song();
                 sngObj.name = ao;
                 ao = document.getElementById("songEdit_Name2ID").value;
                 ao = ao.replace(/^\s+|\s+$/g, "");
@@ -855,7 +856,7 @@ class SongEdit {
 
             const ae = _dumpSong();
             if (ae !== false) {
-                const sp = new songPresentObj();
+                const sp = new rvw.song.SongPresenter();
                 sp.init(ae);
                 sp.present(currentIndex);
             }
@@ -952,3 +953,6 @@ class SongEdit {
         init();
     }
 }
+
+    exports.SongEdit = SongEdit;
+}(rvw.provide("rvw.song")));

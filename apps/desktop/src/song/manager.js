@@ -68,7 +68,7 @@ class SongManager {
 
         function init(aO, aN) {
             aw();
-            av = new songObj();
+            av = new rvw.song.Song();
             ax = false;
             ah();
         }
@@ -108,7 +108,7 @@ class SongManager {
             }
             var aO = $RvW.vvConfigObj.get_show2lines();
             if (aO) {
-                aQ = splitIN2(aQ);
+                aQ = rvw.song.splitIN2(aQ);
             }
             return aQ;
         }
@@ -210,7 +210,7 @@ class SongManager {
         }
         function getSongObjWithID(aS) {
             let aP = false;
-            const so = new songObj();
+            const so = new rvw.song.Song();
             so.init();
             so.slides = [];
             const aN = sng.data.length;
@@ -253,7 +253,7 @@ class SongManager {
         }
         function getSongObjWithName(aQ) {
             var aP = false;
-            var aS = new songObj();
+            var aS = new rvw.song.Song();
             aS.init();
             aS.slides = new Array();
             var aN = sng.data.length;
@@ -304,7 +304,7 @@ class SongManager {
             return aN;
         }
         function getSongObj(aO, aQ) {
-            var aP = new songObj();
+            var aP = new rvw.song.Song();
             aP.init();
             aP.slides = new Array();
             if (!aQ) {
@@ -391,21 +391,20 @@ class SongManager {
             return ap;
         }
         function processImportSongDB() {
-            var aN = new songImportClass();
-            aN.init();
+            new rvw.song.SongImporter();
         }
         function processImportSongXML() {
-            var aN = new songPortXML();
+            var aN = new rvw.song.SongPortXML();
             aN.init(sng, null, null, 1);
             aN.importXML();
         }
         function processExportSongXML() {
-            var aN = new songPortXML();
+            var aN = new rvw.song.SongPortXML();
             aN.init(sng, null, null, 1);
             aN.exportAll();
         }
         function processExportCatXML() {
-            var aN = new songPortXML();
+            var aN = new rvw.song.SongPortXML();
             aN.init(sng, ab, null, 2);
             aN.exportByCat();
         }
@@ -789,26 +788,26 @@ class SongManager {
             sqlQuery.addEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
             let aT = "";
-            if (aQ === SEARCH_TITLE) {
+            if (aQ === $RvW.SongSearchType.TITLE) {
                 aT = "SELECT * FROM sm WHERE name LIKE :param1 OR title2 LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === SEARCH_LYRICS) {
+            if (aQ === $RvW.SongSearchType.LYRICS) {
                 aT =
                     "SELECT * FROM sm WHERE lyrics LIKE :param1 OR lyrics2 LIKE :param1 OR name LIKE :param1 OR subcat == :param2";
                 sqlQuery.parameters[":param1"] = aP;
                 var aS = /%/gi;
                 sqlQuery.parameters[":param2"] = aP.replace(aS, "");
             }
-            if (aQ === SEARCH_TAGS) {
+            if (aQ === $RvW.SongSearchType.TAGS) {
                 aT = "SELECT * FROM sm WHERE tags LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === SEARCH_AUTHOR) {
+            if (aQ === $RvW.SongSearchType.AUTHOR) {
                 aT = "SELECT * FROM sm WHERE copy LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === SEARCH_SONGNUMBER) {
+            if (aQ === $RvW.SongSearchType.NUMBER) {
                 aT = "SELECT * FROM sm WHERE subcat LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
@@ -819,7 +818,7 @@ class SongManager {
                 sqlQuery.removeEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
                 sqlRes = sqlQuery.getResult();
-                if (aQ === SEARCH_TAGS && sqlRes.data == null) {
+                if (aQ === $RvW.SongSearchType.TAGS && sqlRes.data == null) {
                     removeTag(aP);
                     rvw.ui.Toast.show("Song Tag Search", "No matching tag");
                 } else {
@@ -1127,7 +1126,7 @@ class SongManager {
             __debug("record length " + aO);
             for (var aQ = 0; aQ < aO; aQ++) {
                 var aN = sng.data[aQ].cat;
-                var aR = new songObj();
+                var aR = new rvw.song.Song();
                 if (aN == "Malayalam 2019") {
                     aR = getSongObj(aQ, false);
                     var aP = findIndexFromTestTitle1(aR.name);

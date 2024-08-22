@@ -45,7 +45,7 @@
     const air = ((window as any).global as any).air ??= {};
     const criticalTypes = ["error", "warn"];
 
-    const print = (type) => function () {
+    const print = (type: string) => function () {
         if (criticalTypes.indexOf(type) !== -1) {
             if (typeof air.Introspector.Console !== "undefined") {
                 air.Introspector.Console[type].apply(air.Introspector.Console, arguments);
@@ -73,7 +73,7 @@ if (typeof (window as any).YUI !== "undefined") {
     ((YUI, config: object, modules: string[]) => {
         "use strict";
 
-        function checkModules(Y, modules: string[]) {
+        function checkModules(Y: any, modules: string[]) {
             const loader = new Y.Loader({
                 base: Y.config.base,
                 require: [...modules],
@@ -99,7 +99,7 @@ if (typeof (window as any).YUI !== "undefined") {
 
         checkModules(Y, modules);
 
-        Y.use(...modules, function(Y) {
+        Y.use(...modules, function(Y: YUI3) {
             ((window as any).global as any).$Y = Y;
 
             air.trace("YUI3 loaded");

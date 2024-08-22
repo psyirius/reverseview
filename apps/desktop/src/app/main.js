@@ -215,7 +215,6 @@ $RvW.notesObj = null;
 $RvW.notesManageObj = null;
 $RvW.scheduleObj = null;
 $RvW.webServerObj = null;
-$RvW.vvchatQObj = null;
 $RvW.webEngineObj = null;
 $RvW.bibleRefObj = null;
 $RvW.songEditObj = null;
@@ -774,7 +773,7 @@ function setupTheme() {
 function setupTabContent() {
     $RvW.bibleVersionSelObj = new BibleVersionSelector(loadViewTemplate("setup_biblesel"));
 
-    $RvW.remoteVV_UI_Obj = new RvwRemote(loadViewTemplate("setup_remote"));
+    $RvW.remoteVV_UI_Obj = new rvw.remote.Ui(loadViewTemplate("setup_remote"));
     $RvW.version_UI_Content = loadViewTemplate('version');
 
     setupTabViewTemplate("bible_verses", "bibleverseTab");
@@ -794,14 +793,13 @@ function setupTabContent() {
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes(loadViewTemplate("notesui"), 'notesPanelID');
     $RvW.searchObj = new RvwSearch("./bible/" + getVersion1Filename());
-    $RvW.webServerObj = new RvwWebServer('webroot');
-    $RvW.webEngineObj = new RvwWebEngine();
-    $RvW.vvchatQObj = new chatQ();
+    $RvW.webServerObj = new rvw.remote.WebServer('webroot');
+    $RvW.webEngineObj = new rvw.remote.WebEngine();
     $RvW.bibleRefObj = new BibleReference();
-    $RvW.songNumberObj = new songNumber();
+    $RvW.songNumberObj = new rvw.song.SongNumber();
     $RvW.songManagerObj = new SongManager(true, true);
-    $RvW.songEditObj = new SongEdit(loadViewTemplate("song_edit"), loadViewTemplate('lyrics_create'));
-    $RvW.songNavObj = new SongNav();
+    $RvW.songEditObj = new rvw.song.SongEdit(loadViewTemplate("song_edit"), loadViewTemplate('lyrics_create'));
+    $RvW.songNavObj = new rvw.song.SongNav();
     $RvW.helpObj = new RvwHelp(loadViewTemplate("help"));
     $RvW.graphicsObj = new GraphicsMgr(loadViewTemplate("graphics"));
 
@@ -837,139 +835,148 @@ function setupTabViewTemplate(name, mountPoint) {
     fillTabs(mountPoint);
 }
 function fillTabs(a) {
-    if (a == "navTab") {
-        fillNav();
-    }
-    if (a == "configTab") {
-        versionFill(true);
-        configInit();
-    }
-    if (a == "scheduleTab") {
-        $RvW.scheduleObj = new schedule();
-    }
-    if (a == "graphicsTab") {
-    }
-    if (a == "searchField") {
-        roundSearchBox(document.getElementById("adSearch"));
-    }
-    if (a == "monitorTab") {
-    }
-    if (a == "screenTab") {
-        document.getElementById("thirdview_opacity").value =
-            $RvW.vvConfigObj.get_svOpacity();
-        document.getElementById("thirdview_height").value =
-            $RvW.vvConfigObj.get_svHeight();
-        document.getElementById("thirdview_fcolor").value =
-            $RvW.vvConfigObj.get_svFcolor();
-        document.getElementById("thirdview_position").value =
-            $RvW.vvConfigObj.get_svPosition();
-        document.getElementById("thirdview_maxFontSize").value =
-            $RvW.vvConfigObj.get_svMaxFontSize();
-        document.getElementById("thirdview_bcolor").value =
-            $RvW.vvConfigObj.get_svBcolor();
-        $("#thirdview_primary").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svShowPrimary() == "true" ? true : false
-        );
-        $("#thirdview_secondary").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svShowSecondary() == "true" ? true : false
-        );
-        $("#stageviewWindow").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svWindow() == "true" ? true : false
-        );
-        $("#stageviewGreenWindow").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svGreenWindow() == "true" ? true : false
-        );
-        $("#thirdview_outline").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svTextOutline() == "true" ? true : false
-        );
-        $("#thirdview_shadow").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svTextShadow() == "true" ? true : false
-        );
-        $("#stageSettingShowTime").prop(
-            "checked",
-            $RvW.vvConfigObj.get_svShowDate() == "true" ? true : false
-        );
-        $("#thirdview_opacity_range").range({
-            min: 0,
-            max: 10,
-            start: $RvW.vvConfigObj.get_svOpacity() * 10,
-            onChange: function (b) {
-                $("#thirdview_opacity").val(b / 10);
-                svParameterSaveEvent();
-            },
-        });
-        $("#thirdview_opacity").prop("disabled", true);
-        $("#thirdview_height_range").range({
-            min: 0,
-            max: 100,
-            start: $RvW.vvConfigObj.get_svHeight(),
-            onChange: function (b) {
-                $("#thirdview_height").val(b);
-                svParameterSaveEvent();
-            },
-        });
-        $("#thirdview_height").prop("disabled", true);
-        $("#thirdview_position_range").range({
-            min: 0,
-            max: 100,
-            start: $RvW.vvConfigObj.get_svPosition(),
-            onChange: function (b) {
-                $("#thirdview_position").val(b);
-                svParameterSaveEvent();
-            },
-        });
-        $("#thirdview_position").prop("disabled", true);
-        $("#thirdview_maxFontSize_range").range({
-            min: 10,
-            max: 100,
-            start: $RvW.vvConfigObj.get_svMaxFontSize(),
-            onChange: function (b) {
-                $("#thirdview_maxFontSize").val(b);
-                svParameterSaveEvent();
-            },
-        });
-        $("#thirdview_maxFontSize").prop("disabled", true);
-        $("#thirdview_fcolor_range").range({
-            min: 0,
-            max: 80,
-            start: $RvW.vvConfigObj.get_svFcolor(),
-            onChange: function (b) {
-                $("#thirdview_fcolor").val(b);
-                svParameterSaveEvent();
-                var c = "#" + $RvW.colorChart[$("#thirdview_fcolor").val()];
-                $("#thirdview_fcolor").css({ "background-color": c });
-            },
-        });
-        $("#thirdview_fcolor").prop("disabled", true);
-        $("#thirdview_bcolor_range").range({
-            min: 0,
-            max: 81,
-            start: $RvW.vvConfigObj.get_svBcolor(),
-            onChange: function (b) {
-                $("#thirdview_bcolor").val(b);
-                svParameterSaveEvent();
-                var c = "#" + $RvW.colorChart[$("#thirdview_bcolor").val()];
-                $("#thirdview_bcolor").css({ "background-color": c });
-            },
-        });
-        $("#thirdview_bcolor").prop("disabled", true);
+    switch (a) {
+        case "navTab": {
+            fillNav();
+            break;
+        }
+        case "configTab": {
+            versionFill(true);
+            configInit();
+            break;
+        }
+        case 'scheduleTab': {
+            $RvW.scheduleObj = new schedule();
+            break;
+        }
+        case 'graphicsTab': {
+            break;
+        }
+        case 'monitorTab': {
+            break;
+        }
+        case 'searchField': {
+            roundSearchBox(document.getElementById("adSearch"));
+            break;
+        }
+        case 'screenTab': {
+            document.getElementById("thirdview_opacity").value =
+                $RvW.vvConfigObj.get_svOpacity();
+            document.getElementById("thirdview_height").value =
+                $RvW.vvConfigObj.get_svHeight();
+            document.getElementById("thirdview_fcolor").value =
+                $RvW.vvConfigObj.get_svFcolor();
+            document.getElementById("thirdview_position").value =
+                $RvW.vvConfigObj.get_svPosition();
+            document.getElementById("thirdview_maxFontSize").value =
+                $RvW.vvConfigObj.get_svMaxFontSize();
+            document.getElementById("thirdview_bcolor").value =
+                $RvW.vvConfigObj.get_svBcolor();
+            $("#thirdview_primary").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svShowPrimary() == "true" ? true : false
+            );
+            $("#thirdview_secondary").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svShowSecondary() == "true" ? true : false
+            );
+            $("#stageviewWindow").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svWindow() == "true" ? true : false
+            );
+            $("#stageviewGreenWindow").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svGreenWindow() == "true" ? true : false
+            );
+            $("#thirdview_outline").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svTextOutline() == "true" ? true : false
+            );
+            $("#thirdview_shadow").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svTextShadow() == "true" ? true : false
+            );
+            $("#stageSettingShowTime").prop(
+                "checked",
+                $RvW.vvConfigObj.get_svShowDate() == "true" ? true : false
+            );
+            $("#thirdview_opacity_range").range({
+                min: 0,
+                max: 10,
+                start: $RvW.vvConfigObj.get_svOpacity() * 10,
+                onChange: function (b) {
+                    $("#thirdview_opacity").val(b / 10);
+                    svParameterSaveEvent();
+                },
+            });
+            $("#thirdview_opacity").prop("disabled", true);
+            $("#thirdview_height_range").range({
+                min: 0,
+                max: 100,
+                start: $RvW.vvConfigObj.get_svHeight(),
+                onChange: function (b) {
+                    $("#thirdview_height").val(b);
+                    svParameterSaveEvent();
+                },
+            });
+            $("#thirdview_height").prop("disabled", true);
+            $("#thirdview_position_range").range({
+                min: 0,
+                max: 100,
+                start: $RvW.vvConfigObj.get_svPosition(),
+                onChange: function (b) {
+                    $("#thirdview_position").val(b);
+                    svParameterSaveEvent();
+                },
+            });
+            $("#thirdview_position").prop("disabled", true);
+            $("#thirdview_maxFontSize_range").range({
+                min: 10,
+                max: 100,
+                start: $RvW.vvConfigObj.get_svMaxFontSize(),
+                onChange: function (b) {
+                    $("#thirdview_maxFontSize").val(b);
+                    svParameterSaveEvent();
+                },
+            });
+            $("#thirdview_maxFontSize").prop("disabled", true);
+            $("#thirdview_fcolor_range").range({
+                min: 0,
+                max: 80,
+                start: $RvW.vvConfigObj.get_svFcolor(),
+                onChange: function (b) {
+                    $("#thirdview_fcolor").val(b);
+                    svParameterSaveEvent();
+                    var c = "#" + $RvW.colorChart[$("#thirdview_fcolor").val()];
+                    $("#thirdview_fcolor").css({ "background-color": c });
+                },
+            });
+            $("#thirdview_fcolor").prop("disabled", true);
+            $("#thirdview_bcolor_range").range({
+                min: 0,
+                max: 81,
+                start: $RvW.vvConfigObj.get_svBcolor(),
+                onChange: function (b) {
+                    $("#thirdview_bcolor").val(b);
+                    svParameterSaveEvent();
+                    var c = "#" + $RvW.colorChart[$("#thirdview_bcolor").val()];
+                    $("#thirdview_bcolor").css({ "background-color": c });
+                },
+            });
+            $("#thirdview_bcolor").prop("disabled", true);
+            break;
+        }
     }
 }
+
 function updateBookNameVar() {
-    var a;
-    a = new XMLHttpRequest();
+    const a = new XMLHttpRequest();
     a.onreadystatechange = function () {
         if (a.readyState < 4) {
             air.trace("BOOK NAME: Loading...");
         }
-        if (a.readyState == 4) {
-            var c = a.responseXML.documentElement;
+        if (a.readyState === 4) {
+            const c = a.responseXML.documentElement;
             b(c);
         }
     };
@@ -977,8 +984,8 @@ function updateBookNameVar() {
     a.send(null);
     function b(e) {
         air.trace("********Processing bookname");
-        var d = e.getElementsByTagName("b").length;
-        for (var c = 0; c < d; c++) {
+        const d = e.getElementsByTagName("b").length;
+        for (let c = 0; c < d; c++) {
             $RvW.booknames[c] = e.getElementsByTagName("b")[c].textContent;
         }
     }

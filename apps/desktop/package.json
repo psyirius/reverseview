@@ -20,7 +20,7 @@
     "dev": "pnpm run build && pnpm run debug",
     "debug": "adl ./application.xml ./.air",
     "start": "adl -nodebug ./application.xml ./.air",
-    "build": "dotenvx run --verbose -- pnpm -F=. run --parallel \"/^build:.*/\"",
+    "build": "dotenvx run -- pnpm -F=. run --parallel \"/^build:.*/\"",
     "build:src": "tsc -p tsconfig.app.json",
     "build-trace-resolutions:src": "tsc --traceResolution -p tsconfig.app.json",
     "build:views": "node build.views.js",

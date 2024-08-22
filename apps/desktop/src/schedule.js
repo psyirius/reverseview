@@ -170,7 +170,7 @@ class schedule {
                 if (X.isSong) {
                     var ac = X.songID;
                     var ab = $RvW.songManagerObj.getSongObjWithID(ac);
-                    var aa = new songPresentObj();
+                    var aa = new rvw.song.SongPresenter();
                     aa.init(ab);
                     aa.present();
                 } else {
@@ -184,7 +184,7 @@ class schedule {
                 if (X.isSong) {
                     var ac = X.songID;
                     var ab = $RvW.songManagerObj.getSongObjWithID(ac);
-                    var aa = new songPresentObj();
+                    var aa = new rvw.song.SongPresenter();
                     aa.init(ab);
                     aa.present(Y);
                 } else {
@@ -346,13 +346,13 @@ class schedule {
                             var al = "schlyricsID" + ap;
                             document.getElementById(al).style.fontFamily = ak;
                             document.getElementById(al).style.fontSize = X + "px";
-                            ab[ap] = new songLyricsClass();
+                            ab[ap] = new rvw.song.SongLyrics();
                             ab[ap].init(ar, al, ap, 1);
                             if (ac) {
                                 var aa = "schlyrics2ID" + ap;
                                 document.getElementById(aa).style.fontFamily = am;
                                 document.getElementById(aa).style.fontSize = X + "px";
-                                ag[ap] = new songLyricsClass();
+                                ag[ap] = new rvw.song.SongLyrics();
                                 ag[ap].init(ar, aa, ap, 2);
                             }
                         }
@@ -392,16 +392,15 @@ class schedule {
             return Y;
         }
         function b(ae, X, ad, Z, ac) {
-            var Y = null;
+            let Y = null;
             if (ae) {
-                var aa = new songObj();
-                aa = $RvW.songManagerObj.getSongObjWithID(ac);
+                const aa = $RvW.songManagerObj.getSongObjWithID(ac);
                 if (aa != null) {
                     Y = aa.name;
                 }
             } else {
-                var ab = $RvW.booknames[X];
-                Y = ab + " " + (ad + 1) + ":" + (Z + 1);
+                const ab = $RvW.booknames[X];
+                Y = `${ab} ${ad + 1}:${Z + 1}`;
             }
             return Y;
         }
