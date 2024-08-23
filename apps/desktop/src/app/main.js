@@ -614,8 +614,27 @@ function activateMainWindow() {
 
     const windowState = $RvW.rvwPreferences.get("app.state.window");
     if (windowState) {
+        const { NativeWindowDisplayState, Screen, Rectangle } = air;
         const { bounds, maximized } = windowState;
-        const { NativeWindowDisplayState } = air;
+
+        // check if the stored window bounds are within the screen bounds
+        // if not, reset the window to the primary screen
+        const { screens } = Screen;
+
+        for (const screen of screens) {
+            if (bounds.x >= screen.visibleBounds.x &&
+                bounds.x <= screen.visibleBounds.right &&
+                bounds.y >= screen.visibleBounds.y &&
+                bounds.y <= screen.visibleBounds.bottom) {
+                break;
+            } else {
+                // center the window on the primary screen
+                const primaryBounds = Screen.mainScreen.visibleBounds;
+
+                bounds.x = primaryBounds.x + (primaryBounds.width - bounds.width) / 2;
+                bounds.y = primaryBounds.y + (primaryBounds.height - bounds.height) / 2;
+            }
+        }
 
         nativeWindow.x = bounds.x;
         nativeWindow.y = bounds.y;
@@ -1222,7 +1241,7 @@ function beforeExit() {
 
     // main window state
     {
-        const { NativeWindowDisplayState } = air;
+        const { NativeWindowDisplayState, Screen } = air;
 
         const windowState = {
             bounds: {

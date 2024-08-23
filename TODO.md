@@ -1,4 +1,6 @@
+- [ ] Compress and embed assets files into a swf and unpack or first run or when needed
 - [ ] Zefania XML : Checkup & Externalize
+- [ ] UI Scaling
 - [ ] REMOTE
   - [ ] highlight currently presenting
   - [ ] UI/UX FIX
@@ -13,8 +15,6 @@
 - [ ] Check parcel if it can be used for building or as build tool
 - [ ] Setup dojo build system to build dojo
 - [ ] remote using https with traefik.me
-- [ ] search song and bible in remote
-- [ ] migrate webroot to remote project
 - [ ] use parcel with custom plugins to build the project in our own way
 - [ ] move all global variables to $RvW object
 - [ ] use non-application sandbox to render ui or eval restricted code
@@ -46,6 +46,7 @@
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f11.html
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7e5a.html
 
+https://gist.github.com/jasonm23/391446
 https://github.com/Corsaair/httplib
 https://github.com/gimite/web-socket-js
 https://github.com/shockpkg
