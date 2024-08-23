@@ -80,8 +80,8 @@
                 y = new rvw.song.Song();
                 y.init();
                 y.slides = [];
-                getTags2Array();
-                fillTagList();
+                rvw.tags.getTags2Array();
+                rvw.tags.fillTagList();
                 s = true;
             }
             function Z() {
@@ -179,7 +179,7 @@
                 const al = document.getElementById("songnav_category").options[am].text;
                 __debug("Selected Category Value: " + al);
                 $("#songnav_editbox").val("");
-                setTag2All();
+                rvw.tags.setTag2All();
                 ag = false;
                 $RvW.songManagerObj.getSongsFromCat(al);
             }
@@ -417,7 +417,7 @@
                 ag = false;
                 $RvW.learner.cancelLearning();
                 $("#songnav_editbox").val("");
-                setTag2All();
+                rvw.tags.setTag2All();
                 R();
             }
             function J(at) {

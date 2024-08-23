@@ -403,13 +403,13 @@ class NotesManager {
             X.parameters[":s"] = D;
             X.execute();
             function W(aa) {
-                X.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                X.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                X.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                X.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 a();
             }
             function Y(aa) {
-                X.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                X.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                X.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                X.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 air.trace("INSERT error:", aa.error);
                 air.trace("event.error.code:", aa.error.code);
                 air.trace("event.error.message:", aa.error.message);
@@ -448,13 +448,13 @@ class NotesManager {
             Y.parameters[":id"] = Z;
             Y.execute();
             function W(ab) {
-                Y.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                Y.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                Y.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                Y.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 a();
             }
             function X(ab) {
-                Y.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                Y.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                Y.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                Y.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 air.trace("Error deleting notes DB");
                 air.trace("event.error.code:", ab.error.code);
                 air.trace("event.error.message:", ab.error.message);

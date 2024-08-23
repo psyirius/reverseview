@@ -104,6 +104,7 @@ https://github.com/taylorhakes/promise-polyfill
 
 https://github.com/ianharrigan/hxWebSockets
 https://github.com/thomasuster/haxe-websocket-server
+https://github.com/MkFera/tso_client
 
 https://github.com/rousan/symbol-es6
 https://github.com/seanmonstar/symbol

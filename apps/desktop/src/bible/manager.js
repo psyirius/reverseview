@@ -148,17 +148,17 @@ class verseClass {
             $RvW.bookIndex = l - 1;
             $RvW.chapterIndex = b - 1;
             $RvW.verseIndex = j - 1;
-            recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
+            $Rvw.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
             getdata(true);
-            p_footer = $RvW.getFooter();
-            p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+            $RvW.p_footer = $RvW.getFooter();
+            $RvW.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
             $RvW.launch($RvW.verseIndex);
             document.getElementById("verseList").selectedIndex = $RvW.verseIndex;
             if (e) {
                 $RvW.scroll_to_view = false;
                 $RvW.highlightVerse($RvW.verseIndex);
             }
-            disableNavButtons(false);
+            rvw.navigation.disableNavButtons(false);
             $RvW.bookIndex = n;
             $RvW.chapterIndex = m;
             $RvW.verseIndex = o;

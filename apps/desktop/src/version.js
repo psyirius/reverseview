@@ -118,7 +118,7 @@ function saveVersionSelection() {
             $RvW.searchObj.close();
             $RvW.searchObj = null;
         }
-        $RvW.searchObj = new RvwSearch(a);
+        $RvW.searchObj = new rvw.bible.Search(a);
         document.getElementById("searchID").disabled = false;
         document.getElementById("adSearch").disabled = false;
         document.getElementById("adSearchButton").disabled = false;

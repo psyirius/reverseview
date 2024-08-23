@@ -83,7 +83,7 @@
 //                 if (g.data[q].tags != null) {
 //                     t.tags = g.data[q].tags;
 //                     t.tags = t.tags.toUpperCase();
-//                     addTagList(t.tags);
+//                     rvw.tags.addTagList(t.tags);
 //                 } else {
 //                     t.tags = "";
 //                 }

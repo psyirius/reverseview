@@ -819,7 +819,7 @@ class SongManager {
 
                 sqlRes = sqlQuery.getResult();
                 if (aQ === $RvW.SongSearchType.TAGS && sqlRes.data == null) {
-                    removeTag(aP);
+                    rvw.tags.removeTag(aP);
                     rvw.ui.Toast.show("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {
@@ -848,15 +848,15 @@ class SongManager {
             aP.parameters[":id"] = aQ;
             aP.execute();
             function aN(aS) {
-                aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                aP.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                aP.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 C();
                 F();
                 at();
             }
             function aO(aS) {
-                aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                aP.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                aP.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 __debug("Error deleting song DB");
                 __debug("event.error.code:" + aS.error.code);
                 __debug("event.error.message:" + aS.error.message);

@@ -344,7 +344,7 @@ function closePresentWindowMain() {
 function presentWindowClosed() {
     $RvW.presentWindowOpen = false;
     $RvW.newWindow = null;
-    disableNavButtons(true);
+    rvw.navigation.disableNavButtons(true);
 }
 function DOMIntializeCallback(a) {
     $RvW.newWindow.window.passVariable = passVariable;

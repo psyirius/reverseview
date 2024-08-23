@@ -79,12 +79,12 @@ class RvwWordBrain {
             E.execute();
             function D(J) {
                 r("Add record passed ");
-                E.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                E.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                E.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                E.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
             }
             function F(J) {
-                E.removeEventListener(air.SQLEvent.RESULT, insertResult);
-                E.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
+                E.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
+                E.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
                 r("INSERT error:" + J.error);
                 r("event.error.code:" + J.error.code);
                 r("event.error.message:" + J.error.message);

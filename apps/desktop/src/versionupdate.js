@@ -1,13 +1,11 @@
+// TODO: clean up this file
+
 var version_number = 14;
 var task1 = false;
 var task2 = true;
 function isUpToDate() {
-    var a = $RvW.vvConfigObj.get_versionNum();
-    if (a == version_number) {
-        return true;
-    } else {
-        return false;
-    }
+    const a = $RvW.vvConfigObj.get_versionNum();
+    return a === version_number;
 }
 function checkVerUpdateFlags() {
     if (task1 && task2) {

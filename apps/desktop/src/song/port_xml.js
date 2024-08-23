@@ -327,7 +327,7 @@
                                 t.getElementsByTagName("song")[y].getElementsByTagName("tags")[0]
                             );
                             u.tags = u.tags.toUpperCase();
-                            addTagList(u.tags);
+                            rvw.tags.addTagList(u.tags);
                             u.slideseq = w(
                                 t
                                     .getElementsByTagName("song")[y].getElementsByTagName("slideseq")[0]
@@ -342,7 +342,7 @@
                 if (x) {
                     rvw.ui.Toast.show("No New Songs to add.");
                 } else {
-                    fillTagList();
+                    rvw.tags.fillTagList();
                 }
                 function w(D) {
                     if (D != null) {

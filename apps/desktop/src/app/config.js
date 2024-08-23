@@ -1381,8 +1381,7 @@ function configInit() {
     const e = new fontSizeSlider();
     e.init();
 
-    const i = new vvupdate();
-    i.init();
+    new rvw.bible.Updater();
 
     document.getElementById("thirdview_opacity").value =
         $RvW.vvConfigObj.get_svOpacity();
@@ -1438,6 +1437,6 @@ function configInit() {
     $("#thirdview_showTexture").change(svParameterSaveEvent);
     $("#thirdview_alignHorizontal").change(svParameterSaveEvent);
 
-    getTags2Array();
-    fillTagList();
+    rvw.tags.getTags2Array();
+    rvw.tags.fillTagList();
 }

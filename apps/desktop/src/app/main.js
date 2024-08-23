@@ -337,14 +337,14 @@ $RvW.present = function() {
     $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
     $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
     $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
-    recent.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
+    $Rvw.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     air.trace("Called in $RvW.present()");
     getdata();
     $RvW.p_footer = $RvW.getFooter();
     p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
-    disableNavButtons(false);
+    rvw.navigation.disableNavButtons(false);
 }
 $RvW.present_external = function(a, h, e) {
     var g = $RvW.bookIndex;
@@ -362,7 +362,7 @@ $RvW.present_external = function(a, h, e) {
     $RvW.chapterIndex = f;
     $RvW.verseIndex = d;
     getdataONLY();
-    disableNavButtons(false);
+    rvw.navigation.disableNavButtons(false);
 }
 $RvW.getFooter = function() {
     var b;
@@ -707,7 +707,7 @@ function vvinit_continue() {
         setupNavWindow();
         $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
         $RvW.putbook();
-        $RvW.setupMenu();
+        rvw.menu.setupMenu();
         nativeWindow.addEventListener("resize", setupNavWindow);
         nativeWindow.addEventListener("close", processExit);
         nativeWindow.addEventListener("closing", beforeExit);
@@ -771,7 +771,7 @@ function setupTheme() {
 }
 
 function setupTabContent() {
-    $RvW.bibleVersionSelObj = new BibleVersionSelector(loadViewTemplate("setup_biblesel"));
+    $RvW.bibleVersionSelObj = new rvw.bible.VersionSelector(loadViewTemplate("setup_biblesel"));
 
     $RvW.remoteVV_UI_Obj = new rvw.remote.Ui(loadViewTemplate("setup_remote"));
     $RvW.version_UI_Content = loadViewTemplate('version');
@@ -779,7 +779,7 @@ function setupTabContent() {
     setupTabViewTemplate("bible_verses", "bibleverseTab");
     setupTabViewTemplate("screens", "screenTab");
 
-    $RvW.updateVV_UI_Obj = new RvwUpdate(loadViewTemplate("setup_update"));
+    $RvW.updateVV_UI_Obj = new rvw.update.Ui(loadViewTemplate("setup_update"));
 
     fillTabs('configTab');
 
@@ -792,10 +792,11 @@ function setupTabContent() {
 
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes(loadViewTemplate("notesui"), 'notesPanelID');
-    $RvW.searchObj = new RvwSearch("./bible/" + getVersion1Filename());
+    $RvW.searchObj = new rvw.bible.Search("./bible/" + getVersion1Filename());
     $RvW.webServerObj = new rvw.remote.WebServer('webroot');
     $RvW.webEngineObj = new rvw.remote.WebEngine();
     $RvW.bibleRefObj = new BibleReference();
+    $RvW.editVerse_UI_Obj = new rvw.bible.VerseEditUI(loadViewTemplate("bible_verse_edit"));
     $RvW.songNumberObj = new rvw.song.SongNumber();
     $RvW.songManagerObj = new SongManager(true, true);
     $RvW.songEditObj = new rvw.song.SongEdit(loadViewTemplate("song_edit"), loadViewTemplate('lyrics_create'));
@@ -846,7 +847,7 @@ function fillTabs(a) {
             break;
         }
         case 'scheduleTab': {
-            $RvW.scheduleObj = new schedule();
+            $RvW.scheduleObj = new rvw.Schedule.Scheduler();
             break;
         }
         case 'graphicsTab': {
@@ -1009,10 +1010,10 @@ function fillNav() {
     );
     document
         .getElementById("nav_bibleRef_presentID")
-        .addEventListener("click", processNavBibleRef, false);
+        .addEventListener("click", rvw.navigation.processNavBibleRef, false);
     document
         .getElementById("nav_bibleRef_findID")
-        .addEventListener("click", processNavBibleRefFind, false);
+        .addEventListener("click", rvw.navigation.processNavBibleRefFind, false);
     const c = new ImageIcon(
         "nav_bibleRef_presentID",
         " QUICK PRESENT ",
@@ -1029,10 +1030,10 @@ function fillNav() {
     );
     document
         .getElementById("nav_bibleRefID")
-        .addEventListener("blur", bibleRefBlur, false);
+        .addEventListener("blur", rvw.navigation.bibleRefBlur, false);
     document
         .getElementById("nav_bibleRefID")
-        .addEventListener("focus", bibleRefFocus, false);
+        .addEventListener("focus", rvw.navigation.bibleRefFocus, false);
 
     // menubar buttons
     $("#icon_present").click(function () {
@@ -1066,14 +1067,14 @@ function fillNav() {
 
     // conditionally disable nav buttons
     $("#bibleAddScheduleButton").click(function () {
-        nav_addVerse2Schedule();
+        rvw.navigation.nav_addVerse2Schedule();
     });
 
-    disableNavButtons(true);
+    rvw.navigation.disableNavButtons(true);
     $RvW.enterForSearchActive = true;
     updateRefMenu();
 
-    recent.init();
+    $RvW.recentBibleRefs = new rvw.bible.RecentsManager();
 }
 
 function setupLeftTabFrame() {
@@ -1326,7 +1327,7 @@ function onMainWindowKeyUp(evt) {
                 $RvW.searchObj.searchKeywordInit();
             }
             if ($RvW.enterForBibleRef) {
-                processNavBibleRef();
+                rvw.navigation.processNavBibleRef();
             }
             if ($RvW.songNavObj.isSongSearchEditActive()) {
                 $RvW.songNavObj.sn_searchSong();
@@ -1523,15 +1524,12 @@ GROUP BY
 $RvW.booknames = [];
 $RvW.english_booknames = [];
 
-function arrayDeDup(arr) {
-    return arr.filter(function(item, index) {
-        return arr.indexOf(item, index + 1) === -1;
-    });
-}
-
-// body: onload
 // FIXME: fix the callback hell
-export function start(Y) {
+/**
+ * @param {YUI} Y
+ * @param {DojoToolkit} dojo
+ */
+export function start(Y, dojo) {
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     rvw.window.Splash.show();
@@ -1543,22 +1541,26 @@ export function start(Y) {
         );
     }
 
-    // load swf
-    try {
-        // const { Loader, URLRequest } = air;
+    TEST: {
+        // load swf
+        try {
+            // const { Loader, URLRequest } = air;
 
-        // const loader = new Loader();
-        // loader.load(new URLRequest("./bin/AppEntry.swf"));
-        // loader.load(new URLRequest("./bin/library.swf"));
+            // const loader = new Loader();
+            // loader.load(new URLRequest("./bin/AppEntry.swf"));
+            // loader.load(new URLRequest("./bin/library.swf"));
 
-        const { nativeWindow } = window;
-        const { stage } = nativeWindow;
+            const { nativeWindow } = window;
+            const { stage } = nativeWindow;
 
-        // stage.addChild(loader);
+            // stage.addChild(loader);
 
-        console.log('Stage:', stage);
-    } catch (e) {
-        air.trace(e);
+            console.log('Stage:', stage);
+        } catch (e) {
+            air.trace(e);
+        }
+
+        break TEST;
     }
 
     function proceed() {

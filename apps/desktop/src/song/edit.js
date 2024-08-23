@@ -705,7 +705,7 @@
                 const at = document.getElementById("se_quickSlideID").value;
                 const ax = at.split("\n");
                 const ar = ax.length;
-                let av = new valsonachanTransliteration();
+                let av = new rvw.transliterate.Valsonachan();
                 let aw = "";
                 for (let au = 0; au < ar; au++) {
                     aw += av.munglishLine(ax[au]) + "\n";
@@ -843,8 +843,8 @@
                     sngObj.tags = aq.toUpperCase();
                 }
 
-                addTagList(sngObj.tags);
-                fillTagList();
+                rvw.tags.addTagList(sngObj.tags);
+                rvw.tags.fillTagList();
 
                 return sngObj;
             }
