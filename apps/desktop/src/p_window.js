@@ -17,28 +17,29 @@ var index_for_presentationContent = 0;
 
 // this sets the variables in the presentation window global context
 // this is not a class
+// TODO: make it non-ambiguous
 function passVariable(o) {
     $RvW.presentationContent = presentationContentString(
-        p_title,
-        p_text1_font,
-        p_text2_font,
-        p_text1_arr[p_current_index],
-        p_text2_arr[p_current_index]
+        rvw.presentation.p_title,
+        rvw.presentation.p_text1_font,
+        rvw.presentation.p_text2_font,
+        rvw.presentation.p_text1_arr[rvw.presentation.p_current_index],
+        rvw.presentation.p_text2_arr[rvw.presentation.p_current_index]
     );
-    index_for_presentationContent = p_current_index;
-    this.p_text1_arr = p_text1_arr;
-    this.p_text2_arr = p_text2_arr;
-    this.p_text1_font = p_text1_font;
-    this.p_text2_font = p_text2_font;
-    this.p_title = p_title;
-    this.p_footnote = p_footnote;
-    this.p_current_index = p_current_index;
-    this.p_last_index = p_last_index;
-    this.p_bkgnd_filename = p_bkgnd_filename;
-    this.p_bkgnd_motion = p_bkgnd_motion;
+    index_for_presentationContent = rvw.presentation.p_current_index;
+    this.p_text1_arr = rvw.presentation.p_text1_arr;
+    this.p_text2_arr = rvw.presentation.p_text2_arr;
+    this.p_text1_font = rvw.presentation.p_text1_font;
+    this.p_text2_font = rvw.presentation.p_text2_font;
+    this.p_title = rvw.presentation.p_title;
+    this.p_footnote = rvw.presentation.p_footer;
+    this.p_current_index = rvw.presentation.p_current_index;
+    this.p_last_index = rvw.presentation.p_last_index;
+    this.p_bkgnd_filename = rvw.presentation.p_bkgnd_filename;
+    this.p_bkgnd_motion = rvw.presentation.p_bkgnd_motion;
     this.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
-    this.p_font_color = p_font_color;
-    this.p_font_color2 = p_font_color2;
+    this.p_font_color = rvw.presentation.p_font_color;
+    this.p_font_color2 = rvw.presentation.p_font_color2;
     this.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
     if (o === 1) {
         const f = $("#thirdview_fcolor").val();
@@ -53,7 +54,7 @@ function passVariable(o) {
     if (o == 1) {
         var v = $RvW.vvConfigObj.get_stageStyleVal();
         if (v != "3") {
-            if (p_text_orientation == "2") {
+            if (rvw.presentation.p_text_orientation === "2") {
                 v = "2";
             }
         }
@@ -75,7 +76,7 @@ function passVariable(o) {
         m = `${m}|${n}|${k}|${q}|${h}|${l}`;
         this.p_text_orientation = m;
     } else {
-        this.p_text_orientation = p_text_orientation;
+        this.p_text_orientation = rvw.presentation.p_text_orientation;
     }
     this.p_window_X = pWindowX;
     this.p_window_Y = pWindowY;
@@ -107,8 +108,8 @@ function passVariable(o) {
         $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
     this.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
     this.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
-    this.p_ver1ScaleFactor = p_ver1ScaleFactor;
-    this.p_ver2ScaleFactor = p_ver2ScaleFactor;
+    this.p_ver1ScaleFactor = rvw.presentation.p_ver1ScaleFactor;
+    this.p_ver2ScaleFactor = rvw.presentation.p_ver2ScaleFactor;
     this.p_isArabic1 = false;
     this.p_isArabic2 = false;
     var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
@@ -353,7 +354,7 @@ function DOMIntializeStageViewCallback(a) {
     $RvW.newStageWindow.window.passVariable = passVariable;
 }
 function updatePresentationContent(b) {
-    var a = p_text1_arr.length;
+    var a = rvw.presentation.p_text1_arr.length;
     if (b) {
         index_for_presentationContent++;
         if (index_for_presentationContent >= a) {
@@ -366,11 +367,11 @@ function updatePresentationContent(b) {
         }
     }
     $RvW.presentationContent = presentationContentString(
-        p_title,
-        p_text1_font,
-        p_text2_font,
-        p_text1_arr[index_for_presentationContent],
-        p_text2_arr[index_for_presentationContent]
+        rvw.presentation.p_title,
+        rvw.presentation.p_text1_font,
+        rvw.presentation.p_text2_font,
+        rvw.presentation.p_text1_arr[index_for_presentationContent],
+        rvw.presentation.p_text2_arr[index_for_presentationContent]
     );
 }
 function call_nextSlide() {

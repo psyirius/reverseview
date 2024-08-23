@@ -529,14 +529,16 @@
                     }
                 }
                 if (ag) {
-                    var aA = document.getElementById("songnav_editbox").value;
-                    aA = $.trim(aA);
+                    let aA = document.getElementById("songnav_editbox").value;
+                    aA = String(aA).trim();
                     if (aA.length > 2) {
-                        $(".context").mark(aA.toLowerCase());
+                        // air.trace("Marking lyrics with search text: " + aA);
+                        // TODO: add highlighting feature
+                        // $(".context").mark(aA.toLowerCase());
                     }
                 }
                 document.getElementById("ly_tags").innerHTML = "";
-                if (at.tags != null && at.tags != "") {
+                if (at.tags != null && at.tags !== "") {
                     __debug("Tags : " + at.tags);
                     var aE = at.tags.split(",");
                     var al = aE.length;

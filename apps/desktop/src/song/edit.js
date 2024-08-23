@@ -538,9 +538,6 @@
                 .getElementById("se_generateID")
                 .addEventListener("click", onClick_se_generateID, false);
             document
-                .getElementById("se_generateMunglishID")
-                .addEventListener("click", onClick_se_generateMunglishID, false);
-            document
                 .getElementById("se_generateCancelID")
                 .addEventListener("click", onClick_se_generateCancelID, false);
 
@@ -693,29 +690,8 @@
                     .removeEventListener("click", onClick_se_generateID, false);
 
                 document
-                    .getElementById("se_generateMunglishID")
-                    .removeEventListener("click", onClick_se_generateMunglishID, false);
-
-                document
                     .getElementById("se_generateCancelID")
                     .removeEventListener("click", onClick_se_generateCancelID, false);
-            }
-
-            function onClick_se_generateMunglishID() {
-                const at = document.getElementById("se_quickSlideID").value;
-                const ax = at.split("\n");
-                const ar = ax.length;
-                let av = new rvw.transliterate.Valsonachan();
-                let aw = "";
-                for (let au = 0; au < ar; au++) {
-                    aw += av.munglishLine(ax[au]) + "\n";
-                }
-                av = null;
-                document.getElementById("se_quickSlideID_2").value = aw;
-                rvw.ui.Toast.show(
-                    "Lyrics Transliteration",
-                    "Transliteration is only valid for Malayalam and it is not 100% accurate."
-                );
             }
         }
 

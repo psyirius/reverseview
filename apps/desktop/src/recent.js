@@ -73,8 +73,8 @@
                 $RvW.verseIndex = this.vArray[b];
                 rvw.navigation.setBookChVer($RvW.bookIndex, $RvW.chapterIndex * 1 + 1, $RvW.verseIndex * 1 + 1);
                 getdata(true);
-                $RvW.p_footer = `${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3]} / ${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3]}`;
-                p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+                rvw.presentation.p_footer = `${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3]} / ${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3]}`;
+                rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
                 $RvW.launch($RvW.verseIndex);
             }
         }

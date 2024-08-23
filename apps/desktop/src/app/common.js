@@ -381,8 +381,8 @@ function BibleReference() {
         $RvW.chapterIndex = p - 1;
         $RvW.verseIndex = e - 1;
         $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
-        $RvW.p_footer = $RvW.getFooter();
-        p_title = c + " " + ($RvW.chapterIndex + 1);
+        rvw.presentation.p_footer = $RvW.getFooter();
+        rvw.presentation.p_title = c + " " + ($RvW.chapterIndex + 1);
         $RvW.launch($RvW.verseIndex);
     }
     function q() {
@@ -485,38 +485,38 @@ function invert_hex_color(d) {
     return a(d);
 }
 function promoteVV(a) {
-    p_text1_arr = [];
-    p_text2_arr = [];
-    p_text1_font = "";
-    p_text2_font = "";
-    p_title = "";
-    p_footnote = "";
-    p_current_index = 0;
-    p_last_index = 0;
-    p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
+    rvw.presentation.p_text1_arr = [];
+    rvw.presentation.p_text2_arr = [];
+    rvw.presentation.p_text1_font = "";
+    rvw.presentation.p_text2_font = "";
+    rvw.presentation.p_title = "";
+    rvw.presentation.p_footer = "";
+    rvw.presentation.p_current_index = 0;
+    rvw.presentation.p_last_index = 0;
+    rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
     if (a == 2) {
-        p_bkgnd_filename = "./background/promote2.jpg";
+        rvw.presentation.p_bkgnd_filename = "./background/promote2.jpg";
     }
-    p_bkgnd_color = "black";
-    p_font_color = $RvW.vvConfigObj.get_p_textColor();
-    p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+    rvw.presentation.p_bkgnd_color = "black";
+    rvw.presentation.p_font_color = $RvW.vvConfigObj.get_p_textColor();
+    rvw.presentation.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
     presentation();
 }
 function showLogoSlide() {
-    p_text1_arr = new Array();
-    p_text2_arr = new Array();
-    p_text1_arr[0] = "";
-    p_text2_arr[0] = "";
-    p_text1_font = "";
-    p_text2_font = "";
-    p_title = "";
-    p_footnote = "";
-    p_current_index = 0;
-    p_last_index = 0;
-    p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
-    p_bkgnd_color = "black";
-    p_font_color = $RvW.vvConfigObj.get_p_textColor();
-    p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+    rvw.presentation.p_text1_arr = [];
+    rvw.presentation.p_text2_arr = [];
+    rvw.presentation.p_text1_arr[0] = "";
+    rvw.presentation.p_text2_arr[0] = "";
+    rvw.presentation.p_text1_font = "";
+    rvw.presentation.p_text2_font = "";
+    rvw.presentation.p_title = "";
+    rvw.presentation.p_footer = "";
+    rvw.presentation.p_current_index = 0;
+    rvw.presentation.p_last_index = 0;
+    rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
+    rvw.presentation.p_bkgnd_color = "black";
+    rvw.presentation.p_font_color = $RvW.vvConfigObj.get_p_textColor();
+    rvw.presentation.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
     presentation();
 }
 function blankSlide() {

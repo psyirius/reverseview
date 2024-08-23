@@ -1274,7 +1274,7 @@ function configInit() {
         .addEventListener("click", processSingleVersion);
     document
         .getElementById("presentConfigSaveButton")
-        .addEventListener("click", savePresentationMargin);
+        .addEventListener("click", rvw.presentation.savePresentationMargin);
     document
         .getElementById("presentConfigShowVVLogo")
         .addEventListener("change", showLogoChangeEvent);

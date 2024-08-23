@@ -104,7 +104,7 @@ function getdata_sql() {
             clearTimeout(c);
             $RvW.content1 = $RvW.bibledbObj[1].getResultArray();
             $RvW.content2 = $RvW.bibledbObj[2].getResultArray();
-            p_last_index = $RvW.content1.length;
+            rvw.presentation.p_last_index = $RvW.content1.length;
             $RvW.updateVerseContainer_continue();
         } else {
         }
@@ -150,8 +150,8 @@ class verseClass {
             $RvW.verseIndex = j - 1;
             $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
             getdata(true);
-            $RvW.p_footer = $RvW.getFooter();
-            $RvW.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+            rvw.presentation.p_footer = $RvW.getFooter();
+            rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
             $RvW.launch($RvW.verseIndex);
             document.getElementById("verseList").selectedIndex = $RvW.verseIndex;
             if (e) {

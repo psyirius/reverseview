@@ -23,38 +23,38 @@
                 }
             }
             function e(g) {
-                p_text1_arr = d.slides;
-                p_text2_arr = d.slides2;
-                p_text1_font = d.font;
-                p_text2_font = d.font2;
+                rvw.presentation.p_text1_arr = d.slides;
+                rvw.presentation.p_text2_arr = d.slides2;
+                rvw.presentation.p_text1_font = d.font;
+                rvw.presentation.p_text2_font = d.font2;
                 if ($RvW.vvConfigObj.get_p_showTitle()) {
-                    p_title = d.name;
+                    rvw.presentation.p_title = d.name;
                 } else {
-                    p_title = "";
+                    rvw.presentation.p_title = "";
                 }
-                p_footnote = d.copyright;
+                rvw.presentation.p_footer = d.copyright;
                 if (g == null) {
-                    p_current_index = 0;
+                    rvw.presentation.p_current_index = 0;
                 } else {
-                    p_current_index = g;
+                    rvw.presentation.p_current_index = g;
                 }
-                p_last_index = d.slides.length - 1;
-                p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-                p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-                p_bkgnd_color = "blue";
-                p_font_color = $RvW.vvConfigObj.get_p_textColor();
-                p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-                p_ver1ScaleFactor = 2;
-                p_ver2ScaleFactor = 2;
+                rvw.presentation.p_last_index = d.slides.length - 1;
+                rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+                rvw.presentation.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+                rvw.presentation.p_bkgnd_color = "blue";
+                rvw.presentation.p_font_color = $RvW.vvConfigObj.get_p_textColor();
+                rvw.presentation.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+                rvw.presentation.p_ver1ScaleFactor = 2;
+                rvw.presentation.p_ver2ScaleFactor = 2;
                 var h = a();
                 var f = $RvW.vvConfigObj.get_song_primaryOnly();
                 if (f == "true" || h) {
-                    p_text_orientation = "2";
+                    rvw.presentation.p_text_orientation = "2";
                 } else {
                     if ($RvW.vvConfigObj.get_song_text_orientation() == "0") {
-                        p_text_orientation = "0";
+                        rvw.presentation.p_text_orientation = "0";
                     } else {
-                        p_text_orientation = "1";
+                        rvw.presentation.p_text_orientation = "1";
                     }
                 }
                 presentation();

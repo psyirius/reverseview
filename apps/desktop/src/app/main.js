@@ -264,10 +264,10 @@ $RvW.launch = function(g) {
     }
     var b;
     var a;
-    p_last_index = $RvW.content1.length - 1;
+    rvw.presentation.p_last_index = $RvW.content1.length - 1;
     var h = 0;
-    h = p_last_index + 1;
-    j = p_last_index;
+    h = rvw.presentation.p_last_index + 1;
+    j = rvw.presentation.p_last_index;
     b = $RvW.content1;
     a = $RvW.content2;
     if (e == 2) {
@@ -295,25 +295,23 @@ $RvW.launch = function(g) {
             a[f] = "";
         }
     }
-    p_text1_arr = b;
-    p_text2_arr = a;
-    p_text1_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    p_text2_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-    p_title = p_title;
-    p_footnote = $RvW.p_footer;
-    p_current_index = k;
-    p_last_index = j;
-    p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-    p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-    p_bkgnd_color = "blue";
-    p_font_color = $RvW.vvConfigObj.get_p_textColor();
-    p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-    p_ver1ScaleFactor = 1;
-    p_ver2ScaleFactor = 1;
+    rvw.presentation.p_text1_arr = b;
+    rvw.presentation.p_text2_arr = a;
+    rvw.presentation.p_text1_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    rvw.presentation.p_text2_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    rvw.presentation.p_current_index = k;
+    rvw.presentation.p_last_index = j;
+    rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+    rvw.presentation.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+    rvw.presentation.p_bkgnd_color = "blue";
+    rvw.presentation.p_font_color = $RvW.vvConfigObj.get_p_textColor();
+    rvw.presentation.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+    rvw.presentation.p_ver1ScaleFactor = 1;
+    rvw.presentation.p_ver2ScaleFactor = 1;
     if ($RvW.vvConfigObj.get_singleVersion()) {
-        p_text_orientation = 2;
+        rvw.presentation.p_text_orientation = 2;
     } else {
-        p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
+        rvw.presentation.p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
     }
     presentation();
 }
@@ -340,8 +338,8 @@ $RvW.present = function() {
     $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     air.trace("Called in $RvW.present()");
     getdata();
-    $RvW.p_footer = $RvW.getFooter();
-    p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+    rvw.presentation.p_footer = $RvW.getFooter();
+    rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
     rvw.navigation.disableNavButtons(false);
@@ -354,8 +352,8 @@ $RvW.present_external = function(a, h, e) {
     $RvW.chapterIndex = h;
     $RvW.verseIndex = e;
     getdataONLY();
-    $RvW.p_footer = $RvW.getFooter();
-    p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
+    rvw.presentation.p_footer = $RvW.getFooter();
+    rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
     $RvW.bookIndex = g;
@@ -387,7 +385,7 @@ $RvW.getFooter = function() {
     if (a == c) {
         b = a;
     }
-    if (parseInt(p_text_orientation) == 2) {
+    if (parseInt(rvw.presentation.p_text_orientation) == 2) {
         if (a == "Public Domain") {
             b = "";
         } else {
@@ -401,17 +399,17 @@ function presentTheme() {
         $RvW.present();
     } else {
         themeState = true;
-        p_title = "";
-        p_footnote = "";
-        p_last_index = 0;
+        rvw.presentation.p_title = "";
+        rvw.presentation.p_footer = "";
+        rvw.presentation.p_last_index = 0;
         $RvW.content1[0] = "";
         $RvW.content2[0] = "";
-        p_current_index = 0;
-        p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-        p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-        p_bkgnd_color = "black";
-        p_font_color = "white";
-        p_font_color2 = "white";
+        rvw.presentation.p_current_index = 0;
+        rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+        rvw.presentation.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+        rvw.presentation.p_bkgnd_color = "black";
+        rvw.presentation.p_font_color = "white";
+        rvw.presentation.p_font_color2 = "white";
         presentation();
     }
 }
