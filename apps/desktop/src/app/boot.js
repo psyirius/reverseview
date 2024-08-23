@@ -5,7 +5,8 @@
 (function () {
     const dojoConfig = {
         has: {
-            // "dojo-firebug": true,
+            "dojo-firebug": true,
+            'csp-restrictions': true,
         },
         isDebug: true,
         debugAtAllCosts: true,
@@ -22,6 +23,7 @@
             { name: "@lib", location: "lib" },
             // jsx
             { name: "jsx", location: "lib/jsx" },
+            { name: "@app", location: "app" },
             // entry point
             { name: "app", location: "app", main: "main" },
         ],
