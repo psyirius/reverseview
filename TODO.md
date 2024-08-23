@@ -95,6 +95,7 @@ https://github.com/Corsaair/spitfire
 https://github.com/AS3Commons/as3commons-collections
 https://github.com/mikechambers/as3corelib
 https://github.com/CC-Archived/promise-as3
+https://github.com/karfidoff/as3
 https://github.com/theturtle32/AS3WebSocket
 https://github.com/richardlord/Actionscript-Toolkit
 https://github.com/jacksonkr/actionscript
@@ -110,6 +111,8 @@ https://github.com/MkFera/tso_client
 https://github.com/rousan/symbol-es6
 https://github.com/seanmonstar/symbol
 https://github.com/agera-air
+
+https://github.com/CC-Archived/SWFService/blob/master/src/client/SWFService/lib/promise.coffee/promise.js
 
 https://nextgenactionscript.com/tools-and-utilities/
 

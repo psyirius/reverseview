@@ -14,7 +14,10 @@
     "include-classes": [
       "air.net.websockets.WebSocketServer",
       "air.net.websockets.events.ServerEvent",
-      "air.net.websockets.events.ClientEvent"
+      "air.net.websockets.events.ClientEvent",
+
+      "com.codecatalyst.promise.Promise",
+      "com.codecatalyst.promise.Deferred"
     ],
     "default-size": {
       "width": 20,
