@@ -337,7 +337,7 @@ $RvW.present = function() {
     $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
     $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
     $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
-    $Rvw.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
+    $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     air.trace("Called in $RvW.present()");
     getdata();
     $RvW.p_footer = $RvW.getFooter();
@@ -711,8 +711,7 @@ function vvinit_continue() {
         nativeWindow.addEventListener("resize", setupNavWindow);
         nativeWindow.addEventListener("close", processExit);
         nativeWindow.addEventListener("closing", beforeExit);
-        $RvW.newUpdateObj = new checkForNewVersion();
-        $RvW.newUpdateObj.init();
+        $RvW.newUpdateObj = new rvw.update.AppUpdater();
     }, 500);
 
     setTimeout(function () {

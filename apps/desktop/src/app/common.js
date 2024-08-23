@@ -380,7 +380,7 @@ function BibleReference() {
         $RvW.bookIndex = s;
         $RvW.chapterIndex = p - 1;
         $RvW.verseIndex = e - 1;
-        $Rvw.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
+        $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
         $RvW.p_footer = $RvW.getFooter();
         p_title = c + " " + ($RvW.chapterIndex + 1);
         $RvW.launch($RvW.verseIndex);

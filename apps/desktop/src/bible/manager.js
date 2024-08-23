@@ -148,7 +148,7 @@ class verseClass {
             $RvW.bookIndex = l - 1;
             $RvW.chapterIndex = b - 1;
             $RvW.verseIndex = j - 1;
-            $Rvw.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
+            $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
             getdata(true);
             $RvW.p_footer = $RvW.getFooter();
             $RvW.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);

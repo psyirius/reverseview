@@ -4,7 +4,6 @@
         {
             label: 'File',
             items: [
-                { label: 'Presentation Setup', onSelect: show_present_setup_UI },
                 { label: 'Remote', onSelect: remoteVV_UI },
                 { label: 'Check for Updates', onSelect: show_updateVV_UI },
                 { type: 'separator' },
@@ -124,7 +123,6 @@
     function remoteVV_UI() {
         $RvW.remoteVV_UI_Obj.show();
     }
-    function show_present_setup_UI() {}
     function show_updateVV_UI() {
         $RvW.newUpdateObj.checkForUpdates();
     }
