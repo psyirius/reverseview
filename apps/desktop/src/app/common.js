@@ -521,9 +521,9 @@ function showLogoSlide() {
 }
 function blankSlide() {
     if ($RvW.presentWindowOpen) {
-        $RvW.newWindow.window.showBlankProcess();
-        if ($RvW.stageView && $RvW.newStageWindow != null) {
-            $RvW.newStageWindow.window.showBlankProcess();
+        $RvW.presentationWindow.window.showBlankProcess();
+        if ($RvW.stageView && $RvW.stageWindow != null) {
+            $RvW.stageWindow.window.showBlankProcess();
         }
     }
     $RvW.presentationContent = "";

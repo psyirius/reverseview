@@ -21,9 +21,10 @@
             { name: "dojox", location: "../lib/dojox" },
             // internal libs
             { name: "@lib", location: "lib" },
+            // @root
+            { name: "@", location: "./" },
             // jsx
             { name: "jsx", location: "lib/jsx" },
-            { name: "@app", location: "app" },
             // entry point
             { name: "app", location: "app", main: "main" },
         ],

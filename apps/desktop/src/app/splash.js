@@ -1,4 +1,4 @@
-rvw.provide("rvw.window").Splash = {
+const Splash = {
     // private
     __instance: null,
     __exec(show = true) {
@@ -74,3 +74,5 @@ rvw.provide("rvw.window").Splash = {
         this.__exec(false);
     }
 };
+
+export default Splash;

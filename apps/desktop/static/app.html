@@ -163,9 +163,8 @@
     <script type="text/javascript" src="lib/yui2/paginator/paginator-min.js"></script>
 
     <!-- dojo toolkit v1.17.3 -->
-    <script type="text/javascript" data-dojo-config="async: true" src="lib/dojo/dojo.js"></script>
-<!--    <script type="text/javascript" src="lib/dijit/dijit.js"></script>-->
-    <link rel="stylesheet" type="text/css" href="lib/dijit/themes/claro/claro.css"/>
+<!--    <script type="text/javascript" data-dojo-config="async: true" src="lib/dojo/dojo.js"></script>-->
+    <script type="text/javascript" data-dojo-config="async: true" src="lib/dojo/dojo.js.uncompressed.js"></script>
 
     <!-- jQuery: dom manipulation -->
     <script type="text/javascript" src="lib/jquery/jquery-3.7.1.min.js"></script>
@@ -180,8 +179,6 @@
 
     <script type="text/javascript" src="js/utils/async.js"></script>
 
-    <script type="text/javascript" src="js/app/preferences.js"></script>
-    <script type="text/javascript" src="js/app/splash.js"></script>
     <script type="text/javascript" src="js/app/prompt.js"></script>
     <script type="text/javascript" src="js/app/toast.js"></script>
     <script type="text/javascript" src="js/app/overlay.js"></script>
@@ -224,13 +221,6 @@
     <script type="text/javascript" src="js/notes/notes.js"></script>
     <script type="text/javascript" src="js/notes/manage.js"></script>
 
-    <script type="text/javascript" src="js/words/wordlearner.js"></script>
-    <script type="text/javascript" src="js/words/vvbrain.js"></script>
-
-    <script type="text/javascript" src="js/remote/setup.js"></script>
-    <script type="text/javascript" src="js/remote/webserver.js"></script>
-    <script type="text/javascript" src="js/remote/webengine.js"></script>
-
     <script type="text/javascript" src="js/song/obj.js"></script>
     <script type="text/javascript" src="js/song/edit.js"></script>
     <script type="text/javascript" src="js/song/nav.js"></script>
@@ -246,13 +236,9 @@
     <link rel="stylesheet" type="text/css" href="css/fonts.css" />
     <link rel="stylesheet" type="text/css" href="css/graphics.css" />
 
-    <!-- Bootstrap -->
-    <!-- TODO: migrate and remove asap if not needed -->
+    <!-- Bootstrap & Semantic UI -->
+    <!-- TODO: migrate and remove asap if not needed: still responsible for some styling -->
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
-
-    <!-- !!! messing up preact -->
-    <!-- Semantic UI -->
-    <!-- TODO: migrate and remove asap if not needed -->
     <link rel="stylesheet" type="text/css" href="lib/semantic/semantic.min.css" />
 
     <!-- library: jscolor -->
@@ -266,7 +252,7 @@
     <script type="text/javascript" src="lib/qrcode/qrcode.min.js"></script>
   </head>
 
-  <body class="yui3-skin-sam yui-skin-sam claro">
+  <body class="yui3-skin-sam yui-skin-sam">
     <!-- Preact::Root::Begin -->
     <div id="root"></div>
     <!-- Preact::Root::End -->

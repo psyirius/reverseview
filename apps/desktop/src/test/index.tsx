@@ -29,31 +29,30 @@ const App = ({ dev }: { dev?: boolean }) => {
     const [show, setShow] = useState(true);
 
     return (
-            <>
-                {dev && (
-                        <div className="dev-toolbar">
-                            <button id="dev-refresh" onClick={() => window.location.reload()}>Refresh</button>
-                        </div>
-                )}
+        <>
+            {/*{dev && (*/}
+            {/*    <div className="dev-toolbar">*/}
+            {/*        <button id="dev-refresh" onClick={() => window.location.reload()}>Refresh</button>*/}
+            {/*    </div>*/}
+            {/*)}*/}
 
-                <div>
-                    <button
-                            onClick={() => {
-                                setShow(!show);
-                            }}
-                    >
-                        {show ? "Hide" : "Show"}
-                    </button>
+            {/*<div>*/}
+            {/*    <button*/}
+            {/*        onClick={() => {*/}
+            {/*            setShow(!show);*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        {show ? "Hide" : "Show"}*/}
+            {/*    </button>*/}
 
-                    {show ? <Counter /> : <div>No counter</div>}
-                </div>
-            </>
+            {/*    {show ? <Counter /> : <div>No counter</div>}*/}
+            {/*</div>*/}
+        </>
     );
 };
 
 if (typeof window !== "undefined") {
-    // FIXME: clashing with semantic-ui
-    // render(<App dev />, document.getElementById("root"));
+    render(<App dev />, document.getElementById("root"));
 }
 /* ------------------------------------------------------------------------------------------------------------------ */
 

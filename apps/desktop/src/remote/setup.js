@@ -1,313 +1,308 @@
+function getAvailableNwIpList() {
+    function getNetworkInterfaceList() {
+        const { NetworkInfo } = air;
 
-!(function (exports) {
-    function getAvailableNwIpList() {
-        function getNetworkInterfaceList() {
-            const { NetworkInfo } = air;
-
-            if (!NetworkInfo.isSupported) {
-                throw new Error('NetworkInfo is not supported');
-            }
-
-            const interfaces = NetworkInfo.networkInfo.findInterfaces();
-
-            const result = [];
-
-            for (const nwi of interfaces) {
-                const item = {};
-
-                item['guid'] = nwi.name;
-                item['name'] = nwi.displayName;
-                item['active'] = nwi.active;
-                item['macaddr'] = nwi.hardwareAddress;
-
-                const addresses = [];
-                for (const addr of nwi.addresses) {
-                    addresses.push([addr.ipVersion, addr.address]);
-                }
-                item['addresses'] = addresses;
-
-                result.push(item);
-            }
-
-            return result;
+        if (!NetworkInfo.isSupported) {
+            throw new Error('NetworkInfo is not supported');
         }
 
-        return getNetworkInterfaceList()
-            .filter(e => e.active)
-            .map(e => e.addresses
-                .filter(([v, _]) => (v === 'IPv4'))
-                .map(([_, a]) => a)[0]
-            )
+        const interfaces = NetworkInfo.networkInfo.findInterfaces();
+
+        const result = [];
+
+        for (const nwi of interfaces) {
+            const item = {};
+
+            item['guid'] = nwi.name;
+            item['name'] = nwi.displayName;
+            item['active'] = nwi.active;
+            item['macaddr'] = nwi.hardwareAddress;
+
+            const addresses = [];
+            for (const addr of nwi.addresses) {
+                addresses.push([addr.ipVersion, addr.address]);
+            }
+            item['addresses'] = addresses;
+
+            result.push(item);
+        }
+
+        return result;
     }
 
-    class Ui {
-        constructor(bodyContent) {
-            this.configure = configure;
-            this.show = show;
+    return getNetworkInterfaceList()
+        .filter(e => e.active)
+        .map(e => e.addresses
+            .filter(([v, _]) => (v === 'IPv4'))
+            .map(([_, a]) => a)[0]
+        )
+}
 
-            let _panel = null;
-            let m_body = bodyContent;
-            const m_msgHints = [];
-            let m_hostname = "";
-            let m_port = "";
-            let m_customHostName = "";
-            let portNumber = 50000;
-            let ipList = null;
-            const m_debug = false;
+export class RemoteSetupUIPanel {
+    constructor(bodyContent) {
+        this.configure = configure;
+        this.show = show;
 
-            _setupUI();
-            _setupHints();
-            e();
+        let _panel = null;
+        let m_body = bodyContent;
+        const m_msgHints = [];
+        let m_hostname = "";
+        let m_port = "";
+        let m_customHostName = "";
+        let portNumber = 50000;
+        let ipList = null;
+        const m_debug = false;
 
-            function _setupUI() {
-                _panel = new YAHOO.widget.Panel("panelObj3", {
-                    width: "700px",
-                    fixedcenter: true,
-                    modal: true,
-                    visible: false,
-                    constraintoviewport: true,
-                });
-                _panel.render(document.body);
-                _panel.setHeader("Remote VerseVIEW");
-                _panel.setBody(m_body);
-                _panel.hide();
-                _panel.bringToTop();
-            }
+        _setupUI();
+        _setupHints();
+        e();
 
-            function _setupHints() {
-                m_msgHints[0] = "Use IP address 127.0.0.1 if VerseVIEW and live stream software on the same computer. <br> Use the other IP address if remote access is required with multiple computers and devices";
-                m_msgHints[1] = "Enable this port numer with the firewall software";
-                m_msgHints[2] = "Messenger feature can be used to easily communicate between choir team members";
-                m_msgHints[3] = "The full address is displayed in the text box and the QR code";
-                m_msgHints[4] = "Enter the host name of the computer and toggle the Use Host name field";
-            }
+        function _setupUI() {
+            _panel = new YAHOO.widget.Panel("panelObj3", {
+                width: "700px",
+                fixedcenter: true,
+                modal: true,
+                visible: false,
+                constraintoviewport: true,
+            });
+            _panel.render(document.body);
+            _panel.setHeader("Remote VerseVIEW");
+            _panel.setBody(m_body);
+            _panel.hide();
+            _panel.bringToTop();
+        }
 
-            function _sentHint(index) {
-                $("#remoteVVHint").html(m_msgHints[index]);
-            }
+        function _setupHints() {
+            m_msgHints[0] = "Use IP address 127.0.0.1 if VerseVIEW and live stream software on the same computer. <br> Use the other IP address if remote access is required with multiple computers and devices";
+            m_msgHints[1] = "Enable this port numer with the firewall software";
+            m_msgHints[2] = "Messenger feature can be used to easily communicate between choir team members";
+            m_msgHints[3] = "The full address is displayed in the text box and the QR code";
+            m_msgHints[4] = "Enter the host name of the computer and toggle the Use Host name field";
+        }
 
-            function configure() {
-                n();
-                x();
-            }
+        function _sentHint(index) {
+            $("#remoteVVHint").html(m_msgHints[index]);
+        }
 
-            function x() {
-                document
-                    .getElementById("saveRemoteVVSettings")
-                    .addEventListener("click", _onEnable);
+        function configure() {
+            n();
+            x();
+        }
 
-                $("#configRemoteCopy").click(function () {
-                    const { Clipboard, ClipboardFormats } = air;
+        function x() {
+            document
+                .getElementById("saveRemoteVVSettings")
+                .addEventListener("click", _onEnable);
 
-                    const remoteLink = $("#configRemoteLink").val();
-                    Clipboard.generalClipboard.clear();
-                    Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, remoteLink);
-                });
+            $("#configRemoteCopy").click(function () {
+                const { Clipboard, ClipboardFormats } = air;
 
-                $("#configIPaddr").click(function () {
-                    _sentHint(0);
-                });
-                $("#configRemotePort").click(function () {
-                    _sentHint(1);
-                });
-                $("#configRemoteHostname").click(function () {
-                    _sentHint(4);
-                });
-                $("#remoteVVRemoteFunc").click(function () {
-                    _sentHint(3);
-                });
-                $("#remoteVVRemoteFunc").change(function () {
-                    _sentHint(3);
-                    d();
-                });
+                const remoteLink = $("#configRemoteLink").val();
+                Clipboard.generalClipboard.clear();
+                Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, remoteLink);
+            });
 
-                $("#remoteVVUseHostname").change(function () {
-                    const B = $("#remoteVVUseHostname").is(":checked");
-                    if (B) {
-                        if (m_hostname === "127.0.0.1") {
-                            m_customHostName = "localhost";
-                        } else {
-                            m_customHostName = $("#configRemoteHostname").val();
-                            $RvW.vvConfigObj.set_myhostname(m_customHostName);
-                            $RvW.vvConfigObj.save();
-                        }
+            $("#configIPaddr").click(function () {
+                _sentHint(0);
+            });
+            $("#configRemotePort").click(function () {
+                _sentHint(1);
+            });
+            $("#configRemoteHostname").click(function () {
+                _sentHint(4);
+            });
+            $("#remoteVVRemoteFunc").click(function () {
+                _sentHint(3);
+            });
+            $("#remoteVVRemoteFunc").change(function () {
+                _sentHint(3);
+                d();
+            });
+
+            $("#remoteVVUseHostname").change(function () {
+                const B = $("#remoteVVUseHostname").is(":checked");
+                if (B) {
+                    if (m_hostname === "127.0.0.1") {
+                        m_customHostName = "localhost";
                     } else {
-                        m_customHostName = "";
+                        m_customHostName = $("#configRemoteHostname").val();
+                        $RvW.vvConfigObj.set_myhostname(m_customHostName);
+                        $RvW.vvConfigObj.save();
                     }
-                    _genLink();
-                });
-            }
-
-            function show() {
-                _panel.show();
-                _panel.bringToTop();
-            }
-
-            function hide() {
-                _panel.hide();
-            }
-
-            function n() {
-                clearSelectList("configIPaddr");
-
-                ipList = getAvailableNwIpList();
-
-                const numIps = ipList.length;
-
-                for (let i = 0; i < numIps; i++) {
-                    document.getElementById("configIPaddr").options[i] = new Option(ipList[i], String(i));
-                }
-
-                document.getElementById("configIPaddr").selectedIndex = 0;
-
-                if (numIps === 0) {
-                    document.getElementById("configIPaddr").disabled = true;
-                    document.getElementById("configRemotePort").disabled = true;
-                    document.getElementById("saveRemoteVVSettings").disabled = true;
-                }
-            }
-
-            function _getSelectedIp() {
-                const B = document.getElementById("configIPaddr").selectedIndex;
-                if (B != null) {
-                    return ipList[B];
                 } else {
-                    return false;
+                    m_customHostName = "";
                 }
+                _genLink();
+            });
+        }
+
+        function show() {
+            _panel.show();
+            _panel.bringToTop();
+        }
+
+        function hide() {
+            _panel.hide();
+        }
+
+        function n() {
+            clearSelectList("configIPaddr");
+
+            ipList = getAvailableNwIpList();
+
+            const numIps = ipList.length;
+
+            for (let i = 0; i < numIps; i++) {
+                document.getElementById("configIPaddr").options[i] = new Option(ipList[i], String(i));
             }
 
-            function _onEnable() {
-                let _port = 50000;
-                let _ipAddr = null;
-                if ($RvW.webServerObj.isActive() === false) {
-                    _port = document.getElementById("configRemotePort").value;
-                    _ipAddr = _getSelectedIp();
-                    if (IsNumeric(_port)) {
-                        if (withinRange(49152, 65535, _port)) {
-                            portNumber = _port;
-                            const B = $RvW.webServerObj.init(portNumber, _ipAddr);
-                            if (B) {
-                                _setBtnLabel("DISABLE");
-                                document.getElementById("configRemotePort").disabled = true;
-                                document.getElementById("configIPaddr").disabled = true;
-                                if (_ipAddr != null) {
-                                    if (_ipAddr.indexOf(":") > -1) {
-                                        _ipAddr = "[" + _ipAddr + "]";
-                                    }
-                                    m_hostname = _ipAddr;
-                                    m_port = portNumber;
-                                    d();
-                                } else {
-                                    e();
+            document.getElementById("configIPaddr").selectedIndex = 0;
+
+            if (numIps === 0) {
+                document.getElementById("configIPaddr").disabled = true;
+                document.getElementById("configRemotePort").disabled = true;
+                document.getElementById("saveRemoteVVSettings").disabled = true;
+            }
+        }
+
+        function _getSelectedIp() {
+            const B = document.getElementById("configIPaddr").selectedIndex;
+            if (B != null) {
+                return ipList[B];
+            } else {
+                return false;
+            }
+        }
+
+        function _onEnable() {
+            let _port = 50000;
+            let _ipAddr = null;
+            if ($RvW.webServerObj.isActive() === false) {
+                _port = document.getElementById("configRemotePort").value;
+                _ipAddr = _getSelectedIp();
+                if (IsNumeric(_port)) {
+                    if (withinRange(49152, 65535, _port)) {
+                        portNumber = _port;
+                        const B = $RvW.webServerObj.init(portNumber, _ipAddr);
+                        if (B) {
+                            _setBtnLabel("DISABLE");
+                            document.getElementById("configRemotePort").disabled = true;
+                            document.getElementById("configIPaddr").disabled = true;
+                            if (_ipAddr != null) {
+                                if (_ipAddr.indexOf(":") > -1) {
+                                    _ipAddr = "[" + _ipAddr + "]";
                                 }
+                                m_hostname = _ipAddr;
+                                m_port = portNumber;
+                                d();
                             } else {
                                 e();
                             }
                         } else {
-                            rvw.ui.Toast.show(
-                                "Remote VerseVIEW",
-                                "Port Number: Out of Range. Valid range is 49152 to 65535."
-                            );
-                            document.getElementById("configRemotePort").value = portNumber;
                             e();
                         }
                     } else {
                         rvw.ui.Toast.show(
                             "Remote VerseVIEW",
-                            "Invalid Port Number. Valid range is 49152 to 65535."
+                            "Port Number: Out of Range. Valid range is 49152 to 65535."
                         );
                         document.getElementById("configRemotePort").value = portNumber;
                         e();
                     }
                 } else {
-                    $RvW.webServerObj.init(portNumber);
-                    _setBtnLabel("ENABLE");
-                    document.getElementById("configRemotePort").disabled = false;
-                    document.getElementById("configIPaddr").disabled = false;
+                    rvw.ui.Toast.show(
+                        "Remote VerseVIEW",
+                        "Invalid Port Number. Valid range is 49152 to 65535."
+                    );
+                    document.getElementById("configRemotePort").value = portNumber;
                     e();
                 }
+            } else {
+                $RvW.webServerObj.init(portNumber);
+                _setBtnLabel("ENABLE");
+                document.getElementById("configRemotePort").disabled = false;
+                document.getElementById("configIPaddr").disabled = false;
+                e();
             }
+        }
 
-            function e() {
-                m_customHostName = $RvW.vvConfigObj.get_myhostname();
-                $("#configRemoteHostname").val(m_customHostName);
-                document.getElementById("remoteVVStatus").innerHTML = "Remote is DISABLED";
-                $("#remoteLinkList").hide();
-                $("#qrcode").hide();
-                $("#configRemoteLink").hide();
-                $("#configRemoteCopy").hide();
-            }
+        function e() {
+            m_customHostName = $RvW.vvConfigObj.get_myhostname();
+            $("#configRemoteHostname").val(m_customHostName);
+            document.getElementById("remoteVVStatus").innerHTML = "Remote is DISABLED";
+            $("#remoteLinkList").hide();
+            $("#qrcode").hide();
+            $("#configRemoteLink").hide();
+            $("#configRemoteCopy").hide();
+        }
 
-            function d() {
-                document.getElementById("remoteVVStatus").innerHTML = "Remote is ENABLED";
-                _genLink();
-                $("#remoteLinkList").show();
-                $("#qrcode").show();
-                $("#configRemoteLink").show();
-                $("#configRemoteCopy").show();
-            }
+        function d() {
+            document.getElementById("remoteVVStatus").innerHTML = "Remote is ENABLED";
+            _genLink();
+            $("#remoteLinkList").show();
+            $("#qrcode").show();
+            $("#configRemoteLink").show();
+            $("#configRemoteCopy").show();
+        }
 
-            function _genLink() {
-                let hostname = m_hostname;
-                const useLocalHost = $("#remoteVVUseHostname").is(":checked");
+        function _genLink() {
+            let hostname = m_hostname;
+            const useLocalHost = $("#remoteVVUseHostname").is(":checked");
 
-                if (useLocalHost) {
-                    if (m_hostname === "127.0.0.1") {
-                        hostname = "localhost";
-                    } else {
-                        if (m_customHostName !== "") {
-                            hostname = m_customHostName;
-                        }
+            if (useLocalHost) {
+                if (m_hostname === "127.0.0.1") {
+                    hostname = "localhost";
+                } else {
+                    if (m_customHostName !== "") {
+                        hostname = m_customHostName;
                     }
                 }
-
-                let remoteUrl = `http://${hostname}:${m_port}`;
-
-                // TODO: make it auto-generated on build
-                switch (parseInt($("#remoteVVRemoteFunc").val())) {
-                    default:        remoteUrl += `/404.html`;                       break;
-
-                    case 1:         remoteUrl += `/control.html`;                   break;
-
-                    case 2:         remoteUrl += `/stageview/fullscreen1/c.html`;   break;
-                    case 3:         remoteUrl += `/stageview/fullscreen2/c.html`;   break;
-                    case 4:         remoteUrl += `/stageview/fullscreen3/c.html`;   break;
-
-                    case 5:         remoteUrl += `/stageview/stage/c.html`;         break;
-                    case 6:         remoteUrl += `/stageview/stage2/c.html`;        break;
-                    case 7:         remoteUrl += `/stageview/stage3/c.html`;        break;
-                    case 8:         remoteUrl += `/stageview/stage4/c.html`;        break;
-
-                    case 9:         remoteUrl += `/lowerthird/theme6/a/a.html`;     break;
-                    case 10:        remoteUrl += `/lowerthird/theme6/a2/a.html`;    break;
-                    case 11:        remoteUrl += `/lowerthird/theme6/b/b.html`;     break;
-                    case 12:        remoteUrl += `/lowerthird/theme6/c/c.html`;     break;
-                    case 13:        remoteUrl += `/lowerthird/theme6/c1/c.html`;    break;
-                    case 14:        remoteUrl += `/lowerthird/theme6/d/d.html`;     break;
-                    case 15:        remoteUrl += `/lowerthird/theme6/d2/d.html`;    break;
-                    case 16:        remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
-                    case 17:        remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
-                    case 18:        remoteUrl += `/lowerthird/theme6/h1/h.html`;    break;
-                    case 19:        remoteUrl += `/lowerthird/theme6/ga/g.html`;    break;
-                }
-
-                $("#configRemoteLink").val(remoteUrl);
-                $("#qrcode").html("");
-
-                new QRCode(document.getElementById("qrcode"), remoteUrl);
             }
 
-            function _setBtnLabel(B) {
-                $("#saveRemoteVVSettings").html(B);
+            let remoteUrl = `http://${hostname}:${m_port}`;
+
+            // TODO: make it auto-generated on build
+            switch (parseInt($("#remoteVVRemoteFunc").val())) {
+                default:        remoteUrl += `/404.html`;                       break;
+
+                case 1:         remoteUrl += `/control.html`;                   break;
+
+                case 2:         remoteUrl += `/stageview/fullscreen1/c.html`;   break;
+                case 3:         remoteUrl += `/stageview/fullscreen2/c.html`;   break;
+                case 4:         remoteUrl += `/stageview/fullscreen3/c.html`;   break;
+
+                case 5:         remoteUrl += `/stageview/stage/c.html`;         break;
+                case 6:         remoteUrl += `/stageview/stage2/c.html`;        break;
+                case 7:         remoteUrl += `/stageview/stage3/c.html`;        break;
+                case 8:         remoteUrl += `/stageview/stage4/c.html`;        break;
+
+                case 9:         remoteUrl += `/lowerthird/theme6/a/a.html`;     break;
+                case 10:        remoteUrl += `/lowerthird/theme6/a2/a.html`;    break;
+                case 11:        remoteUrl += `/lowerthird/theme6/b/b.html`;     break;
+                case 12:        remoteUrl += `/lowerthird/theme6/c/c.html`;     break;
+                case 13:        remoteUrl += `/lowerthird/theme6/c1/c.html`;    break;
+                case 14:        remoteUrl += `/lowerthird/theme6/d/d.html`;     break;
+                case 15:        remoteUrl += `/lowerthird/theme6/d2/d.html`;    break;
+                case 16:        remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
+                case 17:        remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
+                case 18:        remoteUrl += `/lowerthird/theme6/h1/h.html`;    break;
+                case 19:        remoteUrl += `/lowerthird/theme6/ga/g.html`;    break;
             }
 
-            function _debug_log(msg) {
-                if (m_debug) {
-                    air.trace("[Remote]: " + msg);
-                }
+            $("#configRemoteLink").val(remoteUrl);
+            $("#qrcode").html("");
+
+            new QRCode(document.getElementById("qrcode"), remoteUrl);
+        }
+
+        function _setBtnLabel(B) {
+            $("#saveRemoteVVSettings").html(B);
+        }
+
+        function _debug_log(msg) {
+            if (m_debug) {
+                air.trace("[Remote]: " + msg);
             }
         }
     }
-
-    exports.Ui = Ui;
-}(rvw.provide("rvw.remote")));
+}

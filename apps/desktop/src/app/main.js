@@ -1,17 +1,16 @@
 // import SongEdit from '../song/edit.js';
 
-// import RvwWordBrain from '../words/vvbrain';
-// import RvwWordLearner from '../words/wordlearner.js';
-
-// import * as k from './preferences';
-//
-// air.trace('^^^^^^^^^^^^^^^^^^:', k);
-
-// require(['./preferences'], () => {
-//     air.trace('^^^^^^^^^^^^^^^^^^');
-// });
-
 import * as $ from 'jquery';
+
+import Preferences from './preferences';
+import SplashScreen from './splash';
+import { WebEngine } from "@/remote/webengine";
+import { WebServer } from "@/remote/webserver";
+import { RemoteSetupUIPanel } from "@/remote/setup";
+import { WordBrain } from "@/words/vvbrain";
+import { WordLearner } from "@/words/wordlearner";
+
+import { setup as setupUI } from '@/app/ui/main'
 
 DEV: {
     // break DEV;
@@ -600,9 +599,9 @@ function loadPreferences(callback) {
     }
 
     if (!prefsFile.exists || prefsFile.isDirectory) {
-        rvw.store.Preferences.init(prefsFile, _cb);
+        Preferences.init(prefsFile, _cb);
     } else {
-        rvw.store.Preferences.load(prefsFile, _cb);
+        Preferences.load(prefsFile, _cb);
     }
 }
 
@@ -717,7 +716,7 @@ function vvinit_continue() {
         loadSQLBible($RvW.vvConfigObj.get_version2(), 2);
         setupTabContent();
 
-        rvw.window.Splash.close();
+        SplashScreen.close();
 
         activateMainWindow();
 
@@ -789,7 +788,7 @@ function setupTheme() {
 function setupTabContent() {
     $RvW.bibleVersionSelObj = new rvw.bible.VersionSelector(loadViewTemplate("setup_biblesel"));
 
-    $RvW.remoteVV_UI_Obj = new rvw.remote.Ui(loadViewTemplate("setup_remote"));
+    $RvW.remoteVV_UI_Obj = new RemoteSetupUIPanel(loadViewTemplate("setup_remote"));
     $RvW.version_UI_Content = loadViewTemplate('version');
 
     setupTabViewTemplate("bible_verses", "bibleverseTab");
@@ -809,8 +808,8 @@ function setupTabContent() {
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes(loadViewTemplate("notesui"), 'notesPanelID');
     $RvW.searchObj = new rvw.bible.Search("./bible/" + getVersion1Filename());
-    $RvW.webServerObj = new rvw.remote.WebServer('webroot');
-    $RvW.webEngineObj = new rvw.remote.WebEngine();
+    $RvW.webServerObj = new WebServer('webroot');
+    $RvW.webEngineObj = new WebEngine();
     $RvW.bibleRefObj = new BibleReference();
     $RvW.editVerse_UI_Obj = new rvw.bible.VerseEditUI(loadViewTemplate("bible_verse_edit"));
     $RvW.songNumberObj = new rvw.song.SongNumber();
@@ -1064,8 +1063,8 @@ function fillNav() {
         blankSlide();
     });
     $("#icon_theme").click(function () {
-        if ($RvW.newWindow != null) {
-            $RvW.newWindow.window.showThemeProcess();
+        if ($RvW.presentationWindow != null) {
+            $RvW.presentationWindow.window.showThemeProcess();
         }
     });
     $("#icon_logo").click(function () {
@@ -1261,17 +1260,17 @@ function processExit() {
     air.trace('Exit process');
 
     if ($RvW.presentWindowOpen) {
-        $RvW.newWindow.window.nativeWindow.removeEventListener(
+        $RvW.presentationWindow.window.nativeWindow.removeEventListener(
             air.Event.CLOSE,
             presentWindowClosed
         );
-        $RvW.newWindow.window.nativeWindow.close();
-        if ($RvW.stageView && $RvW.newStageWindow != null) {
-            $RvW.newStageWindow.window.nativeWindow.removeEventListener(
+        $RvW.presentationWindow.window.nativeWindow.close();
+        if ($RvW.stageView && $RvW.stageWindow != null) {
+            $RvW.stageWindow.window.nativeWindow.removeEventListener(
                 air.Event.CLOSE,
                 presentWindowClosed
             );
-            $RvW.newStageWindow.window.nativeWindow.close();
+            $RvW.stageWindow.window.nativeWindow.close();
         }
     }
 }
@@ -1546,9 +1545,11 @@ $RvW.english_booknames = [];
  * @param {DojoToolkit} dojo
  */
 export function start(Y, dojo) {
+    setupUI();
+
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
-    rvw.window.Splash.show();
+    SplashScreen.show();
 
     if (!firstTimeCheck()) {
         rvw.ui.Toast.show(
@@ -1586,9 +1587,9 @@ export function start(Y, dojo) {
         $RvW.vvConfigObj = new RvwConfig();
         $RvW.vvConfigObj.load(vvinit_continue);
 
-        $RvW.learner = new RvwWordLearner();
+        $RvW.learner = new WordLearner();
 
-        $RvW.wordbrain = new RvwWordBrain();
+        $RvW.wordbrain = new WordBrain();
         $RvW.wordbrain.init();
     }
 

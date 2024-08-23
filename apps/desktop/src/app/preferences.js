@@ -1,4 +1,4 @@
-rvw.provide("rvw.store").Preferences = {
+const Preferences = {
     __Store: class {
         constructor(root = {}, onCommit = null) {
             this.__root = root;
@@ -124,3 +124,5 @@ rvw.provide("rvw.store").Preferences = {
         }
     }
 };
+
+export default Preferences;

@@ -1214,14 +1214,14 @@ function svParameterSaveEvent() {
 }
 function svPassMessage() {
     var a = $("#stageConfigMessage").val();
-    if ($RvW.newStageWindow != null) {
-        $RvW.newStageWindow.window.postMessage(a);
+    if ($RvW.stageWindow != null) {
+        $RvW.stageWindow.window.postMessage(a);
     }
 }
 function svClearMessage() {
     var a = "";
-    if ($RvW.newStageWindow != null) {
-        $RvW.newStageWindow.window.postMessage(a);
+    if ($RvW.stageWindow != null) {
+        $RvW.stageWindow.window.postMessage(a);
     }
 }
 function stageStyleChangeEvent() {

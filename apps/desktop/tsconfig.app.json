@@ -13,6 +13,7 @@
     "baseUrl": "./src",
     "moduleResolution": "Node",
     "paths": {
+      "@/*": ["./*"],
       "@lib/*": ["lib/*"], //
       "@app/*": ["app/*"], //
     },

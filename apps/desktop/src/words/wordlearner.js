@@ -1,4 +1,4 @@
-class RvwWordLearner {
+export class WordLearner {
     constructor() {
         this.addWord = a;
         this.finishLearning = h;
@@ -63,5 +63,3 @@ class RvwWordLearner {
         }
     }
 }
-
-// export default RvwWordLearner;

@@ -1,4 +1,4 @@
-class RvwWordBrain {
+export class WordBrain {
     constructor() {
         this.init = init;
         this.addRecord = addRecord;
@@ -68,8 +68,7 @@ class RvwWordBrain {
             var E = new air.SQLStatement();
             E.sqlConnection = m_sqlConn;
             var H = "";
-            H +=
-                "INSERT INTO wordbrain (wordin, wordout, count) VALUES (:w_in, :w_out, :w_count);";
+            H += "INSERT INTO wordbrain (wordin, wordout, count) VALUES (:w_in, :w_out, :w_count);";
             E.text = H;
             E.addEventListener(air.SQLEvent.RESULT, D);
             E.addEventListener(air.SQLErrorEvent.ERROR, F);
@@ -185,5 +184,3 @@ class RvwWordBrain {
         }
     }
 }
-
-// export default RvwWordBrain;

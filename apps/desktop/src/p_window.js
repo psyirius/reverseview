@@ -3,9 +3,9 @@ $RvW.presentationContent = 0;
 $RvW.stageView = false;
 
 // Presentation Window
-$RvW.newWindow = null;
+$RvW.presentationWindow = null;
 // Stage View Window
-$RvW.newStageWindow = null;
+$RvW.stageWindow = null;
 
 var pWindowX = "100";
 var pWindowY = "100";
@@ -18,7 +18,9 @@ var index_for_presentationContent = 0;
 // this sets the variables in the presentation window global context
 // this is not a class
 // TODO: make it non-ambiguous
-function passVariable(o) {
+function passVariable(isStageView, _ = undefined) {
+    _ ??= this.ctx; // this is global of the holding context
+
     $RvW.presentationContent = presentationContentString(
         rvw.presentation.p_title,
         rvw.presentation.p_text1_font,
@@ -27,105 +29,107 @@ function passVariable(o) {
         rvw.presentation.p_text2_arr[rvw.presentation.p_current_index]
     );
     index_for_presentationContent = rvw.presentation.p_current_index;
-    this.p_text1_arr = rvw.presentation.p_text1_arr;
-    this.p_text2_arr = rvw.presentation.p_text2_arr;
-    this.p_text1_font = rvw.presentation.p_text1_font;
-    this.p_text2_font = rvw.presentation.p_text2_font;
-    this.p_title = rvw.presentation.p_title;
-    this.p_footnote = rvw.presentation.p_footer;
-    this.p_current_index = rvw.presentation.p_current_index;
-    this.p_last_index = rvw.presentation.p_last_index;
-    this.p_bkgnd_filename = rvw.presentation.p_bkgnd_filename;
-    this.p_bkgnd_motion = rvw.presentation.p_bkgnd_motion;
-    this.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
-    this.p_font_color = rvw.presentation.p_font_color;
-    this.p_font_color2 = rvw.presentation.p_font_color2;
-    this.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
-    if (o === 1) {
+    _.p_text1_arr = rvw.presentation.p_text1_arr;
+    _.p_text2_arr = rvw.presentation.p_text2_arr;
+    _.p_text1_font = rvw.presentation.p_text1_font;
+    _.p_text2_font = rvw.presentation.p_text2_font;
+    _.p_title = rvw.presentation.p_title;
+    _.p_footnote = rvw.presentation.p_footer;
+    _.p_current_index = rvw.presentation.p_current_index;
+    _.p_last_index = rvw.presentation.p_last_index;
+    _.p_bkgnd_filename = rvw.presentation.p_bkgnd_filename;
+    _.p_bkgnd_motion = rvw.presentation.p_bkgnd_motion;
+    _.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
+    _.p_font_color = rvw.presentation.p_font_color;
+    _.p_font_color2 = rvw.presentation.p_font_color2;
+    _.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
+    if (isStageView === 1) {
         const f = $("#thirdview_fcolor").val();
-        this.p_font_color = $RvW.colorChart[f];
-        this.p_font_color2 = $RvW.colorChart[f];
+        _.p_font_color = $RvW.colorChart[f];
+        _.p_font_color2 = $RvW.colorChart[f];
     }
-    this.p_bkgnd_color1 = $RvW.vvConfigObj.get_p_bkgnd_color1();
-    this.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
-    this.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
-    this.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
-    this.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
-    if (o == 1) {
-        var v = $RvW.vvConfigObj.get_stageStyleVal();
-        if (v != "3") {
-            if (rvw.presentation.p_text_orientation === "2") {
-                v = "2";
+    _.p_bkgnd_color1 = $RvW.vvConfigObj.get_p_bkgnd_color1();
+    _.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
+    _.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
+    _.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
+    _.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
+    {
+        if (isStageView === 1) {
+            let v = $RvW.vvConfigObj.get_stageStyleVal();
+            if (v !== "3") {
+                if (rvw.presentation.p_text_orientation === "2") {
+                    v = "2";
+                }
             }
+            const j = $("#thirdview_opacity").val();
+            const r = $("#thirdview_height").val();
+            const s = $("#thirdview_primary").prop("checked");
+            const l = $("#thirdview_secondary").prop("checked");
+            const g = $RvW.vvConfigObj.get_svBcolor();
+            const p = $RvW.vvConfigObj.get_svPosition();
+            const i = $RvW.vvConfigObj.get_svMaxFontSize();
+            const d = $RvW.vvConfigObj.get_svTextOutline();
+            const e = $RvW.vvConfigObj.get_svTextShadow();
+            const c = $RvW.vvConfigObj.get_svGreenWindow();
+            const n = $RvW.vvConfigObj.get_svAlignLeft();
+            const k = $RvW.vvConfigObj.get_svAlignCenter();
+            const q = $RvW.vvConfigObj.get_svAddTexture();
+            const h = $RvW.vvConfigObj.get_svShowHorizontal();
+            _.p_text_orientation = `${v}|${j}|${r}|${s}|${$RvW.colorChart[g]}|${p}|${i}|${d}|${e}|${c}|${n}|${k}|${q}|${h}|${l}`;
+        } else {
+            _.p_text_orientation = rvw.presentation.p_text_orientation;
         }
-        var j = $("#thirdview_opacity").val();
-        var r = $("#thirdview_height").val();
-        var s = $("#thirdview_primary").prop("checked");
-        var l = $("#thirdview_secondary").prop("checked");
-        var g = $RvW.vvConfigObj.get_svBcolor();
-        var p = $RvW.vvConfigObj.get_svPosition();
-        var i = $RvW.vvConfigObj.get_svMaxFontSize();
-        var d = $RvW.vvConfigObj.get_svTextOutline();
-        var e = $RvW.vvConfigObj.get_svTextShadow();
-        var c = $RvW.vvConfigObj.get_svGreenWindow();
-        var n = $RvW.vvConfigObj.get_svAlignLeft();
-        var k = $RvW.vvConfigObj.get_svAlignCenter();
-        var q = $RvW.vvConfigObj.get_svAddTexture();
-        var h = $RvW.vvConfigObj.get_svShowHorizontal();
-        var m = `${v}|${j}|${r}|${s}|${$RvW.colorChart[g]}|${p}|${i}|${d}|${e}|${c}`;
-        m = `${m}|${n}|${k}|${q}|${h}|${l}`;
-        this.p_text_orientation = m;
-    } else {
-        this.p_text_orientation = rvw.presentation.p_text_orientation;
     }
-    this.p_window_X = pWindowX;
-    this.p_window_Y = pWindowY;
-    if (o === 1) {
-        this.p_window_X = stageViewWindowX;
-        this.p_window_Y = stageViewWindowY;
+    _.p_window_X = pWindowX;
+    _.p_window_Y = pWindowY;
+    if (isStageView === 1) {
+        _.p_window_X = stageViewWindowX;
+        _.p_window_Y = stageViewWindowY;
     }
-    this.p_topMargin = $RvW.vvConfigObj.get_p_topMargin();
-    this.p_bottomMargin = $RvW.vvConfigObj.get_p_bottomMargin();
-    this.p_leftMargin = $RvW.vvConfigObj.get_p_leftMargin();
-    this.p_rightMargin = $RvW.vvConfigObj.get_p_rightMargin();
-    this.p_maxFontSize = $RvW.vvConfigObj.get_p_maxFontSize();
-    this.p_enableTransition = $RvW.vvConfigObj.get_p_enableTransition();
-    this.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
-    this.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
-    this.p_align = $RvW.vvConfigObj.get_p_align();
+    _.p_topMargin = $RvW.vvConfigObj.get_p_topMargin();
+    _.p_bottomMargin = $RvW.vvConfigObj.get_p_bottomMargin();
+    _.p_leftMargin = $RvW.vvConfigObj.get_p_leftMargin();
+    _.p_rightMargin = $RvW.vvConfigObj.get_p_rightMargin();
+    _.p_maxFontSize = $RvW.vvConfigObj.get_p_maxFontSize();
+    _.p_enableTransition = $RvW.vvConfigObj.get_p_enableTransition();
+    _.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
+    _.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
+    _.p_align = $RvW.vvConfigObj.get_p_align();
     if ($RvW.vvConfigObj.get_showVVLogo()) {
-        this.p_logo = "ReVerseVIEW<br>reverseview.github.io";
+        _.p_logo = ["ReVerseVIEW", "rvw.github.io"].join("<br>");
     } else {
-        this.p_logo =
-            $RvW.vvConfigObj.get_logoText1() + "<br>" + $RvW.vvConfigObj.get_logoText2();
+        _.p_logo = `${$RvW.vvConfigObj.get_logoText1()}<br>${$RvW.vvConfigObj.get_logoText2()}`;
     }
-    if (o === 1) {
-        this.p_showDate = $RvW.vvConfigObj.get_svShowDate();
+    if (isStageView === 1) {
+        _.p_showDate = $RvW.vvConfigObj.get_svShowDate();
     } else {
-        this.p_showDate = $RvW.vvConfigObj.get_showDateTime();
+        _.p_showDate = $RvW.vvConfigObj.get_showDateTime();
     }
-    this.p_showLogo =
-        $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
-    this.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
-    this.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
-    this.p_ver1ScaleFactor = rvw.presentation.p_ver1ScaleFactor;
-    this.p_ver2ScaleFactor = rvw.presentation.p_ver2ScaleFactor;
-    this.p_isArabic1 = false;
-    this.p_isArabic2 = false;
-    var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
-    var u = t.indexOf("Arabic");
-    if (u !== -1) {
-        this.p_isArabic1 = true;
+    _.p_showLogo = $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
+    _.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
+    _.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
+    _.p_ver1ScaleFactor = rvw.presentation.p_ver1ScaleFactor;
+    _.p_ver2ScaleFactor = rvw.presentation.p_ver2ScaleFactor;
+    _.p_isArabic1 = false;
+    _.p_isArabic2 = false;
+    {
+        const t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
+        const u = t.indexOf("Arabic");
+        if (u !== -1) {
+            _.p_isArabic1 = true;
+        }
     }
-    var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
-    var u = t.indexOf("Arabic");
-    if (u != -1) {
-        this.p_isArabic2 = true;
+    {
+        const t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
+        const u = t.indexOf("Arabic");
+        if (u !== -1) {
+            _.p_isArabic2 = true;
+        }
     }
 }
 function getCurrentScreen() {
-    var b;
-    var a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
+    let b;
+    const a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
     a.length > 0 ? (b = a[0]) : (b = air.Screen.mainScreen);
     return b;
 }
@@ -212,7 +216,7 @@ function presentation() {
         $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
     }
     $RvW.stageView = $RvW.stageView && j[stageViewScreenIndex] != null;
-    var e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
+    let e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
     if (j[e] == null) {
         e = 0;
         $RvW.rvwPreferences.set("app.settings.screen.main.index", e);
@@ -228,32 +232,30 @@ function presentation() {
         air.trace("p window singl " + pWindowX + " " + pWindowY);
     }
     if (!$RvW.presentWindowOpen) {
-        $RvW.newWindow = air.HTMLLoader.createRootWindow(true, k, true, c);
-        var b = $("#mainConfigEnable").is(":checked");
-        $RvW.newWindow.visible = b;
-        $RvW.newWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
-        $RvW.newWindow.window.nativeWindow.addEventListener(
+        $RvW.presentationWindow = air.HTMLLoader.createRootWindow(true, k, true, c);
+        $RvW.presentationWindow.visible = $("#mainConfigEnable").is(":checked");
+        $RvW.presentationWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
+        $RvW.presentationWindow.window.nativeWindow.addEventListener(
             air.Event.CLOSE,
             presentWindowClosed
         );
-        $RvW.newWindow.window.nativeWindow.alwaysInFront =
-            $RvW.vvConfigObj.get_presentationOnTop();
-        $RvW.newWindow.window.nativeWindow.stage.frameRate = 30;
-        $RvW.newWindow.load(new air.URLRequest("presentation.htm"));
-        $RvW.newWindow.window.iamclosingStage = function () {
-            if ($RvW.stageView && $RvW.newStageWindow != null) {
-                $RvW.newStageWindow.window.nativeWindow.close();
+        $RvW.presentationWindow.window.nativeWindow.alwaysInFront = $RvW.vvConfigObj.get_presentationOnTop();
+        $RvW.presentationWindow.window.nativeWindow.stage.frameRate = 30;
+        $RvW.presentationWindow.load(new air.URLRequest("presentation.htm"));
+        $RvW.presentationWindow.window.iamclosingStage = function () {
+            if ($RvW.stageView && $RvW.stageWindow != null) {
+                $RvW.stageWindow.window.nativeWindow.close();
             }
         };
-        $RvW.newWindow.window.goToNextSlide = function () {
-            if ($RvW.stageView && $RvW.newStageWindow != null) {
-                $RvW.newStageWindow.window.nextSlide();
+        $RvW.presentationWindow.window.goToNextSlide = function () {
+            if ($RvW.stageView && $RvW.stageWindow != null) {
+                $RvW.stageWindow.window.nextSlide();
             }
             updatePresentationContent(true);
         };
-        $RvW.newWindow.window.goToPrevSlide = function () {
-            if ($RvW.stageView && $RvW.newStageWindow != null) {
-                $RvW.newStageWindow.window.prevSlide();
+        $RvW.presentationWindow.window.goToPrevSlide = function () {
+            if ($RvW.stageView && $RvW.stageWindow != null) {
+                $RvW.stageWindow.window.prevSlide();
             }
             updatePresentationContent(false);
         };
@@ -285,41 +287,41 @@ function presentation() {
             }
             stageViewWindowX = j[stageViewScreenIndex].bounds.width;
             stageViewWindowY = j[stageViewScreenIndex].bounds.height;
-            $RvW.newStageWindow = air.HTMLLoader.createRootWindow(true, h, true, i);
-            $RvW.newStageWindow.addEventListener(
+            $RvW.stageWindow = air.HTMLLoader.createRootWindow(true, h, true, i);
+            $RvW.stageWindow.addEventListener(
                 "htmlDOMInitialize",
                 DOMIntializeStageViewCallback
             );
-            $RvW.newStageWindow.window.nativeWindow.addEventListener(
+            $RvW.stageWindow.window.nativeWindow.addEventListener(
                 air.Event.CLOSING,
                 closePresentWindowMain
             );
-            $RvW.newStageWindow.window.nativeWindow.alwaysInFront = false;
-            $RvW.newStageWindow.window.nativeWindow.stage.frameRate = 30;
-            $RvW.newStageWindow.load(new air.URLRequest("app:/stageview.htm"));
-            // $RvW.newStageWindow.load(new air.URLRequest("http://localhost:80/uix.html"));
-            $RvW.newStageWindow.window.iamclosingPresentation = function () {
-                if ($RvW.newWindow != null) {
-                    $RvW.newWindow.window.nativeWindow.close();
+            $RvW.stageWindow.window.nativeWindow.alwaysInFront = false;
+            $RvW.stageWindow.window.nativeWindow.stage.frameRate = 30;
+            $RvW.stageWindow.load(new air.URLRequest("app:/stageview.htm"));
+            // $RvW.stageWindow.load(new air.URLRequest("http://localhost:80/uix.html"));
+            $RvW.stageWindow.window.iamclosingPresentation = function () {
+                if ($RvW.presentationWindow != null) {
+                    $RvW.presentationWindow.window.nativeWindow.close();
                 }
             };
         } else {
-            $RvW.newStageWindow = null;
+            $RvW.stageWindow = null;
         }
         $RvW.presentWindowOpen = true;
     } else {
         try {
-            $RvW.newWindow.window.passVariable(0);
-            $RvW.newWindow.window.updatePresentation();
-            $RvW.newWindow.window.updateContent();
+            $RvW.presentationWindow.window.passVariable(0);
+            $RvW.presentationWindow.window.updatePresentation();
+            $RvW.presentationWindow.window.updateContent();
         } catch (d) {
             air.trace("Possible double click... NewWindow is still getting ready..");
         }
-        if ($RvW.stageView && $RvW.newStageWindow != null) {
+        if ($RvW.stageView && $RvW.stageWindow != null) {
             try {
-                $RvW.newStageWindow.window.passVariable(1);
-                $RvW.newStageWindow.window.updatePresentation();
-                $RvW.newStageWindow.window.updateContent();
+                $RvW.stageWindow.window.passVariable(1);
+                $RvW.stageWindow.window.updatePresentation();
+                $RvW.stageWindow.window.updateContent();
             } catch (d) {
                 air.trace(
                     "Possible double click... NewStageWindow is still getting ready.."
@@ -330,28 +332,30 @@ function presentation() {
 }
 function closePresentWindowMain() {
     if ($RvW.presentWindowOpen) {
-        $RvW.newWindow.window.nativeWindow.close();
-        $RvW.newWindow = null;
+        $RvW.presentationWindow.window.nativeWindow.close();
+        $RvW.presentationWindow = null;
         if (!$RvW.vvConfigObj.get_mainConfigEnable()) {
             $RvW.presentWindowOpen = false;
         }
     }
-    if ($RvW.stageView && $RvW.newStageWindow != null) {
-        $RvW.newStageWindow.window.nativeWindow.close();
-        $RvW.newStageWindow = null;
+    if ($RvW.stageView && $RvW.stageWindow != null) {
+        $RvW.stageWindow.window.nativeWindow.close();
+        $RvW.stageWindow = null;
     }
     $RvW.presentationContent = "";
 }
 function presentWindowClosed() {
     $RvW.presentWindowOpen = false;
-    $RvW.newWindow = null;
+    $RvW.presentationWindow = null;
     rvw.navigation.disableNavButtons(true);
 }
 function DOMIntializeCallback(a) {
-    $RvW.newWindow.window.passVariable = passVariable;
+    $RvW.presentationWindow.window.passVariable = passVariable;
+    air.trace('>>> presentationWindow.htmlDOMInitialize')
 }
 function DOMIntializeStageViewCallback(a) {
-    $RvW.newStageWindow.window.passVariable = passVariable;
+    $RvW.stageWindow.window.passVariable = passVariable;
+    air.trace('>>> stageWindow.htmlDOMInitialize')
 }
 function updatePresentationContent(b) {
     var a = rvw.presentation.p_text1_arr.length;
@@ -376,16 +380,16 @@ function updatePresentationContent(b) {
 }
 function call_nextSlide() {
     if ($RvW.presentWindowOpen) {
-        $RvW.newWindow.window.nextSlide();
+        $RvW.presentationWindow.window.nextSlide();
         if ($RvW.stageView) {
-            $RvW.newStageWindow.window.nextSlide();
+            $RvW.stageWindow.window.nextSlide();
         }
     }
     updatePresentationContent(true);
 }
 function call_prevSlide() {
     if ($RvW.presentWindowOpen) {
-        $RvW.newWindow.window.prevSlide();
+        $RvW.presentationWindow.window.prevSlide();
         if ($RvW.stageView) {
             $RvW.newStageWindow.window.prevSlide();
         }
@@ -393,13 +397,13 @@ function call_prevSlide() {
     updatePresentationContent(false);
 }
 function call_showTheme() {
-    if ($RvW.newWindow != null) {
-        $RvW.newWindow.window.showThemeProcess();
+    if ($RvW.presentationWindow != null) {
+        $RvW.presentationWindow.window.showThemeProcess();
     }
 }
 function call_closePresentation() {
     if ($RvW.presentWindowOpen) {
-        $RvW.newWindow.window.clearPresenter();
+        $RvW.presentationWindow.window.clearPresenter();
         if ($RvW.stageView) {
             $RvW.newStageWindow.window.nativeWindow.close();
         }

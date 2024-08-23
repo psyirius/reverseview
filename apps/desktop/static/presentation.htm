@@ -7,9 +7,6 @@
     <link rel="stylesheet" type="text/css" href="css/fonts.css" />
     <link rel="stylesheet" type="text/css" href="css/presentation.css" />
 
-
-    <script type="text/javascript" src="js/__preload__.js"></script>
-
     <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
 
     <script type="text/javascript" src="js/presentation/main.js"></script>
@@ -23,16 +20,16 @@
     <script type="text/javascript" src="lib/textfit/textFit.min.js"></script>
   </head>
 
-  <body id="p_body" onkeyup="findKey(event)" style="overflow: hidden">
+  <body id="p_body" onkeyup="$onKeyUp(event)" style="overflow: hidden">
     <!-- MAIN BACKGROUND -->
     <div
       id="backgroundLayer"
       style="
         position: absolute;
-        left: 0px;
-        top: 0px;
+        left: 0;
+        top: 0;
         z-index: 1;
-        border: 0px none #000000;
+        border: 0 none #000000;
       "
     >
       <img id="backgroundImage" alt="" src=""/>
@@ -65,7 +62,7 @@
 	</div>-->
 
     <script>
-      initPresentation();
+      $load();
     </script>
   </body>
 </html>

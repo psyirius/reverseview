@@ -4,8 +4,6 @@
 
     <title>StageView Window</title>
 
-    <script type="text/javascript" src="js/__preload__.js"></script>
-
     <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
     <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
 
@@ -15,15 +13,6 @@
     <link rel="stylesheet" type="text/css" href="css/stageview.css" />
 
     <script type="text/javascript" src="lib/jquery/jquery-3.7.1.min.js"></script>
-
-    <script>
-      function init() {
-        document.body.addEventListener("keyup", onBodyKeyUp);
-        // June 28, 2020 - Show black screen for 250ms before switching to green to avoid green screen flash
-        $("#backgroundLayer").css("background-color", "#01541f");
-        setTimeout(initStageView, 250);
-      }
-    </script>
   </head>
 
   <body
@@ -31,7 +20,7 @@
     bgcolor="#00b140"
     text="#FFFFFF"
     style="overflow: hidden"
-    onload="init()"
+    onload="$init()"
   >
     <div id="backgroundLayer"></div>
 
