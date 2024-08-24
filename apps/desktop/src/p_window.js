@@ -19,7 +19,7 @@ var index_for_presentationContent = 0;
 // this is not a class
 // TODO: make it non-ambiguous
 function passVariable(isStageView, _ = undefined) {
-    _ ??= this.ctx; // this is global of the holding context
+    _ ??= this.ctx; // this => is global of the holding context
 
     $RvW.presentationContent = presentationContentString(
         rvw.presentation.p_title,
@@ -206,29 +206,28 @@ function presentation() {
     k.systemChrome = "none";
     k.type = "lightweight";
     k.transparent = true;
-    var g = getCurrentScreen();
-    var j = air.Screen.screens;
+    getCurrentScreen();
+    const screens = air.Screen.screens;
     var c;
-    var i;
     stageViewScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0);
-    if (j[stageViewScreenIndex] == null) {
+    if (screens[stageViewScreenIndex] == null) {
         stageViewScreenIndex = 0;
         $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
     }
-    $RvW.stageView = $RvW.stageView && j[stageViewScreenIndex] != null;
+    $RvW.stageView = $RvW.stageView && screens[stageViewScreenIndex] != null;
     let e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
-    if (j[e] == null) {
+    if (screens[e] == null) {
         e = 0;
         $RvW.rvwPreferences.set("app.settings.screen.main.index", e);
     }
-    if (dualScreen && j[e] != null) {
-        c = j[e].bounds;
-        pWindowX = j[e].bounds.width;
-        pWindowY = j[e].bounds.height;
+    if (dualScreen && screens[e] != null) {
+        c = screens[e].bounds;
+        pWindowX = screens[e].bounds.width;
+        pWindowY = screens[e].bounds.height;
     } else {
-        c = j[0].bounds;
-        pWindowX = j[0].bounds.width;
-        pWindowY = j[0].bounds.height;
+        c = screens[0].bounds;
+        pWindowX = screens[0].bounds.width;
+        pWindowY = screens[0].bounds.height;
         air.trace("p window singl " + pWindowX + " " + pWindowY);
     }
     if (!$RvW.presentWindowOpen) {
@@ -259,48 +258,71 @@ function presentation() {
             }
             updatePresentationContent(false);
         };
+
         if ($RvW.stageView) {
-            var h = new air.NativeWindowInitOptions();
-            var a = $RvW.vvConfigObj.get_svWindow();
-            i = j[stageViewScreenIndex].bounds;
-            if (a) {
-                h.resizable = false;
-                h.maximizable = false;
-                h.minimizable = false;
-                var f = $("#stageviewMiniWindow").is(":checked");
-                if (j[stageViewScreenIndex].bounds.width < 1900) {
-                    i.width = 1280 / 2;
-                    i.height = 720 / 2;
+            const { NativeWindowInitOptions, HTMLLoader, Event, URLRequest } = air;
+
+            const windowInitOptions = new NativeWindowInitOptions();
+            const svWindow = $RvW.vvConfigObj.get_svWindow();
+            const svBounds = screens[stageViewScreenIndex].bounds;
+            if (svWindow) {
+                windowInitOptions.resizable = false;
+                windowInitOptions.maximizable = false;
+                windowInitOptions.minimizable = false;
+                const f = $("#stageviewMiniWindow").is(":checked");
+                if (screens[stageViewScreenIndex].bounds.width < 1900) {
+                    svBounds.width = 1280 / 2;
+                    svBounds.height = 720 / 2;
                 } else {
-                    i.width = 1280;
-                    i.height = 720;
+                    svBounds.width = 1280;
+                    svBounds.height = 720;
                 }
                 if (f) {
-                    i.width /= 1.5;
-                    i.height /= 1.5;
+                    svBounds.width /= 1.5;
+                    svBounds.height /= 1.5;
                 }
             } else {
-                h.systemChrome = "none";
-                h.type = "lightweight";
-                h.transparent = true;
-                h.renderMode = "direct";
+                windowInitOptions.systemChrome = "none";
+                windowInitOptions.type = "lightweight";
+                windowInitOptions.transparent = true;
+                windowInitOptions.renderMode = "direct";
             }
-            stageViewWindowX = j[stageViewScreenIndex].bounds.width;
-            stageViewWindowY = j[stageViewScreenIndex].bounds.height;
-            $RvW.stageWindow = air.HTMLLoader.createRootWindow(true, h, true, i);
-            $RvW.stageWindow.addEventListener(
-                "htmlDOMInitialize",
-                DOMIntializeStageViewCallback
+            stageViewWindowX = screens[stageViewScreenIndex].bounds.width;
+            stageViewWindowY = screens[stageViewScreenIndex].bounds.height;
+
+            const sv = $RvW.stageWindow = HTMLLoader.createRootWindow(
+                true, windowInitOptions, true, svBounds,
             );
-            $RvW.stageWindow.window.nativeWindow.addEventListener(
-                air.Event.CLOSING,
-                closePresentWindowMain
-            );
-            $RvW.stageWindow.window.nativeWindow.alwaysInFront = false;
-            $RvW.stageWindow.window.nativeWindow.stage.frameRate = 30;
-            $RvW.stageWindow.load(new air.URLRequest("app:/stageview.htm"));
-            // $RvW.stageWindow.load(new air.URLRequest("http://localhost:80/uix.html"));
-            $RvW.stageWindow.window.iamclosingPresentation = function () {
+            sv.addEventListener("htmlDOMInitialize", DOMIntializeStageViewCallback);
+            sv.window.nativeWindow.addEventListener(Event.CLOSING, closePresentWindowMain);
+            sv.window.nativeWindow.alwaysInFront = false;
+            sv.window.nativeWindow.stage.frameRate = 30;
+
+            sv.load(new URLRequest("app:/stageview.html"));
+
+//             {
+//                 const loader = sv;
+//
+//                 // loader.placeLoadStringContentInApplicationSandbox = true;
+//
+//                 // loader.load(new air.URLRequest("http://localhost:80/uix.html"));
+//
+//                 const sandboxWrapperHtml = `
+// <html lang="en">
+// <head>
+//     <script type="text/javascript" charset="utf-8">
+//         alert(typeof window.runtime);
+//         throw new Error("Boool");
+//     </script>
+// </head>
+// <body></body>
+// </html>
+// `;
+//
+//                 loader.loadString(sandboxWrapperHtml.trim());
+//             }
+
+            sv.window.iamclosingPresentation = function () {
                 if ($RvW.presentationWindow != null) {
                     $RvW.presentationWindow.window.nativeWindow.close();
                 }
@@ -308,6 +330,7 @@ function presentation() {
         } else {
             $RvW.stageWindow = null;
         }
+
         $RvW.presentWindowOpen = true;
     } else {
         try {

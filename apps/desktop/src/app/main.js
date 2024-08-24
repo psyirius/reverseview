@@ -1598,8 +1598,6 @@ export function start(Y, dojo) {
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
 
-        setupTabViewTemplate("menubar", "menubar");
-
         setupLeftTabFrame();
         setupRightTabFrame();
 

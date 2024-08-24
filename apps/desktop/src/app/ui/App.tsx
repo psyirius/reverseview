@@ -1,6 +1,7 @@
 import { useState } from "@lib/zrx/hooks";
 
 import Counter from "./Counter";
+import MenuBar from "./MenuBar";
 
 const App = ({ dev }: { dev?: boolean }) => {
     const [show, setShow] = useState(true);
@@ -13,17 +14,19 @@ const App = ({ dev }: { dev?: boolean }) => {
                 </div>
             )}
 
-            <div>
-                <button
-                    onClick={() => {
-                        setShow(!show);
-                    }}
-                >
-                    {show ? "Hide" : "Show"}
-                </button>
+            {/*<div>*/}
+            {/*    <button*/}
+            {/*        onClick={() => {*/}
+            {/*            setShow(!show);*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        {show ? "Hide" : "Show"}*/}
+            {/*    </button>*/}
 
-                {show ? <Counter /> : <div>No counter</div>}
-            </div>
+            {/*    {show ? <Counter /> : <div>No counter</div>}*/}
+            {/*</div>*/}
+
+            <MenuBar />
         </>
     );
 };
