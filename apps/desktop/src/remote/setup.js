@@ -45,51 +45,36 @@ export class RemoteSetupUIPanel {
 
         let _panel = null;
         let m_body = bodyContent;
-        const m_msgHints = [];
         let m_hostname = "";
         let m_port = "";
-        let m_customHostName = "";
+        let m_customHostName = null;
         let portNumber = 50000;
         let ipList = null;
         const m_debug = false;
 
         _setupUI();
-        _setupHints();
-        e();
+        _updateInactiveStatus();
 
         function _setupUI() {
-            _panel = new YAHOO.widget.Panel("panelObj3", {
-                width: "700px",
-                fixedcenter: true,
-                modal: true,
-                visible: false,
-                constraintoviewport: true,
+            _panel = new $Y.Panel({
+                headerContent   : 'Remote',
+                bodyContent     : m_body,
+                width           : '60%',
+                height          : 'auto',
+                zIndex          : 100,
+                centered        : true,
+                modal           : true,
+                visible         : false, // make visible explicitly with .show()
             });
             _panel.render(document.body);
-            _panel.setHeader("Remote VerseVIEW");
-            _panel.setBody(m_body);
-            _panel.hide();
-            _panel.bringToTop();
-        }
-
-        function _setupHints() {
-            m_msgHints[0] = "Use IP address 127.0.0.1 if VerseVIEW and live stream software on the same computer. <br> Use the other IP address if remote access is required with multiple computers and devices";
-            m_msgHints[1] = "Enable this port numer with the firewall software";
-            m_msgHints[2] = "Messenger feature can be used to easily communicate between choir team members";
-            m_msgHints[3] = "The full address is displayed in the text box and the QR code";
-            m_msgHints[4] = "Enter the host name of the computer and toggle the Use Host name field";
-        }
-
-        function _sentHint(index) {
-            $("#remoteVVHint").html(m_msgHints[index]);
         }
 
         function configure() {
-            n();
-            x();
+            _setupIpList();
+            _setupEvents();
         }
 
-        function x() {
+        function _setupEvents() {
             document
                 .getElementById("saveRemoteVVSettings")
                 .addEventListener("click", _onEnable);
@@ -102,27 +87,15 @@ export class RemoteSetupUIPanel {
                 Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, remoteLink);
             });
 
-            $("#configIPaddr").click(function () {
-                _sentHint(0);
-            });
-            $("#configRemotePort").click(function () {
-                _sentHint(1);
-            });
-            $("#configRemoteHostname").click(function () {
-                _sentHint(4);
-            });
-            $("#remoteVVRemoteFunc").click(function () {
-                _sentHint(3);
-            });
             $("#remoteVVRemoteFunc").change(function () {
-                _sentHint(3);
-                d();
+                _updateRemoteDetailsEnabled();
             });
 
             $("#remoteVVUseHostname").change(function () {
                 const B = $("#remoteVVUseHostname").is(":checked");
+
                 if (B) {
-                    if (m_hostname === "127.0.0.1") {
+                    if (m_hostname === "127.0.0.1" || m_hostname === '0.0.0.0') {
                         m_customHostName = "localhost";
                     } else {
                         m_customHostName = $("#configRemoteHostname").val();
@@ -130,45 +103,52 @@ export class RemoteSetupUIPanel {
                         $RvW.vvConfigObj.save();
                     }
                 } else {
-                    m_customHostName = "";
+                    m_customHostName = null;
                 }
+
                 _genLink();
             });
         }
 
         function show() {
             _panel.show();
-            _panel.bringToTop();
         }
 
         function hide() {
             _panel.hide();
         }
 
-        function n() {
-            rvw.common.clearSelectList("configIPaddr");
+        function _setupIpList() {
+            /** @type {HTMLSelectElement} */
+            const ipListSelect = document.getElementById('configIPaddr');
 
-            ipList = getAvailableNwIpList();
+            // clear the list
+            ipListSelect.innerHTML = ""
 
-            const numIps = ipList.length;
+            ipList = [
+                ...getAvailableNwIpList(),
+                '0.0.0.0',
+            ];
+            ipList.reverse();
 
-            for (let i = 0; i < numIps; i++) {
-                document.getElementById("configIPaddr").options[i] = new Option(ipList[i], String(i));
-            }
+            ipList.forEach((ip, i) => {
+                ipListSelect.options[i] = new Option(ip, String(i));
+            });
 
-            document.getElementById("configIPaddr").selectedIndex = 0;
+            ipListSelect.selectedIndex = 0;
 
-            if (numIps === 0) {
-                document.getElementById("configIPaddr").disabled = true;
+            if (ipList.length === 0) {
+                ipListSelect.disabled = true;
                 document.getElementById("configRemotePort").disabled = true;
                 document.getElementById("saveRemoteVVSettings").disabled = true;
             }
         }
 
         function _getSelectedIp() {
-            const B = document.getElementById("configIPaddr").selectedIndex;
-            if (B != null) {
-                return ipList[B];
+            const { selectedIndex } = document.getElementById("configIPaddr");
+
+            if (selectedIndex != null) {
+                return ipList[selectedIndex];
             } else {
                 return false;
             }
@@ -177,7 +157,8 @@ export class RemoteSetupUIPanel {
         function _onEnable() {
             let _port = 50000;
             let _ipAddr = null;
-            if ($RvW.webServerObj.isActive() === false) {
+
+            if (!$RvW.webServerObj.isActive()) {
                 _port = document.getElementById("configRemotePort").value;
                 _ipAddr = _getSelectedIp();
                 if (rvw.common.IsNumeric(_port)) {
@@ -190,16 +171,16 @@ export class RemoteSetupUIPanel {
                             document.getElementById("configIPaddr").disabled = true;
                             if (_ipAddr != null) {
                                 if (_ipAddr.indexOf(":") > -1) {
-                                    _ipAddr = "[" + _ipAddr + "]";
+                                    _ipAddr = `[${_ipAddr}]`;
                                 }
                                 m_hostname = _ipAddr;
                                 m_port = portNumber;
-                                d();
+                                _updateRemoteDetailsEnabled();
                             } else {
-                                e();
+                                _updateInactiveStatus();
                             }
                         } else {
-                            e();
+                            _updateInactiveStatus();
                         }
                     } else {
                         rvw.ui.Toast.show(
@@ -207,7 +188,7 @@ export class RemoteSetupUIPanel {
                             "Port Number: Out of Range. Valid range is 49152 to 65535."
                         );
                         document.getElementById("configRemotePort").value = portNumber;
-                        e();
+                        _updateInactiveStatus();
                     }
                 } else {
                     rvw.ui.Toast.show(
@@ -215,18 +196,18 @@ export class RemoteSetupUIPanel {
                         "Invalid Port Number. Valid range is 49152 to 65535."
                     );
                     document.getElementById("configRemotePort").value = portNumber;
-                    e();
+                    _updateInactiveStatus();
                 }
             } else {
-                $RvW.webServerObj.init(portNumber);
+                $RvW.webServerObj.stop();
                 _setBtnLabel("ENABLE");
                 document.getElementById("configRemotePort").disabled = false;
                 document.getElementById("configIPaddr").disabled = false;
-                e();
+                _updateInactiveStatus();
             }
         }
 
-        function e() {
+        function _updateInactiveStatus() {
             m_customHostName = $RvW.vvConfigObj.get_myhostname();
             $("#configRemoteHostname").val(m_customHostName);
             document.getElementById("remoteVVStatus").innerHTML = "Remote is DISABLED";
@@ -236,7 +217,7 @@ export class RemoteSetupUIPanel {
             $("#configRemoteCopy").hide();
         }
 
-        function d() {
+        function _updateRemoteDetailsEnabled() {
             document.getElementById("remoteVVStatus").innerHTML = "Remote is ENABLED";
             _genLink();
             $("#remoteLinkList").show();
@@ -250,12 +231,10 @@ export class RemoteSetupUIPanel {
             const useLocalHost = $("#remoteVVUseHostname").is(":checked");
 
             if (useLocalHost) {
-                if (m_hostname === "127.0.0.1") {
+                if (m_hostname === "127.0.0.1" || m_hostname === "0.0.0.0") {
                     hostname = "localhost";
-                } else {
-                    if (m_customHostName !== "") {
-                        hostname = m_customHostName;
-                    }
+                } else if (!!m_customHostName) {
+                    hostname = m_customHostName;
                 }
             }
 

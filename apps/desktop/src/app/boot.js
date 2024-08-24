@@ -23,6 +23,7 @@
             { name: "@lib", location: "lib" },
             // @root
             { name: "@", location: "./" },
+            { name: "@app", location: "app" },
             // jsx
             { name: "jsx", location: "lib/jsx" },
             // entry point

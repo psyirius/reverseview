@@ -621,18 +621,33 @@ export class WebServer {
 
         if (this.m_listening === false) {
             this._startListening();
-            if (this.m_serverSocket.listening) {
+            if (this.m_serverSocket.listening && this.m_serverWebSocket.listening) {
                 this.m_listening = true;
                 return true;
             } else {
                 this.m_serverSocket.close();
+                this.m_serverWebSocket.close();
                 alert("Remote VerseVIEW failed to initialize.");
                 return false;
             }
         } else {
             this.m_listening = false;
             this.m_serverSocket.close();
+            this.m_serverWebSocket.close();
             return true;
+        }
+    }
+
+    stop() {
+        if (this.isActive()) {
+            try {
+                if (this.m_serverSocket.listening) this.m_serverSocket.close();
+                // if (this.m_serverWebSocket.listening) this.m_serverWebSocket.close();
+            } catch (e) {
+                // FIXME: crashes when there is an active client connected to the ws server
+                air.trace(e);
+            }
+            this.m_listening = false;
         }
     }
 
@@ -641,7 +656,7 @@ export class WebServer {
     }
 
     _startListening() {
-        {
+        if (!this.m_serverWebSocket || !this.m_serverWebSocket.listening) {
             const { WebSocketServer } = window.runtime.air.net.websockets;
 
             this.m_serverWebSocket = new WebSocketServer();

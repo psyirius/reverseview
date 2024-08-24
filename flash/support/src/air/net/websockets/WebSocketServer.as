@@ -4,7 +4,7 @@ import air.net.websockets.events.ServerEvent;
 
 import com.adobe.crypto.SHA1;
 
-import flash.events.Event;
+import flash.events.Event
 import flash.events.EventDispatcher;
 import flash.events.ProgressEvent;
 import flash.events.ServerSocketConnectEvent;
@@ -43,6 +43,10 @@ public class WebSocketServer extends EventDispatcher {
             trace("retry bind");
             setTimeout(attemptBind, RETRY_BIND_TIME, localPort, localIP);
         }
+    }
+
+    public function get listening():Boolean {
+        return serverSocket.listening;
     }
 
     public function sendALL(msg:String):void {
@@ -114,6 +118,10 @@ public class WebSocketServer extends EventDispatcher {
         } else {
             log("No socket connection.");
         }
+    }
+
+    public function close():void {
+        this.shutdown();
     }
 
     private function shutdown():void {
