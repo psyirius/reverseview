@@ -1,7 +1,7 @@
 // import { useState, useEffect } from '@lib/zrx/hooks';
 
 export default function MenuBar() {
-    const menuItems = [
+    const items = [
         { id: 'icon_present',   tooltip: 'Presentation',        icon: '/icons/images/32/present.png'    },
         { id: 'icon_blank',     tooltip: 'Blank Presentation',  icon: '/icons/images/32/blank.png'      },
         { id: 'icon_theme',     tooltip: 'Show Theme',          icon: '/icons/images/32/theme.png'      },
@@ -13,11 +13,11 @@ export default function MenuBar() {
 
     return (
         <div id="menubar" style="width: 100%">
-            <div class="ui mini menu">
-                {menuItems.map(e => (
+            <div className="ui mini menu">
+                {items.map(e => (
                     <a
                         id={e.id}
-                        class="item"
+                        className="item"
                         data-tooltip={e.tooltip}
                         data-position="right center"
                     >
@@ -25,45 +25,45 @@ export default function MenuBar() {
                     </a>
                 ))}
 
-                <div id="verses_menu" class="menu">
-                    <div id="book_name" class="item">
+                <div id="verses_menu" className="menu">
+                    <div id="book_name" className="item">
                         {/* Bible book Name */}
                     </div>
 
-                    <div class="item">
+                    <div className="item">
                         <a
                             id="bibleAddScheduleButton"
-                            class="item"
+                            className="item"
                             data-tooltip="Add to Schedule"
                             data-position="left center"
                         >
-                            <i class="add icon"></i>
+                            <i className="add icon"></i>
                         </a>
                     </div>
                 </div>
 
-                <div id="lyrics_menu" class="menu">
-                    <div class="item">
+                <div id="lyrics_menu" className="menu">
+                    <div className="item">
                         <div
                             id="ytubeid"
-                            class="item"
+                            className="item"
                             data-tooltip="YouTube"
                             data-position="left center"
                         >
-                            <i class="video icon"></i>
+                            <i className="video icon"></i>
                         </div>
                         <div
                             id="songAddScheduleButton"
-                            class="item"
+                            className="item"
                             data-tooltip="Add to Schedule"
                             data-position="left center"
                         >
-                            <i class="add icon"></i>
+                            <i className="add icon"></i>
                         </div>
                     </div>
                 </div>
 
-                <div id="notificationMenu" class="item"></div>
+                <div id="notificationMenu" className="item"></div>
             </div>
         </div>
     );
