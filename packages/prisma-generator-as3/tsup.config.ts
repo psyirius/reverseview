@@ -1,4 +1,4 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
     target: 'node16',
@@ -10,8 +10,7 @@ export default defineConfig({
         js: (ctx.format === 'cjs') ? '.cjs' : '.mjs',
     }),
     entry: [
-        'src/index.ts',
         'src/generator.ts',
     ],
     outDir: 'dist'
-});
+})
