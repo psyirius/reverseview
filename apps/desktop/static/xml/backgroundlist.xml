@@ -40,16 +40,8 @@
 		<filename>d4.jpg</filename>
 	</bkg>
 	<bkg>
-		<name>d6</name>
-		<filename>d6.jpg</filename>
-	</bkg>
-	<bkg>
 		<name>green</name>
 		<filename>green.jpg</filename>
-	</bkg>
-	<bkg>
-		<name>Lens</name>
-		<filename>lens.jpg</filename>
 	</bkg>
 	<bkg>
 		<name>Motion4</name>
@@ -66,13 +58,5 @@
 	<bkg>
 		<name>Motion7</name>
 		<filename>motion7.jpg</filename>
-	</bkg>
-	<bkg>
-		<name>Tulip</name>
-		<filename>tulip.jpg</filename>
-	</bkg>
-	<bkg>
-		<name>praise</name>
-		<filename>praise.jpg</filename>
 	</bkg>
 </backgroundlist>
