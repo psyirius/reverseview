@@ -90,7 +90,7 @@ export class Notes {
             return T;
         }
         function l() {
-            k = new YAHOO.widget.Panel("notesPanelID", {
+            k = new YAHOO.widget.Panel(m_containerID, {
                 width: "500px",
                 fixedcenter: true,
                 modal: false,

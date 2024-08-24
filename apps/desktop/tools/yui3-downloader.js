@@ -167,6 +167,13 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'array-invoke',
             'querystring-stringify-simple',
             'intl',
+            'dd-ddm',
+            'dd-ddm-drop',
+            'dd-drop',
+            'dd-delegate',
+            'resize-base',
+            'resize-plugin',
+            'dd-drop-plugin',
             'console',
             'dd-plugin',
             'color-base',
@@ -256,6 +263,9 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
 
             ['slider-base', 'assets/skins/sam/slider-base.css'],
             ['slider-base', 'assets/skins/night/slider-base.css'],
+
+            ['resize-base', 'assets/skins/sam/resize-base.css'],
+            ['resize-base', 'assets/skins/night/resize-base.css'],
 
             ['tabview', 'assets/skins/sam/tabview.css'],
             ['tabview', 'assets/skins/night/tabview.css'],

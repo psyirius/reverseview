@@ -32,9 +32,6 @@ const App = ({dev}: Props) => {
 
             <MenuBar/>
 
-            {/* Modal::Tooltip */}
-            <div id="tooltip"></div>
-
             {/* App::Content */}
             <div id="wrapper">
                 <div id="container" class="tabContainer"></div>
@@ -51,12 +48,6 @@ const App = ({dev}: Props) => {
             {/* Container for Notes */}
             <div id="notesPanelID"></div>
 
-            {/* Dialog box for YES NO Prompt */}
-            <div id="promptDialog">
-                <div class="hd"></div>
-                <div class="bd"></div>
-            </div>
-
             {/* Dialog box for Song Edit */}
             <div id="song-edit">
                 <div class="hd"></div>
@@ -68,9 +59,6 @@ const App = ({dev}: Props) => {
 
             {/* Modal::Overlay */}
             <div id="overlay"></div>
-
-            {/* Modal::Popover */}
-            <div id="popover"></div>
 
             {/* Modal::Toast */}
             <div id="toast-container"></div>

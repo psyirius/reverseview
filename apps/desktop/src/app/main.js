@@ -823,7 +823,7 @@ function setupTabContent() {
     $RvW.songManagerObj = new SongManager(true, true);
     $RvW.songEditObj = new SongEdit(loadViewTemplate("song_edit"), loadViewTemplate('lyrics_create'));
     $RvW.songNavObj = new SongNav();
-    $RvW.helpObj = new HelpUiPanel(loadViewTemplate("help"));
+    $RvW.helpObj = new HelpUiPanel();
     $RvW.graphicsObj = new GraphicsMgr(loadViewTemplate("graphics"));
 
     if (!rvw.vu.isUpToDate() && !rvw.vu.task2Status()) {
