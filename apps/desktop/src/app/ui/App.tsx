@@ -1,20 +1,20 @@
-import { useState } from "@lib/zrx/hooks";
-
-import Counter from "./Counter";
+import {useState} from "@lib/zrx/hooks";
 import MenuBar from "./MenuBar";
 
 interface Props {
     dev?: boolean;
 }
 
-const App = ({ dev }: Props) => {
+const App = ({dev}: Props) => {
     const [show, setShow] = useState(true);
 
     return (
         <>
             {dev && (
-                <div className="dev-toolbar">
-                    <button id="dev-refresh" onClick={() => window.location.reload()}>Refresh</button>
+                <div className="" style={{position: 'absolute', right: '2px', top: '4px'}}>
+                    <div class="ui button" tabIndex={0} onClick={() => window.location.reload()}>
+                        Refresh<i class="right arrow icon"></i>
+                    </div>
                 </div>
             )}
 
@@ -30,7 +30,7 @@ const App = ({ dev }: Props) => {
             {/*    {show ? <Counter /> : <div>No counter</div>}*/}
             {/*</div>*/}
 
-            <MenuBar />
+            <MenuBar/>
 
             {/* Modal::Tooltip */}
             <div id="tooltip"></div>
@@ -58,7 +58,7 @@ const App = ({ dev }: Props) => {
             </div>
 
             {/* Dialog box for Song Edit */}
-            <div id="panelObj">
+            <div id="song-edit">
                 <div class="hd"></div>
                 <div class="bd"></div>
             </div>
@@ -78,6 +78,7 @@ const App = ({ dev }: Props) => {
             {/* ------------------------------------------------ */}
             <div id="popovers"></div>
             <div id="tooltips"></div>
+            <div id="overlays"></div>
             <div id="modals"></div>
         </>
     );

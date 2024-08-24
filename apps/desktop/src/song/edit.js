@@ -49,7 +49,7 @@
         function _setupPanel() {
             _debug("Generating Panel");
 
-            _panel = new YAHOO.widget.Panel("panelObj", {
+            _panel = new YAHOO.widget.Panel("song-edit", {
                 width: "600px",
                 fixedcenter: true,
                 modal: true,

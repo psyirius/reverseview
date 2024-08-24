@@ -1,21 +1,15 @@
-
-
 !(function (exports) {
     class Ui {
         constructor(bodyContent) {
             this.show = show;
+            this.hide = hide;
 
             var b = null;
             var m_body = bodyContent;
 
-            init();
+            _setupUI();
 
-            function init() {
-                e();
-                d();
-            }
-
-            function e() {
+            function _setupUI() {
                 b = new YAHOO.widget.Panel("panelObj5", {
                     width: "300px",
                     fixedcenter: true,
@@ -29,12 +23,13 @@
                 b.hide();
                 b.bringToTop();
             }
-            function d() { }
+
             function show() {
                 b.show();
                 b.bringToTop();
             }
-            function c() {
+
+            function hide() {
                 b.hide();
             }
         }

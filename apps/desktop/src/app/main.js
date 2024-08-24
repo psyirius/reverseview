@@ -4,13 +4,14 @@ import * as $ from 'jquery';
 
 import Preferences from './preferences';
 import SplashScreen from './splash';
+
 import { WebEngine } from "@/remote/webengine";
 import { WebServer } from "@/remote/webserver";
 import { RemoteSetupUIPanel } from "@/remote/setup";
-import { WordBrain } from "@/words/vvbrain";
+import { WordBrain } from "@/words/wordbrain";
 import { WordLearner } from "@/words/wordlearner";
 
-import { setup as setupUI } from '@/app/ui/main'
+import { setup as setupUI } from '@/app/ui/main';
 
 DEV: {
     // break DEV;
@@ -799,7 +800,7 @@ function setupTabContent() {
     fillTabs('configTab');
 
     setupTabViewTemplate("nav", "navTab");
-    setupTabViewTemplate("search", "searchField");
+    setupTabViewTemplate("search", "searchTab");
     setupTabViewTemplate("html", "notesTab");
     setupTabViewTemplate("schedule", "scheduleTab");
     setupTabViewTemplate("song_nav", "songNavTab");
@@ -1016,7 +1017,7 @@ function fillNav() {
     document
         .getElementById("verseList")
         .addEventListener("change", verseChange, false);
-    const b = new ImageIcon(
+    new ImageIcon(
         "searchButtonID",
         " SEARCH ",
         "graphics/icon/search_32.png",
@@ -1029,14 +1030,14 @@ function fillNav() {
     document
         .getElementById("nav_bibleRef_findID")
         .addEventListener("click", rvw.navigation.processNavBibleRefFind, false);
-    const c = new ImageIcon(
+    new ImageIcon(
         "nav_bibleRef_presentID",
         " QUICK PRESENT ",
         "graphics/icon/qpresent_24.png",
         "graphics/icon/qpresent_24.png",
         ""
     );
-    const a = new ImageIcon(
+    new ImageIcon(
         "nav_bibleRef_findID",
         " FIND ",
         "graphics/icon/search_s.png",
@@ -1095,11 +1096,11 @@ function fillNav() {
 function setupLeftTabFrame() {
     const tabs = [
         {
-            label: " Bible ",
+            label: "Bible",
             content: '<div id="navTab">Bible</div>',
         },
         {
-            label: " Songs ",
+            label: "Songs",
             content: '<div id="songNavTab">Songs</div>',
         },
     ];
@@ -1143,7 +1144,7 @@ function setupRightTabFrame() {
         },
         {
             label: "Lyrics",
-            content: '<div id="lyricsTab" class="tabSubContainer" >Lyrics</div>',
+            content: '<div id="lyricsTab" class="tabSubContainer">Lyrics</div>',
         },
         {
             label: "Notes",
@@ -1151,7 +1152,7 @@ function setupRightTabFrame() {
         },
         {
             label: "Search",
-            content: '<div id="searchTab"><div id="searchField" class="searchFieldContainer">Search Field</div></div>',
+            content: '<div id="searchTab">Search</div>',
         },
         {
             label: "Schedule",

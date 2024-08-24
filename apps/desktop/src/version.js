@@ -79,6 +79,7 @@ function versionFill(b) {
         document
             .getElementById("versionSave")
             .addEventListener("click", saveVersionSelection, false);
+
         versionManageDialog = new YAHOO.widget.Panel("versionManageDialog", {
             width: "700px",
             fixedcenter: true,
