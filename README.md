@@ -1,4 +1,4 @@
-### ReVerseVIEW - Rebirth of the old-school VerseVIEW
+### ReVerseVIEW - Rebirth of the old-school (Adobe AIR) VerseVIEW in a modest way as possible
 
 ### Notes
 - Typescript <5.5 is required for the project as 5.5 doesn't support ES3 target

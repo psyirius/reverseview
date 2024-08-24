@@ -1,4 +1,4 @@
-class BibleDB {
+rvw.provide('rvw.bible').BibleDB = class BibleDB {
     constructor() {
         this.init = init;
         this.closeDB = v;
@@ -326,7 +326,7 @@ class BibleDB {
             function al() {
                 ak.removeEventListener(air.SQLEvent.RESULT, al);
                 ak.removeEventListener(air.SQLErrorEvent.ERROR, am);
-                var aq = getVerseFromArray(ai, ap, aj);
+                var aq = rvw.bible.getVerseFromArray(ai, ap, aj);
                 q[aq - 1] = aj + " " + ao;
                 rvw.ui.Toast.show("Bible Verse Update", "Verse Updated");
             }
@@ -343,4 +343,4 @@ class BibleDB {
             }
         }
     }
-}
+};

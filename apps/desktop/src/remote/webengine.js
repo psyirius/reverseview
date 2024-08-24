@@ -11,15 +11,15 @@ export class WebEngine {
         this.stageViewContent = stageViewContent;
 
         function nextSlide() {
-            call_nextSlide();
+            rvw.present.call_nextSlide();
         }
 
         function prevSlide() {
-            call_prevSlide();
+            rvw.present.call_prevSlide();
         }
 
         function closePresentation() {
-            call_closePresentation();
+            rvw.present.call_closePresentation();
         }
 
         function themePresentation() {
@@ -29,11 +29,11 @@ export class WebEngine {
         }
 
         function logoPresentation() {
-            showLogoSlide();
+            rvw.common.showLogoSlide();
         }
 
         function blankPresentation() {
-            blankSlide();
+            rvw.common.blankSlide();
         }
 
         function processSong(song) {

@@ -1,4 +1,10 @@
-class GraphicsMgr {
+import { GradiantBackgroundColor } from "./gradbkgnd";
+import { SolidBackgroundColor } from "./solidbkgnd";
+import { TextColor } from "./textcolor";
+import {ColorPickerPanel} from "./colorpicker";
+import {StillBackground} from "./stillbkgnd";
+
+export class GraphicsMgr {
     constructor(bodyContent) {
         this.assignColor = l;
         this.setNumOfPicsInRow = c;
@@ -24,13 +30,13 @@ class GraphicsMgr {
             document.getElementById("graphicsTab").innerHTML = x;
             $("#bkgnd_motion").hide();
             $("#motion_bkgnddiv").hide();
-            n = new textColorClass();
+            n = new TextColor();
             n.init();
-            p = new solidBkgndColorClass();
+            p = new SolidBackgroundColor();
             p.init();
-            e = new gradBkgndColorClass();
+            e = new GradiantBackgroundColor();
             e.init();
-            f = new bkgndClass();
+            f = new StillBackground();
             f.init();
             d();
             k();
@@ -134,7 +140,7 @@ class GraphicsMgr {
             }
         }
         function b() {
-            var x = new colorPickerPanel();
+            var x = new ColorPickerPanel();
             x.init(textColor, 0);
         }
         function c(x) {

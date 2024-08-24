@@ -1,4 +1,4 @@
-class Notes {
+export class Notes {
     constructor(notesUI, containerID) {
         this.init = init;
         this.showNotesPanel = showNotesPanel;
@@ -24,7 +24,7 @@ class Notes {
         var g = null;
 
         function init(P, Q, R) {
-            if (P == null || P == "./notes/") {
+            if (P == null || P === "./notes/") {
                 t = "./notes/defaultnotes.db";
                 I = "Default Notes";
                 H =
@@ -34,7 +34,7 @@ class Notes {
                 I = Q;
                 H = R;
             }
-            if (!fileExist(t, 1)) {
+            if (!air.File.applicationStorageDirectory.resolvePath(t).exists) {
                 f = true;
             }
             O();
@@ -319,7 +319,8 @@ class Notes {
         }
     }
 }
-class postit {
+
+export class PostIt {
     constructor() {
         this.init = d;
         var a = null;
@@ -339,7 +340,8 @@ class postit {
         }
     }
 }
-class NotesInfo {
+
+export class NotesInfo {
     constructor(_arg) {
         var d = _arg;
         var c;

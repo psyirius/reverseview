@@ -1,5 +1,3 @@
-
-
 !(function (exports) {
     class SongPresenter {
         constructor() {
@@ -57,10 +55,10 @@
                         rvw.presentation.p_text_orientation = "1";
                     }
                 }
-                presentation();
+                rvw.present.presentation();
             }
             function b() {
-                var h = new Array();
+                var h = [];
                 var g = d.slides.length;
                 for (var f = 0; f < g; f++) {
                     h[f] = "";

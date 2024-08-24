@@ -1,4 +1,3 @@
-
 !(function (exports) {
     let tags = [];
 
@@ -45,7 +44,7 @@
     }
     function fillTagList() {
         const a = tags.length;
-        const b = clearSelectList("songnav_tags");
+        const b = rvw.common.clearSelectList("songnav_tags");
         if (b) {
             const c = document.createDocumentFragment();
             const g = document.getElementById("songnav_tags");

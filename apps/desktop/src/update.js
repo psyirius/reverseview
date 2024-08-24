@@ -48,7 +48,7 @@
             var a = "";
             var k = null;
 
-            l = Number(version_number);
+            l = Number(rvw.vu.version_number);
             k = Date.now();
             if (d()) {
                 g(false);

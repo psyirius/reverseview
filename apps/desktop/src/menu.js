@@ -1,4 +1,3 @@
-
 !(function (exports) {
     const MAIN_MENU = [
         {
@@ -110,11 +109,11 @@
         $RvW.bibleVersionSelObj.show();
     }
     function add_bible_version() {
-        manageVersion();
-        showBrowse();
+        rvw.bible.manageVersion();
+        rvw.bible.showBrowse();
     }
     function show_bible_manage() {
-        manageVersion();
+        rvw.bible.manageVersion();
     }
     function show_editVerse_UI() {
         rvw.bible.setupVerseEditObject();
@@ -131,20 +130,20 @@
         window.nativeWindow.close();
     }
     function addBkgndMenu() {
-        bkgnd.showBrowse();
+        rvw.bg.bkgnd.showBrowse();
     }
     function deleteBkgndMenu() {
-        bkgnd.delBkgnd();
+        rvw.bg.bkgnd.delBkgnd();
     }
     function showAbout() {
         // TODO: make it a separate tool window
         $RvW.helpObj.show();
     }
     function vvPromote_menu1() {
-        promoteVV(1);
+        rvw.common.promoteVV(1);
     }
     function vvPromote_menu2() {
-        promoteVV(2);
+        rvw.common.promoteVV(2);
     }
 
     // Exports

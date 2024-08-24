@@ -1,4 +1,3 @@
-
 !(function (exports) {
     let indexConn = null;
     let insertStmt = null;
@@ -52,7 +51,7 @@
         air.trace("Time to index to Array: " + j);
     }
     function getIndexFilepath() {
-        var a = getVersion1Filename();
+        var a = rvw.bible.getVersion1Filename();
         var b = a.split(".");
         var c = b[0] + ".db";
         return c;
@@ -129,12 +128,11 @@
             var g = new Date();
             endTime = g.getTime();
             var f = endTime - startTime;
-            var a = getIndexFilepath();
-            $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = a;
-            updateVersionXML();
+            $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = getIndexFilepath();
+            rvw.bible.updateVersionXML();
             alert(
                 "Completed indexing " +
-                getVersion1Name() +
+                rvw.bible.getVersion1Name() +
                 " Bible. Please restart VerseVIEW."
             );
         }

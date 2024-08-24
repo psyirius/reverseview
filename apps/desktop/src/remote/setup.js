@@ -146,7 +146,7 @@ export class RemoteSetupUIPanel {
         }
 
         function n() {
-            clearSelectList("configIPaddr");
+            rvw.common.clearSelectList("configIPaddr");
 
             ipList = getAvailableNwIpList();
 
@@ -180,8 +180,8 @@ export class RemoteSetupUIPanel {
             if ($RvW.webServerObj.isActive() === false) {
                 _port = document.getElementById("configRemotePort").value;
                 _ipAddr = _getSelectedIp();
-                if (IsNumeric(_port)) {
-                    if (withinRange(49152, 65535, _port)) {
+                if (rvw.common.IsNumeric(_port)) {
+                    if (rvw.common.withinRange(49152, 65535, _port)) {
                         portNumber = _port;
                         const B = $RvW.webServerObj.init(portNumber, _ipAddr);
                         if (B) {

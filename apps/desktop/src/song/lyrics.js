@@ -1,4 +1,3 @@
-
 !(function (exports) {
     class SongLyrics {
         constructor() {

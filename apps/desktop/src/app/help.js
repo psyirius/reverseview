@@ -1,6 +1,6 @@
 // import HandleBars from 'handlebars';
 
-window.RvwHelp = class {
+export class HelpUiPanel {
     constructor(bodyTemplate) {
         this.m_body = bodyTemplate;
         this.m_panel = null;

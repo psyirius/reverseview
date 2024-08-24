@@ -1,4 +1,4 @@
-class colorPickerPanel {
+export class ColorPickerPanel {
     constructor() {
         this.init = n;
         this.show = k;

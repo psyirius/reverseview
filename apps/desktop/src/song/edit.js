@@ -1,8 +1,7 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-!(function (exports) {
-    class SongEdit {
+export class SongEdit {
     constructor(bodyContent, lyricsCreateContent) {
         const _isDebug = false;
 
@@ -174,7 +173,7 @@
             ak.push("My Songs");
             var af = false;
             if (ac != null) {
-                if (!apple) {
+                if (!rvw.common.apple) {
                     if (ac.match("^VV")) {
                         af = true;
                     }
@@ -187,7 +186,7 @@
                     if (ae.data[ag].cat != null) {
                         var ai = ae.data[ag].cat;
                         var ad = ai.match("^VV");
-                        if (apple) {
+                        if (rvw.common.apple) {
                             ak.push(ae.data[ag].cat);
                         } else {
                             if (!ad) {
@@ -248,8 +247,8 @@
             ao = ao.concat($RvW.systemFontList);
             ao.sort();
             const ac = ao.length;
-            clearSelectList("se_fontID2");
-            clearSelectList("se_fontID2_2");
+            rvw.common.clearSelectList("se_fontID2");
+            rvw.common.clearSelectList("se_fontID2_2");
             const aj = document.createDocumentFragment();
             const ai = document.createDocumentFragment();
             const ag = document.getElementById("se_fontID2");
@@ -324,7 +323,7 @@
                 document.getElementById("songEdit_NameID").value = sngObj.name;
                 document.getElementById("se_copyrightID").value = sngObj.copyright;
                 document.getElementById("se_yvideoID").value = sngObj.yvideo;
-                if (specialCategory(sngObj.catIndex)) {
+                if (rvw.common.specialCategory(sngObj.catIndex)) {
                     $("#songEdit_saveButtonID").hide();
                 } else {
                     $("#songEdit_saveButtonID").show();
@@ -376,7 +375,7 @@
         }
         function onClick_submitCatButtonID2() {
             var ad = document.getElementById("se_catTextID").value;
-            if (specialCategory(ad)) {
+            if (rvw.common.specialCategory(ad)) {
                 rvw.ui.Toast.show(
                     "Add Edit Song",
                     "Category name starting with 'vv' are reserved."
@@ -759,7 +758,7 @@
                     ac = document.getElementById(ac).value;
                     _slides2[index] = ac.replace(/\n/g, "<BR>");
 
-                    if (isBlank(_slides2[index])) {
+                    if (rvw.common.isBlank(_slides2[index])) {
                         _slides2[index] = "";
                     }
                 });
@@ -786,7 +785,7 @@
                     sngObj.subcat = "";
                 }
 
-                if (!specialCategory(sngObj.catIndex)) {
+                if (!rvw.common.specialCategory(sngObj.catIndex)) {
                     if (sngObj.catIndex === "VV Malayalam 2021" || sngObj.catIndex === "VV Hindi 2021") {
                         const af = document.getElementById("songEdit_SongNumberID").value;
                         if (af === "" || af == null) {
@@ -865,7 +864,7 @@
         }
         function onClick_category2() {
             const ac = $("#songnav_category2 option:selected").text();
-            if (specialCategory(ac)) {
+            if (rvw.common.specialCategory(ac)) {
                 $("#songEdit_saveButtonID").hide();
             } else {
                 $("#songEdit_saveButtonID").show();
@@ -929,6 +928,3 @@
         init();
     }
 }
-
-    exports.SongEdit = SongEdit;
-}(rvw.provide("rvw.song")));

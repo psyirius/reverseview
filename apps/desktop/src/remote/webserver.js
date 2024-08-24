@@ -361,7 +361,7 @@ class WebRequestHandler {
                     const font = $RvW.bibleRefObj.getVerseFont();
                     const book = $RvW.bibleRefObj.getBook();
                     const chapter = $RvW.bibleRefObj.getChapter();
-                    const verses = getAllVersesFromChapter(book, chapter - 1);
+                    const verses = rvw.bible.getAllVersesFromChapter(book, chapter - 1);
 
                     this._sendJSON({
                         ok: true,

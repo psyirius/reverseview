@@ -1,4 +1,3 @@
-
 !(function (exports) {
     class Scheduler {
         constructor() {
@@ -200,7 +199,7 @@
             function i() {
                 A("Updating Schedule UI");
                 if (t.data != null) {
-                    clearSelectList("sch_selectID");
+                    rvw.common.clearSelectList("sch_selectID");
                     var Y = t.data.length;
                     for (var Z = 0; Z < Y; Z++) {
                         var X = t.data[Z];
@@ -212,7 +211,7 @@
                     }
                     e();
                 } else {
-                    clearSelectList("sch_selectID");
+                    rvw.common.clearSelectList("sch_selectID");
                     document.getElementById("sch_verseTextID").innerHTML = "";
                     document.getElementById("sch_selectID").options[0] = new Option(
                         "None",
@@ -223,7 +222,7 @@
             function V() {
                 A("Updating Schedule UI");
                 if (t.data != null) {
-                    clearSelectList("sch_selectID");
+                    rvw.common.clearSelectList("sch_selectID");
                     var Y = t.data.length;
                     for (var Z = 0; Z < Y; Z++) {
                         var X = t.data[Z];
@@ -234,7 +233,7 @@
                     }
                     e();
                 } else {
-                    clearSelectList("sch_selectID");
+                    rvw.common.clearSelectList("sch_selectID");
                     document.getElementById("sch_verseTextID").innerHTML = "";
                     document.getElementById("sch_selectID").options[0] = new Option(
                         "None",

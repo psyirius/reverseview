@@ -1,7 +1,11 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-class SongManager {
+import { SongPortXML } from "./port_xml";
+import { SongImporter } from "./import";
+import { splitIN2 } from "./nav";
+
+export class SongManager {
     constructor(_arg1, _arg2) {
         this.addSong = addSong;
         this.updateSong = updateSong;
@@ -108,7 +112,7 @@ class SongManager {
             }
             var aO = $RvW.vvConfigObj.get_show2lines();
             if (aO) {
-                aQ = rvw.song.splitIN2(aQ);
+                aQ = splitIN2(aQ);
             }
             return aQ;
         }
@@ -374,7 +378,7 @@ class SongManager {
                 aO = aO + sng.data[aP].name + "|" + sng.data[aP].cat + "\n";
             }
             var aQ = "./song/songlist.txt";
-            save2file(aO, aQ, false);
+            rvw.common.save2file(aO, aQ, false);
         }
         function get_sm_cat_records() {
             return aq;
@@ -391,20 +395,20 @@ class SongManager {
             return ap;
         }
         function processImportSongDB() {
-            new rvw.song.SongImporter();
+            new SongImporter();
         }
         function processImportSongXML() {
-            var aN = new rvw.song.SongPortXML();
+            var aN = new SongPortXML();
             aN.init(sng, null, null, 1);
             aN.importXML();
         }
         function processExportSongXML() {
-            var aN = new rvw.song.SongPortXML();
+            var aN = new SongPortXML();
             aN.init(sng, null, null, 1);
             aN.exportAll();
         }
         function processExportCatXML() {
-            var aN = new rvw.song.SongPortXML();
+            var aN = new SongPortXML();
             aN.init(sng, ab, null, 2);
             aN.exportByCat();
         }
@@ -533,7 +537,7 @@ class SongManager {
                 songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
                 $RvW.vvConfigObj.save();
             }
-            if (!isUpToDate() && task1Status() == false) {
+            if (!rvw.vu.isUpToDate() && rvw.vu.task1Status() === false) {
                 delCatManagedUpdate();
             } else {
                 C();
@@ -603,10 +607,10 @@ class SongManager {
                             "Song Database",
                             "Song Lyrics imported to the Song Database complete."
                         );
-                        if (!isUpToDate()) {
+                        if (!rvw.vu.isUpToDate()) {
                             rvw.ui.Toast.show("Songs", "Imported song database");
-                            task1Complete();
-                            checkVerUpdateFlags();
+                            rvw.vu.task1Complete();
+                            rvw.vu.checkVerUpdateFlags();
                         }
                         C();
                         F();
@@ -646,7 +650,7 @@ class SongManager {
                     "ADD EDIT Song",
                     "Failed to update song database.  Error message:" + aU.error.message
                 );
-                if (!isUpToDate() && T == 0) {
+                if (!rvw.vu.isUpToDate() && T == 0) {
                     var aT = $RvW.vvConfigObj.get_songDBVersion();
                     if (aT == 2) {
                         $RvW.vvConfigObj.set_songDBVersion(1);
@@ -948,10 +952,10 @@ class SongManager {
             aP.execute();
             function aO(aR) {
                 __debug("Succesfuly got all data from Original Song DB and inserted");
-                if (!isUpToDate()) {
+                if (!rvw.vu.isUpToDate()) {
                     rvw.ui.Toast.show("Songs", "Updated song database");
-                    task1Complete();
-                    checkVerUpdateFlags();
+                    rvw.vu.task1Complete();
+                    rvw.vu.checkVerUpdateFlags();
                 }
                 C();
                 F();

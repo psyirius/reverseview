@@ -1,4 +1,3 @@
-
 !(function (exports) {
     class VersionSelector {
         constructor(bodyContent) {
@@ -99,7 +98,7 @@
                 }
             }
             function j() {
-                clearSelectList("updateListID");
+                rvw.common.clearSelectList("updateListID");
 
                 // name,description,filename,revision,
 
@@ -148,9 +147,8 @@
                     x.writeBytes(w, 0, w.length);
                     x.close();
                     air.trace("Completed downloading the zip file to test.zip");
-                    l = new unzip("", "test.zip");
-                    l.init();
-                    var s = new air.File();
+                    l = new rvw.common.UnZip("", "test.zip");
+                    const s = new air.File();
                     air.trace("File....." + l.get_nPath());
                     s.nativePath = l.get_nPath();
                     air.trace("[UPDATE] .... Native Path: " + s.nativePath);

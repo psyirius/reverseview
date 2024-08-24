@@ -1,4 +1,6 @@
-class solidBkgndColorClass {
+import {ColorPickerPanel} from "./colorpicker";
+
+export class SolidBackgroundColor {
     constructor() {
         this.init = k;
         this.assignSolidColor = j;
@@ -27,7 +29,7 @@ class solidBkgndColorClass {
                 .addEventListener("click", i, false);
         }
         function h() {
-            var l = new colorPickerPanel();
+            var l = new ColorPickerPanel();
             l.init(e, 1);
         }
         function j(l) {

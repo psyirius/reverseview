@@ -1,12 +1,13 @@
-class bkgndClass {
+export class StillBackground {
     constructor() {
-        this.init = O;
-        this.setNumOfPicsInRow = f;
-        this.getBkgndFilename = L;
-        this.getLogoFilename = j;
-        this.getMotionFlag = C;
-        this.getShadeFlag = R;
-        this.getTransparentFlag = x;
+        this.init = init;
+        this.setNumOfPicsInRow = setNumOfPicsInRow;
+        this.getBkgndFilename = getBkgndFilename;
+        this.getLogoFilename = getLogoFilename;
+        this.getMotionFlag = getMotionFlag;
+        this.getShadeFlag = getShadeFlag;
+        this.getTransparentFlag = getTransparentFlag;
+
         var d = null;
         var v = 0;
         var G = 0;
@@ -21,7 +22,8 @@ class bkgndClass {
         var k = false;
         var g = false;
         var y = false;
-        function O() {
+
+        function init() {
             H();
             i();
         }
@@ -98,13 +100,13 @@ class bkgndClass {
                 U = U.resolvePath("background/thumbnail/" + V);
                 A.copyTo(U, true);
                 var ac = "./xml/backgroundlist.xml";
-                save2file(Y, ac, false);
+                rvw.common.save2file(Y, ac, false);
                 q();
             } else {
                 alert("Background already exists.");
             }
         }
-        function f(U) {
+        function setNumOfPicsInRow(U) {
             var T = parseInt((U - 100) / 100);
             J = T;
             B("Available width... " + U);
@@ -179,7 +181,7 @@ class bkgndClass {
                 o.splice(W, 1);
                 var T = e();
                 var V = "./xml/backgroundlist.xml";
-                save2file(T, V, false);
+                rvw.common.save2file(T, V, false);
                 $RvW.vvConfigObj.set_bkgndIndex(G);
                 $RvW.vvConfigObj.save();
                 q();
@@ -198,7 +200,7 @@ class bkgndClass {
                 o.splice(X, 1);
                 var U = e();
                 var W = "./xml/backgroundlist.xml";
-                save2file(U, W, false);
+                rvw.common.save2file(U, W, false);
                 $RvW.vvConfigObj.set_bkgndIndex(G);
                 $RvW.vvConfigObj.save();
                 q();
@@ -216,13 +218,13 @@ class bkgndClass {
         function N() {
             g = $("#transparentBackgroundID").prop("checked");
         }
-        function C() {
+        function getMotionFlag() {
             return S;
         }
-        function R() {
+        function getShadeFlag() {
             return k;
         }
-        function x() {
+        function getTransparentFlag() {
             return g;
         }
         function m() {
@@ -361,7 +363,7 @@ class bkgndClass {
             V = V + "</backgroundlist>\n";
             return V;
         }
-        function L() {
+        function getBkgndFilename() {
             var U = new Array();
             var T = E.length;
             var W = "./background/" + E[G];
@@ -404,7 +406,7 @@ class bkgndClass {
             document.getElementById("selected_logostill_id").width = 150;
             document.getElementById("selected_logostill_id").height = 100;
         }
-        function j() {
+        function getLogoFilename() {
             var T = new Array();
             if (w != "" && a()) {
                 T[0] = w;

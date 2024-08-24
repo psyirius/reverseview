@@ -1,4 +1,3 @@
-
 !(function (exports) {
     class RecentsManager {
         maxNumofElements = 30
@@ -51,7 +50,7 @@
             for (let i = 0; i < this.numofElements; i++) {
                 a[i] = `${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}`;
             }
-            clearSelectList("recentSel");
+            rvw.common.clearSelectList("recentSel");
             let b = this.numofElements - 1;
             for (i = 0; i < this.numofElements; i++) {
                 document.getElementById("recentSel").options[i] = new Option(a[b], b);
@@ -72,7 +71,7 @@
                 $RvW.chapterIndex = this.cArray[b];
                 $RvW.verseIndex = this.vArray[b];
                 rvw.navigation.setBookChVer($RvW.bookIndex, $RvW.chapterIndex * 1 + 1, $RvW.verseIndex * 1 + 1);
-                getdata(true);
+                rvw.bible.getdata(true);
                 rvw.presentation.p_footer = `${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3]} / ${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3]}`;
                 rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
                 $RvW.launch($RvW.verseIndex);

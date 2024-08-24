@@ -1,4 +1,3 @@
-
 !(function (exports) {
     class Song {
         constructor() {

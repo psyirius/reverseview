@@ -1,4 +1,3 @@
-
 !(function (exports) {
     function getNumofVerses() {
         return $RvW.numofch[$RvW.bookIndex + 1][$RvW.chapterIndex + 1];

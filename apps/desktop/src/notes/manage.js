@@ -1,6 +1,9 @@
-class NotesManager {
+import {NotesInfo} from "./notes";
+
+export class NotesManager {
     constructor(ftflg) {
-        this.nm_addRecord_ext = C;
+        this.nm_addRecord_ext = nm_addRecord_ext;
+
         var f = false;
         var h = ftflg;
         var A = true;
@@ -11,7 +14,7 @@ class NotesManager {
         var e = "";
         var D = false;
         var w = null;
-        var k = new Array();
+        var k = [];
         var d = "";
         var l;
 
@@ -137,7 +140,7 @@ class NotesManager {
             Y.addEventListener(air.Event.SELECT, X);
             function X() {
                 var Z = air.File.applicationStorageDirectory;
-                var ac = extractFileName(Y.nativePath);
+                var ac = rvw.common.extractFileName(Y.nativePath);
                 var aa = "./notes/" + ac;
                 Z = Z.resolvePath(aa);
                 Y.copyTo(Z, true);
@@ -224,7 +227,7 @@ class NotesManager {
         }
         function v() {
             if (w.data != null) {
-                clearSelectList("nm_selectID");
+                rvw.common.clearSelectList("nm_selectID");
                 var X = w.data.length;
                 for (var Y = 0; Y < X; Y++) {
                     var W = w.data[Y];
@@ -299,7 +302,7 @@ class NotesManager {
             var W = "./notes/defaultnotes.db";
             return W;
         }
-        function C(X, W, Y) {
+        function nm_addRecord_ext(X, W, Y) {
             G = X;
             E = Y;
             e = W;

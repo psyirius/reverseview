@@ -13,7 +13,7 @@ const App = ({dev}: Props) => {
             {dev && (
                 <div className="" style={{position: 'absolute', right: '2px', top: '4px'}}>
                     <div class="ui button" tabIndex={0} onClick={() => window.location.reload()}>
-                        Refresh<i class="right arrow icon"></i>
+                        Reload<i class="right arrow icon"></i>
                     </div>
                 </div>
             )}

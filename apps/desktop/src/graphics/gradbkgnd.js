@@ -1,4 +1,6 @@
-class gradBkgndColorClass {
+import {ColorPickerPanel} from "./colorpicker";
+
+export class GradiantBackgroundColor {
     constructor() {
         this.init = q;
         this.assignGradColor1 = l;
@@ -51,11 +53,11 @@ class gradBkgndColorClass {
                 .addEventListener("change", a, false);
         }
         function h() {
-            var r = new colorPickerPanel();
+            var r = new ColorPickerPanel();
             r.init(p, 2);
         }
         function g() {
-            var r = new colorPickerPanel();
+            var r = new ColorPickerPanel();
             r.init(n, 3);
         }
         function a() {

@@ -1,4 +1,6 @@
-class textColorClass {
+import {ColorPickerPanel} from "./colorpicker";
+
+export class TextColor {
     constructor() {
         this.init = l;
         this.assignTextColor = e;
@@ -36,7 +38,7 @@ class textColorClass {
                 .addEventListener("click", j, false);
         }
         function a() {
-            var m = new colorPickerPanel();
+            var m = new ColorPickerPanel();
             m.init(i, 0);
         }
         function e(m) {

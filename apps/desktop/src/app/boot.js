@@ -2,7 +2,7 @@
 * Note: Never make it a module.
 * This script setups the AMD loader and execs the OEP
 * */
-(function () {
+!(function () {
     const dojoConfig = {
         has: {
             "dojo-firebug": true,
@@ -124,4 +124,4 @@
             app.start(Y, $dtk);
         });
     });
-})();
+}());

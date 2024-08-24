@@ -62,6 +62,21 @@
     var contentAllocation = 0.85;
     var footerAllocation = 0.05;
 
+    function withinRange(b, c, a) {
+        return a >= b && a <= c;
+    }
+
+    function IsNumeric(v) {
+        const charSet = "0123456789";
+        for (let i = 0; i < v.length; i++) {
+            const char = v.charAt(i);
+            if (charSet.indexOf(char) === -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // INIT
     function initPresentation() {
         debugPrintPresent("*** Init Presentation****");

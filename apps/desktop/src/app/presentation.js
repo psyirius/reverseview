@@ -26,7 +26,7 @@
         var f = document.getElementById("presentConfigMarginLeft").value;
         var n = document.getElementById("presentConfigMarginRight").value;
 
-        if (IsNumeric(e) && IsNumeric(c) && IsNumeric(f) && IsNumeric(n)) {
+        if (rvw.common.IsNumeric(e) && rvw.common.IsNumeric(c) && rvw.common.IsNumeric(f) && rvw.common.IsNumeric(n)) {
             $RvW.vvConfigObj.set_p_topMargin(e);
             $RvW.vvConfigObj.set_p_bottomMargin(c);
             $RvW.vvConfigObj.set_p_leftMargin(f);
@@ -44,8 +44,8 @@
                 $RvW.vvConfigObj.get_p_rightMargin();
         }
         var v = document.getElementById("presentConfigMaxFontSize").value;
-        if (IsNumeric(v)) {
-            if (withinRange(30, 200, v)) {
+        if (rvw.common.IsNumeric(v)) {
+            if (rvw.common.withinRange(30, 200, v)) {
                 $RvW.vvConfigObj.set_p_maxFontSize(v);
             } else {
                 k = false;
