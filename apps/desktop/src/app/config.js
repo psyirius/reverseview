@@ -3,6 +3,8 @@ import {fillTagList, getTags2Array} from "@/tags";
 import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";
 import {addScreenSelectionEvent, fillScreenList} from "@/p_window";
+import {FontSizeSlider, save2file} from "@app/common";
+import {savePresentationMargin} from "@app/presentation";
 
 export class Config {
     constructor() {
@@ -604,7 +606,7 @@ export class Config {
         }
 
         function _dumpXML() {
-            rvw.common.save2file(_toXML(), "./xml/config.xml", false);
+            save2file(_toXML(), "./xml/config.xml", false);
             m_saveCtr--;
         }
 
@@ -1280,7 +1282,7 @@ export function configInit() {
         .addEventListener("click", processSingleVersion);
     document
         .getElementById("presentConfigSaveButton")
-        .addEventListener("click", rvw.presentation.savePresentationMargin);
+        .addEventListener("click", savePresentationMargin);
     document
         .getElementById("presentConfigShowVVLogo")
         .addEventListener("change", showLogoChangeEvent);
@@ -1384,7 +1386,7 @@ export function configInit() {
         });
     }
 
-    new rvw.common.fontSizeSlider();
+    new FontSizeSlider();
     new BibleUpdater();
 
     document.getElementById("thirdview_opacity").value =

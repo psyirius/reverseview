@@ -1,3 +1,5 @@
+import {IsNumeric, withinRange} from "@app/common";
+
 function getAvailableNwIpList() {
     function getNetworkInterfaceList() {
         const { NetworkInfo } = air;
@@ -161,8 +163,8 @@ export class RemoteSetupUIPanel {
             if (!$RvW.webServerObj.isActive()) {
                 _port = document.getElementById("configRemotePort").value;
                 _ipAddr = _getSelectedIp();
-                if (rvw.common.IsNumeric(_port)) {
-                    if (rvw.common.withinRange(49152, 65535, _port)) {
+                if (IsNumeric(_port)) {
+                    if (withinRange(49152, 65535, _port)) {
                         portNumber = _port;
                         const B = $RvW.webServerObj.init(portNumber, _ipAddr);
                         if (B) {

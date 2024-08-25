@@ -1,6 +1,7 @@
 import { BgContext } from '@/app/background'
 import {setupVerseEditObject} from "@/bible/edit";
 import {manageVersion, showBrowse} from "@/bible/version";
+import {promoteVV} from "@app/common";
 
 const MAIN_MENU = [
     {
@@ -143,8 +144,8 @@ function showAbout() {
     $RvW.helpObj.show();
 }
 function vvPromote_menu1() {
-    rvw.common.promoteVV(1);
+    promoteVV(1);
 }
 function vvPromote_menu2() {
-    rvw.common.promoteVV(2);
+    promoteVV(2);
 }

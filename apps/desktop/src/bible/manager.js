@@ -1,6 +1,7 @@
 import {BibleDB} from "./db";
 import {Toast} from "@app/toast";
 import {disableNavButtons} from "@/navigation";
+import {presentationCtx} from "@app/presentation";
 
 $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;
@@ -108,7 +109,7 @@ function getdata_sql() {
             clearTimeout(c);
             $RvW.content1 = $RvW.bibledbObj[1].getResultArray();
             $RvW.content2 = $RvW.bibledbObj[2].getResultArray();
-            rvw.presentation.p_last_index = $RvW.content1.length;
+            presentationCtx.p_last_index = $RvW.content1.length;
             $RvW.updateVerseContainer_continue();
         } else {
         }
@@ -154,8 +155,8 @@ export class verseClass {
             $RvW.verseIndex = j - 1;
             $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
             getdata(true);
-            rvw.presentation.p_footer = $RvW.getFooter();
-            rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+            presentationCtx.p_footer = $RvW.getFooter();
+            presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
             $RvW.launch($RvW.verseIndex);
             document.getElementById("verseList").selectedIndex = $RvW.verseIndex;
             if (e) {

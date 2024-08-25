@@ -6,6 +6,7 @@
 // - YAHOO.widget.Tooltip
 
 import {Toast} from "@app/toast";
+import {save2file} from "@app/common";
 
 export const BgContext = {
     selectedIndex: 0,
@@ -152,7 +153,7 @@ export const BgContext = {
             b = b.resolvePath("background/thumbnail/" + d);
             BgContext.newBkgndFile.copyTo(b, true);
             var l = "./xml/backgroundlist.xml";
-            rvw.common.save2file(g, l, false);
+            save2file(g, l, false);
             BgContext.fill();
         } else {
             Toast.show("Background Graphics", "Background already exists.");
@@ -186,7 +187,7 @@ export const BgContext = {
             BgContext.name.splice(f, 1);
             var b = BgContext.generateBkgndXML();
             var e = "./xml/backgroundlist.xml";
-            rvw.common.save2file(b, e, false);
+            save2file(b, e, false);
             $RvW.vvConfigObj.set_bkgndIndex(BgContext.selectedIndex);
             $RvW.vvConfigObj.save();
             BgContext.fill();

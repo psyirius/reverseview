@@ -1,5 +1,6 @@
 import {Song} from '@/song/obj';
 import {presentation} from "@/p_window";
+import {presentationCtx} from "@app/presentation";
 
 export class SongPresenter {
     constructor() {
@@ -23,38 +24,38 @@ export class SongPresenter {
             }
         }
         function e(g) {
-            rvw.presentation.p_text1_arr = d.slides;
-            rvw.presentation.p_text2_arr = d.slides2;
-            rvw.presentation.p_text1_font = d.font;
-            rvw.presentation.p_text2_font = d.font2;
+            presentationCtx.p_text1_arr = d.slides;
+            presentationCtx.p_text2_arr = d.slides2;
+            presentationCtx.p_text1_font = d.font;
+            presentationCtx.p_text2_font = d.font2;
             if ($RvW.vvConfigObj.get_p_showTitle()) {
-                rvw.presentation.p_title = d.name;
+                presentationCtx.p_title = d.name;
             } else {
-                rvw.presentation.p_title = "";
+                presentationCtx.p_title = "";
             }
-            rvw.presentation.p_footer = d.copyright;
+            presentationCtx.p_footer = d.copyright;
             if (g == null) {
-                rvw.presentation.p_current_index = 0;
+                presentationCtx.p_current_index = 0;
             } else {
-                rvw.presentation.p_current_index = g;
+                presentationCtx.p_current_index = g;
             }
-            rvw.presentation.p_last_index = d.slides.length - 1;
-            rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-            rvw.presentation.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-            rvw.presentation.p_bkgnd_color = "blue";
-            rvw.presentation.p_font_color = $RvW.vvConfigObj.get_p_textColor();
-            rvw.presentation.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-            rvw.presentation.p_ver1ScaleFactor = 2;
-            rvw.presentation.p_ver2ScaleFactor = 2;
+            presentationCtx.p_last_index = d.slides.length - 1;
+            presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+            presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+            presentationCtx.p_bkgnd_color = "blue";
+            presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
+            presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+            presentationCtx.p_ver1ScaleFactor = 2;
+            presentationCtx.p_ver2ScaleFactor = 2;
             var h = a();
             var f = $RvW.vvConfigObj.get_song_primaryOnly();
             if (f == "true" || h) {
-                rvw.presentation.p_text_orientation = "2";
+                presentationCtx.p_text_orientation = "2";
             } else {
                 if ($RvW.vvConfigObj.get_song_text_orientation() == "0") {
-                    rvw.presentation.p_text_orientation = "0";
+                    presentationCtx.p_text_orientation = "0";
                 } else {
-                    rvw.presentation.p_text_orientation = "1";
+                    presentationCtx.p_text_orientation = "1";
                 }
             }
             presentation();

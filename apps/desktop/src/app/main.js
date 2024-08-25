@@ -49,6 +49,16 @@ import {
     presentation,
     presentWindowClosed
 } from "@/p_window";
+import {
+    apple,
+    backupWebroot, BibleReference, blankSlide,
+    clearSelectList,
+    copyFile2AppStorage,
+    createFolder,
+    fileExist, ImageIcon,
+    pluckapple, roundSearchBox, showLogoSlide
+} from "@app/common";
+import {presentationCtx} from "@app/presentation";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -82,7 +92,7 @@ DEV: {
     }
 
     // Make sure the remote is up-to-date
-    rvw.common.copyFile2AppStorage("webroot", "webroot");
+    copyFile2AppStorage("webroot", "webroot");
 }
 
 window.htmlLoader.addEventListener(runtime.flash.events.HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCRIPT_EXCEPTION, function(event) {
@@ -308,10 +318,10 @@ $RvW.launch = function(g) {
     }
     var b;
     var a;
-    rvw.presentation.p_last_index = $RvW.content1.length - 1;
+    presentationCtx.p_last_index = $RvW.content1.length - 1;
     var h = 0;
-    h = rvw.presentation.p_last_index + 1;
-    j = rvw.presentation.p_last_index;
+    h = presentationCtx.p_last_index + 1;
+    j = presentationCtx.p_last_index;
     b = $RvW.content1;
     a = $RvW.content2;
     if (e == 2) {
@@ -339,23 +349,23 @@ $RvW.launch = function(g) {
             a[f] = "";
         }
     }
-    rvw.presentation.p_text1_arr = b;
-    rvw.presentation.p_text2_arr = a;
-    rvw.presentation.p_text1_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    rvw.presentation.p_text2_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-    rvw.presentation.p_current_index = k;
-    rvw.presentation.p_last_index = j;
-    rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-    rvw.presentation.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-    rvw.presentation.p_bkgnd_color = "blue";
-    rvw.presentation.p_font_color = $RvW.vvConfigObj.get_p_textColor();
-    rvw.presentation.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-    rvw.presentation.p_ver1ScaleFactor = 1;
-    rvw.presentation.p_ver2ScaleFactor = 1;
+    presentationCtx.p_text1_arr = b;
+    presentationCtx.p_text2_arr = a;
+    presentationCtx.p_text1_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+    presentationCtx.p_text2_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    presentationCtx.p_current_index = k;
+    presentationCtx.p_last_index = j;
+    presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+    presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+    presentationCtx.p_bkgnd_color = "blue";
+    presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
+    presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+    presentationCtx.p_ver1ScaleFactor = 1;
+    presentationCtx.p_ver2ScaleFactor = 1;
     if ($RvW.vvConfigObj.get_singleVersion()) {
-        rvw.presentation.p_text_orientation = 2;
+        presentationCtx.p_text_orientation = 2;
     } else {
-        rvw.presentation.p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
+        presentationCtx.p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
     }
     presentation();
 }
@@ -382,8 +392,8 @@ $RvW.present = function() {
     $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     air.trace("Called in $RvW.present()");
     getdata();
-    rvw.presentation.p_footer = $RvW.getFooter();
-    rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+    presentationCtx.p_footer = $RvW.getFooter();
+    presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
     disableNavButtons(false);
@@ -396,8 +406,8 @@ $RvW.present_external = function(a, h, e) {
     $RvW.chapterIndex = h;
     $RvW.verseIndex = e;
     getdataONLY();
-    rvw.presentation.p_footer = $RvW.getFooter();
-    rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
+    presentationCtx.p_footer = $RvW.getFooter();
+    presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
     $RvW.bookIndex = g;
@@ -429,7 +439,7 @@ $RvW.getFooter = function() {
     if (a == c) {
         b = a;
     }
-    if (parseInt(rvw.presentation.p_text_orientation) == 2) {
+    if (parseInt(presentationCtx.p_text_orientation) == 2) {
         if (a == "Public Domain") {
             b = "";
         } else {
@@ -443,17 +453,17 @@ function presentTheme() {
         $RvW.present();
     } else {
         themeState = true;
-        rvw.presentation.p_title = "";
-        rvw.presentation.p_footer = "";
-        rvw.presentation.p_last_index = 0;
+        presentationCtx.p_title = "";
+        presentationCtx.p_footer = "";
+        presentationCtx.p_last_index = 0;
         $RvW.content1[0] = "";
         $RvW.content2[0] = "";
-        rvw.presentation.p_current_index = 0;
-        rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-        rvw.presentation.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-        rvw.presentation.p_bkgnd_color = "black";
-        rvw.presentation.p_font_color = "white";
-        rvw.presentation.p_font_color2 = "white";
+        presentationCtx.p_current_index = 0;
+        presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+        presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+        presentationCtx.p_bkgnd_color = "black";
+        presentationCtx.p_font_color = "white";
+        presentationCtx.p_font_color2 = "white";
         presentation();
     }
 }
@@ -465,7 +475,7 @@ $RvW.setFontForList = function() {
     $("#recentSel").css("font-family", a);
 }
 $RvW.putbook = function() {
-    rvw.common.clearSelectList("bookList");
+    clearSelectList("bookList");
     var a = $RvW.vvConfigObj.get_listinenglish();
     var b = $RvW.booknames.length;
     for (let i = 0; i < b; i++) {
@@ -485,7 +495,7 @@ $RvW.putbook = function() {
     $RvW.setFontForList();
 }
 $RvW.putch = function(b, a) {
-    rvw.common.clearSelectList("chapterList");
+    clearSelectList("chapterList");
     const val = document.getElementById("bookList").selectedIndex + 1;
     for (let i = 0; i < $RvW.numofch[val][0]; i++) {
         document.getElementById("chapterList").options[i] = new Option(i + 1, i);
@@ -505,7 +515,7 @@ let bookval, chval;
 $RvW.putver = function(a) {
     bookval = document.getElementById("bookList").selectedIndex + 1;
     chval = document.getElementById("chapterList").selectedIndex + 1;
-    rvw.common.clearSelectList("verseList");
+    clearSelectList("verseList");
     for (let i = 0; i < $RvW.numofch[bookval][chval]; i++) {
         document.getElementById("verseList").options[i] = new Option(i + 1, i + 1);
     }
@@ -735,9 +745,9 @@ function vvinit_continue() {
     setTimeout(function () {
         var a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
         if (a == 1 && !firstTimeFlag) {
-            var c = rvw.common.copyFile2AppStorage("xml/version.xml", "xml/version.xml");
+            var c = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
             if (c) {
-                c = rvw.common.copyFile2AppStorage("bible", "bible");
+                c = copyFile2AppStorage("bible", "bible");
                 if (c) {
                     $RvW.vvConfigObj.set_version1(1);
                     $RvW.vvConfigObj.set_version2(2);
@@ -855,7 +865,7 @@ function setupTabContent() {
     $RvW.searchObj = new BibleSearch("./bible/" + getVersion1Filename());
     $RvW.webServerObj = new WebServer('webroot');
     $RvW.webEngineObj = new WebEngine();
-    $RvW.bibleRefObj = new rvw.common.BibleReference();
+    $RvW.bibleRefObj = new BibleReference();
     $RvW.editVerse_UI_Obj = new VerseEditUI(loadViewTemplate("bible_verse_edit"));
     $RvW.songNumberObj = new SongNumber();
     $RvW.songManagerObj = new SongManager(true, true);
@@ -866,9 +876,9 @@ function setupTabContent() {
 
     if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
-        const b = rvw.common.backupWebroot();
+        const b = backupWebroot();
         if (b) {
-            rvw.common.copyFile2AppStorage("webroot", "webroot");
+            copyFile2AppStorage("webroot", "webroot");
             task2Complete();
         }
         checkVerUpdateFlags();
@@ -917,7 +927,7 @@ function fillTabs(a) {
             break;
         }
         case 'searchField': {
-            rvw.common.roundSearchBox(document.getElementById("adSearch"));
+            roundSearchBox(document.getElementById("adSearch"));
             break;
         }
         case 'screenTab': {
@@ -1061,7 +1071,7 @@ function fillNav() {
     document
         .getElementById("verseList")
         .addEventListener("change", verseChange, false);
-    new rvw.common.ImageIcon(
+    new ImageIcon(
         "searchButtonID",
         " SEARCH ",
         "graphics/icon/search_32.png",
@@ -1074,14 +1084,14 @@ function fillNav() {
     document
         .getElementById("nav_bibleRef_findID")
         .addEventListener("click", processNavBibleRefFind, false);
-    new rvw.common.ImageIcon(
+    new ImageIcon(
         "nav_bibleRef_presentID",
         " QUICK PRESENT ",
         "graphics/icon/qpresent_24.png",
         "graphics/icon/qpresent_24.png",
         ""
     );
-    new rvw.common.ImageIcon(
+    new ImageIcon(
         "nav_bibleRef_findID",
         " FIND ",
         "graphics/icon/search_s.png",
@@ -1105,7 +1115,7 @@ function fillNav() {
         }
     });
     $("#icon_blank").click(function () {
-        rvw.common.blankSlide();
+        blankSlide();
     });
     $("#icon_theme").click(function () {
         if ($RvW.presentationWindow != null) {
@@ -1113,7 +1123,7 @@ function fillNav() {
         }
     });
     $("#icon_logo").click(function () {
-        rvw.common.showLogoSlide();
+        showLogoSlide();
     });
     $("#icon_close").click(function () {
         closePresentWindowMain();
@@ -1321,15 +1331,15 @@ $RvW.processExit = function processExit() {
 }
 function firstTimeCheck() {
     var b = true;
-    var a = rvw.common.fileExist("xml/version.xml", 1);
+    var a = fileExist("xml/version.xml", 1);
     if (!a) {
         b = setupVVersion();
     }
-    var d = rvw.common.fileExist("xml/backgroundlist.xml", 1);
+    var d = fileExist("xml/backgroundlist.xml", 1);
     if (!d) {
         b = setupVBkgnd();
     }
-    var c = rvw.common.fileExist("xml/config.xml", 1);
+    var c = fileExist("xml/config.xml", 1);
     if (!c) {
         b = setupVConfig();
     }
@@ -1340,39 +1350,39 @@ function firstTimeCheck() {
     return b;
 }
 function setupVVersion() {
-    rvw.common.createFolder("xml");
-    rvw.common.createFolder("bible");
-    rvw.common.createFolder("notes");
-    rvw.common.createFolder("song");
-    rvw.common.createFolder("webroot");
-    let a = rvw.common.copyFile2AppStorage("xml/version.xml", "xml/version.xml");
+    createFolder("xml");
+    createFolder("bible");
+    createFolder("notes");
+    createFolder("song");
+    createFolder("webroot");
+    let a = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
     if (!a) {
         return a;
     }
-    a = rvw.common.copyFile2AppStorage("bible", "bible");
+    a = copyFile2AppStorage("bible", "bible");
     if (!a) {
         return a;
     }
-    a = rvw.common.copyFile2AppStorage("webroot", "webroot");
+    a = copyFile2AppStorage("webroot", "webroot");
     if (!a) {
         return a;
     }
-    a = rvw.common.copyFile2AppStorage("song/default.db", "song/default.db");
+    a = copyFile2AppStorage("song/default.db", "song/default.db");
     if (!a) {
         return a;
     }
-    a = rvw.common.copyFile2AppStorage("song/words.db", "song/words.db");
+    a = copyFile2AppStorage("song/words.db", "song/words.db");
     if (!a) {
         return a;
     }
     return a;
 }
 function setupVBkgnd() {
-    let a = rvw.common.copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
+    let a = copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
     if (!a) {
         return a;
     }
-    a = rvw.common.copyFile2AppStorage("background", "background");
+    a = copyFile2AppStorage("background", "background");
     if (!a) {
         return a;
     }
@@ -1420,14 +1430,14 @@ function onMainWindowKeyUp(evt) {
             }
             break;
         case 119: /* F8 */
-            if (!rvw.common.apple) {
-                rvw.common.pluckapple();
+            if (!apple) {
+                pluckapple();
             }
     }
 }
 
 function setupVConfig() {
-    const a = rvw.common.copyFile2AppStorage("xml/config.xml", "xml/config.xml");
+    const a = copyFile2AppStorage("xml/config.xml", "xml/config.xml");
     if (!a) {
         return a;
     }

@@ -1,4 +1,5 @@
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
+import {blankSlide, showLogoSlide} from "@app/common";
 
 export class WebEngine {
     constructor() {
@@ -31,11 +32,11 @@ export class WebEngine {
         }
 
         function logoPresentation() {
-            rvw.common.showLogoSlide();
+            showLogoSlide();
         }
 
         function blankPresentation() {
-            rvw.common.blankSlide();
+            blankSlide();
         }
 
         function processSong(song) {

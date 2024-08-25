@@ -2,6 +2,7 @@ import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
 import {Prompt} from "@app/prompt";
 import {processNavBibleRefFind} from "@/navigation";
+import {clearSelectList} from "@app/common";
 
 export class Scheduler {
     constructor() {
@@ -203,7 +204,7 @@ export class Scheduler {
         function i() {
             A("Updating Schedule UI");
             if (t.data != null) {
-                rvw.common.clearSelectList("sch_selectID");
+                clearSelectList("sch_selectID");
                 var Y = t.data.length;
                 for (var Z = 0; Z < Y; Z++) {
                     var X = t.data[Z];
@@ -215,7 +216,7 @@ export class Scheduler {
                 }
                 e();
             } else {
-                rvw.common.clearSelectList("sch_selectID");
+                clearSelectList("sch_selectID");
                 document.getElementById("sch_verseTextID").innerHTML = "";
                 document.getElementById("sch_selectID").options[0] = new Option(
                     "None",
@@ -226,7 +227,7 @@ export class Scheduler {
         function V() {
             A("Updating Schedule UI");
             if (t.data != null) {
-                rvw.common.clearSelectList("sch_selectID");
+                clearSelectList("sch_selectID");
                 var Y = t.data.length;
                 for (var Z = 0; Z < Y; Z++) {
                     var X = t.data[Z];
@@ -237,7 +238,7 @@ export class Scheduler {
                 }
                 e();
             } else {
-                rvw.common.clearSelectList("sch_selectID");
+                clearSelectList("sch_selectID");
                 document.getElementById("sch_verseTextID").innerHTML = "";
                 document.getElementById("sch_selectID").options[0] = new Option(
                     "None",

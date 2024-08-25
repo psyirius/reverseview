@@ -1,3 +1,6 @@
+import {clearSelectList, presentationContentString} from "@app/common";
+import {presentationCtx} from "@app/presentation";
+
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
 $RvW.stageView = false;
@@ -21,27 +24,27 @@ var index_for_presentationContent = 0;
 function passVariable(isStageView, _ = undefined) {
     _ ??= this.ctx; // this => is global of the holding context
 
-    $RvW.presentationContent = rvw.common.presentationContentString(
-        rvw.presentation.p_title,
-        rvw.presentation.p_text1_font,
-        rvw.presentation.p_text2_font,
-        rvw.presentation.p_text1_arr[rvw.presentation.p_current_index],
-        rvw.presentation.p_text2_arr[rvw.presentation.p_current_index]
+    $RvW.presentationContent = presentationContentString(
+        presentationCtx.p_title,
+        presentationCtx.p_text1_font,
+        presentationCtx.p_text2_font,
+        presentationCtx.p_text1_arr[presentationCtx.p_current_index],
+        presentationCtx.p_text2_arr[presentationCtx.p_current_index]
     );
-    index_for_presentationContent = rvw.presentation.p_current_index;
-    _.p_text1_arr = rvw.presentation.p_text1_arr;
-    _.p_text2_arr = rvw.presentation.p_text2_arr;
-    _.p_text1_font = rvw.presentation.p_text1_font;
-    _.p_text2_font = rvw.presentation.p_text2_font;
-    _.p_title = rvw.presentation.p_title;
-    _.p_footnote = rvw.presentation.p_footer;
-    _.p_current_index = rvw.presentation.p_current_index;
-    _.p_last_index = rvw.presentation.p_last_index;
-    _.p_bkgnd_filename = rvw.presentation.p_bkgnd_filename;
-    _.p_bkgnd_motion = rvw.presentation.p_bkgnd_motion;
+    index_for_presentationContent = presentationCtx.p_current_index;
+    _.p_text1_arr = presentationCtx.p_text1_arr;
+    _.p_text2_arr = presentationCtx.p_text2_arr;
+    _.p_text1_font = presentationCtx.p_text1_font;
+    _.p_text2_font = presentationCtx.p_text2_font;
+    _.p_title = presentationCtx.p_title;
+    _.p_footnote = presentationCtx.p_footer;
+    _.p_current_index = presentationCtx.p_current_index;
+    _.p_last_index = presentationCtx.p_last_index;
+    _.p_bkgnd_filename = presentationCtx.p_bkgnd_filename;
+    _.p_bkgnd_motion = presentationCtx.p_bkgnd_motion;
     _.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
-    _.p_font_color = rvw.presentation.p_font_color;
-    _.p_font_color2 = rvw.presentation.p_font_color2;
+    _.p_font_color = presentationCtx.p_font_color;
+    _.p_font_color2 = presentationCtx.p_font_color2;
     _.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
     if (isStageView === 1) {
         const f = $("#thirdview_fcolor").val();
@@ -57,7 +60,7 @@ function passVariable(isStageView, _ = undefined) {
         if (isStageView === 1) {
             let v = $RvW.vvConfigObj.get_stageStyleVal();
             if (v !== "3") {
-                if (rvw.presentation.p_text_orientation === "2") {
+                if (presentationCtx.p_text_orientation === "2") {
                     v = "2";
                 }
             }
@@ -77,7 +80,7 @@ function passVariable(isStageView, _ = undefined) {
             const h = $RvW.vvConfigObj.get_svShowHorizontal();
             _.p_text_orientation = `${v}|${j}|${r}|${s}|${$RvW.colorChart[g]}|${p}|${i}|${d}|${e}|${c}|${n}|${k}|${q}|${h}|${l}`;
         } else {
-            _.p_text_orientation = rvw.presentation.p_text_orientation;
+            _.p_text_orientation = presentationCtx.p_text_orientation;
         }
     }
     _.p_window_X = pWindowX;
@@ -108,8 +111,8 @@ function passVariable(isStageView, _ = undefined) {
     _.p_showLogo = $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
     _.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
     _.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
-    _.p_ver1ScaleFactor = rvw.presentation.p_ver1ScaleFactor;
-    _.p_ver2ScaleFactor = rvw.presentation.p_ver2ScaleFactor;
+    _.p_ver1ScaleFactor = presentationCtx.p_ver1ScaleFactor;
+    _.p_ver2ScaleFactor = presentationCtx.p_ver2ScaleFactor;
     _.p_isArabic1 = false;
     _.p_isArabic2 = false;
     {
@@ -140,7 +143,7 @@ function getScreenList() {
 export function fillScreenList(idSel, savedIndex) {
     const screens = getScreenList();
 
-    rvw.common.clearSelectList(idSel);
+    clearSelectList(idSel);
 
     {
         function isSameRect(rect1, rect2) {
@@ -381,7 +384,7 @@ function DOMIntializeStageViewCallback(a) {
     air.trace('>>> stageWindow.htmlDOMInitialize')
 }
 function updatePresentationContent(b) {
-    var a = rvw.presentation.p_text1_arr.length;
+    var a = presentationCtx.p_text1_arr.length;
     if (b) {
         index_for_presentationContent++;
         if (index_for_presentationContent >= a) {
@@ -393,12 +396,12 @@ function updatePresentationContent(b) {
             index_for_presentationContent = a - 1;
         }
     }
-    $RvW.presentationContent = rvw.common.presentationContentString(
-        rvw.presentation.p_title,
-        rvw.presentation.p_text1_font,
-        rvw.presentation.p_text2_font,
-        rvw.presentation.p_text1_arr[index_for_presentationContent],
-        rvw.presentation.p_text2_arr[index_for_presentationContent]
+    $RvW.presentationContent = presentationContentString(
+        presentationCtx.p_title,
+        presentationCtx.p_text1_font,
+        presentationCtx.p_text2_font,
+        presentationCtx.p_text1_arr[index_for_presentationContent],
+        presentationCtx.p_text2_arr[index_for_presentationContent]
     );
 }
 export function call_nextSlide() {
@@ -410,7 +413,7 @@ export function call_nextSlide() {
     }
     updatePresentationContent(true);
 }
-function call_prevSlide() {
+export function call_prevSlide() {
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.prevSlide();
         if ($RvW.stageView) {

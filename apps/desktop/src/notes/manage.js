@@ -2,6 +2,7 @@ import {NotesInfo} from "./notes";
 import {insertError, insertResult} from "@/song/indexing";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
+import {clearSelectList, extractFileName} from "@app/common";
 
 export class NotesManager {
     constructor(ftflg) {
@@ -143,7 +144,7 @@ export class NotesManager {
             Y.addEventListener(air.Event.SELECT, X);
             function X() {
                 var Z = air.File.applicationStorageDirectory;
-                var ac = rvw.common.extractFileName(Y.nativePath);
+                var ac = extractFileName(Y.nativePath);
                 var aa = "./notes/" + ac;
                 Z = Z.resolvePath(aa);
                 Y.copyTo(Z, true);
@@ -230,7 +231,7 @@ export class NotesManager {
         }
         function v() {
             if (w.data != null) {
-                rvw.common.clearSelectList("nm_selectID");
+                clearSelectList("nm_selectID");
                 var X = w.data.length;
                 for (var Y = 0; Y < X; Y++) {
                     var W = w.data[Y];

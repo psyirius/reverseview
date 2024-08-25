@@ -3,6 +3,7 @@ import {BibleSearch} from "@/bible/search";
 import {loadSQLBible} from "@/bible/manager";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
+import {clearSelectList, extractFileName, save2file} from "@app/common";
 
 $RvW.bibleVersionArray = ["", ""];
 
@@ -57,8 +58,8 @@ export function loadBibleVersion() {
 }
 
 export function versionFill(b) {
-    rvw.common.clearSelectList("version1Menu");
-    rvw.common.clearSelectList("version2Menu");
+    clearSelectList("version1Menu");
+    clearSelectList("version2Menu");
     const a = $RvW.bibleVersionArray.length;
     for (let i = 1; i < a; i++) {
         document.getElementById("version1Menu").options[i] = new Option(
@@ -185,7 +186,7 @@ function loadVersionList() {
     air.trace("Load Version List function...");
     var a = $RvW.bibleVersionArray.length;
     air.trace("Number of version: " + a);
-    rvw.common.clearSelectList("selectVersionList");
+    clearSelectList("selectVersionList");
     for (i = 1; i < a; i++) {
         document.getElementById("selectVersionList").options[i - 1] = new Option(
             $RvW.bibleVersionArray[i][0],
@@ -208,7 +209,7 @@ function updateVersionDetails() {
     var d = g.split(",");
     var j = d.length;
     document.getElementById("fontVersionList").options.length = 0;
-    rvw.common.clearSelectList("fontVersionList");
+    clearSelectList("fontVersionList");
     var f = 0;
     var c = true;
     for (var e = 0; e < j; e++) {
@@ -267,7 +268,7 @@ function deleteVersion() {
             $RvW.bibleVersionArray.splice(a, 1);
             var b = generateVersionXML();
             var o = "./xml/version.xml";
-            rvw.common.save2file(b, o, false);
+            save2file(b, o, false);
             loadVersionList();
             var n = j * 1 + 1;
             var l = $RvW.vvConfigObj.get_version1();
@@ -321,7 +322,7 @@ function saveVersion() {
     $RvW.setFontForList();
     var f = generateVersionXML();
     var c = "./xml/version.xml";
-    rvw.common.save2file(f, c, false);
+    save2file(f, c, false);
     $RvW.updateVerseContainer();
 }
 
@@ -397,7 +398,7 @@ function continueLoadingZephania() {
     $RvW.bibleVersionArray[b][6] = new_font;
     var d = generateVersionXML();
     var c = "./xml/version.xml";
-    rvw.common.save2file(d, c, false);
+    save2file(d, c, false);
     loadVersionList();
     versionFill(false);
 }
@@ -464,7 +465,7 @@ function extractDataFromZephania(d) {
 function copyDB() {
     var c = new air.File(dbFilename_hold);
     var a = air.File.applicationStorageDirectory;
-    var b = rvw.common.extractFileName(dbFilename_hold);
+    var b = extractFileName(dbFilename_hold);
     a = a.resolvePath("bible/" + b);
     air.trace("Source: " + c.nativePath);
     air.trace("Destination: " + a.nativePath);
@@ -488,7 +489,7 @@ function continueLoadingDB() {
     $RvW.bibleVersionArray[b][7] = new_booknames;
     var d = generateVersionXML();
     var c = "./xml/version.xml";
-    rvw.common.save2file(d, c, false);
+    save2file(d, c, false);
     loadVersionList();
     versionFill(false);
 }
@@ -552,7 +553,7 @@ function addFontVersionBibleOK() {
     hideFontVersionBox();
     var h = generateVersionXML();
     var d = "./xml/version.xml";
-    rvw.common.save2file(h, d, false);
+    save2file(h, d, false);
 }
 
 function showFontVersionBox() {
@@ -595,7 +596,7 @@ export function getVersion1Name() {
 export function updateVersionXML() {
     var b = generateVersionXML();
     var a = "./xml/version.xml";
-    rvw.common.save2file(b, a, false);
+    save2file(b, a, false);
 }
 function __versionDbg(a) {
     if (vdebug) {

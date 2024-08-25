@@ -1,5 +1,6 @@
 import {getdata} from "@/bible/manager";
 import {setBookChVer} from "@/navigation";
+import {presentationCtx} from "@app/presentation";
 
 export class BibleRecentRefManager {
     maxNumElements = 30
@@ -79,8 +80,8 @@ export class BibleRecentRefManager {
             $RvW.verseIndex = this.vArray[b];
             setBookChVer($RvW.bookIndex, $RvW.chapterIndex * 1 + 1, $RvW.verseIndex * 1 + 1);
             getdata(true);
-            rvw.presentation.p_footer = `${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3]} / ${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3]}`;
-            rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+            presentationCtx.p_footer = `${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3]} / ${$RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3]}`;
+            presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
             $RvW.launch($RvW.verseIndex);
         }
     }

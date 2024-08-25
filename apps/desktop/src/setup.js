@@ -1,4 +1,5 @@
 import {loadVersion} from "@/bible/version";
+import {clearSelectList, UnZip} from "@app/common";
 
 export class BibleVersionSelector {
     constructor(bodyContent) {
@@ -99,7 +100,7 @@ export class BibleUpdater {
             }
         }
         function j() {
-            rvw.common.clearSelectList("updateListID");
+            clearSelectList("updateListID");
 
             // name,description,filename,revision,
 
@@ -148,7 +149,7 @@ export class BibleUpdater {
                 x.writeBytes(w, 0, w.length);
                 x.close();
                 air.trace("Completed downloading the zip file to test.zip");
-                l = new rvw.common.UnZip("", "test.zip");
+                l = new UnZip("", "test.zip");
                 const s = new air.File();
                 air.trace("File....." + l.get_nPath());
                 s.nativePath = l.get_nPath();

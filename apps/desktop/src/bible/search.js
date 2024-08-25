@@ -2,6 +2,7 @@ import { PostIt } from "@/notes/notes";
 import {getVersion1Font} from "@/bible/version";
 import {getVerseFromArray, verseClass} from "@/bible/manager";
 import {Toast} from "@app/toast";
+import {clearSelectList, filesave2vvexport} from "@app/common";
 
 export class BibleSearch {
     constructor(O) {
@@ -69,7 +70,7 @@ export class BibleSearch {
             document.getElementById("adSearchButton").removeEventListener("click", t);
         }
         function G() {
-            rvw.common.clearSelectList("searchBook");
+            clearSelectList("searchBook");
             document.getElementById("searchBook").options[0] = new Option(
                 "All Books",
                 0
@@ -335,7 +336,7 @@ export class BibleSearch {
                     aj = aj + "<tr><td><br></td> <td><br></td> <td><br></td></tr>\n";
                 }
                 aj = aj + "</TABLE>\n</BODY>";
-                rvw.common.filesave2vvexport(aj, ad);
+                filesave2vvexport(aj, ad);
                 alert(
                     'Search Result File "' +
                     ad +

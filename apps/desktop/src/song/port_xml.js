@@ -1,6 +1,7 @@
 import {addTagList, fillTagList} from "@/tags";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
+import {fixHTTPS_Link, specialCategory} from "@app/common";
 
 export class SongPortXML {
     constructor() {
@@ -32,7 +33,7 @@ export class SongPortXML {
                 "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
             var y = c.data.length;
             for (var t = 0; t < y; t++) {
-                if (!rvw.common.specialCategory(c.data[t].cat)) {
+                if (!specialCategory(c.data[t].cat)) {
                     var v = c.data[t].name;
                     v = v.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
                     v = v.replace(/([\x26])/g, "and");
@@ -75,7 +76,7 @@ export class SongPortXML {
                 l();
                 return false;
             }
-            if (rvw.common.specialCategory(m)) {
+            if (specialCategory(m)) {
                 Toast.show("Song Database", "Only user added lyrics can be exported");
                 return false;
             }
@@ -274,7 +275,7 @@ export class SongPortXML {
             for (var y = 0; y < C; y++) {
                 var A = t
                     .getElementsByTagName("song")[y].getElementsByTagName("category")[0].textContent;
-                if (!rvw.common.specialCategory(A)) {
+                if (!specialCategory(A)) {
                     u.name = t
                         .getElementsByTagName("song")[y].getElementsByTagName("name")[0].textContent;
                     u.catIndex = t
@@ -301,7 +302,7 @@ export class SongPortXML {
                         var r = t
                             .getElementsByTagName("song")[y].getElementsByTagName("yvideo")[0];
                         if (r != null) {
-                            u.yvideo = rvw.common.fixHTTPS_Link(r.textContent);
+                            u.yvideo = fixHTTPS_Link(r.textContent);
                         } else {
                             u.yvideo = "";
                         }

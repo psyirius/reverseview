@@ -1,3 +1,5 @@
+import {save2file} from "@app/common";
+
 export class StillBackground {
     constructor() {
         this.init = init;
@@ -100,7 +102,7 @@ export class StillBackground {
                 U = U.resolvePath("background/thumbnail/" + V);
                 A.copyTo(U, true);
                 var ac = "./xml/backgroundlist.xml";
-                rvw.common.save2file(Y, ac, false);
+                save2file(Y, ac, false);
                 q();
             } else {
                 alert("Background already exists.");
@@ -181,7 +183,7 @@ export class StillBackground {
                 o.splice(W, 1);
                 var T = e();
                 var V = "./xml/backgroundlist.xml";
-                rvw.common.save2file(T, V, false);
+                save2file(T, V, false);
                 $RvW.vvConfigObj.set_bkgndIndex(G);
                 $RvW.vvConfigObj.save();
                 q();
@@ -200,7 +202,7 @@ export class StillBackground {
                 o.splice(X, 1);
                 var U = e();
                 var W = "./xml/backgroundlist.xml";
-                rvw.common.save2file(U, W, false);
+                save2file(U, W, false);
                 $RvW.vvConfigObj.set_bkgndIndex(G);
                 $RvW.vvConfigObj.save();
                 q();

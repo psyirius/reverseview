@@ -10,6 +10,7 @@ import {insertError, insertResult} from "@/song/indexing";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
+import {save2file} from "@app/common";
 
 export class SongManager {
     constructor(_arg1, _arg2) {
@@ -384,7 +385,7 @@ export class SongManager {
                 aO = aO + sng.data[aP].name + "|" + sng.data[aP].cat + "\n";
             }
             var aQ = "./song/songlist.txt";
-            rvw.common.save2file(aO, aQ, false);
+            save2file(aO, aQ, false);
         }
         function get_sm_cat_records() {
             return aq;

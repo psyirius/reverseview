@@ -13,6 +13,7 @@ import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
+import {clearSelectList, ImageIcon, isBlank, roundSearchBox, showNotification} from "@app/common";
 
 export class SongNav {
     constructor() {
@@ -92,21 +93,21 @@ export class SongNav {
             s = true;
         }
         function Z() {
-            new rvw.common.ImageIcon(
+            new ImageIcon(
                 "songnav_searchbutton",
                 " SEARCH Song Lyrics ",
                 "graphics/icon/search_32.png",
                 "graphics/icon/search_32.png",
                 ""
             );
-            new rvw.common.ImageIcon(
+            new ImageIcon(
                 "songnav_searchauthorbutton",
                 " SEARCH Song by Author ",
                 "graphics/icon/search_author_32.png",
                 "graphics/icon/search_author_32.png",
                 ""
             );
-            new rvw.common.ImageIcon(
+            new ImageIcon(
                 "songnav_clearbutton",
                 " CLEAR Search ",
                 "graphics/icon/clearsearch_32.png",
@@ -114,9 +115,9 @@ export class SongNav {
                 ""
             );
 
-            rvw.common.roundSearchBox(document.getElementById("songnav_filterbox"));
+            roundSearchBox(document.getElementById("songnav_filterbox"));
             document.getElementById("songnav_filterbox").style.margin = "2px 0px 0px 10px";
-            rvw.common.roundSearchBox(document.getElementById("songnav_editbox"));
+            roundSearchBox(document.getElementById("songnav_editbox"));
         }
         function l() {
             document
@@ -170,7 +171,7 @@ export class SongNav {
         function F() {
             $RvW.learner.finishLearning();
             $RvW.songNavObj.sn_add2schedule();
-            rvw.common.showNotification("Added to schedule");
+            showNotification("Added to schedule");
         }
         function r() {
             $RvW.songNavObj.sn_presentSong();
@@ -323,7 +324,7 @@ export class SongNav {
         }
         function update_CategoryList(ap) {
             var ao = ap;
-            rvw.common.clearSelectList("songnav_category");
+            clearSelectList("songnav_category");
             document.getElementById("songnav_category").options[0] = new Option(
                 "_ALL",
                 0
@@ -779,7 +780,7 @@ export function splitIN2(j) {
     const a = [];
 
     for (let b = 0; b < j.length; b++) {
-        const h = rvw.common.isBlank(j[b]);
+        const h = isBlank(j[b]);
         const k = j[b].split("<BR>");
         let d = "";
         let c = 1;
