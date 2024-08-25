@@ -1,5 +1,7 @@
 // TODO: Implement an express fork using air apis
 
+import {SongPresenter} from "@/song/present";
+
 const mimeTypeMap = {
     '.txt'  : 'text/plain',
     '.css'  : 'text/css',
@@ -448,7 +450,7 @@ class WebRequestHandler {
             case 17: { // Present Song Slide
                 const song = $RvW.songManagerObj.getSongObjWithID(args.id);
                 air.trace('Song: ' + JSON.stringify(song));
-                const spo = new rvw.song.SongPresenter();
+                const spo = new SongPresenter();
                 spo.init(song);
                 spo.present(args.index);
 

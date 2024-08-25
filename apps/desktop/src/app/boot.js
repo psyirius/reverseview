@@ -82,21 +82,20 @@
 
     // execute main
     require(dojoConfig, [
-        "app",
-        ...Object.keys(imports),
-        "dojo/domReady!",
-    ], (app, ...imp) => {
+        'app',
+        'dojo/Deferred',
+        // ...Object.keys(imports),
+        'dojo/domReady!',
+    ], (app, Deferred, ...imp) => {
         air.trace('BOOTED!');
 
-        window.$dtk = window.$dtk || {};
+        // window.$dtk = window.$dtk || {};
 
-        Object.keys(imports).forEach((key, i) => {
-            $dtk[imports[key]] = imp[i];
-        });
+        // Object.keys(imports).forEach((key, i) => {
+        //     $dtk[imports[key]] = imp[i];
+        // });
 
         const yui3Loaded = (() => {
-            const { Deferred } = $dtk;
-
             const deferred = new Deferred();
 
             if (typeof global.__yui3_loaded === 'undefined') {
@@ -108,21 +107,21 @@
             return deferred;
         })();
 
-        TEST: {
-            const { dom, query } = $dtk;
-
-            air.trace('dom: ' + dom.byId("root"));
-            air.trace('query: ' + query("#root"));
-
-            break TEST;
-        }
+        // TEST: {
+        //     const { dom, query } = $dtk;
+        //
+        //     air.trace('dom: ' + dom.byId("root"));
+        //     air.trace('query: ' + query("#root"));
+        //
+        //     break TEST;
+        // }
 
         yui3Loaded.then((Y) => {
             delete global.__yui3_loaded;
 
             air.trace('STARTING!');
 
-            app.start(Y, $dtk);
+            app.start(Y);
         });
     });
 }());

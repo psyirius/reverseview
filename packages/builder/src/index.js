@@ -10,7 +10,12 @@ import * as esbuild from 'esbuild'
  */
 const prepareDefine = (env) => Object.fromEntries(
     Object.entries(env)
-        .map(([key, value]) => [key, JSON.stringify(value)])
+        .map(([key, value]) => [key, (typeof value === 'symbol') ? value.description : JSON.stringify(value)])
+);
+
+const getModuleName = (relPath) => path.join(
+    path.dirname(relPath),
+    path.basename(relPath, path.extname(relPath)),
 );
 
 (async () => {
@@ -34,8 +39,10 @@ const prepareDefine = (env) => Object.fromEntries(
             'TEST',
             'DEV',
         ],
+        env: {
+            mode: 'production',
+        },
         define: {
-            'env.mode': 'production',
         },
         async: true, // needs `Promise` primitive
         // banner: {
@@ -57,11 +64,15 @@ const prepareDefine = (env) => Object.fromEntries(
     // pass: resolve
     {
         Object.assign(files, Object.fromEntries(input.map((filename) => {
-            const absPath = path.resolve(config.srcDir, filename);
-            const relPath = path.relative(config.srcDir, absPath);
-            const moduleName = path.basename(relPath, path.extname(relPath));
+            const srcDir = path.resolve(config.srcDir);
 
-            return [moduleName, absPath];
+            const absPath = path.resolve(srcDir, filename);
+            const relPath = path.relative(srcDir, absPath);
+
+            return [
+                relPath.split(path.sep).join('/'),
+                absPath
+            ];
         })))
 
         for (const moduleId in files) {
@@ -84,7 +95,7 @@ const prepareDefine = (env) => Object.fromEntries(
         for (const [name, { path, source }] of Object.entries(files)) {
             const result = ts.transpileModule(source, {
                 compilerOptions: {
-                    target: ts.ScriptTarget.ES2015,
+                    target: ts.ScriptTarget.ES5,
                     // Preserve generating invalid code
                     module: ts.ModuleKind.ESNext,
                     newLine: ts.NewLineKind.LineFeed,
@@ -100,7 +111,7 @@ const prepareDefine = (env) => Object.fromEntries(
                     stripInternal: config.stripInternal,
                 },
                 fileName: path,
-                moduleName: name,
+                moduleName: getModuleName(name),
                 reportDiagnostics: true,
             });
 
@@ -111,7 +122,7 @@ const prepareDefine = (env) => Object.fromEntries(
         }
     }
 
-    // pass: esbuild
+    // pass: esbuild:transform
     {
         for (const [name, { filename, source }] of Object.entries(files)) {
             const result = await esbuild.transform(source, {
@@ -122,24 +133,33 @@ const prepareDefine = (env) => Object.fromEntries(
                 sourcemap: false,
                 drop: config.drop,
                 dropLabels: config.dropLabels,
-                define: prepareDefine(config.define),
+                define: prepareDefine({
+                    ...(config.define || {}),
+                    'import.meta': {
+                        url: name,
+                        env: (config.env || {}),
+                    },
+                }),
                 banner: config.banner?.js,
                 pure: config.pure,
                 supported: {
                     'bigint': false,
+                    'for-await': false,
                     'top-level-await': false,
+                    'import-attributes': false,
+                    'import-assertions': false,
                     ...(config.supported || {}),
                 },
             })
 
             files[name] = {
                 ...files[name],
-                // source: result.code,
+                source: result.code,
             }
         }
     }
 
-    // pass: swc
+    // pass: swc:transform
     // - make it a module
     // - make it es3 compliant
     {
@@ -169,25 +189,27 @@ const prepareDefine = (env) => Object.fromEntries(
                 // env: {},
                 filename,
                 plugin(module) {
-                    console.log(module);
+                    // console.log(module);
 
                     return module;
                 },
-                // module: {
-                //     type: 'amd',
-                //     moduleId: name,
-                //     importInterop: 'node',
-                // },
+                module: {
+                    type: 'amd',
+                    moduleId: getModuleName(name),
+                    importInterop: 'node',
+                },
                 minify: false,
                 isModule: 'unknown',
             })
 
             files[name] = {
                 ...files[name],
-                source: result.code,
+                // source: result.code,
             }
         }
     }
+
+    // pass: esbuild:build
 
     // TODO: remap imports to our own implementation
     // TODO: inject / import shims
@@ -196,12 +218,14 @@ const prepareDefine = (env) => Object.fromEntries(
     // pass: dump
     {
         for (const [name, { filename, source }] of Object.entries(files)) {
-            const outFilename = `${name}.js`
+            const outFilename = path.resolve(config.outDir, `${getModuleName(name)}.js`)
 
             // console.log(`// ${outFilename}`)
             // console.log(source)
 
-            fs.writeFileSync(path.resolve(config.outDir, outFilename), source)
+            fs.mkdirSync(path.dirname(outFilename), { recursive: true })
+
+            fs.writeFileSync(outFilename, source)
         }
     }
 

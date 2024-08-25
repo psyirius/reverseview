@@ -1,3 +1,6 @@
+import {addTagList, fillTagList} from "@/tags";
+import {Song} from '@/song/obj';
+
 export class SongPortXML {
     constructor() {
         this.init = p;
@@ -17,7 +20,7 @@ export class SongPortXML {
             k = u;
         }
         function l() {
-            var r = new rvw.song.Song();
+            var r = new Song();
             r.init();
             var w = b();
             var u = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -75,7 +78,7 @@ export class SongPortXML {
                 rvw.ui.Toast.show("Song Database", "Only user added lyrics can be exported");
                 return false;
             }
-            var z = new rvw.song.Song();
+            var z = new Song();
             z.init();
             var t = b();
             var v = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -264,7 +267,7 @@ export class SongPortXML {
             }
         }
         function o(t) {
-            var u = new rvw.song.Song();
+            var u = new Song();
             var C = t.getElementsByTagName("song").length;
             var x = true;
             for (var y = 0; y < C; y++) {
@@ -325,7 +328,7 @@ export class SongPortXML {
                             t.getElementsByTagName("song")[y].getElementsByTagName("tags")[0]
                         );
                         u.tags = u.tags.toUpperCase();
-                        rvw.tags.addTagList(u.tags);
+                        addTagList(u.tags);
                         u.slideseq = w(
                             t
                                 .getElementsByTagName("song")[y].getElementsByTagName("slideseq")[0]
@@ -340,7 +343,7 @@ export class SongPortXML {
             if (x) {
                 rvw.ui.Toast.show("No New Songs to add.");
             } else {
-                rvw.tags.fillTagList();
+                fillTagList();
             }
             function w(D) {
                 if (D != null) {

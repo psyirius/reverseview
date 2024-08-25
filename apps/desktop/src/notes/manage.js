@@ -1,4 +1,5 @@
 import {NotesInfo} from "./notes";
+import {insertError, insertResult} from "@/song/indexing";
 
 export class NotesManager {
     constructor(ftflg) {
@@ -406,13 +407,13 @@ export class NotesManager {
             X.parameters[":s"] = D;
             X.execute();
             function W(aa) {
-                X.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
-                X.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
+                X.removeEventListener(air.SQLEvent.RESULT, insertResult);
+                X.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 a();
             }
             function Y(aa) {
-                X.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
-                X.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
+                X.removeEventListener(air.SQLEvent.RESULT, insertResult);
+                X.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 air.trace("INSERT error:", aa.error);
                 air.trace("event.error.code:", aa.error.code);
                 air.trace("event.error.message:", aa.error.message);
@@ -451,13 +452,13 @@ export class NotesManager {
             Y.parameters[":id"] = Z;
             Y.execute();
             function W(ab) {
-                Y.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
-                Y.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
+                Y.removeEventListener(air.SQLEvent.RESULT, insertResult);
+                Y.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 a();
             }
             function X(ab) {
-                Y.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
-                Y.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
+                Y.removeEventListener(air.SQLEvent.RESULT, insertResult);
+                Y.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 air.trace("Error deleting notes DB");
                 air.trace("event.error.code:", ab.error.code);
                 air.trace("event.error.message:", ab.error.message);

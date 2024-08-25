@@ -1,4 +1,4 @@
-rvw.provide('rvw.bible').BibleDB = class BibleDB {
+/*export*/ class BibleDB {
     constructor() {
         this.init = init;
         this.closeDB = v;
@@ -343,4 +343,6 @@ rvw.provide('rvw.bible').BibleDB = class BibleDB {
             }
         }
     }
-};
+}
+
+rvw.provide('rvw.bible').BibleDB = BibleDB;

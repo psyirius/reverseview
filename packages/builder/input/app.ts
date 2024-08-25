@@ -56,7 +56,9 @@ const getAPI = async (url: string) => {
 const str = "Hello!";
 for (const s of str) {
     // @ts-ignore
-    console.log(env.mode + s);
+    console.log(import.meta.env.mode + s);
+    // @ts-ignore
+    console.log(import.meta.url + s);
 
     DEV: {
         console.log('DEBUG');

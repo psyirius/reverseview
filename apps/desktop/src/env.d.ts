@@ -1,16 +1,16 @@
 // declare var air: any;
 
-interface DojoToolkit {
-    Deferred: any;
-
-    dom: {
-        byId(id: string): any;
-    }
-
-    query: (selector: string) => any;
-}
-
-declare var $dtk: DojoToolkit;
+// interface DojoToolkit {
+//     Deferred: any;
+//
+//     dom: {
+//         byId(id: string): any;
+//     }
+//
+//     query: (selector: string) => any;
+// }
+//
+// declare var $dtk: DojoToolkit;
 
 interface YUI2 {
 }

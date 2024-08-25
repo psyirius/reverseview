@@ -4,6 +4,10 @@
 import { SongPortXML } from "./port_xml";
 import { SongImporter } from "./import";
 import { splitIN2 } from "./nav";
+import {removeTag} from "@/tags";
+import {SongSearchType} from "@/const";
+import {insertError, insertResult} from "@/song/indexing";
+import {Song} from '@/song/obj';
 
 export class SongManager {
     constructor(_arg1, _arg2) {
@@ -72,7 +76,7 @@ export class SongManager {
 
         function init(aO, aN) {
             aw();
-            av = new rvw.song.Song();
+            av = new Song();
             ax = false;
             ah();
         }
@@ -214,7 +218,7 @@ export class SongManager {
         }
         function getSongObjWithID(aS) {
             let aP = false;
-            const so = new rvw.song.Song();
+            const so = new Song();
             so.init();
             so.slides = [];
             const aN = sng.data.length;
@@ -257,7 +261,7 @@ export class SongManager {
         }
         function getSongObjWithName(aQ) {
             var aP = false;
-            var aS = new rvw.song.Song();
+            var aS = new Song();
             aS.init();
             aS.slides = new Array();
             var aN = sng.data.length;
@@ -308,7 +312,7 @@ export class SongManager {
             return aN;
         }
         function getSongObj(aO, aQ) {
-            var aP = new rvw.song.Song();
+            var aP = new Song();
             aP.init();
             aP.slides = new Array();
             if (!aQ) {
@@ -792,26 +796,26 @@ export class SongManager {
             sqlQuery.addEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
             let aT = "";
-            if (aQ === $RvW.SongSearchType.TITLE) {
+            if (aQ === SongSearchType.TITLE) {
                 aT = "SELECT * FROM sm WHERE name LIKE :param1 OR title2 LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === $RvW.SongSearchType.LYRICS) {
+            if (aQ === SongSearchType.LYRICS) {
                 aT =
                     "SELECT * FROM sm WHERE lyrics LIKE :param1 OR lyrics2 LIKE :param1 OR name LIKE :param1 OR subcat == :param2";
                 sqlQuery.parameters[":param1"] = aP;
                 var aS = /%/gi;
                 sqlQuery.parameters[":param2"] = aP.replace(aS, "");
             }
-            if (aQ === $RvW.SongSearchType.TAGS) {
+            if (aQ === SongSearchType.TAGS) {
                 aT = "SELECT * FROM sm WHERE tags LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === $RvW.SongSearchType.AUTHOR) {
+            if (aQ === SongSearchType.AUTHOR) {
                 aT = "SELECT * FROM sm WHERE copy LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === $RvW.SongSearchType.NUMBER) {
+            if (aQ === SongSearchType.NUMBER) {
                 aT = "SELECT * FROM sm WHERE subcat LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
@@ -822,8 +826,8 @@ export class SongManager {
                 sqlQuery.removeEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
                 sqlRes = sqlQuery.getResult();
-                if (aQ === $RvW.SongSearchType.TAGS && sqlRes.data == null) {
-                    rvw.tags.removeTag(aP);
+                if (aQ === SongSearchType.TAGS && sqlRes.data == null) {
+                    removeTag(aP);
                     rvw.ui.Toast.show("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {
@@ -852,15 +856,15 @@ export class SongManager {
             aP.parameters[":id"] = aQ;
             aP.execute();
             function aN(aS) {
-                aP.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
-                aP.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
+                aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
+                aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 C();
                 F();
                 at();
             }
             function aO(aS) {
-                aP.removeEventListener(air.SQLEvent.RESULT, rvw.song.indexing.insertResult);
-                aP.removeEventListener(air.SQLErrorEvent.ERROR, rvw.song.indexing.insertError);
+                aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
+                aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 __debug("Error deleting song DB");
                 __debug("event.error.code:" + aS.error.code);
                 __debug("event.error.message:" + aS.error.message);
@@ -1130,7 +1134,7 @@ export class SongManager {
             __debug("record length " + aO);
             for (var aQ = 0; aQ < aO; aQ++) {
                 var aN = sng.data[aQ].cat;
-                var aR = new rvw.song.Song();
+                var aR = new Song();
                 if (aN == "Malayalam 2019") {
                     aR = getSongObj(aQ, false);
                     var aP = findIndexFromTestTitle1(aR.name);

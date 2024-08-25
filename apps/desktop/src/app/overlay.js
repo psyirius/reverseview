@@ -1,4 +1,4 @@
-rvw.provide("rvw.ui").Overlay = { // overlay panel
+export default { // overlay panel
     __instance: null,
     setup() {
         this.__instance = new $Y.Overlay({

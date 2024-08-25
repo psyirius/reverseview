@@ -4,6 +4,13 @@
 // - YAHOO.widget.Paginator
 // - YAHOO.widget.DataTable
 
+import {fillTagList, getTags2Array, setTag2All} from "@/tags";
+import {SongSearchType} from "@/const";
+import {Deferred} from "@/utils/async";
+import {SongPresenter} from "@/song/present";
+import {SongLyrics} from "@/song/lyrics";
+import {Song} from '@/song/obj';
+
 export class SongNav {
     constructor() {
         this.setFormats = setFormats;
@@ -60,8 +67,6 @@ export class SongNav {
                 source: (query, callback) => {
                     __debug(`Query: ${query}`);
 
-                    const { Deferred } = rvw.utils.async;
-
                     m_suggestion_defer = new Deferred();
                     m_suggestion_defer.then((data) => {
                         callback(data)
@@ -76,11 +81,11 @@ export class SongNav {
 
             Z();
             l();
-            y = new rvw.song.Song();
+            y = new Song();
             y.init();
             y.slides = [];
-            rvw.tags.getTags2Array();
-            rvw.tags.fillTagList();
+            getTags2Array();
+            fillTagList();
             s = true;
         }
         function Z() {
@@ -180,7 +185,7 @@ export class SongNav {
             const al = document.getElementById("songnav_category").options[am].text;
             __debug("Selected Category Value: " + al);
             $("#songnav_editbox").val("");
-            rvw.tags.setTag2All();
+            setTag2All();
             ag = false;
             $RvW.songManagerObj.getSongsFromCat(al);
         }
@@ -194,7 +199,7 @@ export class SongNav {
                 clearTimeout(searchDelay);
                 if (am !== "ALL") {
                     al = "%" + am + "%";
-                    $RvW.songManagerObj.searchRecords(al, $RvW.SongSearchType.TAGS);
+                    $RvW.songManagerObj.searchRecords(al, SongSearchType.TAGS);
                 } else {
                     i();
                 }
@@ -216,7 +221,7 @@ export class SongNav {
             const wordsInQuery = searchQuery.split(" ");
             const numWordsInQuery = wordsInQuery.length;
             __debug("Words " + numWordsInQuery);
-            if (searchMode === $RvW.SongSearchType.TITLE && numWordsInQuery === 1) {
+            if (searchMode === SongSearchType.TITLE && numWordsInQuery === 1) {
                 const av = sqlRes.data.length;
                 for (let ap = 0; ap < av; ap++) {
                     if (category === "_ALL" || sqlRes.data[ap].cat === category) {
@@ -340,7 +345,7 @@ export class SongNav {
             J(y);
         }
         function sn_presentSong() {
-            const al = new rvw.song.SongPresenter();
+            const al = new SongPresenter();
             al.init(y);
             al.present();
         }
@@ -394,11 +399,11 @@ export class SongNav {
                 var al = document.getElementById("songnav_editbox").value;
                 al = $.trim(al);
                 if ($.isNumeric(al)) {
-                    $RvW.songManagerObj.searchRecords(al, $RvW.SongSearchType.NUMBER);
+                    $RvW.songManagerObj.searchRecords(al, SongSearchType.NUMBER);
                 } else {
                     $RvW.learner.addWord(al);
                     al = al + "%";
-                    $RvW.songManagerObj.searchRecords(al, $RvW.SongSearchType.TITLE);
+                    $RvW.songManagerObj.searchRecords(al, SongSearchType.TITLE);
                 }
                 searchDelay = null;
             }, searchDelayTime);
@@ -407,18 +412,18 @@ export class SongNav {
             var al = document.getElementById("songnav_editbox").value;
             al = $.trim(al);
             al = "%" + al + "%";
-            $RvW.songManagerObj.searchRecords(al, $RvW.SongSearchType.LYRICS);
+            $RvW.songManagerObj.searchRecords(al, SongSearchType.LYRICS);
         }
         function aj() {
             var al = document.getElementById("songnav_editbox").value;
             var am = "%" + al + "%";
-            $RvW.songManagerObj.searchRecords(am, $RvW.SongSearchType.AUTHOR);
+            $RvW.songManagerObj.searchRecords(am, SongSearchType.AUTHOR);
         }
         function i() {
             ag = false;
             $RvW.learner.cancelLearning();
             $("#songnav_editbox").val("");
-            rvw.tags.setTag2All();
+            setTag2All();
             R();
         }
         function J(at) {
@@ -521,11 +526,11 @@ export class SongNav {
                 var ay = "lyricsID" + aD;
                 var aq = "lyricsID" + aD + "_2";
                 document.getElementById(ay).style.fontFamily = at.font;
-                ar[aD] = new rvw.song.SongLyrics();
+                ar[aD] = new SongLyrics();
                 ar[aD].init(at, ay, aD, 1);
                 if (aC != null) {
                     document.getElementById(aq).style.fontFamily = at.font2;
-                    am[aD] = new rvw.song.SongLyrics();
+                    am[aD] = new SongLyrics();
                     am[aD].init(at, aq, aD, 2);
                 }
             }
@@ -573,12 +578,12 @@ export class SongNav {
         function q(al) {
             var an = document.getElementById(al.target.id).innerHTML;
             var am = "%" + an + "%";
-            $RvW.songManagerObj.searchRecords(am, $RvW.SongSearchType.TAGS);
+            $RvW.songManagerObj.searchRecords(am, SongSearchType.TAGS);
         }
         function ak(am) {
             var al = document.getElementById(am.target.id).innerHTML;
             var an = "%" + al + "%";
-            $RvW.songManagerObj.searchRecords(an, $RvW.SongSearchType.AUTHOR);
+            $RvW.songManagerObj.searchRecords(an, SongSearchType.AUTHOR);
         }
         function searchComplete(sqlRes, al) {
             __debug("Search Complete " + sqlRes);
