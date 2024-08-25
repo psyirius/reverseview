@@ -68,5 +68,3 @@ export const Toast = {
         toast.show();
     },
 };
-
-rvw.provide("rvw.ui").Toast = Toast;

@@ -1,4 +1,6 @@
 import {presentationCtx} from "@app/presentation";
+import {Toast} from "@app/toast";
+import {presentation} from "@/p_window";
 
 export let apple = false;
 
@@ -63,14 +65,14 @@ export function backupWebroot() {
                 c.moveTo(a, true);
                 return true;
             } catch (b) {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Creating Webroot Backup",
                     b.message + " Files in use by another application"
                 );
                 return false;
             }
         } else {
-            rvw.ui.Toast.show("Creating Webroot Backup", "Backup already exists.");
+            Toast.show("Creating Webroot Backup", "Backup already exists.");
             return true;
         }
     } else {
@@ -501,7 +503,7 @@ export function promoteVV(a) {
     presentationCtx.p_bkgnd_color = "black";
     presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
     presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-    rvw.present.presentation();
+    presentation();
 }
 
 export function showLogoSlide() {
@@ -519,7 +521,7 @@ export function showLogoSlide() {
     presentationCtx.p_bkgnd_color = "black";
     presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
     presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-    rvw.present.presentation();
+    presentation();
 }
 
 export function blankSlide() {
@@ -568,13 +570,8 @@ export function specialCategory(d) {
     if (apple) {
         return false;
     }
-    var b = d.toLowerCase();
-    b = b.split(" ");
-    if (b[0] == "vv") {
-        return true;
-    } else {
-        return false;
-    }
+    let b = d.toLowerCase().split(" ");
+    return b[0] === "vv";
 }
 
 export function pluckapple() {
@@ -597,6 +594,6 @@ export function fixHTTPS_Link(a) {
 }
 
 export function isBlank(b) {
-    var a = b.replace(/\s/g, "").replace(/<BR>/g, "");
+    const a = b.replace(/\s/g, "").replace(/<BR>/g, "");
     return a.length <= 0;
 }

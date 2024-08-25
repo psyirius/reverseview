@@ -83,5 +83,3 @@ export function nav_addVerse2Schedule() {
     var c = $RvW.getVerseValue();
     $RvW.scheduleObj.processAddVerse(b, a, c);
 }
-
-rvw.provide("rvw.navigation").disableNavButtons = disableNavButtons;

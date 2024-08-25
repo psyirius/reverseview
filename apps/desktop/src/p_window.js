@@ -1,5 +1,6 @@
 import {clearSelectList, presentationContentString} from "@app/common";
 import {presentationCtx} from "@app/presentation";
+import {disableNavButtons} from "@/navigation";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
@@ -373,7 +374,7 @@ export function closePresentWindowMain() {
 export function presentWindowClosed() {
     $RvW.presentWindowOpen = false;
     $RvW.presentationWindow = null;
-    rvw.navigation.disableNavButtons(true);
+    disableNavButtons(true);
 }
 function DOMIntializeCallback(a) {
     $RvW.presentationWindow.window.passVariable = passVariable;
@@ -436,5 +437,3 @@ export function call_closePresentation() {
     }
     $RvW.presentationContent = "";
 }
-
-rvw.provide("rvw.present").presentation = presentation;

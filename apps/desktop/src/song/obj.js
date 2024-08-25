@@ -52,8 +52,8 @@ export class Song {
             s = "";
             a = "";
             g = "";
-            l = new Array();
-            e = new Array();
+            l = [];
+            e = [];
             q = "";
             h = "";
             c = "";
@@ -64,5 +64,3 @@ export class Song {
         }
     }
 }
-
-rvw.provide("rvw.song").Song = Song;
