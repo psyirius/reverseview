@@ -1,24 +1,30 @@
 import {presentationCtx} from "@app/presentation";
-import {Toast} from "@app/toast";
 import {presentation} from "@/p_window";
+import {Toast} from "@app/toast";
 
 export let apple = false;
 
 export function save2file(c, d, a) {
-    var b = air.File.applicationStorageDirectory.resolvePath(d);
-    var e = new air.FileStream();
-    e.open(b, air.FileMode.WRITE);
+    const {
+        File,
+        FileStream,
+        FileMode,
+    } = air;
+
+    const b = File.applicationStorageDirectory.resolvePath(d);
+    const e = new FileStream();
+    e.open(b, FileMode.WRITE);
     e.writeMultiByte(c, "utf-8");
     e.close();
 }
 
-export function filesave2vvexport(c, a) {
-    var d = "./vvexport/" + a + ".html";
-    var b = air.File.desktopDirectory.resolvePath(d);
-    var e = new air.FileStream();
-    e.open(b, air.FileMode.WRITE);
-    e.writeMultiByte(c, "utf-8");
-    e.close();
+export function filesave2vvexport(content, name) {
+    const filename = `./vvexport/${name}.html`;
+    const dtFilename = air.File.desktopDirectory.resolvePath(filename);
+    const fz = new air.FileStream();
+    fz.open(dtFilename, air.FileMode.WRITE);
+    fz.writeMultiByte(content, "utf-8");
+    fz.close();
 }
 
 export function fileExist(b, a) {

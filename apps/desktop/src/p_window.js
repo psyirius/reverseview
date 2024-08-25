@@ -144,7 +144,9 @@ function getScreenList() {
 export function fillScreenList(idSel, savedIndex) {
     const screens = getScreenList();
 
-    clearSelectList(idSel);
+    /** @type {HTMLSelectElement} */
+    const el = document.getElementById(idSel);
+    el.innerHTML = "";
 
     {
         function isSameRect(rect1, rect2) {
@@ -168,17 +170,17 @@ export function fillScreenList(idSel, savedIndex) {
 
             let c = `Screen ${i + 1}${isMain}: ${width}x${height} @ ${x},${y}`;
 
-            document.getElementById(idSel).options[i] = new Option(c, i);
+            el.options[i] = new Option(c, i);
         }
     }
 
     setScreenIndex(idSel, savedIndex, screens.length);
 }
-function getSelectedScreenIndex() {
+function saveSelectedScreenIndex() {
     const a = document.getElementById("selectScreenID").selectedIndex;
     $RvW.rvwPreferences.set("app.settings.screen.main.index", a);
 }
-function getSelectedStageScreenIndex() {
+function saveSelectedStageScreenIndex() {
     const a = document.getElementById("selectStageScreenID").selectedIndex;
     $RvW.rvwPreferences.set("app.settings.screen.stage.index", a);
 }
@@ -193,13 +195,13 @@ export function addScreenSelectionEvent() {
     document
         .getElementById("selectScreenID")
         .addEventListener("change", function processScreenSelChange() {
-            getSelectedScreenIndex();
+            saveSelectedScreenIndex();
             $RvW.vvConfigObj.save();
         }, false);
     document
         .getElementById("selectStageScreenID")
         .addEventListener("change", function processStageScreenSelChange() {
-            getSelectedStageScreenIndex();
+            saveSelectedStageScreenIndex();
             $RvW.vvConfigObj.save();
         }, false);
 }
@@ -219,10 +221,9 @@ export function presentation() {
         $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
     }
     $RvW.stageView = $RvW.stageView && screens[stageViewScreenIndex] != null;
-    let e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 0);
+    let e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 1);
     if (screens[e] == null) {
         e = 0;
-        $RvW.rvwPreferences.set("app.settings.screen.main.index", e);
     }
     if (dualScreen && screens[e] != null) {
         c = screens[e].bounds;

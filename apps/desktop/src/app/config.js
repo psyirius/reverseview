@@ -1371,7 +1371,7 @@ export function configInit() {
     $RvW.remoteVV_UI_Obj.configure();
 
     {
-        fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
+        fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
         fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
         addScreenSelectionEvent();
     }
@@ -1379,7 +1379,7 @@ export function configInit() {
     // Refreshes the screens list on clicking the select menus
     {
         document.getElementById("refresh-screens-main").addEventListener('click', function () {
-            fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
+            fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
         });
         document.getElementById("refresh-screens-stage").addEventListener('click', function () {
             fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
