@@ -1,9 +1,15 @@
+// svelte like store with an extra get method
+
 type Subscriber<T> = (value: T) => void;
 type Unsubscriber = () => void;
 type Updater<T> = (value: T) => T;
 
-export interface Writable<T> {
+export interface Readable<T> {
     subscribe: (run: Subscriber<T>) => Unsubscriber;
+    get: () => T;
+}
+
+export interface Writable<T> extends Readable<T> {
     set: (value: T) => void;
     update: (updater: Updater<T>) => void;
 }
@@ -33,15 +39,18 @@ export function writable<T>(value: T): Writable<T> {
         set(updater(value));
     }
 
-    return {
-        subscribe: subscribe,
-        set: set,
-        update: update
-    };
-}
+    function get() {
+        let value: T;
+        subscribe((_) => (value = _))(); // sub, get the value, unsub
+        return value;
+    }
 
-export interface Readable<T> {
-    subscribe: (run: Subscriber<T>) => Unsubscriber;
+    return {
+        subscribe,
+        set,
+        update,
+        get,
+    };
 }
 
 export function readable<T>(initialValue: T, start: (set: (value: T) => void) => void): Readable<T> {
@@ -69,8 +78,15 @@ export function readable<T>(initialValue: T, start: (set: (value: T) => void) =>
         };
     }
 
+    function get() {
+        let value: T;
+        subscribe((_) => (value = _))(); // sub, get the value, unsub
+        return value;
+    }
+
     return {
-        subscribe: subscribe
+        subscribe,
+        get
     };
 }
 
@@ -127,15 +143,20 @@ export function derived<S, T>(stores: Writable<S> | Writable<S>[], fn: (values: 
         }
     }
 
+    function get() {
+        let value: T;
+        subscribe((_) => (value = _))(); // sub, get the value, unsub
+        return value;
+    }
+
     return {
-        subscribe: subscribe
+        subscribe,
+        get
     };
 }
 
 export function get<T>(store: Readable<T>): T {
     let value: T;
-    store.subscribe(function (newValue) {
-        value = newValue;
-    })();
+    store.subscribe((_) => (value = _))(); // sub, get the value, unsub
     return value;
 }

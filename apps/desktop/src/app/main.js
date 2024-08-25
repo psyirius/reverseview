@@ -1583,8 +1583,7 @@ $RvW.english_booknames = [];
 export function start(Y) {
     setupUI();
 
-    let i = 0;
-    setInterval(() => okx.set(++i), 1000);
+    setInterval(() => okx.set(okx.get() + 1), 1000);
 
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
