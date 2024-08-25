@@ -1,5 +1,7 @@
 import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
+import {Prompt} from "@app/prompt";
+import {processNavBibleRefFind} from "@/navigation";
 
 export class Scheduler {
     constructor() {
@@ -159,7 +161,7 @@ export class Scheduler {
             A("About to delete ALL Records from Selected DB. New confirm");
             var X = "SCHEDULE";
             var Y = "Are you sure you want to delete ALL schedule entries?";
-            rvw.ui.Prompt.exec(X, Y, n);
+            Prompt.exec(X, Y, n);
         }
         function p() {
             M = document.getElementById("sch_selectID").selectedIndex;
@@ -410,7 +412,7 @@ export class Scheduler {
         function getSelectedSchedule() {
             const Y = document.getElementById("sch_selectID");
             if (Y.selectedIndex === -1) {
-                rvw.ui.Toast.show("Schedule", "Please select a Schedule");
+                Toast.show("Schedule", "Please select a Schedule");
                 return
             }
             return Y.options[Y.selectedIndex].value;
@@ -725,7 +727,7 @@ export class Scheduler {
                     $("#nav_bibleRefID").val(
                         $RvW.booknames[X.book] + " " + (X.ch + 1) + " " + (X.ver + 1)
                     );
-                    rvw.navigation.processNavBibleRefFind();
+                    processNavBibleRefFind();
                     $RvW.leftTabView.selectChild(0);
                     $RvW.rightTabView.selectChild(0);
                 }

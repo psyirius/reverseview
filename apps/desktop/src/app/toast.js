@@ -1,4 +1,4 @@
-rvw.provide("rvw.ui").Toast = {
+export const Toast = {
     __instance: null,
     __Toast: class {
         constructor(header, message, config) {
@@ -68,3 +68,5 @@ rvw.provide("rvw.ui").Toast = {
         toast.show();
     },
 };
+
+rvw.provide("rvw.ui").Toast = Toast;

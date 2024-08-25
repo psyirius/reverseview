@@ -1,4 +1,5 @@
-import {getVerseFromArray} from "./manager";
+import {getVerseFromArray} from "./manager"; // probable circular dependency
+import {Toast} from "@app/toast";
 
 export class BibleDB {
     constructor() {
@@ -330,7 +331,7 @@ export class BibleDB {
                 ak.removeEventListener(air.SQLErrorEvent.ERROR, am);
                 var aq = getVerseFromArray(ai, ap, aj);
                 q[aq - 1] = aj + " " + ao;
-                rvw.ui.Toast.show("Bible Verse Update", "Verse Updated");
+                Toast.show("Bible Verse Update", "Verse Updated");
             }
             function am(aq) {
                 ak.removeEventListener(air.SQLEvent.RESULT, al);
@@ -341,7 +342,7 @@ export class BibleDB {
                     aq.error.code +
                     " | " +
                     aq.error.message;
-                rvw.ui.Toast.show("Bible Verse Update", ar);
+                Toast.show("Bible Verse Update", ar);
             }
         }
     }

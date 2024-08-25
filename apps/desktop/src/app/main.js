@@ -29,12 +29,28 @@ import SplashScreen from './splash';
 import Overlay from "./overlay";
 
 import { setup as setupUI } from './ui/main';
+import {Prompt} from "@app/prompt";
+import {Toast} from "@app/toast";
+import {
+    bibleRefBlur,
+    bibleRefFocus,
+    disableNavButtons,
+    nav_addVerse2Schedule,
+    processNavBibleRef,
+    processNavBibleRefFind
+} from "@/navigation";
+import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/versionupdate";
+import { $ as okx } from '@/stores/global'
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
 
 DEV: {
     // break DEV;
+
+    okx.subscribe((v) => {
+        console.log("okx:", v);
+    });
 
     console.log("Main.js", $RvW);
     console.log("NativeProcess support:", air.NativeProcess.isSupported);
@@ -362,7 +378,7 @@ $RvW.present = function() {
     rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
-    rvw.navigation.disableNavButtons(false);
+    disableNavButtons(false);
 }
 $RvW.present_external = function(a, h, e) {
     var g = $RvW.bookIndex;
@@ -380,7 +396,7 @@ $RvW.present_external = function(a, h, e) {
     $RvW.chapterIndex = f;
     $RvW.verseIndex = d;
     getdataONLY();
-    rvw.navigation.disableNavButtons(false);
+    disableNavButtons(false);
 }
 $RvW.getFooter = function() {
     var b;
@@ -703,8 +719,8 @@ function setupConsole() {
 function vvinit_continue() {
     setupConsole();
 
-    rvw.ui.Toast.setup();
-    rvw.ui.Prompt.setup();
+    Toast.setup();
+    Prompt.setup();
 
     Overlay.setup();
 
@@ -718,15 +734,15 @@ function vvinit_continue() {
                     $RvW.vvConfigObj.set_version1(1);
                     $RvW.vvConfigObj.set_version2(2);
                     $RvW.vvConfigObj.set_bibleDBVersion(2);
-                    rvw.ui.Toast.show("VerseVIEW", "Bible Database update process completed.");
+                    Toast.show("VerseVIEW", "Bible Database update process completed.");
                 } else {
-                    rvw.ui.Toast.show(
+                    Toast.show(
                         "VerseVIEW",
                         "Bible Database update failed. Please contact verseview@yahoo.com"
                     );
                 }
             } else {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "VerseVIEW",
                     "Bible Database update failed. Please contact verseview@yahoo.com"
                 );
@@ -840,14 +856,14 @@ function setupTabContent() {
     $RvW.helpObj = new HelpUiPanel();
     $RvW.graphicsObj = new GraphicsMgr(loadViewTemplate("graphics"));
 
-    if (!rvw.vu.isUpToDate() && !rvw.vu.task2Status()) {
+    if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
         const b = rvw.common.backupWebroot();
         if (b) {
             rvw.common.copyFile2AppStorage("webroot", "webroot");
-            rvw.vu.task2Complete();
+            task2Complete();
         }
-        rvw.vu.checkVerUpdateFlags();
+        checkVerUpdateFlags();
     }
 }
 
@@ -1046,10 +1062,10 @@ function fillNav() {
     );
     document
         .getElementById("nav_bibleRef_presentID")
-        .addEventListener("click", rvw.navigation.processNavBibleRef, false);
+        .addEventListener("click", processNavBibleRef, false);
     document
         .getElementById("nav_bibleRef_findID")
-        .addEventListener("click", rvw.navigation.processNavBibleRefFind, false);
+        .addEventListener("click", processNavBibleRefFind, false);
     new rvw.common.ImageIcon(
         "nav_bibleRef_presentID",
         " QUICK PRESENT ",
@@ -1066,10 +1082,10 @@ function fillNav() {
     );
     document
         .getElementById("nav_bibleRefID")
-        .addEventListener("blur", rvw.navigation.bibleRefBlur, false);
+        .addEventListener("blur", bibleRefBlur, false);
     document
         .getElementById("nav_bibleRefID")
-        .addEventListener("focus", rvw.navigation.bibleRefFocus, false);
+        .addEventListener("focus", bibleRefFocus, false);
 
     // menubar buttons
     $("#icon_present").click(function () {
@@ -1103,10 +1119,10 @@ function fillNav() {
 
     // conditionally disable nav buttons
     $("#bibleAddScheduleButton").click(function () {
-        rvw.navigation.nav_addVerse2Schedule();
+        nav_addVerse2Schedule();
     });
 
-    rvw.navigation.disableNavButtons(true);
+    disableNavButtons(true);
     $RvW.enterForSearchActive = true;
     updateRefMenu();
 
@@ -1363,7 +1379,7 @@ function onMainWindowKeyUp(evt) {
                 $RvW.searchObj.searchKeywordInit();
             }
             if ($RvW.enterForBibleRef) {
-                rvw.navigation.processNavBibleRef();
+                processNavBibleRef();
             }
             if ($RvW.songNavObj.isSongSearchEditActive()) {
                 $RvW.songNavObj.sn_searchSong();
@@ -1567,12 +1583,15 @@ $RvW.english_booknames = [];
 export function start(Y) {
     setupUI();
 
+    let i = 0;
+    setInterval(() => okx.set(++i), 1000);
+
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     SplashScreen.show();
 
     if (!firstTimeCheck()) {
-        rvw.ui.Toast.show(
+        Toast.show(
             "ReVerseVIEW",
             "Error first init!"
         );

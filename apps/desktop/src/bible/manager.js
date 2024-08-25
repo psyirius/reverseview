@@ -1,4 +1,6 @@
 import {BibleDB} from "./db";
+import {Toast} from "@app/toast";
+import {disableNavButtons} from "@/navigation";
 
 $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;
@@ -7,7 +9,7 @@ export function loadSQLBible(c, b) {
     $RvW.bibledbObj[b] = new BibleDB();
     if ($RvW.bibleVersionArray[c] == null) {
         c = 1;
-        rvw.ui.Toast.show("Bible Database", "Please select the Bible translation of choice");
+        Toast.show("Bible Database", "Please select the Bible translation of choice");
         if (b === 1) {
             $RvW.vvConfigObj.set_version1(1);
         } else {
@@ -160,7 +162,7 @@ export class verseClass {
                 $RvW.scroll_to_view = false;
                 $RvW.highlightVerse($RvW.verseIndex);
             }
-            rvw.navigation.disableNavButtons(false);
+            disableNavButtons(false);
             $RvW.bookIndex = n;
             $RvW.chapterIndex = m;
             $RvW.verseIndex = o;

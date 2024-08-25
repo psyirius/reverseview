@@ -183,7 +183,7 @@ export class RemoteSetupUIPanel {
                             _updateInactiveStatus();
                         }
                     } else {
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "Remote VerseVIEW",
                             "Port Number: Out of Range. Valid range is 49152 to 65535."
                         );
@@ -191,7 +191,7 @@ export class RemoteSetupUIPanel {
                         _updateInactiveStatus();
                     }
                 } else {
-                    rvw.ui.Toast.show(
+                    Toast.show(
                         "Remote VerseVIEW",
                         "Invalid Port Number. Valid range is 49152 to 65535."
                     );

@@ -1,4 +1,4 @@
-rvw.provide("rvw.ui").Prompt = {
+export const Prompt = {
     __instance: null,
     __okCallback: null,
     __cancelCallback: null,

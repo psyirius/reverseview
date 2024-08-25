@@ -1,6 +1,7 @@
 import {BibleUpdater} from "@/setup";
 import {fillTagList, getTags2Array} from "@/tags";
 import {processSingleVersion} from "@/bible/version";
+import {Toast} from "@app/toast";
 
 export class Config {
     constructor() {
@@ -104,7 +105,7 @@ export class Config {
                                 this.save();
                                 this.load(callback, retry + 1);
                             } else {
-                                rvw.ui.Toast.show(
+                                Toast.show(
                                     "ReVerseVIEW",
                                     "Error parsing ReVerseVIEW config. Please restart VerseVIEW."
                                 );
@@ -112,7 +113,7 @@ export class Config {
                         }
                     },
                     failure: (x, o) => {
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "VerseVIEW",
                             "Error loading VerseVIEW database. Please restart VerseVIEW."
                         );

@@ -17,14 +17,11 @@
     }
 
     function fileExist(b, a) {
-        if (a == 1) {
-            var c = air.File.applicationStorageDirectory;
-        } else {
-            var c = air.File.applicationDirectory;
-        }
+        let c = (a === 1)
+            ? air.File.applicationStorageDirectory
+            : air.File.applicationDirectory;
         c = c.resolvePath(b);
-        var d = c.exists;
-        return d;
+        return c.exists;
     }
 
     function createFolder(b) {

@@ -19,12 +19,12 @@
     exports.p_text_orientation = "0";
 
     function savePresentationMargin() {
-        var k = true;
+        let k = true;
 
-        var e = document.getElementById("presentConfigMarginTop").value;
-        var c = document.getElementById("presentConfigMarginBottom").value;
-        var f = document.getElementById("presentConfigMarginLeft").value;
-        var n = document.getElementById("presentConfigMarginRight").value;
+        const e = document.getElementById("presentConfigMarginTop").value;
+        const c = document.getElementById("presentConfigMarginBottom").value;
+        const f = document.getElementById("presentConfigMarginLeft").value;
+        const n = document.getElementById("presentConfigMarginRight").value;
 
         if (rvw.common.IsNumeric(e) && rvw.common.IsNumeric(c) && rvw.common.IsNumeric(f) && rvw.common.IsNumeric(n)) {
             $RvW.vvConfigObj.set_p_topMargin(e);

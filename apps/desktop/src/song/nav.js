@@ -10,6 +10,8 @@ import {Deferred} from "@/utils/async";
 import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
 import {Song} from '@/song/obj';
+import {Prompt} from "@app/prompt";
+import {Toast} from "@app/toast";
 
 export class SongNav {
     constructor() {
@@ -363,7 +365,7 @@ export class SongNav {
         function sn_deleteSong() {
             var al = "Song Database";
             var an = 'Do you want to delete "' + b + '" ?';
-            rvw.ui.Prompt.exec(al, an, am);
+            Prompt.exec(al, an, am);
             function am() {
                 var ao = a;
                 if (a != 0) {
@@ -378,9 +380,9 @@ export class SongNav {
             if (an != "_ALL") {
                 var am = "Song Database";
                 var ap = 'Do you want to delete ALL songs from "' + an + '" category?';
-                rvw.ui.Prompt.exec(am, ap, al);
+                Prompt.exec(am, ap, al);
             } else {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Song Database",
                     "Can not delete the _ALL category. Please select a specific category."
                 );
@@ -615,13 +617,13 @@ export class SongNav {
             am.addEventListener(air.IOErrorEvent.IO_ERROR, ao);
             am.copyToAsync(al, true);
             function an(ar) {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Song Database",
                     'Song database saved to Desktop under the "vvexport" folder'
                 );
             }
             function ao(ar) {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Song Database",
                     "Unable to save the song database to the Desktop"
                 );

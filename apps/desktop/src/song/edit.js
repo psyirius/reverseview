@@ -4,6 +4,8 @@
 import {addTagList, fillTagList} from "@/tags";
 import {SongPresenter} from "./present";
 import {Song} from '@/song/obj';
+import {Prompt} from "@app/prompt";
+import {Toast} from "@app/toast";
 
 export class SongEdit {
     constructor(bodyContent, lyricsCreateContent) {
@@ -380,7 +382,7 @@ export class SongEdit {
         function onClick_submitCatButtonID2() {
             var ad = document.getElementById("se_catTextID").value;
             if (rvw.common.specialCategory(ad)) {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Add Edit Song",
                     "Category name starting with 'vv' are reserved."
                 );
@@ -738,7 +740,7 @@ export class SongEdit {
             ao = ao.replace(/\s\s+/g, " ");
 
             if (ao === "") {
-                rvw.ui.Toast.show("Add Edit Songs", "Enter a valid Song Name");
+                Toast.show("Add Edit Songs", "Enter a valid Song Name");
                 return false;
             } else {
                 const sngObj = new Song();
@@ -779,7 +781,7 @@ export class SongEdit {
                 if (am) {
                     sngObj.yvideo = ag;
                 } else {
-                    rvw.ui.Toast.show("Add Edit Songs", "Enter valid YouTube video link.");
+                    Toast.show("Add Edit Songs", "Enter valid YouTube video link.");
                     return false;
                 }
 
@@ -877,7 +879,7 @@ export class SongEdit {
         function onClick_cancelButtonID() {
             const ac = "Song Add/Edit";
             const ad = "Do you want to CANCEL from Add/Edit Song panel?";
-            rvw.ui.Prompt.exec(ac, ad, _close_panel);
+            Prompt.exec(ac, ad, _close_panel);
         }
 
         function _close_panel() {

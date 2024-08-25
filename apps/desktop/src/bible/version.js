@@ -1,6 +1,8 @@
 import {BibleDB} from '@/bible/db';
 import {BibleSearch} from "@/bible/search";
 import {loadSQLBible} from "@/bible/manager";
+import {Prompt} from "@app/prompt";
+import {Toast} from "@app/toast";
 
 $RvW.bibleVersionArray = ["", ""];
 
@@ -256,7 +258,7 @@ function deleteVersion() {
         c.deleteFile();
     } catch (f) {
         g = false;
-        rvw.ui.Toast.show(
+        Toast.show(
             "Bible Version",
             "Database in use. Please restart VerseVIEW and try deleting again."
         );
@@ -295,12 +297,12 @@ function deleteVersionConfirm() {
     var a = document.getElementById("selectVersionList").selectedIndex;
     var b = document.getElementById("selectVersionList").options[a].value;
     if (b === $RvW.vvConfigObj.get_version1() || b === $RvW.vvConfigObj.get_version2()) {
-        rvw.ui.Toast.show(
+        Toast.show(
             "Manage Bible Database",
             "Can not delete the primary and seconday version."
         );
     } else {
-        rvw.ui.Prompt.exec(
+        Prompt.exec(
             "Delete Version",
             "Are you sure you want to delete version?",
             function () {
@@ -339,18 +341,18 @@ export function loadVersion(d) {
     var b = new air.File(d);
     var c = b.extension.toLowerCase();
     if (c != "db") {
-        rvw.ui.Toast.show("Bible Database", "Invalid VerseVIEW file.");
+        Toast.show("Bible Database", "Invalid VerseVIEW file.");
         return false;
     }
     var k = b.exists;
     if (!k) {
-        rvw.ui.Toast.show("Bible Database", "File does not exists.");
+        Toast.show("Bible Database", "File does not exists.");
         return false;
     }
     var a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
     var f = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][1];
     if (e == a || e == f) {
-        rvw.ui.Toast.show(
+        Toast.show(
             "Manage Bible Database",
             "Bible database in use. Can not UPDATE the primary and seconday version. <br> Go to Bible > Select Version and select another Bible database and then update " +
             e +
@@ -376,7 +378,7 @@ export function loadVersion(d) {
                 }
             }, 200);
         } else {
-            rvw.ui.Toast.show("Bible Database", "File not VerseVIEW database");
+            Toast.show("Bible Database", "File not VerseVIEW database");
         }
     }
 }
@@ -541,10 +543,10 @@ function addFontVersionBibleOK() {
     var a = $RvW.bibleVersionArray[g][2].split(",");
     var f = $.inArray(b, a);
     if (f == -1) {
-        rvw.ui.Toast.show("Adding new font: " + b);
+        Toast.show("Adding new font: " + b);
         $RvW.bibleVersionArray[g][2] = $RvW.bibleVersionArray[g][2] + "," + b;
     } else {
-        rvw.ui.Toast.show("Font " + b + " already available");
+        Toast.show("Font " + b + " already available");
     }
     updateVersionDetails();
     hideFontVersionBox();

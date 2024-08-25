@@ -1,5 +1,6 @@
 import {addTagList, fillTagList} from "@/tags";
 import {Song} from '@/song/obj';
+import {Toast} from "@app/toast";
 
 export class SongPortXML {
     constructor() {
@@ -75,7 +76,7 @@ export class SongPortXML {
                 return false;
             }
             if (rvw.common.specialCategory(m)) {
-                rvw.ui.Toast.show("Song Database", "Only user added lyrics can be exported");
+                Toast.show("Song Database", "Only user added lyrics can be exported");
                 return false;
             }
             var z = new Song();
@@ -128,7 +129,7 @@ export class SongPortXML {
             }
             v = v + "</songDB>\n";
             if (r) {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Song Database",
                     "Database contains invalid Category. Contact VerseVIEW"
                 );
@@ -165,19 +166,19 @@ export class SongPortXML {
                         if (u == "XMLsong") {
                             o(v);
                         } else {
-                            rvw.ui.Toast.show(
+                            Toast.show(
                                 "Song Database",
                                 "Invalid database for VerseVIEW Songs in XML format. (Wrong type field)"
                             );
                         }
                     } else {
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "Song Database",
                             "Invalid database for VerseVIEW Songs in XML format. (Type field not present)"
                         );
                     }
                 } else {
-                    rvw.ui.Toast.show(
+                    Toast.show(
                         "Song Database",
                         "Invalid database for VerseVIEW Songs in XML format. (Invalid XML format)"
                     );
@@ -260,7 +261,7 @@ export class SongPortXML {
             u.writeMultiByte(s, "utf-8");
             u.close();
             function v() {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Song Database",
                     "Exported to " + w + " under vvexport folder on the Desktop."
                 );
@@ -341,7 +342,7 @@ export class SongPortXML {
                 }
             }
             if (x) {
-                rvw.ui.Toast.show("No New Songs to add.");
+                Toast.show("No New Songs to add.");
             } else {
                 fillTagList();
             }

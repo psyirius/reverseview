@@ -1,5 +1,7 @@
 import {NotesInfo} from "./notes";
 import {insertError, insertResult} from "@/song/indexing";
+import {Prompt} from "@app/prompt";
+import {Toast} from "@app/toast";
 
 export class NotesManager {
     constructor(ftflg) {
@@ -106,26 +108,26 @@ export class NotesManager {
             var W = S(X);
             var ab = W.filename;
             if (ab == "defaultnotes.db") {
-                rvw.ui.Toast.show("Bible Notes", "The Default Notes file can not be deleted.");
+                Toast.show("Bible Notes", "The Default Notes file can not be deleted.");
             } else {
                 if (ab == d) {
-                    rvw.ui.Toast.show(
+                    Toast.show(
                         "Bible Notes",
                         ab + " is the active notes file and can not be deleted."
                     );
                 } else {
                     var Z = "Bible Notes";
                     var ac = "Are you sure you want to delete " + ab;
-                    rvw.ui.Prompt.exec(Z, ac, Y);
+                    Prompt.exec(Z, ac, Y);
                     function Y() {
                         V(X);
                         ab = "./notes/" + ab;
                         var ae = air.File.applicationStorageDirectory.resolvePath(ab);
                         try {
                             ae.deleteFile();
-                            rvw.ui.Toast.show("Bible Notes", "Deleted Notes file " + ab);
+                            Toast.show("Bible Notes", "Deleted Notes file " + ab);
                         } catch (ad) {
-                            rvw.ui.Toast.show(
+                            Toast.show(
                                 "Bible Notes",
                                 " Please restart VerseVIEW to update the notes list"
                             );
@@ -146,7 +148,7 @@ export class NotesManager {
                 Z = Z.resolvePath(aa);
                 Y.copyTo(Z, true);
                 Y = null;
-                rvw.ui.Toast.show("Bible Notes", "Notes Database Added to VerseVIEW");
+                Toast.show("Bible Notes", "Notes Database Added to VerseVIEW");
                 var ab = new NotesInfo(ac);
             }
         }
@@ -171,13 +173,13 @@ export class NotesManager {
             Z.addEventListener(air.IOErrorEvent.IO_ERROR, W);
             Z.copyToAsync(af, true);
             function aa(ah) {
-                rvw.ui.Toast.show(
+                Toast.show(
                     "Bible Notes",
                     "Notes file " + Y + ' saved to Desktop under the "vvexport" folder'
                 );
             }
             function W(ah) {
-                rvw.ui.Toast.show("Bible Notes", "Unable to save Notes to Desktop");
+                Toast.show("Bible Notes", "Unable to save Notes to Desktop");
             }
         }
         function T() {
@@ -220,7 +222,7 @@ export class NotesManager {
                 D = false;
                 x();
             } else {
-                rvw.ui.Toast.show("Bible Notes", "Invalid Notes name.");
+                Toast.show("Bible Notes", "Invalid Notes name.");
             }
         }
         function c() {
@@ -483,7 +485,7 @@ export class NotesManager {
             function aa(ac) {
                 Y.removeEventListener(air.SQLEvent.RESULT, W);
                 Y.removeEventListener(air.SQLErrorEvent.ERROR, aa);
-                rvw.ui.Toast.show("Bible Notes", "Error Updating Selected");
+                Toast.show("Bible Notes", "Error Updating Selected");
                 air.trace("event.error.code:", ac.error.code);
                 air.trace("event.error.message:", ac.error.message);
             }

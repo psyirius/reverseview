@@ -1,6 +1,7 @@
 import { PostIt } from "@/notes/notes";
 import {getVersion1Font} from "@/bible/version";
 import {getVerseFromArray, verseClass} from "@/bible/manager";
+import {Toast} from "@app/toast";
 
 export class BibleSearch {
     constructor(O) {
@@ -101,7 +102,7 @@ export class BibleSearch {
                 " Details:" +
                 Y.error.details +
                 "Error opening connection Contact verseview@yahoo.com with this error message";
-            rvw.ui.Toast.show("Searh", X);
+            Toast.show("Searh", X);
         }
         function W() {
             N = new air.SQLStatement();
@@ -367,7 +368,7 @@ export class BibleSearch {
                 " Details:" +
                 Y.error.details +
                 "Error handling results Contact verseview@yahoo.com with this error message";
-            rvw.ui.Toast.show("Bible Search", X);
+            Toast.show("Bible Search", X);
         }
         function p() {
             var X = j(0);
@@ -404,12 +405,12 @@ export class BibleSearch {
             E = E.trim();
             var Z = E.replace(/ /g, "");
             if (Z == null) {
-                rvw.ui.Toast.show("Bible Search", "Invalid Search Entry");
+                Toast.show("Bible Search", "Invalid Search Entry");
                 return false;
             }
             var X = Z.split("");
             if (X.length < 3) {
-                rvw.ui.Toast.show("Bible Search", "Invalid or Small word for search");
+                Toast.show("Bible Search", "Invalid or Small word for search");
                 return false;
             }
             return true;

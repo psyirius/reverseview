@@ -5,6 +5,8 @@
 // - YAHOO.example.container.tt2cp
 // - YAHOO.widget.Tooltip
 
+import {Toast} from "@app/toast";
+
 export const BgContext = {
     selectedIndex: 0,
     newSelectedIndex: -1,
@@ -122,7 +124,7 @@ export const BgContext = {
             b.push(new air.FileFilter("VerseVIEW Background", "*.jpg"));
             BgContext.newBkgndFile.browseForOpen("Select Background", b);
         } else {
-            rvw.ui.Toast.show(
+            Toast.show(
                 "Background Graphics",
                 "VerseVIEW supports a maximum of 50 backgrounds. Please delete backgrounds to add new ones."
             );
@@ -153,7 +155,7 @@ export const BgContext = {
             rvw.common.save2file(g, l, false);
             BgContext.fill();
         } else {
-            rvw.ui.Toast.show("Background Graphics", "Background already exists.");
+            Toast.show("Background Graphics", "Background already exists.");
         }
     },
     generateBkgndXML: function () {

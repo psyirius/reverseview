@@ -103,6 +103,10 @@ https://github.com/flashflashrevolution/rCubed/tree/main/src/com/worlize/websock
 https://github.com/flashflashrevolution/rCubed/tree/main/src/com/flashfla
 https://github.com/childoftv/as3-websocket-server
 https://github.com/taylorhakes/promise-polyfill
+https://github.com/ThaUnknown/simple-store-svelte/
+https://github.com/ExtendScript/extendscript-es5-shim
+https://github.com/ExtendScript/extendscript-es6-shim
+https://www.npmjs.com/package/es-set
 
 https://github.com/ianharrigan/hxWebSockets
 https://github.com/thomasuster/haxe-websocket-server

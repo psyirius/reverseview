@@ -1,3 +1,5 @@
+import {version_number} from "@/versionupdate";
+
 export class AppUpdateUi {
     constructor(bodyContent) {
         this.show = show;
@@ -47,7 +49,7 @@ export class AppUpdater {
         var a = "";
         var k = null;
 
-        l = Number(rvw.vu.version_number);
+        l = Number(version_number);
         k = Date.now();
         if (d()) {
             g(false);

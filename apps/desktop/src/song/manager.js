@@ -8,6 +8,8 @@ import {removeTag} from "@/tags";
 import {SongSearchType} from "@/const";
 import {insertError, insertResult} from "@/song/indexing";
 import {Song} from '@/song/obj';
+import {Toast} from "@app/toast";
+import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
 
 export class SongManager {
     constructor(_arg1, _arg2) {
@@ -490,7 +492,7 @@ export class SongManager {
             __debug("Error message:" + aN.error.message);
             __debug("Details (create DB):" + aN.error.details);
             ax = false;
-            rvw.ui.Toast.show(
+            Toast.show(
                 "Song Database",
                 "Error opening Song Database : " + aN.error.message
             );
@@ -541,7 +543,7 @@ export class SongManager {
                 songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
                 $RvW.vvConfigObj.save();
             }
-            if (!rvw.vu.isUpToDate() && rvw.vu.task1Status() === false) {
+            if (!isUpToDate() && task1Status() === false) {
                 delCatManagedUpdate();
             } else {
                 C();
@@ -607,14 +609,14 @@ export class SongManager {
                 if (aR) {
                     if (T == 0) {
                         aH.hide();
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "Song Database",
                             "Song Lyrics imported to the Song Database complete."
                         );
-                        if (!rvw.vu.isUpToDate()) {
-                            rvw.ui.Toast.show("Songs", "Imported song database");
-                            rvw.vu.task1Complete();
-                            rvw.vu.checkVerUpdateFlags();
+                        if (!isUpToDate()) {
+                            Toast.show("Songs", "Imported song database");
+                            task1Complete();
+                            checkVerUpdateFlags();
                         }
                         C();
                         F();
@@ -630,12 +632,12 @@ export class SongManager {
                     F();
                     at();
                     if (aR) {
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "Song Database",
                             "Song Lyrics imported to the Song Database"
                         );
                     } else {
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "Song Database",
                             'Song "' + m + '" added to the Song Database.'
                         );
@@ -650,16 +652,16 @@ export class SongManager {
                 T--;
                 aP.removeEventListener(air.SQLEvent.RESULT, aO);
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-                rvw.ui.Toast.show(
+                Toast.show(
                     "ADD EDIT Song",
                     "Failed to update song database.  Error message:" + aU.error.message
                 );
-                if (!rvw.vu.isUpToDate() && T == 0) {
+                if (!isUpToDate() && T == 0) {
                     var aT = $RvW.vvConfigObj.get_songDBVersion();
                     if (aT == 2) {
                         $RvW.vvConfigObj.set_songDBVersion(1);
                         $RvW.vvConfigObj.save();
-                        rvw.ui.Toast.show(
+                        Toast.show(
                             "ADD EDIT Song",
                             "Failed to update song database. Please restart VerseVIEW Error message:" +
                             aU.error.message
@@ -705,7 +707,7 @@ export class SongManager {
                 C();
                 F();
                 at();
-                rvw.ui.Toast.show("Song Database", 'Song "' + m + '" updated.');
+                Toast.show("Song Database", 'Song "' + m + '" updated.');
             }
             function aQ(aS) {
                 aO.removeEventListener(air.SQLEvent.RESULT, aP);
@@ -828,7 +830,7 @@ export class SongManager {
                 sqlRes = sqlQuery.getResult();
                 if (aQ === SongSearchType.TAGS && sqlRes.data == null) {
                     removeTag(aP);
-                    rvw.ui.Toast.show("Song Tag Search", "No matching tag");
+                    Toast.show("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {
                         $RvW.wordbrain.findRecordBy_wordin(aP);
@@ -956,10 +958,10 @@ export class SongManager {
             aP.execute();
             function aO(aR) {
                 __debug("Succesfuly got all data from Original Song DB and inserted");
-                if (!rvw.vu.isUpToDate()) {
-                    rvw.ui.Toast.show("Songs", "Updated song database");
-                    rvw.vu.task1Complete();
-                    rvw.vu.checkVerUpdateFlags();
+                if (!isUpToDate()) {
+                    Toast.show("Songs", "Updated song database");
+                    task1Complete();
+                    checkVerUpdateFlags();
                 }
                 C();
                 F();
@@ -970,7 +972,7 @@ export class SongManager {
                 __debug("UPDATE error:" + aR.error);
                 __debug("event.error.code:" + aR.error.code);
                 __debug("event.error.message:" + aR.error.message);
-                rvw.ui.Toast.show("Song Manager", "Song DB updater data error...");
+                Toast.show("Song Manager", "Song DB updater data error...");
             }
         }
         function ag() {
