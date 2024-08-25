@@ -1,4 +1,6 @@
 import { PostIt } from "@/notes/notes";
+import {getVersion1Font} from "@/bible/version";
+import {getVerseFromArray, verseClass} from "@/bible/manager";
 
 export class BibleSearch {
     constructor(O) {
@@ -29,8 +31,8 @@ export class BibleSearch {
         init();
 
         function init() {
-            $("#searchID").css("font-family", rvw.bible.getVersion1Font());
-            $("#adSearch").css("font-family", rvw.bible.getVersion1Font());
+            $("#searchID").css("font-family", getVersion1Font());
+            $("#adSearch").css("font-family", getVersion1Font());
             D();
             v();
             G();
@@ -160,7 +162,7 @@ export class BibleSearch {
                 for (var Z = 0; Z < X; Z++) {
                     var aa = I.data[Z];
                     u.push(aa.word);
-                    var Y = rvw.bible.getVerseFromArray(aa.bookNum, aa.chNum, aa.verseNum);
+                    var Y = getVerseFromArray(aa.bookNum, aa.chNum, aa.verseNum);
                     s.push($RvW.bibledbObj[2].getSingleVerseFromBuffer(Y - 1));
                 }
             }
@@ -237,7 +239,7 @@ export class BibleSearch {
                     var Z = u[i];
                     var X = s[i];
                     Z = g(Z);
-                    ad[i] = new rvw.bible.verseClass();
+                    ad[i] = new verseClass();
                     var ai = '<font face="Arial, Helvetica, sans-serif">' +
                         $RvW.booknames[an.bookNum - 1] +
                         " " +
@@ -248,7 +250,7 @@ export class BibleSearch {
                         Z;
                     var ah = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
                     ad[i].init(aj, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
-                    ac[i] = new rvw.bible.verseClass();
+                    ac[i] = new verseClass();
                     var ai = '<font face="Arial, Helvetica, sans-serif">' +
                         $RvW.booknames[an.bookNum - 1] +
                         " " +
@@ -477,5 +479,3 @@ export class BibleSearch {
         }
     }
 }
-
-rvw.provide('rvw.bible').BibleSearch = BibleSearch;

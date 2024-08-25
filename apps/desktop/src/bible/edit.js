@@ -1,3 +1,5 @@
+import {getVerseFromArray} from "./manager";
+
 export function setupVerseEditObject() {
     var b = $RvW.getBookValue();
     var d = $RvW.getChapterValue();
@@ -50,7 +52,7 @@ export class VerseEditUI {
         }
         function h() {
             a = $("#updatedVerseTextDiv").val();
-            var o = rvw.bible.getVerseFromArray(e, b, j);
+            var o = getVerseFromArray(e, b, j);
             $RvW.bibledbObj[1].updateVerse(e, b, j, a);
         }
         function d(o, t, p, q) {

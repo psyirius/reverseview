@@ -1,5 +1,6 @@
 import { BgContext } from '@/app/background'
 import {setupVerseEditObject} from "@/bible/edit";
+import {manageVersion, showBrowse} from "@/bible/version";
 
 const MAIN_MENU = [
     {
@@ -111,11 +112,11 @@ function setup_bible_version() {
     $RvW.bibleVersionSelObj.show();
 }
 function add_bible_version() {
-    rvw.bible.manageVersion();
-    rvw.bible.showBrowse();
+    manageVersion();
+    showBrowse();
 }
 function show_bible_manage() {
-    rvw.bible.manageVersion();
+    manageVersion();
 }
 function show_editVerse_UI() {
     setupVerseEditObject();

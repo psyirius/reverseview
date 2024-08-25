@@ -19,8 +19,10 @@ import {VerseEditUI} from "@/bible/edit";
 import {BibleRecentRefManager} from "@/bible/recent";
 import {BibleVersionSelector} from "@/setup";
 import {Scheduler} from "@/schedule";
+import {getdata, getdataONLY, getVerseFromArray, loadSQLBible, verseClass} from "@/bible/manager";
 import {AppUpdater, AppUpdateUi} from "./update";
 import { HelpUiPanel } from "./help";
+import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/version";
 import { Config, configInit, svParameterSaveEvent } from "./config";
 import Preferences from './preferences';
 import SplashScreen from './splash';
@@ -341,7 +343,7 @@ $RvW.getSingleVerse = function(j, f, k, e) {
     var g = j * 1 + 1;
     var a = f * 1 + 1;
     var h = k * 1 + 1;
-    var d = rvw.bible.getVerseFromArray(g, a, h);
+    var d = getVerseFromArray(g, a, h);
     if (e == 1) {
         l = $RvW.bibledbObj[1].getSingleVerseFromBuffer(d - 1);
     } else {
@@ -355,7 +357,7 @@ $RvW.present = function() {
     $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
     $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     air.trace("Called in $RvW.present()");
-    rvw.bible.getdata();
+    getdata();
     rvw.presentation.p_footer = $RvW.getFooter();
     rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
@@ -369,7 +371,7 @@ $RvW.present_external = function(a, h, e) {
     $RvW.bookIndex = a;
     $RvW.chapterIndex = h;
     $RvW.verseIndex = e;
-    rvw.bible.getdataONLY();
+    getdataONLY();
     rvw.presentation.p_footer = $RvW.getFooter();
     rvw.presentation.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
     $RvW.launch($RvW.verseIndex);
@@ -377,7 +379,7 @@ $RvW.present_external = function(a, h, e) {
     $RvW.bookIndex = g;
     $RvW.chapterIndex = f;
     $RvW.verseIndex = d;
-    rvw.bible.getdataONLY();
+    getdataONLY();
     rvw.navigation.disableNavButtons(false);
 }
 $RvW.getFooter = function() {
@@ -526,7 +528,7 @@ $RvW.updateVerseContainer = function() {
     $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
     $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
     $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
-    rvw.bible.getdata();
+    getdata();
 }
 $RvW.updateVerseContainer_continue = function() {
     var p = $RvW.content1.length;
@@ -581,12 +583,12 @@ $RvW.updateVerseContainer_continue = function() {
         var e = "NC_" + i;
         o[i] = new PostIt();
         o[i].init(e, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
-        c[i] = new rvw.bible.verseClass();
+        c[i] = new verseClass();
         var l = $RvW.content1[i];
         var k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
         c[i].init(m, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
-            b[i] = new rvw.bible.verseClass();
+            b[i] = new verseClass();
             var l = $RvW.content2[i];
             var k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
             b[i].init(g, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
@@ -730,9 +732,9 @@ function vvinit_continue() {
                 );
             }
         }
-        rvw.bible.loadBibleVersion();
-        rvw.bible.loadSQLBible($RvW.vvConfigObj.get_version1(), 1);
-        rvw.bible.loadSQLBible($RvW.vvConfigObj.get_version2(), 2);
+        loadBibleVersion();
+        loadSQLBible($RvW.vvConfigObj.get_version1(), 1);
+        loadSQLBible($RvW.vvConfigObj.get_version2(), 2);
         setupTabContent();
 
         SplashScreen.close();
@@ -826,7 +828,7 @@ function setupTabContent() {
 
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes(loadViewTemplate("notesui"), 'notesPanelID');
-    $RvW.searchObj = new BibleSearch("./bible/" + rvw.bible.getVersion1Filename());
+    $RvW.searchObj = new BibleSearch("./bible/" + getVersion1Filename());
     $RvW.webServerObj = new WebServer('webroot');
     $RvW.webEngineObj = new WebEngine();
     $RvW.bibleRefObj = new rvw.common.BibleReference();
@@ -876,7 +878,7 @@ function fillTabs(a) {
             break;
         }
         case "configTab": {
-            rvw.bible.versionFill(true);
+            versionFill(true);
             configInit();
             break;
         }

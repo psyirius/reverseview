@@ -1,3 +1,5 @@
+import {loadVersion} from "@/bible/version";
+
 export class BibleVersionSelector {
     constructor(bodyContent) {
         this.show = show;

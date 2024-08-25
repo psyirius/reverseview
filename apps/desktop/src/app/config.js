@@ -1,5 +1,6 @@
 import {BibleUpdater} from "@/setup";
 import {fillTagList, getTags2Array} from "@/tags";
+import {processSingleVersion} from "@/bible/version";
 
 export class Config {
     constructor() {
@@ -1274,7 +1275,7 @@ export function configInit() {
         .addEventListener("click", $RvW.updateVerseContainer);
     document
         .getElementById("singleVersionBoxID")
-        .addEventListener("click", rvw.bible.processSingleVersion);
+        .addEventListener("click", processSingleVersion);
     document
         .getElementById("presentConfigSaveButton")
         .addEventListener("click", rvw.presentation.savePresentationMargin);
