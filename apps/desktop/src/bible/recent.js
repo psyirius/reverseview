@@ -2,8 +2,8 @@ import {getdata} from "@/bible/manager";
 import {setBookChVer} from "@/navigation";
 
 export class BibleRecentRefManager {
-    maxNumofElements = 30
-    numofElements = 0
+    maxNumElements = 30
+    numElements = 0
     startIndex = 0
     nextIndex = 0
     bArray = []
@@ -11,14 +11,14 @@ export class BibleRecentRefManager {
     vArray = []
 
     constructor() {
-        this.numofElements = 0;
+        this.numElements = 0;
         this.startIndex = 0;
         this.nextIndex = 0;
         this.bArray = [];
         this.cArray = [];
         this.vArray = [];
         air.trace("Initialized Recent Selection");
-        this.dispSelection();
+        this.displaySelection();
     }
 
     addSelection(d, h, f) {
@@ -31,43 +31,48 @@ export class BibleRecentRefManager {
                 this.cArray[this.nextIndex] = h;
                 this.vArray[this.nextIndex] = f;
                 this.updateIndex();
-                this.dispSelection();
+                this.displaySelection();
             }
         } else {
             this.bArray[this.nextIndex] = d;
             this.cArray[this.nextIndex] = h;
             this.vArray[this.nextIndex] = f;
             this.updateIndex();
-            this.dispSelection();
+            this.displaySelection();
         }
     }
 
     updateIndex() {
         this.nextIndex++;
-        this.numofElements++;
+        this.numElements++;
     }
 
-    dispSelection() {
+    displaySelection() {
         const a = [];
-        for (let i = 0; i < this.numofElements; i++) {
-            a[i] = `${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}`;
+        for (let i = 0; i < this.numElements; i++) {
+            a.push(`${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}`)
         }
-        rvw.common.clearSelectList("recentSel");
-        let b = this.numofElements - 1;
-        for (i = 0; i < this.numofElements; i++) {
-            document.getElementById("recentSel").options[i] = new Option(a[b], b);
+
+        /** @type {HTMLSelectElement} */
+        const el = document.getElementById('recentSel');
+        // clear
+        el.innerHTML = '';
+
+        let b = this.numElements - 1;
+        for (let i = 0; i < this.numElements; i++) {
+            el.options[i] = new Option(a[b], b);
             b--;
         }
-        document.getElementById("recentSel").selectedIndex = 0;
-        document
-            .getElementById("recentSel")
-            .addEventListener("click", this.presentFromRecent, false);
+        el.selectedIndex = 0;
+        el.addEventListener("click", () => this.presentFromRecent(), false);
     }
 
-    presentFromRecent(c) {
-        const a = document.getElementById("recentSel").selectedIndex;
+    presentFromRecent() {
+        /** @type {HTMLSelectElement} */
+        const el = document.getElementById('recentSel');
+
+        const a = el.selectedIndex;
         if (a !== -1) {
-            const el = document.getElementById("recentSel");
             const b = el.options[el.selectedIndex].value;
             $RvW.bookIndex = this.bArray[b];
             $RvW.chapterIndex = this.cArray[b];
@@ -82,7 +87,7 @@ export class BibleRecentRefManager {
 
     data2string() {
         let a = "";
-        for (i = 0; i < this.numofElements; i++) {
+        for (i = 0; i < this.numElements; i++) {
             a += `${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}|`;
         }
         air.trace("Recent list: " + a);
