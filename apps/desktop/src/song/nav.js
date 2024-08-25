@@ -155,7 +155,9 @@ export class SongNav {
             return W;
         }
         function x() {
-            song_edit_menu();
+            if ($RvW.songNavObj != null) {
+                $RvW.songNavObj.sn_editSong();
+            }
         }
         function F() {
             $RvW.learner.finishLearning();
