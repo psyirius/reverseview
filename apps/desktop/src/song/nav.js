@@ -12,6 +12,7 @@ import {SongLyrics} from "@/song/lyrics";
 import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
+import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 
 export class SongNav {
     constructor() {
@@ -353,14 +354,14 @@ export class SongNav {
         }
         function O() {
             __debug("Calling prev slide from song_nav.js");
-            rvw.present.call_prevSlide();
+            call_prevSlide();
         }
         function k() {
             __debug("Calling next slide from song_nav.js");
-            rvw.present.call_nextSlide();
+            call_nextSlide();
         }
         function h() {
-            rvw.present.call_closePresentation();
+            call_closePresentation();
         }
         function sn_deleteSong() {
             var al = "Song Database";

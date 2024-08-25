@@ -41,6 +41,14 @@ import {
 } from "@/navigation";
 import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/versionupdate";
 import { $ as okx } from '@/stores/global'
+import {
+    call_nextSlide,
+    call_prevSlide,
+    call_showTheme,
+    closePresentWindowMain,
+    presentation,
+    presentWindowClosed
+} from "@/p_window";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -349,7 +357,7 @@ $RvW.launch = function(g) {
     } else {
         rvw.presentation.p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
     }
-    rvw.present.presentation();
+    presentation();
 }
 $RvW.loadBookNames = function(a) {
     setPrimaryBooknames();
@@ -446,7 +454,7 @@ function presentTheme() {
         rvw.presentation.p_bkgnd_color = "black";
         rvw.presentation.p_font_color = "white";
         rvw.presentation.p_font_color2 = "white";
-        rvw.present.presentation();
+        presentation();
     }
 }
 $RvW.setFontForList = function() {
@@ -1108,13 +1116,13 @@ function fillNav() {
         rvw.common.showLogoSlide();
     });
     $("#icon_close").click(function () {
-        rvw.present.closePresentWindowMain();
+        closePresentWindowMain();
     });
     $("#icon_prev").click(function () {
-        rvw.present.call_prevSlide();
+        call_prevSlide();
     });
     $("#icon_next").click(function () {
-        rvw.present.call_nextSlide();
+        call_nextSlide();
     });
 
     // conditionally disable nav buttons
@@ -1299,13 +1307,13 @@ $RvW.processExit = function processExit() {
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.nativeWindow.removeEventListener(
             air.Event.CLOSE,
-            rvw.present.presentWindowClosed
+            presentWindowClosed
         );
         $RvW.presentationWindow.window.nativeWindow.close();
         if ($RvW.stageView && $RvW.stageWindow != null) {
             $RvW.stageWindow.window.nativeWindow.removeEventListener(
                 air.Event.CLOSE,
-                rvw.present.presentWindowClosed
+                presentWindowClosed
             );
             $RvW.stageWindow.window.nativeWindow.close();
         }
@@ -1386,29 +1394,29 @@ function onMainWindowKeyUp(evt) {
             }
             break;
         case 27: /* Escape */
-            rvw.present.closePresentWindowMain();
+            closePresentWindowMain();
             break;
         case 33: /* PageUp */
-            rvw.present.call_prevSlide();
+            call_prevSlide();
             break;
         case 34: /* PageDown */
-            rvw.present.call_nextSlide();
+            call_nextSlide();
             break;
         case 39: /* ArrowRight */
         case 40: /* ArrowDown */
             if (b == null) {
-                rvw.present.call_nextSlide();
+                call_nextSlide();
             }
             break;
         case 37: /* ArrowLeft */
         case 38: /* ArrowUp */
             if (b == null) {
-                rvw.present.call_prevSlide();
+                call_prevSlide();
             }
             break;
         case 84: /* T */
             if (b == null) {
-                rvw.present.call_showTheme();
+                call_showTheme();
             }
             break;
         case 119: /* F8 */

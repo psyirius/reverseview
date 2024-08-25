@@ -492,7 +492,7 @@
         rvw.presentation.p_current_index = 0;
         rvw.presentation.p_last_index = 0;
         rvw.presentation.p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
-        if (a == 2) {
+        if (a === 2) {
             rvw.presentation.p_bkgnd_filename = "./background/promote2.jpg";
         }
         rvw.presentation.p_bkgnd_color = "black";

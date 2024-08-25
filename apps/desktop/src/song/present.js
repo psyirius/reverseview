@@ -1,4 +1,5 @@
 import {Song} from '@/song/obj';
+import {presentation} from "@/p_window";
 
 export class SongPresenter {
     constructor() {
@@ -56,7 +57,7 @@ export class SongPresenter {
                     rvw.presentation.p_text_orientation = "1";
                 }
             }
-            rvw.present.presentation();
+            presentation();
         }
         function b() {
             var h = [];

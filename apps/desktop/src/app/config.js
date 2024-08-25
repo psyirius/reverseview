@@ -2,6 +2,7 @@ import {BibleUpdater} from "@/setup";
 import {fillTagList, getTags2Array} from "@/tags";
 import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";
+import {addScreenSelectionEvent, fillScreenList} from "@/p_window";
 
 export class Config {
     constructor() {
@@ -1368,18 +1369,18 @@ export function configInit() {
     $RvW.remoteVV_UI_Obj.configure();
 
     {
-        rvw.present.fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
-        rvw.present.fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
-        rvw.present.addScreenSelectionEvent();
+        fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
+        fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
+        addScreenSelectionEvent();
     }
 
     // Refreshes the screens list on clicking the select menus
     {
         document.getElementById("refresh-screens-main").addEventListener('click', function () {
-            rvw.present.fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
+            fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 0));
         });
         document.getElementById("refresh-screens-stage").addEventListener('click', function () {
-            rvw.present.fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
+            fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
         });
     }
 

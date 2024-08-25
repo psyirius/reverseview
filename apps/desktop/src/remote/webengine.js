@@ -1,3 +1,5 @@
+import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
+
 export class WebEngine {
     constructor() {
         this.nextSlide = nextSlide;
@@ -11,15 +13,15 @@ export class WebEngine {
         this.stageViewContent = stageViewContent;
 
         function nextSlide() {
-            rvw.present.call_nextSlide();
+            call_nextSlide();
         }
 
         function prevSlide() {
-            rvw.present.call_prevSlide();
+            call_prevSlide();
         }
 
         function closePresentation() {
-            rvw.present.call_closePresentation();
+            call_closePresentation();
         }
 
         function themePresentation() {
