@@ -66,7 +66,7 @@ export function savePresentationMargin() {
     }
     presentationCtx.p_text_orientation = r;
     $RvW.vvConfigObj.set_p_text_orientation(presentationCtx.p_text_orientation);
-    var p = document.getElementById("showPrimaryFont").checked;
+    const p = document.getElementById("showPrimaryFont").checked;
     if (p) {
         $RvW.vvConfigObj.set_song_primaryOnly("true");
     } else {

@@ -14,8 +14,10 @@
     "moduleResolution": "Node",
     "paths": {
       "@/*": ["./*"],
-      "@lib/*": ["lib/*"], //
-      "@app/*": ["app/*"], //
+      "@lib/*": ["lib/*"],
+      "@app/*": ["app/*"],
+      "@stores/*": ["stores/*"],
+      "@components/*": ["ui/components/*"],
     },
     "typeRoots": [],
     "lib": [

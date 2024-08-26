@@ -19,11 +19,12 @@
             { name: "dojo", location: "../lib/dojo" },
             { name: "dijit", location: "../lib/dijit" },
             { name: "dojox", location: "../lib/dojox" },
-            // internal libs
-            { name: "@lib", location: "lib" },
             // @root
             { name: "@", location: "./" },
             { name: "@app", location: "app" },
+            { name: "@lib", location: "lib" },
+            { name: "@stores", location: "stores" },
+            { name: "@components", location: "ui/components" },
             // jsx
             { name: "jsx", location: "lib/jsx" },
             // entry point

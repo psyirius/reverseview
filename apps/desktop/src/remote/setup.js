@@ -1,6 +1,8 @@
 import {IsNumeric, withinRange} from "@app/common";
+import {showRemotePanel, localIpList} from "@stores/global";
+import {mount as mountRemoteSetupDialog} from "@app/ui/RemoteSetupDialog";
 
-function getAvailableNwIpList() {
+export function getAvailableNwIpList() {
     function getNetworkInterfaceList() {
         const { NetworkInfo } = air;
 
@@ -57,6 +59,13 @@ export class RemoteSetupUIPanel {
         _setupUI();
         _updateInactiveStatus();
 
+        // mountRemoteSetupDialog('modals');
+        
+        localIpList.set([
+            ...getAvailableNwIpList(),
+            '0.0.0.0',
+        ]);
+
         function _setupUI() {
             _panel = new $Y.Panel({
                 headerContent   : 'Remote',
@@ -69,6 +78,10 @@ export class RemoteSetupUIPanel {
                 visible         : false, // make visible explicitly with .show()
             });
             _panel.render(document.body);
+
+            _panel.on('visibleChange', function (e) {
+                showRemotePanel.set(e.newVal);
+            });
         }
 
         function configure() {
@@ -127,10 +140,7 @@ export class RemoteSetupUIPanel {
             // clear the list
             ipListSelect.innerHTML = ""
 
-            ipList = [
-                ...getAvailableNwIpList(),
-                '0.0.0.0',
-            ];
+            ipList = localIpList.get();
             ipList.reverse();
 
             ipList.forEach((ip, i) => {

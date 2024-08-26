@@ -40,7 +40,6 @@ import {
     processNavBibleRefFind
 } from "@/navigation";
 import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/versionupdate";
-import { $ as okx } from '@/stores/global'
 import {
     call_nextSlide,
     call_prevSlide,
@@ -65,10 +64,6 @@ import {presentationCtx} from "@app/presentation";
 
 DEV: {
     // break DEV;
-
-    okx.subscribe((v) => {
-        console.log("okx:", v);
-    });
 
     console.log("Main.js", $RvW);
     console.log("NativeProcess support:", air.NativeProcess.isSupported);
@@ -1600,8 +1595,6 @@ $RvW.english_booknames = [];
  */
 export function start(Y) {
     setupUI();
-
-    setInterval(() => okx.set(okx.get() + 1), 1000);
 
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 

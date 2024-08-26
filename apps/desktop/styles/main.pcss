@@ -65,3 +65,131 @@
         user-select: text;
     }
 }
+
+/* Preact styles */
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 900;
+    src: url("/assets/fonts/DM Sans/DMSans-Black.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 800;
+    src: url("/assets/fonts/DM Sans/DMSans-ExtraBold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/DM Sans/DMSans-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 600;
+    src: url("/assets/fonts/DM Sans/DMSans-SemiBold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: url("/assets/fonts/DM Sans/DMSans-Medium.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url("/assets/fonts/DM Sans/DMSans-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: url("/assets/fonts/DM Sans/DMSans-Light.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 200;
+    src: url("/assets/fonts/DM Sans/DMSans-EvtraLight.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 100;
+    src: url("/assets/fonts/DM Sans/DMSans-Thin.ttf") format('truetype');
+}
+
+.dm-sans {
+    user-select: none;
+    font-family: "DM Sans", sans-serif;
+    font-style: normal;
+}
+
+.xui {
+    &.dialog {
+        position: fixed;
+        z-index: 1000;
+        max-width: 60%;
+        min-width: 300px;
+
+        &.center {
+            top: 30%;
+            left: 30%;
+            //transform: translate(-50%, -50%);
+        }
+
+        .header {
+            padding: 10px;
+            background-color: #fefefe;
+            color: #444444;
+            font-weight: bold;
+            font-size: 16px;
+            border: 1px solid #bababa;
+            border-radius: 6px 6px 0 0;
+
+            .caption {
+            }
+
+            .buttons {
+
+                button {
+                    padding: 5px 10px;
+                    margin: 0 5px;
+                    border: 1px solid #bababa;
+                    border-radius: 3px;
+                    background-color: #fefefe;
+                    color: #444444;
+                    font-size: 14px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #f0f0f0;
+                    }
+                }
+            }
+        }
+
+        .body {
+            padding: 10px;
+            background-color: #efefef;
+            color: #323232;
+            border-radius: 0 0 6px 6px;
+            border-bottom: 1px solid #bababa;
+            border-left: 1px solid #bababa;
+            border-right: 1px solid #bababa;
+            font-size: 14px;
+        }
+    }
+}
