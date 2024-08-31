@@ -2,6 +2,7 @@
 
 import {SongPresenter} from "@/song/present";
 import {getAllVersesFromChapter} from "@/bible/manager";
+import {$RvW} from "@/rvw";
 
 const mimeTypeMap = {
     '.txt'  : 'text/plain',

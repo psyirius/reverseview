@@ -3,6 +3,7 @@ import {insertError, insertResult} from "@/song/indexing";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class NotesManager {
     constructor(ftflg) {

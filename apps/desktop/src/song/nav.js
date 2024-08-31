@@ -14,6 +14,7 @@ import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 import {clearSelectList, ImageIcon, isBlank, roundSearchBox, showNotification} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class SongNav {
     constructor() {

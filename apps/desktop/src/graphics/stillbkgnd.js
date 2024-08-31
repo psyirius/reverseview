@@ -1,4 +1,5 @@
 import {save2file} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class StillBackground {
     constructor() {

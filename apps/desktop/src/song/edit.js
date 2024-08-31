@@ -7,6 +7,7 @@ import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {apple, clearSelectList, isBlank, specialCategory} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class SongEdit {
     constructor(bodyContent, lyricsCreateContent) {

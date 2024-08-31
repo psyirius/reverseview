@@ -1,4 +1,5 @@
 import {version_number} from "@/versionupdate";
+import {$RvW} from "@/rvw";
 
 export class AppUpdateUi {
     constructor(bodyContent) {

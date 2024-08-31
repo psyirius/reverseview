@@ -1,5 +1,6 @@
 import {addTagList} from "@/tags";
 import {Song} from "@/song/obj";
+import {$RvW} from "@/rvw";
 
 export class SongDbUpdater {
     constructor() {

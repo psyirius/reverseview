@@ -1,3 +1,5 @@
+import {$RvW} from "@/rvw";
+
 export class ColorPickerPanel {
     constructor() {
         this.init = n;

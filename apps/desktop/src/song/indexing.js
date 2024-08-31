@@ -1,4 +1,5 @@
 import {getVersion1Filename, getVersion1Name, updateVersionXML} from "@/bible/version";
+import {$RvW} from "@/rvw";
 
 let indexConn = null;
 let insertStmt = null;

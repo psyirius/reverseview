@@ -58,6 +58,7 @@ import {
     pluckapple, roundSearchBox, showLogoSlide
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
+import {$RvW} from "@/rvw";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);

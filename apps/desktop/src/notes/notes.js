@@ -1,3 +1,5 @@
+import {$RvW} from "@/rvw";
+
 export class Notes {
     constructor(notesUI, containerID) {
         this.init = init;

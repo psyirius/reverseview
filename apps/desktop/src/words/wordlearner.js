@@ -1,3 +1,5 @@
+import {$RvW} from "@/rvw";
+
 export class WordLearner {
     constructor() {
         this.addWord = a;

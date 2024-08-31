@@ -2,6 +2,7 @@ import {BibleDB} from "./db";
 import {Toast} from "@app/toast";
 import {disableNavButtons} from "@/navigation";
 import {presentationCtx} from "@app/presentation";
+import {$RvW} from "@/rvw";
 
 $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;
@@ -25,7 +26,7 @@ export function getdata(j) {
     var f = [];
     var e = $RvW.bookIndex * 1 + 1;
     var a = $RvW.chapterIndex * 1 + 1;
-    vx = 1;
+    let vx = 1;
     var d = getVerseFromArray(e, a, vx);
     var c = $RvW.numofch[e][a];
     if (j) {
@@ -60,7 +61,7 @@ export function getdataONLY() {
     var d = new Array();
     var g = $RvW.bookIndex * 1 + 1;
     var a = $RvW.chapterIndex * 1 + 1;
-    vx = 1;
+    let vx = 1;
     var c = getVerseFromArray(g, a, vx);
     var b = $RvW.numofch[g][a];
     for (var e = 0; e < b; e++) {
@@ -75,7 +76,7 @@ export function getAllVersesFromChapter(d, k) {
     var h = [];
     var j = d * 1 + 1;
     var a = k * 1 + 1;
-    vx = 1;
+    let vx = 1;
     var f = getVerseFromArray(j, a, vx);
     var e = $RvW.numofch[j][a];
     for (var g = 0; g < e; g++) {
@@ -137,8 +138,7 @@ export class verseClass {
             } else {
                 e = true;
             }
-            var q = $RvW.vvConfigObj.get_navFontSize() + "px";
-            document.getElementById(a).style.fontSize = q;
+            document.getElementById(a).style.fontSize = $RvW.vvConfigObj.get_navFontSize() + "px";
             document.getElementById(a).style.fontFamily = r;
             document.getElementById(a).innerHTML = '<a href="#">' + i + "</a>";
             d();

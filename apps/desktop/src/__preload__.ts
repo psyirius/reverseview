@@ -19,12 +19,12 @@
 
         for (const nsk of nsl) {
             switch (typeof parent[nsk]) {
-                case "object":
-                case "function": {
+                case "undefined": {
+                    parent[nsk] = {};
                     break;
                 }
                 default: {
-                    parent[nsk] = {};
+                    break;
                 }
             }
 
@@ -119,4 +119,4 @@ if (typeof (window as any).YUI !== "undefined") {
 
 // TODO: remove it when the global denoising is over
 // the global object to host the global variables
-((window as any).global as any).rvw.provide("$RvW").global = (window as any).global;
+// ((window as any).global as any).rvw.provide("$RvW").global = (window as any).global;

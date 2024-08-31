@@ -1,3 +1,5 @@
+import {$RvW} from "@/rvw";
+
 // TODO: clean up this file
 export let version_number = 14;
 

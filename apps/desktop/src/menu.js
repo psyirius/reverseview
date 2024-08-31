@@ -2,6 +2,7 @@ import { BgContext } from '@/app/background'
 import {setupVerseEditObject} from "@/bible/edit";
 import {manageVersion, showBrowse} from "@/bible/version";
 import {promoteVV} from "@app/common";
+import {$RvW} from "@/rvw";
 
 const MAIN_MENU = [
     {

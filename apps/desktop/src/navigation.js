@@ -1,5 +1,5 @@
 import {Toast} from "@app/toast";
-
+import {$RvW} from "@/rvw";
 
 function getNumofVerses() {
     return $RvW.numofch[$RvW.bookIndex + 1][$RvW.chapterIndex + 1];

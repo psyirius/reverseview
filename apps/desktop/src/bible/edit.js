@@ -1,4 +1,5 @@
 import {getVerseFromArray} from "./manager";
+import {$RvW} from "@/rvw";
 
 export function setupVerseEditObject() {
     var b = $RvW.getBookValue();

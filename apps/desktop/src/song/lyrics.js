@@ -1,4 +1,5 @@
 import {SongPresenter} from "./present";
+import {$RvW} from "@/rvw";
 
 export class SongLyrics {
     constructor() {

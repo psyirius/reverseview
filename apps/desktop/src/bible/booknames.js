@@ -1,3 +1,5 @@
+import {$RvW} from "@/rvw";
+
 const bibleVersionInfo = [
     {
         "name": "English (KJV)",

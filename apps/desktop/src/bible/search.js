@@ -3,6 +3,7 @@ import {getVersion1Font} from "@/bible/version";
 import {getVerseFromArray, verseClass} from "@/bible/manager";
 import {Toast} from "@app/toast";
 import {clearSelectList, filesave2vvexport} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class BibleSearch {
     constructor(O) {

@@ -4,6 +4,7 @@ import {loadSQLBible} from "@/bible/manager";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName, save2file} from "@app/common";
+import {$RvW} from "@/rvw";
 
 $RvW.bibleVersionArray = ["", ""];
 

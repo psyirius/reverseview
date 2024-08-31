@@ -1,6 +1,7 @@
 import {addTagList, fillTagList} from "@/tags";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
+import {$RvW} from "@/rvw";
 import {fixHTTPS_Link, specialCategory} from "@app/common";
 
 export class SongPortXML {

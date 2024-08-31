@@ -1,5 +1,6 @@
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 import {blankSlide, showLogoSlide} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class WebEngine {
     constructor() {

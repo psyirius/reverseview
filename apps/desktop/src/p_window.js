@@ -1,6 +1,7 @@
 import {clearSelectList, presentationContentString} from "@app/common";
 import {presentationCtx} from "@app/presentation";
 import {disableNavButtons} from "@/navigation";
+import {$RvW} from "@/rvw";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';

@@ -1,6 +1,7 @@
 import {getdata} from "@/bible/manager";
 import {setBookChVer} from "@/navigation";
 import {presentationCtx} from "@app/presentation";
+import {$RvW} from "@/rvw";
 
 export class BibleRecentRefManager {
     maxNumElements = 30

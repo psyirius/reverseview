@@ -5,6 +5,7 @@ import {Toast} from "@app/toast";
 import {addScreenSelectionEvent, fillScreenList} from "@/p_window";
 import {FontSizeSlider, save2file} from "@app/common";
 import {savePresentationMargin} from "@app/presentation";
+import {$RvW} from "@/rvw";
 
 export class Config {
     constructor() {

@@ -1,4 +1,5 @@
 import {ColorPickerPanel} from "./colorpicker";
+import {$RvW} from "@/rvw";
 
 export class TextColor {
     constructor() {

@@ -1,6 +1,7 @@
 import {Song} from '@/song/obj';
 import {presentation} from "@/p_window";
 import {presentationCtx} from "@app/presentation";
+import {$RvW} from "@/rvw";
 
 export class SongPresenter {
     constructor() {

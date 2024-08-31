@@ -3,6 +3,7 @@ import { SolidBackgroundColor } from "./solidbkgnd";
 import { TextColor } from "./textcolor";
 import {ColorPickerPanel} from "./colorpicker";
 import {StillBackground} from "./stillbkgnd";
+import {$RvW} from "@/rvw";
 
 export class GraphicsMgr {
     constructor(bodyContent) {

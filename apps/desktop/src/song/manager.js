@@ -11,6 +11,7 @@ import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
 import {save2file} from "@app/common";
+import {$RvW} from "@/rvw";
 
 export class SongManager {
     constructor(_arg1, _arg2) {

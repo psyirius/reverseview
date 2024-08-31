@@ -33,5 +33,5 @@ interface YUI3 {
 // We set this to YUI3 in "src/__preload__.ts"
 declare var $Y: YUI3;
 
-declare var $RvW: any;
+// declare var $RvW: any;
 declare var rvw: any;
