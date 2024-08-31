@@ -44,14 +44,16 @@
         p_format_multiplelines: true,
     };
 
-    var timeValue = 0;
-    var timeValueDefault = 150;
-    var motionFlagState = false;
+    const TRANSITION_DURATION = 150;
+    const DEBUG_ENABLED = true;
+
+    let transitionTimeout = 0;
+
+    var imageMotionActive = false;
     var outlineThickness = 3;
     var initialRenderDelay = 100;
     var showingtheme = false;
     var firstTime = true;
-    var presentDebug = true;
 
     var canvas_top, canvas_left, canvas_height, canvas_width;
     var title_top, title_left, title_height, title_width;
@@ -79,126 +81,167 @@
 
     // INIT
     function initPresentation() {
-        debugPrintPresent("*** Init Presentation****");
-        passVariable(0, _$);
-        motionFlagState = false;
-        if (_$.p_enableTransition) {
-            initTransition(true);
-        } else {
-            initTransition(false);
+        debug("*** Init Presentation****");
+
+        window.onload = function () {
+            document.body.onkeyup = findKey;
+            document.body.style.overflow = "hidden";
         }
-        presentation_initEvent();
-        getDate();
+
+        // Fetch data from parent
+        window.passVariable(0, _$);
+
+        imageMotionActive = false;
+
+        initTransition(!!_$.p_enableTransition);
+
+        setupEvents();
+        updateDate();
+
         updatePresentation();
+
         updateContent();
     }
-    function presentation_initEvent() {
+
+    function setupEvents() {
+        // setup swipe event
         $("#presentationContent").swipe({
             swipe: function (c, e, f, d, b) {
-                a(e);
+                switch (e) {
+                    case "up":
+                    case "down": {
+                        clearPresenter();
+                        break;
+                    }
+                    case "right": {
+                        prevSlide();
+                        window.parent.goToPrevSlide();
+                        break;
+                    }
+                    case "left": {
+                        nextSlide();
+                        window.parent.goToNextSlide();
+                        break;
+                    }
+                }
             },
         });
-        function a(b) {
-            switch (b) {
-                case "up":
-                case "down":
-                    clearPresenter();
-                    break;
-                case "right":
-                    prevSlide();
-                    window.parent.goToPrevSlide();
-                    break;
-                case "left":
-                    nextSlide();
-                    window.parent.goToNextSlide();
-                    break;
-            }
-        }
-        window.onunload = function (b) {
-            window.parent.iamclosingStage();
+
+        window.onunload = function (evt) {
+            window.parent.onWindowUnload();
         };
     }
+
     function clearPresenter() {
         window.close();
     }
+
     function setupBackground() {
-        if (_$.p_bkgnd_type == 1) {
-            if (_$.p_transparentBackground == true) {
-                document.getElementById("backgroundLayer").style.opacity = "0";
+        const bgl = document.getElementById("backgroundLayer");
+
+        debug("Setting up background...");
+        debug('Background type: ' + _$.p_bkgnd_type);
+
+        _$.p_bkgnd_type = parseInt(_$.p_bkgnd_type);
+
+        switch (_$.p_bkgnd_type) {
+            case 1: { // Solid color
+                debug('Transparent: ' + _$.p_transparentBackground);
+                debug('Bg Color: ' + _$.p_bkgnd_color);
+
+                bgl.style.opacity = _$.p_transparentBackground ? "0" : "1";
+                document.body.style.backgroundColor = _$.p_bkgnd_color;
+
+                break;
             }
-            document.getElementById("p_body").style.backgroundImage = "url()";
-            document.getElementById("p_body").style.backgroundColor = _$.p_bkgnd_color;
-        }
-        if (_$.p_bkgnd_type == 2) {
-            var b = "";
-            switch (_$.p_bkgnd_grad_orient) {
-                case 3:
-                    b = b + "-webkit-gradient(linear, 0% 0%, 0% 100%, from(";
-                    break;
-                case 1:
-                    b = b + "-webkit-gradient(linear, 0% 0%, 100% 0%, from(";
-                    break;
-                case 2:
-                    b = b + "-webkit-gradient(linear, 0% 100%, 0% 0%, from(";
-                    break;
-                case 0:
-                    b = b + "-webkit-gradient(linear, 100% 0%, 0% 0%, from(";
-                    break;
-                default:
-                    b = b + "-webkit-gradient(linear, 0% 0%, 0% 100%, from(";
-            }
-            b = b + _$.p_bkgnd_color1 + "), to(" + _$.p_bkgnd_color2 + "))";
-            document.getElementById("p_body").style.backgroundImage = "url()";
-            document.getElementById("p_body").style.backgroundImage = b;
-        }
-        if (_$.p_bkgnd_type == 3) {
-            var a = air.File.applicationStorageDirectory;
-            var c = a.resolvePath(_$.p_bkgnd_filename[0]);
-            if (!_$.p_bkgnd_motion) {
-                document.getElementById("backgroundImage").src = c.url;
-                document.getElementById("backgroundImage").width = _$.p_window_X;
-                document.getElementById("backgroundImage").height = _$.p_window_Y;
-                document.getElementById("backgroundLayer").width = _$.p_window_X;
-                document.getElementById("backgroundLayer").height = _$.p_window_Y;
-                if (_$.p_transparentBackground == true) {
-                    document.getElementById("backgroundLayer").style.opacity = 0;
+            case 2: { // Gradient color
+                debug('Transparent: ' + _$.p_transparentBackground);
+
+                debug('p_bkgnd_color1: ' + _$.p_bkgnd_color1);
+                debug('p_bkgnd_color2: ' + _$.p_bkgnd_color2);
+                debug('p_bkgnd_grad_orient: ' + _$.p_bkgnd_grad_orient);
+
+                bgl.style.opacity = _$.p_transparentBackground ? "0" : "1";
+
+                let gex = "";
+                switch (_$.p_bkgnd_grad_orient) {
+                    case 3:
+                        gex += "-webkit-gradient(linear, 0% 0%, 0% 100%, from(";
+                        break;
+                    case 1:
+                        gex += "-webkit-gradient(linear, 0% 0%, 100% 0%, from(";
+                        break;
+                    case 2:
+                        gex += "-webkit-gradient(linear, 0% 100%, 0% 0%, from(";
+                        break;
+                    case 0:
+                        gex += "-webkit-gradient(linear, 100% 0%, 0% 0%, from(";
+                        break;
+                    default:
+                        gex += "-webkit-gradient(linear, 0% 0%, 0% 100%, from(";
                 }
-            } else {
-                if (!motionFlagState) {
-                    document.getElementById("backgroundLayer").innerHTML =
-                        '<img id="backgroundImage">';
-                    document.getElementById("backgroundImage").src = c.url;
+
+                document.body.style.backgroundImage = `${gex + _$.p_bkgnd_color1}), to(${_$.p_bkgnd_color2}))`;
+
+                break;
+            }
+            case 3: { // Image
+                debug('p_transparentBackground: ' + _$.p_transparentBackground);
+                debug('p_bkgnd_motion: ' + _$.p_bkgnd_motion);
+                debug('p_bkgnd_filename: ' + _$.p_bkgnd_filename);
+
+                const { applicationStorageDirectory } = air.File;
+
+                const bgImgFile = applicationStorageDirectory.resolvePath(_$.p_bkgnd_filename[0]);
+
+                bgl.style.opacity = _$.p_transparentBackground ? '0' : "1";
+
+                if (!_$.p_bkgnd_motion) { // Static Image
+                    bgl.innerHTML = '<img id="backgroundImage" alt="" src="" />';
+                    bgl.width = _$.p_window_X;
+                    bgl.height = _$.p_window_Y;
+
+                    document.getElementById("backgroundImage").src = bgImgFile.url;
                     document.getElementById("backgroundImage").width = _$.p_window_X;
                     document.getElementById("backgroundImage").height = _$.p_window_Y;
-                    document.getElementById("backgroundLayer").width = _$.p_window_X;
-                    document.getElementById("backgroundLayer").height = _$.p_window_Y;
-                    motionFlagState = true;
-                    zoompan(c.url);
                 } else {
-                    zoompan(c.url);
+                    if (!imageMotionActive) { // Motion Image
+                        bgl.innerHTML = '<img id="backgroundImage" alt="" src="" />';
+                        bgl.width = _$.p_window_X;
+                        bgl.height = _$.p_window_Y;
+
+                        document.getElementById("backgroundImage").src = bgImgFile.url;
+                        document.getElementById("backgroundImage").width = _$.p_window_X;
+                        document.getElementById("backgroundImage").height = _$.p_window_Y;
+
+                        imageMotionActive = true;
+                    }
+
+                    animateZoomPan("#backgroundLayer", bgImgFile.url);
                 }
+
+                break;
             }
         }
     }
+
     function setupCanvasPosition() {
-        var a = 20;
+        const el = document.getElementById("semitransparentLayer");
+
+        const a = 20;
+
         canvas_top = _$.p_topMargin;
         canvas_left = _$.p_leftMargin;
         canvas_width = _$.p_window_X - canvas_left - _$.p_rightMargin;
         canvas_height = _$.p_window_Y - canvas_top - _$.p_bottomMargin;
-        document.getElementById("semitransparentLayer").style.left = canvas_left - a;
-        document.getElementById("semitransparentLayer").style.top = canvas_top - a;
-        document.getElementById("semitransparentLayer").style.width =
-            canvas_width + a * 2;
-        document.getElementById("semitransparentLayer").style.height =
-            canvas_height + a * 2;
-        if (_$.p_shadeBackground) {
-            document.getElementById("semitransparentLayer").style.visibility =
-                "visible";
-        } else {
-            document.getElementById("semitransparentLayer").style.visibility = "hidden";
-        }
+
+        el.style.left = canvas_left - a;
+        el.style.top = canvas_top - a;
+        el.style.width = canvas_width + a * 2;
+        el.style.height = canvas_height + a * 2;
+        el.style.visibility = _$.p_shadeBackground ? "visible" : "hidden";
     }
+
     function setupTitlePosition() {
         if (_$.p_title.length < 1) {
             titleAllocation = 0;
@@ -289,6 +332,7 @@
         document.getElementById("footer_vv").style.width = f_width;
         document.getElementById("footer_vv").style.height = f_height;
     }
+
     function setupRTLClass() {
         if (_$.p_isArabic1) {
             $("#content1").addClass("arabic");
@@ -297,21 +341,30 @@
             $("#content1").removeClass("arabic");
             $("#presentationTitle").removeClass("arabic");
         }
+
         if (_$.p_isArabic2) {
             $("#content2").addClass("arabic");
         } else {
             $("#content2").removeClass("arabic");
         }
     }
+
     function updatePresentation() {
-        debugPrintPresent("Updating prestation frames...");
+        debug("Updating presentation frames...");
+
         setupBackground();
+
         setupRTLClass();
+
         setupCanvasPosition();
+
         setupTitlePosition();
+
         setupContentPosition();
+
         setupFooterPosition();
     }
+
     function get_next_index() {
         var a = _$.p_current_index * 1 + 1;
         if (_$.p_current_index == _$.p_last_index) {
@@ -355,25 +408,29 @@
             updateContentWithAnimation();
         }
     }
+
     function updateContentWithAnimation() {
-        var a = $("#presentationContent");
-        a.animate({ opacity: "0.0" }, timeValue, "swing", function () {
+        const contentContainer = $("#presentationContent");
+
+        contentContainer.animate(
+            { opacity: '0' }, transitionTimeout, "swing", () => {
             updateContent2();
-            a.animate({ opacity: "1.0" }, timeValue, "swing");
+            contentContainer.animate({ opacity: '1' }, transitionTimeout, "swing");
         });
     }
-    function getDate() {
-        var d = new Date();
-        var c = d.getHours();
-        var b = "";
-        var a = " AM";
-        if (c == 0) {
+
+    function updateDate() {
+        const d = new Date();
+        const c = d.getHours();
+        let b;
+        let a = " AM";
+        if (c === 0) {
             b = 12;
         } else {
             if (c <= 11) {
                 b = c;
             } else {
-                if (c == 12) {
+                if (c === 12) {
                     b = 12;
                     a = " PM";
                 } else {
@@ -382,15 +439,17 @@
                 }
             }
         }
-        var f = d.getMinutes();
+        let f = d.getMinutes();
         if (f < 10) {
             f = "0" + f;
         }
+
         if (_$.p_showDate) {
-            document.getElementById("footer_date").innerHTML =
-                d.toDateString() + " &nbsp;&nbsp; " + b + ":" + f + a;
+            document.getElementById("footer_date")
+                .innerHTML = `${d.toDateString()} &nbsp;&nbsp; ${b}:${f}${a}`;
         }
-        var e = setTimeout(getDate, 5000);
+
+        setTimeout(updateDate, 5000);
     }
     function updateContent2() {
         restoreSlideProcess();
@@ -519,11 +578,11 @@
         if (b == null) {
             return 0;
         }
-        var a = b.length;
+        const a = b.length;
         if (parseInt(_$.p_maxFontSize) < 48) {
             return 0.5;
         }
-        if (c == "Malayalam") {
+        if (c === "Malayalam") {
             return 0;
         }
         if (d != null) {
@@ -699,158 +758,91 @@
             $RvW.vvConfigObj.save();
         }
     }
-    function initTransition(a) {
-        timeValue = 0;
-        if (a) {
-            timeValue = timeValueDefault;
+    function initTransition(enabled) {
+        transitionTimeout = 0;
+        if (enabled) {
+            transitionTimeout = TRANSITION_DURATION;
         }
     }
-    function zoompan(c) {
-        var b = new Image();
-        var a = 1;
-        b.onload = function () {
-            var g = b.height;
-            var k = b.width;
-            var j = air.Screen.screens;
-            var h = j[0].bounds.width;
-            var f = j[0].bounds.height;
-            var e = h / k;
-            var i = f / g;
+    function animateZoomPan(layer, c) {
+        const img = new Image(); // probably ensuring the image is loaded before we start the animation
+        let a = 1;
+        img.onload = function () {
+            const g = img.height;
+            const k = img.width;
+            // FIXME: are we really using the proper screen?
+            const j = air.Screen.screens;
+            const h = j[0].bounds.width;
+            const f = j[0].bounds.height;
+            const e = h / k;
+            const i = f / g;
             a = e;
             if (i > e) {
                 a = i;
             }
-            d();
+            animateZP();
         };
-        b.src = c;
-        function d() {
-            var e = 13;
+        img.src = c;
+
+        function animateZP() {
+            const e = 13;
             jQuery.fx.interval = 80;
-            $("#backgroundLayer").crossSlide(
+
+            $(layer).crossSlide(
                 { fade: 1 },
                 [
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
                         src: c,
                         alt: "",
-                        from:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            a +
-                            "x",
-                        to:
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% " +
-                            Math.floor(Math.random() * 100 + 1) +
-                            "% 3x",
+                        from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
+                        to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                 ],
                 function (f, g, h, i) {
-                    if (h == undefined) {
+                    if (h === undefined) {
                         $("div.caption").text(g.alt).animate({ opacity: 0.7 });
                     } else {
                         $("div.caption").fadeOut();
@@ -876,7 +868,8 @@
         return h;
     }
     function invert_hex_color(d) {
-        var e = "0123456789ABCDEF";
+        const e = "0123456789ABCDEF";
+
         function c(f) {
             return e.charAt((f >> 4) & 15) + e.charAt(f & 15);
         }
@@ -905,9 +898,10 @@
         }
         return a(d);
     }
-    function debugPrintPresent(a) {
-        if (presentDebug) {
-            air.trace("[presentation.js]: " + a);
+
+    function debug(msg) {
+        if (DEBUG_ENABLED) {
+            air.trace("[presentation.js]: " + msg);
         }
     }
 
@@ -919,7 +913,7 @@
     exports.ctx = _$;
 
     // set by parent
-    // exports.parent.iamclosingStage = null;
+    // exports.parent.onWindowUnload = null;
     // exports.parent.goToPrevSlide = null;
     // exports.parent.goToNextSlide = null;
 

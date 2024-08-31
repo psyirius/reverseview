@@ -100,6 +100,9 @@ function passVariable(isStageView, _ = undefined) {
     _.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
     _.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
     _.p_align = $RvW.vvConfigObj.get_p_align();
+
+    air.trace(`p_enableTransition: ${_.p_enableTransition}`);
+
     if ($RvW.vvConfigObj.get_showVVLogo()) {
         _.p_logo = ["ReVerseVIEW", "rvw.github.io"].join("<br>");
     } else {
@@ -134,10 +137,8 @@ function passVariable(isStageView, _ = undefined) {
 }
 
 function getCurrentScreen() {
-    let b;
     const a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
-    a.length > 0 ? (b = a[0]) : (b = air.Screen.mainScreen);
-    return b;
+    return a.length > 0 ? a[0] : air.Screen.mainScreen;
 }
 function getScreenList() {
     return air.Screen.screens;
@@ -207,47 +208,65 @@ export function addScreenSelectionEvent() {
         }, false);
 }
 
+/**
+ * Called when the user clicks the "Presentation" button
+ *
+ * Creates the presentation window and the stage view window
+ * If the windows are already open, updates the content
+ *
+ * @returns {void}
+ * */
 export function presentation() {
     $RvW.stageView = $("#stageConfigEnable").is(":checked");
-    var k = new air.NativeWindowInitOptions();
-    k.systemChrome = "none";
-    k.type = "lightweight";
-    k.transparent = true;
+
+    const windowInitOptions = new air.NativeWindowInitOptions();
+    windowInitOptions.systemChrome = "none";
+    windowInitOptions.type = "lightweight";
+    windowInitOptions.transparent = true;
+
     getCurrentScreen();
+
     const screens = air.Screen.screens;
-    var c;
+    let presentScreenBounds;
     stageViewScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0);
     if (screens[stageViewScreenIndex] == null) {
         stageViewScreenIndex = 0;
         $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
     }
     $RvW.stageView = $RvW.stageView && screens[stageViewScreenIndex] != null;
-    let e = $RvW.rvwPreferences.get("app.settings.screen.main.index", 1);
-    if (screens[e] == null) {
-        e = 0;
+
+    let presentScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.main.index", 1);
+    if (screens[presentScreenIndex] == null) {
+        presentScreenIndex = 0;
     }
-    if (dualScreen && screens[e] != null) {
-        c = screens[e].bounds;
-        pWindowX = screens[e].bounds.width;
-        pWindowY = screens[e].bounds.height;
+
+    if (dualScreen && screens[presentScreenIndex] != null) {
+        presentScreenBounds = screens[presentScreenIndex].bounds;
+        pWindowX = screens[presentScreenIndex].bounds.width;
+        pWindowY = screens[presentScreenIndex].bounds.height;
     } else {
-        c = screens[0].bounds;
+        presentScreenBounds = screens[0].bounds;
         pWindowX = screens[0].bounds.width;
         pWindowY = screens[0].bounds.height;
-        air.trace("p window singl " + pWindowX + " " + pWindowY);
+        air.trace(`p window single ${pWindowX}x${pWindowY}`);
     }
+
     if (!$RvW.presentWindowOpen) {
-        $RvW.presentationWindow = air.HTMLLoader.createRootWindow(true, k, true, c);
+        $RvW.presentationWindow = air.HTMLLoader.createRootWindow(true, windowInitOptions, true, presentScreenBounds);
         $RvW.presentationWindow.visible = $("#mainConfigEnable").is(":checked");
         $RvW.presentationWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
+
         $RvW.presentationWindow.window.nativeWindow.addEventListener(
             air.Event.CLOSE,
             presentWindowClosed
         );
+
         $RvW.presentationWindow.window.nativeWindow.alwaysInFront = $RvW.vvConfigObj.get_presentationOnTop();
-        $RvW.presentationWindow.window.nativeWindow.stage.frameRate = 30;
-        $RvW.presentationWindow.load(new air.URLRequest("presentation.htm"));
-        $RvW.presentationWindow.window.iamclosingStage = function () {
+        $RvW.presentationWindow.window.nativeWindow.stage.frameRate = 60;
+        $RvW.presentationWindow.load(new air.URLRequest("presentation.html"));
+
+        // define the global functions in the presentation window
+        $RvW.presentationWindow.window.onWindowUnload = function () {
             if ($RvW.stageView && $RvW.stageWindow != null) {
                 $RvW.stageWindow.window.nativeWindow.close();
             }
@@ -264,6 +283,7 @@ export function presentation() {
             }
             updatePresentationContent(false);
         };
+        // end of global functions
 
         if ($RvW.stageView) {
             const { NativeWindowInitOptions, HTMLLoader, Event, URLRequest } = air;
@@ -339,6 +359,9 @@ export function presentation() {
 
         $RvW.presentWindowOpen = true;
     } else {
+        // if the window is already open, just update the content
+
+        // Presentation
         try {
             $RvW.presentationWindow.window.passVariable(0);
             $RvW.presentationWindow.window.updatePresentation();
@@ -346,6 +369,8 @@ export function presentation() {
         } catch (d) {
             air.trace("Possible double click... NewWindow is still getting ready..");
         }
+
+        // StageView
         if ($RvW.stageView && $RvW.stageWindow != null) {
             try {
                 $RvW.stageWindow.window.passVariable(1);

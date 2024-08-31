@@ -54,7 +54,7 @@ const Splash = {
             //     </html>
             // `);
             htmlWindow.load(
-                new URLRequest("splash.htm")
+                new URLRequest("splash.html")
             );
 
             this.__instance = htmlWindow;
