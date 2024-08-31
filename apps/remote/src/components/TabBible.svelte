@@ -10,22 +10,39 @@
     import {
         Rows4Icon,
         LayoutGridIcon,
-    } from "lucide-svelte";
-
-    import {
+        MonitorXIcon,
         SearchIcon,
         MonitorUpIcon,
-    } from 'lucide-svelte';
-    import BibleRefGrid from "./BibleRefGrid.svelte";
+    } from "lucide-svelte";
+
+    import BibleRefGrid, { BookInfoMap } from "./BibleRefGrid.svelte";
 
     const verses = Array.from({ length: 50 }).map(
-        (_, i, a) => `${i + 1}. In the beginning...`
+        (_, i) => `${i + 1}. In the beginning...`
     );
 
-    let title = "Genesis";
-    let description = "1:1-50";
+    let title = 'Nothing';
+    let description = 'Selected';
 
     let gridMode = true;
+
+    let selectedBibleRef = [0, 0, 0];
+
+    $: {
+        console.log(selectedBibleRef);
+
+        {
+            if (!selectedBibleRef.every((v) => (v !== 0))) {
+                title = 'Nothing';
+                description = 'Selected';
+            } else {
+                const [book, chapter, verse] = selectedBibleRef;
+
+                title = BookInfoMap[book - 1].name;
+                description = `${chapter}:${verse}`;
+            }
+        }
+    }
 </script>
 
 <div class="container">
@@ -97,21 +114,21 @@
         <Card.Content class="flex flex-col gap-2 h-full">
             {#if gridMode}
                 <div class="pt-3 flex flex-row gap-2 w-full">
-                    <div class="">
+                    <div class="flex flex-col transition">
                         <h4 class="text-sm font-medium leading-none">{title}</h4>
                         <p class="text-muted-foreground text-sm">{description}</p>
                     </div>
 
-                    <Separator orientation="vertical" />
+<!--                    <Separator orientation="vertical" />-->
 
-                    <div class="">
-                        <h4 class="text-sm font-medium leading-none">{title}</h4>
-                        <p class="text-muted-foreground text-sm">{description}</p>
-                    </div>
+<!--                    <div class="">-->
+<!--                        <h4 class="text-sm font-medium leading-none">{title}</h4>-->
+<!--                        <p class="text-muted-foreground text-sm">{description}</p>-->
+<!--                    </div>-->
                 </div>
 
                 <div class="flex h-full max-h-full m-0 p-0">
-                    <BibleRefGrid />
+                    <BibleRefGrid bind:current={selectedBibleRef} />
                 </div>
 
 <!--                <div class="relative flex h-full max-h-full m-0 p-0">-->

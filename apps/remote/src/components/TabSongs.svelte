@@ -25,7 +25,7 @@
         slidesList = new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(_slides);
-            }, 2000);
+            }, 1000);
         });
         songMeta = new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -253,8 +253,18 @@
                                                 {#if i > 0}
                                                     <Separator class="my-2" />
                                                 {/if}
-                                                <div class="text-sm bg-opacity-50 cursor-pointer overflow-ellipsis">
-                                                    {slide}
+                                                <div
+                                                    class="text-sm bg-opacity-50 cursor-pointer overflow-ellipsis"
+                                                    tabindex="0"
+                                                    role="button"
+                                                    on:click={() => {
+                                                        toast.success('Clicked on slide');
+                                                    }}
+                                                    on:keyup={() => {
+                                                        toast.success('Clicked on slide');
+                                                    }}
+                                                >
+                                                    {@html slide}
                                                 </div>
                                             {/each}
                                         </div>

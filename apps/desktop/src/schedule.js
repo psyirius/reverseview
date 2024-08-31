@@ -2,7 +2,7 @@ import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
 import {Prompt} from "@app/prompt";
 import {processNavBibleRefFind} from "@/navigation";
-import {clearSelectList} from "@app/common";
+import {clearSelectList, ImageIcon} from "@app/common";
 
 export class Scheduler {
     constructor() {
@@ -56,35 +56,35 @@ export class Scheduler {
                 .addEventListener("click", r, false);
         }
         function k() {
-            R = new icon(
+            R = new ImageIcon(
                 "sch_upID",
                 " Move Schedule Item UP ",
                 "graphics/icon/up.png",
                 "graphics/icon/up.png",
                 ""
             );
-            E = new icon(
+            E = new ImageIcon(
                 "sch_downID",
                 " Move Schedule Item DOWN ",
                 "graphics/icon/down.png",
                 "graphics/icon/down.png",
                 ""
             );
-            Q = new icon(
+            Q = new ImageIcon(
                 "sch_deleteID",
                 " REMOVE Selected Schedule Item ",
                 "graphics/icon/sch_del.png",
                 "graphics/icon/sch_del.png",
                 ""
             );
-            z = new icon(
+            z = new ImageIcon(
                 "sch_deleteAllID",
                 " CLEAR Schedule ",
                 "graphics/icon/sch_delall.png",
                 "graphics/icon/sch_delall.png",
                 ""
             );
-            c = new icon(
+            c = new ImageIcon(
                 "sch_presentID",
                 " PRESENT Selected Schedule Item ",
                 "graphics/icon/present_48.png",

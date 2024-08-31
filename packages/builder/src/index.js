@@ -1,21 +1,52 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+import * as process from 'node:process'
 
 import * as ts from 'typescript'
 import * as swc from '@swc/core'
 import * as esbuild from 'esbuild'
 
-/**
- * @param {{[p: string]: any}} env
- */
-const prepareDefine = (env) => Object.fromEntries(
-    Object.entries(env)
-        .map(([key, value]) => [key, (typeof value === 'symbol') ? value.description : JSON.stringify(value)])
+import { Command, Option } from 'commander'
+
+const prog = new Command()
+    .name('build.src')
+    .version('0.0.0')
+    .description('Air JS/TS Builder')
+    .addOption(
+        new Option('-p, --project <tsconfig>', 'choose a tsconfig')
+    )
+
+prog.parse(process.argv);
+
+const WORKING_DIR = process.cwd();
+
+const options = prog.opts();
+
+const configPath = path.join(
+    WORKING_DIR,
+    options.project ?? "tsconfig.json",
 );
 
-const getModuleName = (relPath) => path.join(
-    path.dirname(relPath),
-    path.basename(relPath, path.extname(relPath)),
+/**
+ * @param {{[p: string]: any}} env
+ *
+ * @return {{[p: string]: string}}
+ */
+const prepareDefine = (env) => Object.fromEntries(
+    Object.entries(env).map(([key, value]) => [
+        key,
+        (typeof value === 'symbol') ? value.description : JSON.stringify(value)
+    ])
+);
+
+/**
+ * @param {string} relativePath
+ *
+ * @return {string}
+ */
+const getModuleName = (relativePath) => path.join(
+    path.dirname(relativePath),
+    path.basename(relativePath, path.extname(relativePath)),
 );
 
 (async () => {
@@ -154,7 +185,7 @@ const getModuleName = (relPath) => path.join(
 
             files[name] = {
                 ...files[name],
-                source: result.code,
+                // source: result.code,
             }
         }
     }
@@ -187,7 +218,7 @@ const getModuleName = (relPath) => path.join(
                     }
                 },
                 // env: {},
-                filename,
+                filename: filename,
                 plugin(module) {
                     // console.log(module);
 

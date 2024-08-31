@@ -2,6 +2,8 @@ import {presentationCtx} from "@app/presentation";
 import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 
+import * as $ from "jquery";
+
 export let apple = false;
 
 export function save2file(c, d, a) {
@@ -558,18 +560,16 @@ function clearNotification() {
 }
 
 function getDate() {
-    var e = new Date();
-    var c = e.getMonth() + 1;
-    var b = e.getDate();
-    var a =
-        e.getFullYear() +
+    const e = new Date();
+    const c = e.getMonth() + 1;
+    const b = e.getDate();
+    return e.getFullYear() +
         "/" +
         (("" + c).length < 2 ? "0" : "") +
         c +
         "/" +
         (("" + b).length < 2 ? "0" : "") +
         b;
-    return a;
 }
 
 export function specialCategory(d) {

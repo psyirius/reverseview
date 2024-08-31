@@ -12,15 +12,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@dotenvx/dotenvx": "^1.7.0",
-    "@types/node": "^20.14.15",
+    "@dotenvx/dotenvx": "^1.11.5",
+    "@types/node": "^22.5.1",
     "rimraf": "^6.0.1",
     "swc-node": "^1.0.0",
     "ts-node": "^10.9.2",
-    "tsx": "^4.17.0",
-    "turbo": "^2.0.14",
+    "tsx": "^4.19.0",
+    "turbo": "^2.1.1",
     "haxe": "^5.2.1",
-    "zx": "^8.1.4"
+    "zx": "^8.1.5"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

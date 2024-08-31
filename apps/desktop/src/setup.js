@@ -4,38 +4,35 @@ import {clearSelectList, UnZip} from "@app/common";
 export class BibleVersionSelector {
     constructor(bodyContent) {
         this.show = show;
+        this.hide = hide;
 
-        var c = null;
-        var f = null;
+        let _panel = null;
+        const _body = bodyContent;
 
-        init(bodyContent);
+        _setupPanel();
 
-        function init(h) {
-            f = h;
-            e();
-            d();
-        }
-        function e() {
-            c = new YAHOO.widget.Panel("panelObj2", {
+        function _setupPanel() {
+            _panel = new YAHOO.widget.Panel("panelObj2", {
                 width: "300px",
                 fixedcenter: true,
                 modal: true,
                 visible: false,
                 constraintoviewport: true,
             });
-            c.render(document.body);
-            c.setHeader("Bible Version Selection");
-            c.setBody(f);
-            c.hide();
-            c.bringToTop();
+            _panel.render(document.body);
+            _panel.setHeader("Bible Version Selection");
+            _panel.setBody(_body);
+            _panel.hide();
+            _panel.bringToTop();
         }
-        function d() { }
+
         function show() {
-            c.show();
-            c.bringToTop();
+            _panel.show();
+            _panel.bringToTop();
         }
-        function b() {
-            c.hide();
+
+        function hide() {
+            _panel.hide();
         }
     }
 }
@@ -44,15 +41,14 @@ export class BibleUpdater {
     constructor() {
         let bibleVersionList = null;
         let filename = null;
-        let l = null;
 
-        document
-            .getElementById("checkUpdateBut")
-            .addEventListener("click", a, false);
-        document
-            .getElementById("loadSelectedBut")
-            .addEventListener("click", i, false);
-        document.getElementById("loadSelectedBut").disabled = true;
+        const checkUpdateBut = document.getElementById("checkUpdateBut");
+        checkUpdateBut.addEventListener("click", onCheckUpdate, false);
+
+        const loadSelectedBut = document.getElementById("loadSelectedBut")
+        loadSelectedBut.addEventListener("click", onLoadSelected, false);
+        loadSelectedBut.disabled = true;
+
         new YAHOO.widget.Tooltip("ttip1", {
             context: checkUpdateBut,
             text: "Check for Update",
@@ -62,7 +58,7 @@ export class BibleUpdater {
             text: "Load selected",
         });
 
-        function a() {
+        function onCheckUpdate() {
             air.trace("Update Check......");
             document.getElementById("checkUpdateBut").disabled = true;
             download_bible();
@@ -125,7 +121,7 @@ export class BibleUpdater {
         //     var m = "C:\\Users\\Binu\\AppData\\Roaming\\verseview4beta\\Local Store\\romanian.xml";
         //     loadVersion(m);
         // }
-        function i() {
+        function onLoadSelected() {
             air.trace("Load selected.....");
             document.getElementById("loadSelectedBut").disabled = true;
             const q = "https://www.verseview.info/download/bible/" + filename;
@@ -149,7 +145,7 @@ export class BibleUpdater {
                 x.writeBytes(w, 0, w.length);
                 x.close();
                 air.trace("Completed downloading the zip file to test.zip");
-                l = new UnZip("", "test.zip");
+                const l = new UnZip("", "test.zip");
                 const s = new air.File();
                 air.trace("File....." + l.get_nPath());
                 s.nativePath = l.get_nPath();
