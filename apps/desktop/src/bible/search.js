@@ -210,7 +210,7 @@ export class BibleSearch {
                     '<input class="style2" type="button" id="saveResult" value=" SAVE RESULTS ">';
                 ab = ab + "<br><br>";
                 al = al + "<table border=0>";
-                for (i = R; i < R + aa; i++) {
+                for (let i = R; i < R + aa; i++) {
                     al = al + '<tr class="vcClass"><td width="4%">';
                     var ag = "searchNC_" + i;
                     al =

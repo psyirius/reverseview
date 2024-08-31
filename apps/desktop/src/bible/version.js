@@ -34,7 +34,7 @@ export function loadBibleVersion() {
             a = c.responseXML.documentElement;
             var f = a.getElementsByTagName("version").length;
             $RvW.bibleVersionArray[0][0] = "None";
-            for (i = 0; i < f; i++) {
+            for (let i = 0; i < f; i++) {
                 var d = i + 1;
                 var e = a.getElementsByTagName("version")[i];
                 $RvW.bibleVersionArray[d] = new Array();
@@ -188,7 +188,7 @@ function loadVersionList() {
     var a = $RvW.bibleVersionArray.length;
     air.trace("Number of version: " + a);
     clearSelectList("selectVersionList");
-    for (i = 1; i < a; i++) {
+    for (let i = 1; i < a; i++) {
         document.getElementById("selectVersionList").options[i - 1] = new Option(
             $RvW.bibleVersionArray[i][0],
             i
@@ -500,7 +500,7 @@ function generateVersionXML() {
     var b = $RvW.bibleVersionArray.length;
     a = a + '<?xml version="1.0" encoding="UTF-8"?>\n';
     a = a + "<bibleversion>\n";
-    for (i = 1; i < b; i++) {
+    for (let i = 1; i < b; i++) {
         a = a + "  <version>\n";
         a = a + "    <name>" + $RvW.bibleVersionArray[i][0] + "</name>\n";
         a = a + "    <file>" + $RvW.bibleVersionArray[i][1] + "</file>\n";

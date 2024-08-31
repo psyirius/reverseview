@@ -89,7 +89,7 @@ export class BibleRecentRefManager {
 
     data2string() {
         let a = "";
-        for (i = 0; i < this.numElements; i++) {
+        for (let i = 0; i < this.numElements; i++) {
             a += `${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}|`;
         }
         air.trace("Recent list: " + a);
