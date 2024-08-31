@@ -83,13 +83,23 @@ declare global {
     // interface Matrix {}
 
     // ...
-    const File: any;
     const Screen: any;
     const Rectangle: any;
     const HTMLLoader: any;
     const URLRequest: any;
     const SourceViewer: any;
     const NativeWindowInitOptions: any;
+
+    // data
+    export type SQLMode = runtime.flash.data.SQLMode;
+    const SQLMode: typeof runtime.flash.data.SQLMode;
+
+    export type SQLConnection = runtime.flash.data.SQLConnection;
+    const SQLConnection: typeof runtime.flash.data.SQLConnection;
+
+    // filesystem
+    export type File = runtime.flash.filesystem.File;
+    const File: typeof runtime.flash.filesystem.File;
   }
 }
 

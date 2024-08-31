@@ -1,10 +1,13 @@
+// MUST BE THE FIRST FILE IN THE PROJECT EVER TO BE LOADED
 "use strict";
 
 (window as any).global ??= new Function("return this;").apply(null);
 (window as any).self ??= (window as any).global;
 (window as any).globalThis ??= (window as any).global;
 
-(() => {
+// namespace provider
+// @ts-ignore
+!(function () {
     "use strict";
 
     const provide = (namespace: string): any => {
@@ -36,37 +39,42 @@
 
     // create the root namespace with the provider function
     provide("rvw").provide = provide;
-})();
+}());
 
-// console shim
-(() => {
-    "use strict";
+DEV: {
+    // console shim
+    // @ts-ignore
+    !(function () {
+        "use strict";
 
-    const air = ((window as any).global as any).air ??= {};
-    const criticalTypes = ["error", "warn"];
+        const air = ((window as any).global as any).air ??= {};
+        const criticalTypes = ["error", "warn"];
 
-    const print = (type: string) => function () {
-        if (criticalTypes.indexOf(type) !== -1) {
-            if (typeof air.Introspector.Console !== "undefined") {
-                air.Introspector.Console[type].apply(air.Introspector.Console, arguments);
-                return;
+        const makePrint = (type: string) => function () {
+            if (criticalTypes.indexOf(type) !== -1) {
+                if (typeof air.Introspector.Console !== "undefined") {
+                    air.Introspector.Console[type].apply(air.Introspector.Console, arguments);
+                    return;
+                }
             }
-        }
 
-        const args = Array.prototype.slice.call(arguments);
-        air.trace(`[${type}]: ${args.join(" ")}`);
-    };
+            const args = Array.prototype.slice.call(arguments);
+            air.trace(`[${type}]: ${args.join(" ")}`);
+        };
 
-    const console = {
-        log: print("log"),
-        warn: print("warn"),
-        info: print("info"),
-        debug: print("debug"),
-        error: print("error"),
-    };
+        const console = {
+            log: makePrint("log"),
+            warn: makePrint("warn"),
+            info: makePrint("info"),
+            debug: makePrint("debug"),
+            error: makePrint("error"),
+        };
 
-    ((window as any).global as any).console ??= console;
-})();
+        ((window as any).global as any).console ??= console;
+    }());
+
+    break DEV;
+}
 
 // init YUI 3
 if (typeof (window as any).YUI !== "undefined") {
@@ -116,7 +124,3 @@ if (typeof (window as any).YUI !== "undefined") {
         ((window as any).global as any)['$YUI3_MODULES'] || [],
     );
 }
-
-// TODO: remove it when the global denoising is over
-// the global object to host the global variables
-// ((window as any).global as any).rvw.provide("$RvW").global = (window as any).global;

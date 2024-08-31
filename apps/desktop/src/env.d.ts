@@ -27,7 +27,7 @@ interface YUI3 {
     // functions
     use(...args: any[]): void;
 
-    one(selector: string): any;
+    one(selector: string): HTMLElement | null;
 }
 
 // We set this to YUI3 in "src/__preload__.ts"

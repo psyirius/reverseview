@@ -10,7 +10,7 @@ generator client {
 model Version {
   id          Int     @id @default(autoincrement())
   name        String  @unique
-  tag         String  @unique // abbrevation of the name
+  tag         String  @unique // abbreviation of the name
   description String?
   author      String?
   copyright   String?

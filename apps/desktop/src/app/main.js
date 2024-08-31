@@ -66,6 +66,9 @@ import {$RvW} from "@/rvw";
 DEV: {
     // break DEV;
 
+    // const font = new FontFace('MyFont', 'url(path/to/your/font.ttf)');
+    // console.log("FONT:", font);
+
     console.log("Main.js", $RvW);
     console.log("NativeProcess support:", air.NativeProcess.isSupported);
 

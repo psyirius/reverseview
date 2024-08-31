@@ -264,6 +264,7 @@
                                                         toast.success('Clicked on slide');
                                                     }}
                                                 >
+                                                    <!-- FIXME: DANGER -->
                                                     {@html slide}
                                                 </div>
                                             {/each}
