@@ -321,11 +321,11 @@ importers:
         version: link:../../packages/prisma-generator-as3
     devDependencies:
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4
+        specifier: ^1.7.6
+        version: 1.7.6
       prisma:
-        specifier: ^5.18.0
-        version: 5.18.0
+        specifier: ^5.19.0
+        version: 5.19.0
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7
@@ -1584,20 +1584,35 @@ packages:
   '@prisma/debug@5.18.0':
     resolution: {integrity: sha512-f+ZvpTLidSo3LMJxQPVgAxdAjzv5OpzAo/eF8qZqbwvgi2F5cTOI9XCpdRzJYA0iGfajjwjOKKrVq64vkxEfUw==}
 
+  '@prisma/debug@5.19.0':
+    resolution: {integrity: sha512-+b/G0ubAZlrS+JSiDhXnYV5DF/aTJ3pinktkiV/L4TtLRLZO6SVGyFELgxBsicCTWJ2ZMu5vEV/jTtYCdjFTRA==}
+
   '@prisma/engines-version@5.18.0-25.4c784e32044a8a016d99474bd02a3b6123742169':
     resolution: {integrity: sha512-a/+LpJj8vYU3nmtkg+N3X51ddbt35yYrRe8wqHTJtYQt7l1f8kjIBcCs6sHJvodW/EK5XGvboOiwm47fmNrbgg==}
+
+  '@prisma/engines-version@5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f':
+    resolution: {integrity: sha512-GimI9aZIFy/yvvR11KfXRn3pliFn1QAkdebVlsXlnoh5uk0YhLblVmeYiHfsu+wDA7BeKqYT4sFfzg8mutzuWw==}
 
   '@prisma/engines@5.18.0':
     resolution: {integrity: sha512-ofmpGLeJ2q2P0wa/XaEgTnX/IsLnvSp/gZts0zjgLNdBhfuj2lowOOPmDcfKljLQUXMvAek3lw5T01kHmCG8rg==}
 
+  '@prisma/engines@5.19.0':
+    resolution: {integrity: sha512-UtW+0m4HYoRSSR3LoDGKF3Ud4BSMWYlLEt4slTnuP1mI+vrV3zaDoiAPmejdAT76vCN5UqnWURbkXxf66nSylQ==}
+
   '@prisma/fetch-engine@5.18.0':
     resolution: {integrity: sha512-I/3u0x2n31rGaAuBRx2YK4eB7R/1zCuayo2DGwSpGyrJWsZesrV7QVw7ND0/Suxeo/vLkJ5OwuBqHoCxvTHpOg==}
+
+  '@prisma/fetch-engine@5.19.0':
+    resolution: {integrity: sha512-oOiPNtmJX0cP/ebu7BBEouJvCw8T84/MFD/Hf2zlqjxkK4ojl38bB9i9J5LAxotL6WlYVThKdxc7HqoWnPOhqQ==}
 
   '@prisma/generator-helper@5.18.0':
     resolution: {integrity: sha512-3ffmrd9KE8ssg/fwyvfwMxrDAunLF8DLFjfwYnDRE7VaNIhkUVZwB77jAwpMCtukvCsAp14WGWu4itvLMzH3GQ==}
 
   '@prisma/get-platform@5.18.0':
     resolution: {integrity: sha512-Tk+m7+uhqcKDgnMnFN0lRiH7Ewea0OEsZZs9pqXa7i3+7svS3FSCqDBCaM9x5fmhhkufiG0BtunJVDka+46DlA==}
+
+  '@prisma/get-platform@5.19.0':
+    resolution: {integrity: sha512-s9DWkZKnuP4Y8uy6yZfvqQ/9X3/+2KYf3IZUVZz5OstJdGBJrBlbmIuMl81917wp5TuK/1k2TpHNCEdpYLPKmg==}
 
   '@rollup/rollup-android-arm-eabi@4.20.0':
     resolution: {integrity: sha512-TSpWzflCc4VGAUJZlPpgAJE1+V60MePDQnBd7PPkpuEmOy8i87aL6tinFGKBFKuEDikYpig72QzdT3QPYIi+oA==}
@@ -2226,11 +2241,11 @@ packages:
   aws-sign2@0.5.0:
     resolution: {integrity: sha512-oqUX0DM5j7aPWPCnpWebiyNIj2wiNI87ZxnOMoGv0aE4TGlBy2N+5iWc6dQ/NOKZaBD2W6PVz8jtOGkWzSC5EA==}
 
-  axios@1.7.4:
-    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
-
   axios@1.7.5:
     resolution: {integrity: sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==}
+
+  axios@1.7.6:
+    resolution: {integrity: sha512-Ekur6XDwhnJ5RgOCaxFnXyqlPALI3rVeukZMwOdfghW7/wGz784BYKiQq+QD8NPcr91KRo30KfHOchyijwWw7g==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -4914,6 +4929,11 @@ packages:
     engines: {node: '>=16.13'}
     hasBin: true
 
+  prisma@5.19.0:
+    resolution: {integrity: sha512-Pu7lUKpVyTx8cVwM26dYh8NdvMOkMnJXzE8L6cikFuR4JwyMU5NKofQkWyxJKlTT4fNjmcnibTvklV8oVMrn+g==}
+    engines: {node: '>=16.13'}
+    hasBin: true
+
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
@@ -7200,7 +7220,11 @@ snapshots:
 
   '@prisma/debug@5.18.0': {}
 
+  '@prisma/debug@5.19.0': {}
+
   '@prisma/engines-version@5.18.0-25.4c784e32044a8a016d99474bd02a3b6123742169': {}
+
+  '@prisma/engines-version@5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f': {}
 
   '@prisma/engines@5.18.0':
     dependencies:
@@ -7209,11 +7233,24 @@ snapshots:
       '@prisma/fetch-engine': 5.18.0
       '@prisma/get-platform': 5.18.0
 
+  '@prisma/engines@5.19.0':
+    dependencies:
+      '@prisma/debug': 5.19.0
+      '@prisma/engines-version': 5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f
+      '@prisma/fetch-engine': 5.19.0
+      '@prisma/get-platform': 5.19.0
+
   '@prisma/fetch-engine@5.18.0':
     dependencies:
       '@prisma/debug': 5.18.0
       '@prisma/engines-version': 5.18.0-25.4c784e32044a8a016d99474bd02a3b6123742169
       '@prisma/get-platform': 5.18.0
+
+  '@prisma/fetch-engine@5.19.0':
+    dependencies:
+      '@prisma/debug': 5.19.0
+      '@prisma/engines-version': 5.19.0-31.5fe21811a6ba0b952a3bc71400666511fe3b902f
+      '@prisma/get-platform': 5.19.0
 
   '@prisma/generator-helper@5.18.0':
     dependencies:
@@ -7222,6 +7259,10 @@ snapshots:
   '@prisma/get-platform@5.18.0':
     dependencies:
       '@prisma/debug': 5.18.0
+
+  '@prisma/get-platform@5.19.0':
+    dependencies:
+      '@prisma/debug': 5.19.0
 
   '@rollup/rollup-android-arm-eabi@4.20.0':
     optional: true
@@ -7808,7 +7849,7 @@ snapshots:
   aws-sign2@0.5.0:
     optional: true
 
-  axios@1.7.4:
+  axios@1.7.5:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -7816,7 +7857,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.7.5:
+  axios@1.7.6:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -10760,6 +10801,12 @@ snapshots:
   prisma@5.18.0:
     dependencies:
       '@prisma/engines': 5.18.0
+
+  prisma@5.19.0:
+    dependencies:
+      '@prisma/engines': 5.19.0
+    optionalDependencies:
+      fsevents: 2.3.3
 
   process-nextick-args@2.0.1: {}
 

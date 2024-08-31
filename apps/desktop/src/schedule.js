@@ -567,10 +567,7 @@ export class Scheduler {
             );
             var ab = new air.SQLStatement();
             ab.sqlConnection = y;
-            var ag = "";
-            ag +=
-                "INSERT INTO sch (isSong, book, ch, ver, songID, sch_order) VALUES (:is, :b, :c, :v, :sid, :o);";
-            ab.text = ag;
+            ab.text = "INSERT INTO sch (isSong, book, ch, ver, songID, sch_order) VALUES (:is, :b, :c, :v, :sid, :o);";
             ab.addEventListener(air.SQLEvent.RESULT, af);
             ab.addEventListener(air.SQLErrorEvent.ERROR, X);
             ab.parameters[":is"] = Z;
@@ -599,9 +596,7 @@ export class Scheduler {
             A("Deleting schedule record with keyValue as primary key...");
             var Y = new air.SQLStatement();
             Y.sqlConnection = y;
-            var ab = "";
-            ab += "DELETE FROM sch WHERE schId = :id;";
-            Y.text = ab;
+            Y.text = "DELETE FROM sch WHERE schId = :id;";
             Y.addEventListener(air.SQLEvent.RESULT, X);
             Y.addEventListener(air.SQLErrorEvent.ERROR, aa);
             Y.parameters[":id"] = Z;
@@ -629,9 +624,7 @@ export class Scheduler {
             A("Deleting ALL schedule record with keyValue as primary key...");
             var X = new air.SQLStatement();
             X.sqlConnection = y;
-            var Z = "";
-            Z += "DELETE FROM sch;";
-            X.text = Z;
+            X.text = "DELETE FROM sch;";
             X.addEventListener(air.SQLEvent.RESULT, aa);
             X.addEventListener(air.SQLErrorEvent.ERROR, Y);
             X.execute();
@@ -653,9 +646,7 @@ export class Scheduler {
             A("Swapping Order Value for Key " + Y + " to " + aa);
             var Z = new air.SQLStatement();
             Z.sqlConnection = y;
-            var ac = "";
-            ac += "UPDATE sch SET sch_order = :val WHERE schId = :id;";
-            Z.text = ac;
+            Z.text = "UPDATE sch SET sch_order = :val WHERE schId = :id;";
             Z.addEventListener(air.SQLEvent.RESULT, ab);
             Z.addEventListener(air.SQLErrorEvent.ERROR, X);
             Z.parameters[":id"] = Y;
@@ -679,8 +670,7 @@ export class Scheduler {
             A("Getting ALL Data from Schedule DB");
             var Z = new air.SQLStatement();
             Z.sqlConnection = y;
-            var aa = "SELECT * FROM sch ORDER BY sch_order ASC";
-            Z.text = aa;
+            Z.text = "SELECT * FROM sch ORDER BY sch_order ASC";
             Z.addEventListener(air.SQLEvent.RESULT, X);
             Z.addEventListener(air.SQLErrorEvent.ERROR, Y);
             Z.execute();

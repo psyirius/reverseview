@@ -102,16 +102,12 @@ async function magic(db: sqlite3.Database): Promise<void> {
         },
     });
 
-    const allAsync = promisify<string, any>(db.all.bind(db));
+    const allAsync = promisify<string, any[]>(db.all.bind(db));
 
-    const d_ = await allAsync(
-        'SELECT DISTINCT bookNum FROM words;'
-    ) as any[];
+    const d_ = await allAsync('SELECT DISTINCT bookNum FROM words;');
     const bookNums = d_.map(v => v.bookNum);
 
-    const f_ = await allAsync(
-        'SELECT booknames FROM configuration;'
-    ) as any[];
+    const f_ = await allAsync('SELECT booknames FROM configuration;');
     const [x_] = f_.map(v => v.booknames);
     const bookNames = x_.split(',').map((v: string) => trimChar(v, "'"));
 
@@ -131,11 +127,9 @@ async function magic(db: sqlite3.Database): Promise<void> {
             },
         });
 
-        const allAsync = promisify<string, number, any>(db.all.bind(db));
-        const d_ = await allAsync(
-            'SELECT DISTINCT chNum FROM words WHERE bookNum = ?;',
-            bookNum
-        ) as any[];
+        const allAsync = promisify<string, number, any[]>(db.all.bind(db));
+
+        const d_ = await allAsync('SELECT DISTINCT chNum FROM words WHERE bookNum = ?;', bookNum);
         const chNums = d_.map(v => v.chNum);
 
         for (const chNum of chNums) {
@@ -150,11 +144,11 @@ async function magic(db: sqlite3.Database): Promise<void> {
                 },
             });
 
-            const allAsync = promisify<string, number, number, any>(db.all.bind(db));
+            const allAsync = promisify<string, number, number, any[]>(db.all.bind(db));
             const d_ = await allAsync(
                 'SELECT verseNum, word FROM words WHERE bookNum = ? AND chNum = ? ORDER BY verseNum;',
                 bookNum, chNum
-            ) as any[];
+            );
             const verses = d_.map(v => [v.verseNum, v.word]);
 
             for (const [verseNum, content] of verses) {
