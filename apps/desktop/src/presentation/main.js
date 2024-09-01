@@ -196,23 +196,23 @@
 
                 bgl.style.opacity = _$.p_transparentBackground ? '0' : "1";
 
-                if (!_$.p_bkgnd_motion) { // Static Image
+                function initBackground() {
                     bgl.innerHTML = '<img id="backgroundImage" alt="" src="" />';
                     bgl.width = _$.p_window_X;
                     bgl.height = _$.p_window_Y;
 
-                    document.getElementById("backgroundImage").src = bgImgFile.url;
-                    document.getElementById("backgroundImage").width = _$.p_window_X;
-                    document.getElementById("backgroundImage").height = _$.p_window_Y;
+                    const bgi = document.getElementById("backgroundImage");
+
+                    bgi.src = bgImgFile.url;
+                    bgi.width = _$.p_window_X;
+                    bgi.height = _$.p_window_Y;
+                }
+
+                if (!_$.p_bkgnd_motion) { // Static Image
+                    initBackground();
                 } else {
                     if (!imageMotionActive) { // Motion Image
-                        bgl.innerHTML = '<img id="backgroundImage" alt="" src="" />';
-                        bgl.width = _$.p_window_X;
-                        bgl.height = _$.p_window_Y;
-
-                        document.getElementById("backgroundImage").src = bgImgFile.url;
-                        document.getElementById("backgroundImage").width = _$.p_window_X;
-                        document.getElementById("backgroundImage").height = _$.p_window_Y;
+                        initBackground();
 
                         imageMotionActive = true;
                     }
