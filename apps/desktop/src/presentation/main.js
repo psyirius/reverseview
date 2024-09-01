@@ -47,7 +47,7 @@
     const TRANSITION_DURATION = 150;
     const DEBUG_ENABLED = true;
 
-    let transitionTimeout = 0;
+    let transitionDuration = 0;
 
     var imageMotionActive = false;
     var outlineThickness = 3;
@@ -194,7 +194,7 @@
 
                 const bgImgFile = applicationStorageDirectory.resolvePath(_$.p_bkgnd_filename[0]);
 
-                bgl.style.opacity = _$.p_transparentBackground ? '0' : "1";
+                bgl.style.opacity = _$.p_transparentBackground ? '0' : '1';
 
                 function initBackground() {
                     bgl.innerHTML = '<img id="backgroundImage" alt="" src="" />';
@@ -264,8 +264,9 @@
         document.getElementById("presentationTitle").style.height = title_height;
     }
     function setupContentPosition() {
-        var b = _$.p_text1_arr[_$.p_current_index].length;
-        var a = _$.p_text2_arr[_$.p_current_index].length;
+        const b = _$.p_text1_arr[_$.p_current_index].length;
+        const a = _$.p_text2_arr[_$.p_current_index].length;
+
         if (a < 2) {
             _$.p_text_orientation = 2;
         }
@@ -305,6 +306,7 @@
                 c2_height = parseInt(canvas_height * contentAllocation);
             }
         }
+
         document.getElementById("content1").style.left = c1_left;
         document.getElementById("content1").style.top = c1_top;
         document.getElementById("content1").style.width = c1_width;
@@ -319,6 +321,7 @@
         f_top = parseInt(canvas_top) + parseInt(canvas_height) - f_height;
         f_left = canvas_left;
         f_width = canvas_width;
+
         document.getElementById("footer_date").style.left = f_left;
         document.getElementById("footer_date").style.top = f_top;
         document.getElementById("footer_date").style.width = f_width;
@@ -366,15 +369,15 @@
     }
 
     function get_next_index() {
-        var a = _$.p_current_index * 1 + 1;
-        if (_$.p_current_index == _$.p_last_index) {
+        let a = _$.p_current_index * 1 + 1;
+        if (_$.p_current_index === _$.p_last_index) {
             a = 0;
         }
         return a;
     }
     function get_prev_index() {
-        var a = _$.p_current_index * 1 - 1;
-        if (_$.p_current_index == 0) {
+        let a = _$.p_current_index * 1 - 1;
+        if (_$.p_current_index === 0) {
             a = _$.p_last_index;
         }
         return a;
@@ -413,9 +416,9 @@
         const contentContainer = $("#presentationContent");
 
         contentContainer.animate(
-            { opacity: '0' }, transitionTimeout, "swing", () => {
+            { opacity: '0' }, transitionDuration, "swing", () => {
             updateContent2();
-            contentContainer.animate({ opacity: '1' }, transitionTimeout, "swing");
+            contentContainer.animate({ opacity: '1' }, transitionDuration, "swing");
         });
     }
 
@@ -759,9 +762,9 @@
         }
     }
     function initTransition(enabled) {
-        transitionTimeout = 0;
+        transitionDuration = 0;
         if (enabled) {
-            transitionTimeout = TRANSITION_DURATION;
+            transitionDuration = TRANSITION_DURATION;
         }
     }
     function animateZoomPan(layer, c) {
