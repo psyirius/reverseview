@@ -178,14 +178,17 @@ export function fillScreenList(idSel, savedIndex) {
 
     setScreenIndex(idSel, savedIndex, screens.length);
 }
+
 function saveSelectedScreenIndex() {
     const a = document.getElementById("selectScreenID").selectedIndex;
     $RvW.rvwPreferences.set("app.settings.screen.main.index", a);
 }
+
 function saveSelectedStageScreenIndex() {
     const a = document.getElementById("selectStageScreenID").selectedIndex;
     $RvW.rvwPreferences.set("app.settings.screen.stage.index", a);
 }
+
 function setScreenIndex(sel, a, b) {
     if (a < b) {
         document.getElementById(sel).selectedIndex = a;
@@ -193,6 +196,7 @@ function setScreenIndex(sel, a, b) {
         document.getElementById(sel).selectedIndex = 0;
     }
 }
+
 export function addScreenSelectionEvent() {
     document
         .getElementById("selectScreenID")

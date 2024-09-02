@@ -49,33 +49,36 @@
 
     let transitionDuration = 0;
 
-    var imageMotionActive = false;
-    var outlineThickness = 3;
-    var initialRenderDelay = 100;
-    var showingtheme = false;
-    var firstTime = true;
+    let imageMotionActive = false;
+    let outlineThickness = 3;
+    let initialRenderDelay = 100;
+    let showingTheme = false;
+    let firstTime = true;
 
-    var canvas_top, canvas_left, canvas_height, canvas_width;
-    var title_top, title_left, title_height, title_width;
-    var c1_top, c1_left, c1_height, c1_width;
-    var c2_top, c2_left, c2_height, c2_width;
-    var f_top, f_left, f_height, f_width;
-    var titleAllocation = 0.1;
-    var contentAllocation = 0.85;
-    var footerAllocation = 0.05;
+    let canvas_top, canvas_left, canvas_height, canvas_width;
+    let title_top, title_left, title_height, title_width;
+    let c1_top, c1_left, c1_height, c1_width;
+    let c2_top, c2_left, c2_height, c2_width;
+    let f_top, f_left, f_height, f_width;
 
-    function withinRange(b, c, a) {
-        return a >= b && a <= c;
+    let titleAllocation = 0.1;
+    let contentAllocation = 0.85;
+    let footerAllocation = 0.05;
+
+    function withinRange(lb, ub, val) {
+        return val >= lb && val <= ub;
     }
 
-    function IsNumeric(v) {
-        const charSet = "0123456789";
-        for (let i = 0; i < v.length; i++) {
-            const char = v.charAt(i);
-            if (charSet.indexOf(char) === -1) {
+    function IsNumeric(val) {
+        const charset = "0123456789";
+
+        for (let i = 0; i < val.length; i++) {
+            const char = val.charAt(i);
+            if (charset.indexOf(char) === -1) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -96,7 +99,10 @@
         initTransition(!!_$.p_enableTransition);
 
         setupEvents();
-        updateDate();
+
+        if (_$.p_showDate) {
+            updateDate();
+        }
 
         updatePresentation();
 
@@ -279,32 +285,28 @@
             c2_left = 0;
             c2_width = 0;
             c2_height = 0;
+        } else if (_$.p_text_orientation == "0") {
+            const e = b / (b + a);
+            const d = contentAllocation * e;
+            const c = contentAllocation - d;
+            c1_top = parseInt(canvas_top) + parseInt(title_height) + 1;
+            c1_left = canvas_left;
+            c1_width = canvas_width;
+            c1_height = parseInt(canvas_height * d);
+            c2_top = c1_top + c1_height + 1;
+            c2_left = canvas_left;
+            c2_width = canvas_width;
+            c2_height = parseInt(canvas_height * c);
         } else {
-            if (_$.p_text_orientation == "0") {
-                var d = contentAllocation;
-                var c = contentAllocation;
-                var e = b / (b + a);
-                d = contentAllocation * e;
-                c = contentAllocation - d;
-                c1_top = parseInt(canvas_top) + parseInt(title_height) + 1;
-                c1_left = canvas_left;
-                c1_width = canvas_width;
-                c1_height = parseInt(canvas_height * d);
-                c2_top = c1_top + c1_height + 1;
-                c2_left = canvas_left;
-                c2_width = canvas_width;
-                c2_height = parseInt(canvas_height * c);
-            } else {
-                var f = 40;
-                c1_top = parseInt(canvas_top) + parseInt(title_height) + 1;
-                c1_left = canvas_left;
-                c1_width = parseInt(canvas_width / 2) - f / 2;
-                c1_height = parseInt(canvas_height * contentAllocation);
-                c2_top = parseInt(canvas_top) + parseInt(title_height) + 1;
-                c2_left = parseInt(canvas_left) + parseInt(c1_width) + parseInt(f);
-                c2_width = parseInt(canvas_width / 2) - f / 2;
-                c2_height = parseInt(canvas_height * contentAllocation);
-            }
+            const f = 40;
+            c1_top = parseInt(canvas_top) + parseInt(title_height) + 1;
+            c1_left = canvas_left;
+            c1_width = parseInt(canvas_width / 2) - f / 2;
+            c1_height = parseInt(canvas_height * contentAllocation);
+            c2_top = parseInt(canvas_top) + parseInt(title_height) + 1;
+            c2_left = parseInt(canvas_left) + parseInt(c1_width) + parseInt(f);
+            c2_width = parseInt(canvas_width / 2) - f / 2;
+            c2_height = parseInt(canvas_height * contentAllocation);
         }
 
         document.getElementById("content1").style.left = c1_left;
@@ -387,7 +389,7 @@
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
         setupContentPosition();
-        if (!showingtheme) {
+        if (!showingTheme) {
             updateContentWithAnimation();
         } else {
             showThemeProcess();
@@ -399,7 +401,7 @@
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
         setupContentPosition();
-        if (!showingtheme) {
+        if (!showingTheme) {
             updateContentWithAnimation();
         } else {
             showThemeProcess();
@@ -407,7 +409,7 @@
         }
     }
     function updateContent() {
-        if (!showingtheme) {
+        if (!showingTheme) {
             updateContentWithAnimation();
         }
     }
@@ -423,43 +425,45 @@
     }
 
     function updateDate() {
-        const d = new Date();
-        const c = d.getHours();
-        let b;
-        let a = " AM";
-        if (c === 0) {
-            b = 12;
+        const now = new Date();
+        const hours = now.getHours();
+
+        let hh;
+        let pp = " AM";
+        if (hours === 0) {
+            hh = 12;
+        } else if (hours <= 11) {
+            hh = hours;
+        } else if (hours === 12) {
+            hh = 12;
+            pp = " PM";
         } else {
-            if (c <= 11) {
-                b = c;
-            } else {
-                if (c === 12) {
-                    b = 12;
-                    a = " PM";
-                } else {
-                    b = c - 12;
-                    a = " PM";
-                }
-            }
-        }
-        let f = d.getMinutes();
-        if (f < 10) {
-            f = "0" + f;
+            hh = hours - 12;
+            pp = " PM";
         }
 
-        if (_$.p_showDate) {
-            document.getElementById("footer_date")
-                .innerHTML = `${d.toDateString()} &nbsp;&nbsp; ${b}:${f}${a}`;
+        let mm = now.getMinutes();
+        if (mm < 10) {
+            mm = "0" + mm;
         }
 
+        document.getElementById("footer_date").innerHTML = `${now.toDateString()}&nbsp;&nbsp;${hh}:${mm}${pp}`;
+
+        // update every 5 seconds
         setTimeout(updateDate, 5000);
     }
+
     function updateContent2() {
         restoreSlideProcess();
-        document.getElementById("content1").style.visibility = "hidden";
-        document.getElementById("content2").style.visibility = "hidden";
-        document.getElementById("content1").innerHTML = "";
-        document.getElementById("content2").innerHTML = "";
+
+        const c1 = document.getElementById("content1");
+        const c2 = document.getElementById("content2");
+
+        c1.style.visibility = "hidden";
+        c2.style.visibility = "hidden";
+        c1.innerHTML = "";
+        c2.innerHTML = "";
+
         if (firstTime) {
             updateContentInitial();
             updateContentStyling();
@@ -467,24 +471,33 @@
             updateContentStyling();
         }
     }
+
     function updateContentInitial() {
-        document.getElementById("content1").style.visibility = "hidden";
-        document.getElementById("content2").style.visibility = "hidden";
-        document.getElementById("content1").innerHTML = _$.p_text1_arr[_$.p_current_index];
-        document.getElementById("content2").innerHTML = _$.p_text2_arr[_$.p_current_index];
+        const c1 = document.getElementById("content1");
+        const c2 = document.getElementById("content2");
+
+        c1.style.visibility = "hidden";
+        c2.style.visibility = "hidden";
+        c1.innerHTML = _$.p_text1_arr[_$.p_current_index];
+        c2.innerHTML = _$.p_text2_arr[_$.p_current_index];
+
         firstTime = false;
     }
+
     function updateContentStyling() {
         _$.p_font_color_invert = invert_hex_color(_$.p_font_color);
         _$.p_font_color2_invert = invert_hex_color(_$.p_font_color2);
-        var b = _$.p_format_multiplelines;
+        let b = _$.p_format_multiplelines;
         if (_$.p_title !== "") {
             b = true;
         }
+
+        const titleEl = document.getElementById("presentationTitle");
+
         if (_$.p_title !== "") {
-            document.getElementById("presentationTitle").innerHTML =
-                formatReferenceWithFonts(_$.p_title, _$.p_text1_font, _$.p_text2_font);
-            document.getElementById("presentationTitle").style.color = _$.p_font_color;
+            titleEl.innerHTML = formatReferenceWithFonts(_$.p_title, _$.p_text1_font, _$.p_text2_font);
+            titleEl.style.color = _$.p_font_color;
+
             setTimeout(function () {
                 textFit(document.getElementsByClassName("box3"), {
                     alignVert: true,
@@ -494,18 +507,21 @@
                     maxFontSize: _$.p_maxFontSize * 1,
                     alignVertWithFlexbox: false,
                 });
-                document.getElementById("presentationTitle").style.visibility = "visible";
+                titleEl.style.visibility = "visible";
             }, initialRenderDelay);
         } else {
-            document.getElementById("presentationTitle").innerHTML = "";
-            document.getElementById("presentationTitle").style.visibility = "hidden";
+            titleEl.innerHTML = "";
+            titleEl.style.visibility = "hidden";
         }
+
         document.getElementById("footnote").innerHTML = _$.p_footnote;
         document.getElementById("footnote").style.color = _$.p_font_color;
+
         if (_$.p_showLogo) {
             document.getElementById("footer_vv").innerHTML = _$.p_logo;
             document.getElementById("footer_vv").style.color = _$.p_font_color;
         }
+
         document.getElementById("footer_vv").style.textShadow =
             "2px 2px 3px #" +
             _$.p_font_color_invert +
@@ -516,6 +532,7 @@
             _$.p_font_color_invert +
             ", -2px -2px 3px #" +
             _$.p_font_color_invert;
+
         if (_$.p_enableShadow) {
             document.getElementById("footnote").style.textShadow =
                 "2px 2px 3px #" +
@@ -523,6 +540,7 @@
                 ", -2px -2px 3px #" +
                 _$.p_font_color_invert;
         }
+
         document.getElementById("content1").style.textAlign = _$.p_align;
         document.getElementById("content2").style.textAlign = _$.p_align;
         document.getElementById("content1").style.fontFamily = _$.p_text1_font;
@@ -530,10 +548,12 @@
         document.getElementById("content1").style.color = _$.p_font_color;
         document.getElementById("content2").style.color = _$.p_font_color2;
         document.getElementById("content1").innerHTML = _$.p_text1_arr[_$.p_current_index];
+
         if (_$.p_text_orientation != "2") {
             document.getElementById("content2").innerHTML = _$.p_text2_arr[_$.p_current_index];
         }
-        setTimeout(function () {
+
+        setTimeout(() => {
             textFit(document.getElementsByClassName("box1"), {
                 alignVert: true,
                 detectMultiLine: false,
@@ -543,6 +563,7 @@
                 reProcess: true,
                 alignVertWithFlexbox: false,
             });
+
             if (_$.p_text_orientation != "2") {
                 textFit(document.getElementsByClassName("box2"), {
                     alignVert: true,
@@ -553,30 +574,39 @@
                     alignVertWithFlexbox: false,
                 });
             }
+
             if (_$.p_enableShadow) {
-                a();
+                renderShadow();
             }
+
             document.getElementById("content1").style.visibility = "visible";
             document.getElementById("content2").style.visibility = "visible";
+
             initialRenderDelay = 100;
         }, initialRenderDelay);
-        function a() {
+
+        function renderShadow() {
             outlineThickness = getOutlineThickness(
                 _$.p_text1_arr[_$.p_current_index],
                 _$.p_text1_font
             );
+
             document.getElementById("content1").style.webkitTextStroke =
-                outlineThickness + "px #" + _$.p_font_color_invert;
+                `${outlineThickness}px #${_$.p_font_color_invert}`;
+
             outlineThickness = getOutlineThickness(
                 _$.p_text2_arr[_$.p_current_index],
                 _$.p_text2_font
             );
+
             document.getElementById("content2").style.webkitTextStroke =
-                outlineThickness + "px #" + _$.p_font_color2_invert;
+                `${outlineThickness}px #${_$.p_font_color2_invert}`;
+
             document.getElementById("presentationTitle").style.webkitTextStroke =
-                outlineThickness + "px #" + _$.p_font_color2_invert;
+                `${outlineThickness}px #${_$.p_font_color2_invert}`;
         }
     }
+
     function getOutlineThickness(b, c, d) {
         if (b == null) {
             return 0;
@@ -607,14 +637,14 @@
         }
     }
     function showThemeProcess() {
-        if (!showingtheme) {
-            showingtheme = true;
+        if (!showingTheme) {
+            showingTheme = true;
             $("#presentationTitle").hide();
             $("#content1").hide();
             $("#content2").hide();
             $("#footnote").hide();
         } else {
-            showingtheme = false;
+            showingTheme = false;
             $("#presentationTitle").show();
             $("#content1").show();
             $("#content2").show();
@@ -641,7 +671,7 @@
             case 39:
             case 40:
             case 34:
-                if (!showingtheme) {
+                if (!showingTheme) {
                     nextSlide();
                     window.parent.goToNextSlide();
                 }
@@ -649,7 +679,7 @@
             case 37:
             case 38:
             case 33:
-                if (!showingtheme) {
+                if (!showingTheme) {
                     prevSlide();
                     window.parent.goToPrevSlide();
                 }

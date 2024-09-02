@@ -1,0 +1,28 @@
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-generator-as3"
+}
+
+model configuration {
+    revision    Int?
+    fonts       String?
+    booknames   String?
+    title       String?
+    description String?
+    copyrights  String?
+    sizefactor  Int?
+
+    @@ignore
+}
+
+model words {
+    wordId   Int     @id @default(autoincrement())
+    word     String?
+    bookNum  Int?
+    chNum    Int?
+    verseNum Int?
+}

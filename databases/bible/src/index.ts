@@ -78,27 +78,31 @@ const BOOK_TAG_MAP = [
 ].map(v => v.replace(' ', '_').toUpperCase());
 
 function trimChar(string: string, charToRemove: string) {
-    while(string.charAt(0)==charToRemove) {
+    while(string.charAt(0) === charToRemove) {
         string = string.substring(1);
     }
 
-    while(string.charAt(string.length-1)==charToRemove) {
-        string = string.substring(0,string.length-1);
+    while(string.charAt(string.length - 1) === charToRemove) {
+        string = string.substring(0, string.length - 1);
     }
 
     return string;
 }
 
+const sourceDbName = 'lbla.db';
+
 async function magic(db: sqlite3.Database): Promise<void> {
     // Version
     const bibleVersion: Version = await prisma.version.create({
         data: {
-            name: 'English - KJV',
-            tag: 'EN-KJV',
-            locale: 'en-US',
-            author: 'King James Version',
-            copyright: 'King James Version',
-            revision: 0,
+            name: 'Spanish (LBLA)',
+            tag: 'ES_LBLA',
+            description: 'La Biblia de las Américas',
+            locale: 'es-ES',
+            direction: 'ltr',
+            author: 'The Lockman Foundation',
+            copyright: 'The Lockman Foundation',
+            revision: 1,
         },
     });
 
@@ -109,7 +113,10 @@ async function magic(db: sqlite3.Database): Promise<void> {
 
     const f_ = await allAsync('SELECT booknames FROM configuration;');
     const [x_] = f_.map(v => v.booknames);
-    const bookNames = x_.split(',').map((v: string) => trimChar(v, "'"));
+    // const bookNames = x_.split(',').map((v: string) => trimChar(v.trim(), '\"').trim());
+    const bookNames = JSON.parse('[' + x_ + ']');
+    // const bookNames = ["Génesis" , "Exodo" , "Levitivo" , "Números" , "Deuterenomio" , "Josúe" , "Jueces" , "Rut" , "1 Samuel" , "2 Samuel" , "1 Reyes" , "2 Reyes" , "1 Crónicas" , "2 Crónicas" , "Esdras" , "Nehemías" , "Ester" , "Job" , "Salmos" , "Proverbios" , "Eclesiastés" , "Cantares" , "Isaías" , "Jeremías" , "Lamentaciones" , "Ezequiel" , "Daniel" , "Oseas" , "Joel" , "Amós" , "Abdias" , "Jonás" , "Miqueas" , "Nahum" , "Habacuc" , "Sofonías" , "Hageo" , "Zacarías" , "Malaquías" , "Mateo" , "Marcos" , "Lucas" , "Juan" , "Hechos" , "Romanos" , "1 Corintios" , "2 Corintios" , "Gálatas" , "Efesios" , "Filipenses" , "Colosenses" , "I Tesalonicenses" , "II Tesalonicenses" , "I Timoteo" , "II Timoteo" , "Tito" , "Filemón" , "Hebreos" , "Santiago" , "1 Pedro" , "2 Pedro" , "1 Juan" , "2 Juan" , "3 Juan" , "Judas" , "Apocalipsis"];
+    console.assert(bookNums.length === bookNames.length);
 
     for (const bookNum of bookNums) {
         const bookName = bookNames[bookNum - 1];
@@ -177,11 +184,7 @@ async function magic(db: sqlite3.Database): Promise<void> {
 
 async function main(): Promise<void> {
     const db = new sqlite3.Database(
-        // __dirname + '/../data/tamil-bsi.db',
-        // __dirname + '/../data/ml-bsi.db',
-        // __dirname + '/../data/telugu-bsi.db',
-        // __dirname + '/../data/hindi-bsi.db',
-        __dirname + '/../data/english-kjv.db',
+        __dirname + '/../data/' + sourceDbName,
         sqlite3.OPEN_READONLY,
         (err) => {
             if (err) {
