@@ -277,8 +277,9 @@ export class RemoteSetupUIPanel {
                 case 15:        remoteUrl += `/lowerthird/theme6/d2/d.html`;    break;
                 case 16:        remoteUrl += `/lowerthird/theme6/e2/e.html`;    break;
                 case 17:        remoteUrl += `/lowerthird/theme6/g/g.html`;     break;
-                case 18:        remoteUrl += `/lowerthird/theme6/h1/h.html`;    break;
-                case 19:        remoteUrl += `/lowerthird/theme6/ga/g.html`;    break;
+                case 18:        remoteUrl += `/lowerthird/theme6/g2/g.html`;    break;
+                case 19:        remoteUrl += `/lowerthird/theme6/h1/h.html`;    break;
+                case 20:        remoteUrl += `/lowerthird/theme6/ga/g.html`;    break;
             }
 
             $("#configRemoteLink").val(remoteUrl);

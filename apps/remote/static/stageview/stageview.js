@@ -76,12 +76,9 @@ function parseLower3rdResponse(t) {
 }
 
 function apiCall(params, callback = null) {
-    const url = [
-        "/action",
-        new URLSearchParams({
-            data: btoa(JSON.stringify(params)),
-        }).toString(),
-    ].join("?");
+    const url = [`/api/action`, new URLSearchParams({
+        data: btoa(JSON.stringify(params)),
+    }).toString()].join("?");
 
     fetch(url)
         .then((response) => response.json())
