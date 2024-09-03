@@ -359,6 +359,9 @@ importers:
       haxe:
         specifier: ^5.2.1
         version: 5.2.1
+      lix:
+        specifier: ^15.12.1
+        version: 15.12.1
 
   packages/air-types: {}
 
@@ -3855,7 +3858,6 @@ packages:
   haxe@5.2.1:
     resolution: {integrity: sha512-Kc8tjvaU/KWwuRBZ/dcjikj9YWSuKgOYS8CQYa+u6/owcVn3bNRwMavRbNvoG6tXkz+WEhy2B41UDSnSYdf0LA==}
     engines: {node: '>=8.0.0'}
-    cpu: [x64, ia32]
     os: [win32, win64, darwin, linux]
     hasBin: true
 
@@ -4462,6 +4464,10 @@ packages:
 
   linkify-it@5.0.0:
     resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
+
+  lix@15.12.1:
+    resolution: {integrity: sha512-8cYNMYttFY6Pl18jGspIQBvhUP7ScjBOaoV025K1oWrRMhNNBep2NsEimBQq0u/Bcq2q3K58LWH1nr50aej6DA==}
+    hasBin: true
 
   lmdb@2.8.5:
     resolution: {integrity: sha512-9bMdFfc80S+vSldBmG3HOuLVHnxRdNTlpzR6QDnzqCQtCzGUEAGTzBKYMeIM+I/sU4oZfgbcbS7X7F65/z/oxQ==}
@@ -11226,6 +11232,8 @@ snapshots:
   linkify-it@5.0.0:
     dependencies:
       uc.micro: 2.1.0
+
+  lix@15.12.1: {}
 
   lmdb@2.8.5:
     dependencies:

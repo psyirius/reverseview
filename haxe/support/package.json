@@ -4,9 +4,11 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "haxe build.hxml"
+    "build": "haxe build.hxml",
+    "postinstall": "lix download"
   },
   "devDependencies": {
-    "haxe": "^5.2.1"
+    "haxe": "^5.2.1",
+    "lix": "^15.12.1"
   }
 }

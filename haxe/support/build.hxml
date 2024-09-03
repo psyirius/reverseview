@@ -3,8 +3,10 @@
 --macro "include('mxy')"
 
 #-swf bin/mxy.swc
-#-swf bin/mxy.swf
+# -swf bin/mxy.swf
 
 -as3 as3
 
-#-lib svg:1.1.3
+-lib svg:1.1.3
+# -lib snake-server
+# -lib hxtsdgen
