@@ -1,3 +1,5 @@
+/// <reference types="../types/index" />
+
 // declare var air: any;
 
 // interface DojoToolkit {

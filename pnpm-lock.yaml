@@ -354,6 +354,12 @@ importers:
         specifier: ^1.8.1
         version: 1.8.1
 
+  haxe/support:
+    devDependencies:
+      haxe:
+        specifier: ^5.2.1
+        version: 5.2.1
+
   packages/air-types: {}
 
   packages/as3-codegen:

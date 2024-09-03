@@ -1,0 +1,10 @@
+-cp src
+
+--macro "include('mxy')"
+
+#-swf bin/mxy.swc
+#-swf bin/mxy.swf
+
+-as3 as3
+
+#-lib svg:1.1.3

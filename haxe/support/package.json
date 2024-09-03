@@ -1,0 +1,12 @@
+{
+  "name": "@rvw/haxe-support",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "haxe build.hxml"
+  },
+  "devDependencies": {
+    "haxe": "^5.2.1"
+  }
+}
