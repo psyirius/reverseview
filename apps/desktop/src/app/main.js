@@ -34,8 +34,6 @@ import {Toast} from "@app/toast";
 import {
     bibleRefBlur,
     bibleRefFocus,
-    disableNavButtons,
-    nav_addVerse2Schedule,
     processNavBibleRef,
     processNavBibleRefFind
 } from "@/navigation";
@@ -60,6 +58,7 @@ import {
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 import VIEWS from "@/views";
+import {selectedBookRef, selectedTab} from "@stores/global";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -395,7 +394,6 @@ $RvW.present = function() {
     presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
     themeState = false;
-    disableNavButtons(false);
 }
 $RvW.present_external = function(a, h, e) {
     var g = $RvW.bookIndex;
@@ -413,7 +411,6 @@ $RvW.present_external = function(a, h, e) {
     $RvW.chapterIndex = f;
     $RvW.verseIndex = d;
     getdataONLY();
-    disableNavButtons(false);
 }
 $RvW.getFooter = function() {
     var b;
@@ -537,7 +534,7 @@ function updateRefMenu() {
     const ci = document.getElementById("chapterList").selectedIndex;
     const vi = document.getElementById("verseList").selectedIndex;
     const e = $RvW.booknames[bi] + " " + (ci + 1) + ":" + (vi + 1);
-    $("#book_name").text(e);
+    selectedBookRef.set(e);
 }
 $RvW.highlightVerse = function(a) {
     let b = "TC_" + previousSelVerse;
@@ -1107,42 +1104,6 @@ function fillNav() {
         .getElementById("nav_bibleRefID")
         .addEventListener("focus", bibleRefFocus, false);
 
-    // menubar buttons
-    $("#icon_present").click(function () {
-        const d = getActiveTabLabel();
-        if (d === "Songs") {
-            $RvW.songNavObj.sn_presentSong();
-        } else {
-            $RvW.present();
-        }
-    });
-    $("#icon_blank").click(function () {
-        blankSlide();
-    });
-    $("#icon_theme").click(function () {
-        if ($RvW.presentationWindow != null) {
-            $RvW.presentationWindow.window.showThemeProcess();
-        }
-    });
-    $("#icon_logo").click(function () {
-        showLogoSlide();
-    });
-    $("#icon_close").click(function () {
-        closePresentWindowMain();
-    });
-    $("#icon_prev").click(function () {
-        call_prevSlide();
-    });
-    $("#icon_next").click(function () {
-        call_nextSlide();
-    });
-
-    // conditionally disable nav buttons
-    $("#bibleAddScheduleButton").click(function () {
-        nav_addVerse2Schedule();
-    });
-
-    disableNavButtons(true);
     $RvW.enterForSearchActive = true;
     updateRefMenu();
 
@@ -1240,24 +1201,7 @@ function setupRightTabFrame() {
 
     function menuBarSync(currentTab) {
         // air.trace('menuBarSync', currentTab.get('index'));
-
-        switch (currentTab.get('index')) {
-            case 0: {
-                $("#lyrics_menu").hide();
-                $("#verses_menu").show();
-                break;
-            }
-            case 1: {
-                $("#verses_menu").hide();
-                $("#lyrics_menu").show();
-                break;
-            }
-            default: {
-                $("#verses_menu").hide();
-                $("#lyrics_menu").hide();
-                break;
-            }
-        }
+        selectedTab.set(currentTab.get('index'));
     }
 
     menuBarSync(tabview.get('selection'));
@@ -1444,9 +1388,6 @@ function setupVConfig() {
         return a;
     }
     return a;
-}
-function getActiveTabLabel() {
-    return $RvW.leftTabView.get('selection').get('label')
 }
 
 function newSQLConnection(db, callback, mode = air.SQLMode.READ) {

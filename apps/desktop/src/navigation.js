@@ -27,7 +27,6 @@ function processPrevButton() {
     $RvW.verseIndex = a;
     $RvW.launch($RvW.verseIndex);
 }
-export function disableNavButtons(a) {}
 export function processNavBibleRef() {
     var d = document.getElementById("nav_bibleRefID").value;
     var e = $RvW.bibleRefObj.init(d);

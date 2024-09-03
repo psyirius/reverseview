@@ -8,7 +8,7 @@ const bible = [];
 const content1 = [];
 const content2 = [];
 
-export const $RvW = {
+export const $RvW: any = {
     bookIndex,
     chapterIndex,
     verseIndex,

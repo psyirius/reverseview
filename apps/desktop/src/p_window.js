@@ -1,6 +1,5 @@
-import {clearSelectList, presentationContentString} from "@app/common";
+import {presentationContentString} from "@app/common";
 import {presentationCtx} from "@app/presentation";
-import {disableNavButtons} from "@/navigation";
 import {$RvW} from "@/rvw";
 
 $RvW.presentWindowOpen = false;
@@ -405,7 +404,6 @@ export function closePresentWindowMain() {
 export function presentWindowClosed() {
     $RvW.presentWindowOpen = false;
     $RvW.presentationWindow = null;
-    disableNavButtons(true);
 }
 function DOMIntializeCallback(a) {
     $RvW.presentationWindow.window.passVariable = passVariable;

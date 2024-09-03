@@ -177,8 +177,7 @@ export class Scheduler {
                 if (X.isSong) {
                     var ac = X.songID;
                     var ab = $RvW.songManagerObj.getSongObjWithID(ac);
-                    var aa = new SongPresenter();
-                    aa.init(ab);
+                    var aa = new SongPresenter(ab);
                     aa.present();
                 } else {
                     $RvW.present_external(X.book, X.ch, X.ver);
@@ -191,8 +190,7 @@ export class Scheduler {
                 if (X.isSong) {
                     var ac = X.songID;
                     var ab = $RvW.songManagerObj.getSongObjWithID(ac);
-                    var aa = new SongPresenter();
-                    aa.init(ab);
+                    var aa = new SongPresenter(ab);
                     aa.present(Y);
                 } else {
                     $RvW.present_external(X.book, X.ch, X.ver);
@@ -353,14 +351,12 @@ export class Scheduler {
                             var al = "schlyricsID" + ap;
                             document.getElementById(al).style.fontFamily = ak;
                             document.getElementById(al).style.fontSize = X + "px";
-                            ab[ap] = SongLyrics();
-                            ab[ap].init(ar, al, ap, 1);
+                            ab[ap] = new SongLyrics(ar, al, ap, 1);
                             if (ac) {
                                 var aa = "schlyrics2ID" + ap;
                                 document.getElementById(aa).style.fontFamily = am;
                                 document.getElementById(aa).style.fontSize = X + "px";
-                                ag[ap] = new SongLyrics();
-                                ag[ap].init(ar, aa, ap, 2);
+                                ag[ap] = new SongLyrics(ar, aa, ap, 2);
                             }
                         }
                         $("#sch_show_in_lyrics").text("Show in Lyrics Tab");

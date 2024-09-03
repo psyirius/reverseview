@@ -1,6 +1,5 @@
 import {BibleDB} from "./db";
 import {Toast} from "@app/toast";
-import {disableNavButtons} from "@/navigation";
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 
@@ -163,7 +162,6 @@ export class verseClass {
                 $RvW.scroll_to_view = false;
                 $RvW.highlightVerse($RvW.verseIndex);
             }
-            disableNavButtons(false);
             $RvW.bookIndex = n;
             $RvW.chapterIndex = m;
             $RvW.verseIndex = o;

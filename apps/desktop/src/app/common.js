@@ -4,6 +4,7 @@ import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
 import * as $ from "jquery";
+import {navNotifyMessage} from "@stores/global";
 
 export let apple = false;
 
@@ -550,13 +551,13 @@ export function roundSearchBox(a) {
 }
 
 export function showNotification(a) {
-    $("#notificationMenu").text(a);
+    navNotifyMessage.set(a);
     clearNotification();
 }
 
 function clearNotification() {
     setTimeout(function () {
-        $("#notificationMenu").text("");
+        navNotifyMessage.set(null);
     }, 3000);
 }
 

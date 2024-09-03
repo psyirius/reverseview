@@ -452,8 +452,7 @@ class WebRequestHandler {
             case 17: { // Present Song Slide
                 const song = $RvW.songManagerObj.getSongObjWithID(args.id);
                 air.trace('Song: ' + JSON.stringify(song));
-                const spo = new SongPresenter();
-                spo.init(song);
+                const spo = new SongPresenter(song);
                 spo.present(args.index);
 
                 this._sendJSON({

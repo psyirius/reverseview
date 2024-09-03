@@ -1067,8 +1067,7 @@ export class SongEdit {
 
             const ae = _dumpSong();
             if (ae !== false) {
-                const sp = new SongPresenter();
-                sp.init(ae);
+                const sp = new SongPresenter(ae);
                 sp.present(currentIndex);
             }
         }

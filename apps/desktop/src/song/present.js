@@ -1,30 +1,21 @@
-import {Song} from '@/song/obj';
 import {presentation} from "@/p_window";
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 
 export class SongPresenter {
-    constructor() {
-        this.init = c;
-        this.present = e;
-        let d = new Song();
+    constructor(f) {
+        this.present = present;
+        const d = f;
 
-        function c(f) {
-            d = f;
-        }
         function a() {
-            var f = d.slides2;
+            let f = d.slides2;
             if (f[0] == null) {
                 return true;
             }
             f = f[0].replace(/ /g, "");
-            if (f == "") {
-                return true;
-            } else {
-                return false;
-            }
+            return f === "";
         }
-        function e(g) {
+        function present(g) {
             presentationCtx.p_text1_arr = d.slides;
             presentationCtx.p_text2_arr = d.slides2;
             presentationCtx.p_text1_font = d.font;

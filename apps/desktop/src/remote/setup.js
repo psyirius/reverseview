@@ -1,7 +1,8 @@
 import {IsNumeric, withinRange} from "@app/common";
-import {showRemotePanel, localIpList} from "@stores/global";
+import {showRemotePanel, localIpList, remoteEnabled} from "@stores/global";
 import {mount as mountRemoteSetupDialog} from "@app/ui/RemoteSetupDialog";
 import {$RvW} from "@/rvw";
+import {Toast} from "@app/toast";
 
 export function getAvailableNwIpList() {
     function getNetworkInterfaceList() {
@@ -43,156 +44,43 @@ export function getAvailableNwIpList() {
         )
 }
 
-const INNER_HTML = `
-<div class="ui form container segment">
-    <div id="generalPanelDIV_delete" class="ui grid remoteVVDIV">
-        <!-- LEFT COLUMN -->
-        <div class="seven wide column">
-            <div class="form-group row field">
-                <label>IP Address</label>
-                <select name="select" class="form-control" id="configIPaddr">
-                </select>
-            </div>
-
-            <div class="form-group row field">
-                <label>Port</label>
-                <div class="ui grid">
-                    <div class="six wide column" data-tooltip="Select Port (49152 to 65535)"
-                        data-position="right center" data-variation="basic small">
-                        <input type="text" class="form-control form-control-sm" id="configRemotePort" value="50000"
-                            placeholder="Enter Port Number">
-                    </div>
-                    <div class="ten wide column">
-                        <button class="ui primary button" id="saveRemoteVVSettings" data-tooltip="Enable/Disable Remote"
-                            data-position="right center" data-variation="basic small">ENABLE</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row field" id="remote-custom-hostname">
-                <label>Enter Hostname</label>
-                <div class="ui grid" data-tooltip="Enter hostname of the computer" data-position="right center" data-variation="basic small">
-                    <div class="six wide column">
-                        <input type="text" class="form-control form-control-sm" id="configRemoteHostname">
-                    </div>
-
-                    <div class="ten wide column field">
-                        <div class="inline field">
-                            <div class="ui toggle checkbox">
-                                <input type="checkbox" tabindex="0" id="remoteVVUseHostname"> 
-                                <label>Use Hostname</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="two wide column"></div>
-
-        <!-- RIGHT COLUMN -->
-        <div class="seven wide column">
-            <div class="form-group row field">
-                <span id="remoteVVStatus">Remote VerseVIEW Disabled</span>
-            </div>
-
-            <div class="form-group row field" id="remoteLinkList">
-                <label>Remote Link</label>
-                <div data-tooltip="Select the remote function for the corresponding QR code and link"
-                    data-position="bottom right" data-variation="basic small">
-                    <select name="select" class="form-control" id="remoteVVRemoteFunc">
-                        <option value="1">Control</option>
-                        <option value="2">Stageview 1</option>
-                        <option value="3">Stageview 2</option>
-                        <option value="4">Stageview 3</option>
-                        <option value="5">Stage 1</option>
-                        <option value="6">Stage 2</option>
-                        <option value="7">Stage 3</option>
-                        <option value="8">Stage 4</option>
-                        <option value="9">Lower Third A Primary</option>
-                        <option value="10">Lower Third A Secondary</option>
-                        <option value="11">Lower Third B</option>
-                        <option value="12">Lower Third C</option>
-                        <option value="13">Lower Third C1</option>
-                        <option value="14">Lower Third D</option>
-                        <option value="15">Lower Third D2</option>
-                        <option value="16">Lower Third E2</option>
-                        <option value="17">Lower Third G</option>
-                        <option value="18">Lower Third G2</option>
-                        <option value="19">Lower Third H</option>
-                        <option value="20">Lower Third Arabic</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group row field">
-                <div id="qrcode"></div>
-            </div>
-
-            <div class="form-group row field">
-                <div class="ui grid">
-                    <div class="ten wide column">
-                        <input type="text" class="form-control form-control-sm" id="configRemoteLink" value=""
-                            placeholder="Link to remote">
-                    </div>
-                    <div class="four wide column">
-                        <button
-                            class="ui primary button"
-                            id="configRemoteCopy"
-                            data-tooltip="Copy remote link to clipboard"
-                            data-position="left center"
-                            data-variation="basic small">COPY</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-`;
-
 export class RemoteSetupUIPanel {
     constructor() {
         this.configure = configure;
         this.show = show;
 
         let _panel = null;
-        let m_body = INNER_HTML;
         let m_hostname = "";
         let m_port = "";
         let m_customHostName = null;
         let portNumber = 50000;
         let ipList = null;
-        const m_debug = false;
 
-        _setupUI();
+        mountRemoteSetupDialog('modals');
+
+        _panel = new $Y.Panel({
+            headerContent   : 'Remote',
+            srcNode         : '#remote-setup-modal',
+            width           : '60%',
+            height          : 'auto',
+            zIndex          : 100,
+            centered        : true,
+            modal           : true,
+            render          : true,
+            visible         : false, // make visible explicitly with .show()
+        });
+
+        _panel.on('visibleChange', function (e) {
+            showRemotePanel.set(e.newVal);
+        });
+
         _updateInactiveStatus();
 
-        // mountRemoteSetupDialog('modals');
-        
-        localIpList.set([
-            ...getAvailableNwIpList(),
-            '0.0.0.0',
-        ]);
-
-        function _setupUI() {
-            _panel = new $Y.Panel({
-                headerContent   : 'Remote',
-                bodyContent     : m_body,
-                width           : '60%',
-                height          : 'auto',
-                zIndex          : 100,
-                centered        : true,
-                modal           : true,
-                visible         : false, // make visible explicitly with .show()
-            });
-            _panel.render(document.body);
-
-            _panel.on('visibleChange', function (e) {
-                showRemotePanel.set(e.newVal);
-            });
-        }
-
         function configure() {
+            localIpList.set([
+                ...getAvailableNwIpList(),
+                '0.0.0.0',
+            ]);
             _setupIpList();
             _setupEvents();
         }
@@ -328,9 +216,9 @@ export class RemoteSetupUIPanel {
         }
 
         function _updateInactiveStatus() {
+            remoteEnabled.set(false);
             m_customHostName = $RvW.vvConfigObj.get_myhostname();
             $("#configRemoteHostname").val(m_customHostName);
-            document.getElementById("remoteVVStatus").innerHTML = "Remote is DISABLED";
             $("#remoteLinkList").hide();
             $("#qrcode").hide();
             $("#configRemoteLink").hide();
@@ -338,7 +226,7 @@ export class RemoteSetupUIPanel {
         }
 
         function _updateRemoteDetailsEnabled() {
-            document.getElementById("remoteVVStatus").innerHTML = "Remote is ENABLED";
+            remoteEnabled.set(true);
             _genLink();
             $("#remoteLinkList").show();
             $("#qrcode").show();
@@ -397,12 +285,6 @@ export class RemoteSetupUIPanel {
 
         function _setBtnLabel(B) {
             $("#saveRemoteVVSettings").html(B);
-        }
-
-        function _debug_log(msg) {
-            if (m_debug) {
-                air.trace("[Remote]: " + msg);
-            }
         }
     }
 }

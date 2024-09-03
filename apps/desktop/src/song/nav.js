@@ -15,6 +15,7 @@ import {Toast} from "@app/toast";
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 import {clearSelectList, ImageIcon, isBlank, roundSearchBox, showNotification} from "@app/common";
 import {$RvW} from "@/rvw";
+import {menuYtLink} from "@stores/global";
 
 export class SongNav {
     constructor() {
@@ -128,13 +129,6 @@ export class SongNav {
                 .getElementById("songnav_tags")
                 .addEventListener("change", ac, false);
             $("#songnav_filterbox").hide();
-
-            // menubar
-            {
-                document
-                    .getElementById("songAddScheduleButton")
-                    .addEventListener("click", F, false);
-            }
 
             document
                 .getElementById("songnav_searchbutton")
@@ -350,8 +344,7 @@ export class SongNav {
             J(y);
         }
         function sn_presentSong() {
-            const al = new SongPresenter();
-            al.init(y);
+            const al = new SongPresenter(y);
             al.present();
         }
         function O() {
@@ -461,19 +454,12 @@ export class SongNav {
             document.getElementById("ly_notes").innerHTML = at.notes;
             // menubar
             {
-                if (at.yvideo != null && at.yvideo != "") {
+                if (!!at.yvideo) {
                     B = at.yvideo;
-                    document.getElementById("ytubeid").disabled = false;
-                    $("#ytubeid").removeClass("disabled");
-                    document.getElementById("ytubeid").addEventListener("click", ai, false);
                 } else {
                     B = null;
-                    document
-                        .getElementById("ytubeid")
-                        .removeEventListener("click", ai, false);
-                    document.getElementById("ytubeid").disabled = true;
-                    $("#ytubeid").addClass("disabled");
                 }
+                menuYtLink.set(B);
             }
             document.getElementById("ly_slide").style.fontFamily = at.font;
             var aC = at.slides2[0];
@@ -531,12 +517,10 @@ export class SongNav {
                 var ay = "lyricsID" + aD;
                 var aq = "lyricsID" + aD + "_2";
                 document.getElementById(ay).style.fontFamily = at.font;
-                ar[aD] = new SongLyrics();
-                ar[aD].init(at, ay, aD, 1);
+                ar[aD] = new SongLyrics(at, ay, aD, 1);
                 if (aC != null) {
                     document.getElementById(aq).style.fontFamily = at.font2;
-                    am[aD] = new SongLyrics();
-                    am[aD].init(at, aq, aD, 2);
+                    am[aD] = new SongLyrics(at, aq, aD, 2);
                 }
             }
             if (ag) {
@@ -619,13 +603,13 @@ export class SongNav {
             am.addEventListener(air.Event.COMPLETE, an);
             am.addEventListener(air.IOErrorEvent.IO_ERROR, ao);
             am.copyToAsync(al, true);
-            function an(ar) {
+            function an() {
                 Toast.show(
                     "Song Database",
                     'Song database saved to Desktop under the "vvexport" folder'
                 );
             }
-            function ao(ar) {
+            function ao() {
                 Toast.show(
                     "Song Database",
                     "Unable to save the song database to the Desktop"
@@ -635,10 +619,6 @@ export class SongNav {
         function sn_add2schedule() {
             var al = $RvW.songManagerObj.getSongID(a, ag);
             $RvW.scheduleObj.processAddSong(al);
-        }
-        function ai() {
-            var al = new air.URLRequest(B);
-            air.navigateToURL(al);
         }
         function j() {
             y.name = "Trading my Sorrows";
