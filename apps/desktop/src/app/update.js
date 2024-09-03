@@ -1,13 +1,33 @@
 import {version_number} from "@/versionupdate";
 import {$RvW} from "@/rvw";
 
+const INNER_HTML = `<div class="generalPanelDIV">
+    <div class="generalheading2">Bible Update</div><br>
+    <div class="style2">
+    <table id="updateTableID" border="0">
+        <tr height="100px">
+            <td>
+                <select size="5" id="updateListID" class="updateListStyle"></select><br>
+            </td>
+            <td>
+                <div id="updateStatusID" class="updateStatusClass"></div>
+            </td>
+        </tr>
+        <tr><td>
+            <input type="button" id="checkUpdateBut" value=" CHECK "> | 
+            <input type="button" id="loadSelectedBut" value=" LOAD ">
+        </td></tr>
+    </table>
+    </div>
+</div>`;
+
 export class AppUpdateUi {
-    constructor(bodyContent) {
+    constructor() {
         this.show = show;
         this.hide = hide;
 
-        var b = null;
-        var m_body = bodyContent;
+        let b = null;
+        const m_body = INNER_HTML;
 
         _setupUI();
 

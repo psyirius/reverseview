@@ -1,14 +1,28 @@
 import {$RvW} from "@/rvw";
 
+const INNER_HTML = `<div class="rbroundbox">
+    <div class="rbtop"><div></div></div>
+        <div class="rbcontent">
+            <p class="tempList" id="notesVerse"></p>
+        </div><!-- /rbcontent -->
+    <div class="rbbot"><div></div></div>
+</div><!-- /rbroundbox -->
+
+<textarea id="notes_rte" rows="10" style="width: 480px"></textarea><br>
+<input type="button" id="notesSaveButton" value=" SAVE " class="tempList"> | 
+<input type="button" id="notesCancelButton" value=" CLOSE " class="tempList"> 
+`;
+
 export class Notes {
-    constructor(notesUI, containerID) {
+    constructor() {
         this.init = init;
         this.showNotesPanel = showNotesPanel;
         this.hideNotesPanel = hideNotesPanel;
         this.setVariables = setVariables;
         this.getNotes = getNotes;
 
-        var m_containerID = containerID;
+        var m_containerID = 'notesPanelID';
+        var notesUI = INNER_HTML;
         var k;
         var a;
         var e;

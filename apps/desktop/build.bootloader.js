@@ -1,5 +1,5 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 import { fileURLToPath } from 'url'
 
 const SWF_LIB_ROOT = '.air/swf';

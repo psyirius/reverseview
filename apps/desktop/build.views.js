@@ -1,8 +1,9 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
-import Handlebars from "handlebars";
-import pug from "pug";
-import ejs from "ejs";
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+
+import pug from 'pug'
+import ejs from 'ejs'
+import hbs from 'handlebars'
 
 const compilers = {
     ['.pug'](filename, context) {
@@ -11,7 +12,7 @@ const compilers = {
     ['.hbs'](filename, context) {
         const template = fs.readFileSync(filename, 'utf-8');
 
-        return Handlebars.compile(template)(context);
+        return hbs.compile(template)(context);
     },
     ['.ejs'](filename, context) {
         const template = fs.readFileSync(filename, 'utf-8');

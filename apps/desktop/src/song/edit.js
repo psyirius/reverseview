@@ -9,16 +9,244 @@ import {Toast} from "@app/toast";
 import {apple, clearSelectList, isBlank, specialCategory} from "@app/common";
 import {$RvW} from "@/rvw";
 
+const SONG_EDIT_BODY_CONTENT = `<div class="ui grid vvrow">
+  <div class="eight wide column">
+    <div class="form-group row">
+      <label for="songEdit_NameID" class="col-sm col-form-label">Title</label>
+      <div class="col-sm">
+        <input type="text" class="form-control form-control-sm" id="songEdit_NameID" placeholder="Song Title">
+      </div>
+    </div>
+  </div>
+  <div class="six wide column">
+    <div class="form-group row">
+      <label for="songEdit_Name2ID" class="col-sm col-form-label">Title 2</label>
+      <div class="col-sm">
+        <input type="text" class="form-control form-control-sm" id="songEdit_Name2ID"
+          placeholder="Alternate Song Title">
+      </div>
+    </div>
+  </div>
+  <div class="two wide column">
+    <div class="form-group row">
+      <label for="songEdit_SongNumberID" class="col-sm col-form-label">#</label>
+      <div class="col-sm">
+        <input type="text" class="form-control form-control-sm" id="songEdit_SongNumberID"
+          placeholder="Song Number" readonly>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- **** CATEGORY **** -->
+<div class="ui grid vvrow30">
+  <div class="four wide column">
+    <label for="songnav_category2" class="col-form-label">Category</label>
+  </div>
+
+  <div class="six wide column">
+    <div class="form-group">
+      <select class="form-control" id="songnav_category2"></select>
+    </div>
+  </div>
+
+  <div class="one wide column">
+    <button type="button" class="btn btn-secondary btn-sm" id="songEdit_addCatButtonID">+</button>
+  </div>
+
+  <div class="three wide column">
+    <input type="text" class="form-control form-control-sm" id="se_catTextID" placeholder="New Category">
+  </div>
+
+  <div class="one wide column">
+    <button type="button" class="btn btn-secondary btn-sm" id="se_submitCatButtonID2">OK</button>
+  </div>
+</div>
+
+
+
+<!-- **** FONTS **** -->
+<div class="ui grid vvrow30">
+  <div class="four wide column">
+    <div class="form-group">
+      <label for="se_fontID2">Primary Font</label>
+    </div>
+  </div>
+
+  <div class="six wide column">
+    <div class="form-group">
+      <select class="form-control" id="se_fontID2"></select>
+    </div>
+  </div>
+
+  <div class="one wide column">
+    <button type="button" class="btn btn-secondary btn-sm" id="se_addFontButtonID2">+</button>
+  </div>
+
+  <div class="three wide column">
+    <input type="text" class="form-control form-control-sm" id="se_fontTextID" placeholder="New Font Name">
+  </div>
+
+  <div class="one wide column">
+    <button type="button" class="btn btn-secondary btn-sm" id="se_submitFontButtonID2">OK</button>
+  </div>
+</div>
+
+
+<!-- **** SECONDARY FONTS **** -->
+<div class="ui grid vvrow40">
+  <div class="four wide column">
+    <div class="form-group">
+      <label for="se_fontID2_2">Secondary Font</label>
+    </div>
+  </div>
+  <div class="six wide column">
+    <div class="form-group">
+      <select class="form-control" id="se_fontID2_2"></select>
+    </div>
+  </div>
+</div>
+
+
+<!-- **** KEY, COPYRIGHT, YouTUBE **** -->
+<div class="ui grid">
+  <div class="two wide column">
+    <div class="form-group">
+      <label for="se_keyID">Key</label>
+      <input type="text" class="form-control form-control-sm" id="se_keyID" placeholder="Key">
+    </div>
+  </div>
+  <div class="six wide column">
+    <div class="form-group">
+      <label for="se_copyrightID">Lyrics By</label>
+      <input type="text" class="form-control form-control-sm" id="se_copyrightID" placeholder="Author">
+    </div>
+  </div>
+  <div class="eight wide column">
+    <div class="form-group">
+      <label for="se_yvideoID">YouTube Link</label>
+      <input type="text" class="form-control form-control-sm" id="se_yvideoID"
+        placeholder="Example: https://www.youtube.com/watch?v=COQ6cni_TG8">
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="ui grid">
+  <div id="se_slides" class="style2"></div><br>
+</div>
+
+<div class="ui grid vvrow">
+  <div class="nine wide column">
+    <div class="form-group">
+      <button type="button" class="btn btn-dark btn-sm" id="songEdit_moveSlideLeftButtonID">&lt;</button>
+      <button type="button" class="btn btn-dark btn-sm" id="songEdit_moveSlideRightButtonID">&gt;</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songEdit_addSlideButtonID">ADD</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songEdit_dupSlideButtonID">DUPLICATE</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songEdit_deleteSlideButtonID">DELETE</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songEdit_createSlidesButtonID">CREATE</button>
+    </div>
+  </div>
+  <div class="two wide column">
+    <label for="se_sequenceID" class="invisible">Sequence</label>
+  </div>
+  <div class="five wide column">
+    <input type="text" class="form-control form-control-sm invisible" id="se_sequenceID" placeholder="1,2,3,2,4,2">
+  </div>
+</div>
+
+<div class="ui grid">
+  <div class="one wide column">
+    <div class="form-group">
+      <label for="se_notesID">Notes</label>
+    </div>
+  </div>
+  <div class="eight wide column">
+    <div class="form-group">
+      <textarea class="form-control form-control-sm" id="se_notesID" rows="1"></textarea>
+    </div>
+  </div>
+
+  <div class="one wide column">
+  </div>
+
+  <div class="one wide column">
+    <div class="form-group">
+      <label for="se_notesID">Tags</label>
+    </div>
+  </div>
+  <div class="five wide column">
+    <div class="form-group">
+      <textarea class="form-control form-control-sm" id="se_tagID" rows="1" placeholder="Worship,Slow"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="ui grid vvrow">
+  <div class="ten wide column">
+    <div class="form-group">
+      <button type="button" class="btn btn-primary btn-sm" id="se_presentID">PRESENT</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songEdit_saveButtonID">SAVE</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songAsNewEdit_saveButtonID">SAVE AS NEW</button>
+      <button type="button" class="btn btn-primary btn-sm" id="songEdit_cancelButtonID">CANCEL</button>
+    </div>
+  </div>
+
+  <div class="two wide column">
+  </div>
+
+  <!--
+    <div class="two wide column">
+      <label for="se_ratingID">Rating</label>
+    </div>
+
+    <div class="two wide column">
+        <input type="text" class="form-control form-control-sm" id="se_ratingID" placeholder="1-5">
+    </div>
+    -->
+</div>`;
+
+const LYRICS_CREATE_CONTENT = `<div class="style2">
+    <label for="se_quickSlideID"></label><textarea id="se_quickSlideID" style="width: 400px" class="textareaStyle4songslide"></textarea><label for="se_quickSlideID_2"></label><textarea id="se_quickSlideID_2" style="width: 400px" class="textareaStyle4songslide"></textarea>
+
+    <br>
+
+    <i>Separate the slides with the delimiter</i>
+
+    <br>
+
+    <i><code>\\r</code> for CR (carriage return)</i>,&nbsp;
+    <i><code>\\n</code> for LF (newline)</i>,&nbsp;
+    <i><code>\\t</code> for TAB</i>,&nbsp;
+    <i><code>\\s</code> for WHITESPACE</i>
+
+    <br>
+
+    <label for="se-slide-delimiter">Delimiter</label>
+    <input type="text" id="se-slide-delimiter" value="\\n\\n\\n">
+    <label for="se-trim-slides">Trim Slides</label>
+    <input type="checkbox" id="se-trim-slides">
+    <label for="se-trim-empty">Remove Empty</label>
+    <input type="checkbox" id="se-trim-empty">
+
+    <br>
+
+    <input type="button" id="se_generateID" value=" GENERATE SLIDES ">
+    <input type="button" id="se_generateCancelID" value=" CANCEL ">
+</div>`;
+
 export class SongEdit {
-    constructor(bodyContent, lyricsCreateContent) {
+    constructor() {
         const _isDebug = false;
 
         let b = false;
         let v = -1;
         let _primaryKey = -1;
         let Z = false;
-        let _bodyContent = bodyContent;
-        let _lyricsCreateContent = lyricsCreateContent;
+        let _bodyContent = SONG_EDIT_BODY_CONTENT;
+        let _lyricsCreateContent = LYRICS_CREATE_CONTENT;
         let _panel = null;
         let _slidesTabView;
         let u = "";

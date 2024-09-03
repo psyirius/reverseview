@@ -9,17 +9,50 @@ export function setupVerseEditObject() {
     $RvW.editVerse_UI_Obj.setValue(b, d, c, a);
 }
 
+const INNER_HTML = `
+<div class="ui form container segment">
+
+    <div id="generalPanelDIV_delete" class="ui grid bibleEditDIV">
+
+        <div class="column">
+            <div class="form-group row field">
+                <label>Reference</label>
+                <div id="currentVerseRefDiv"></div>
+            </div>
+
+            <div class="form-group row field">
+                <label>Current Verse Text</label>
+                <div rows="3" id="currentVerseTextDiv"></div>
+            </div>
+
+            <div class="form-group row field">
+                <label>Updated Verse Text</label>
+                <textarea rows="3" id="updatedVerseTextDiv"></textarea>
+            </div>
+
+            <div class="form-group row field">
+                <button class="ui primary button" id="updateVerseTextButton" >UPDATE</button>
+                <button class="ui primary button" id="cancelVerseTextButton" >CANCEL</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+`;
+
 export class VerseEditUI {
-    constructor(o) {
-        this.init = init;
-        this.show = k;
-        this.hide = f;
-        this.setValue = d;
-        var e, b, j;
-        var l;
-        var a;
-        var m = null;
-        var g = o;
+    constructor() {
+        this.show = show;
+        this.hide = hide;
+        this.setValue = setValue;
+
+        let e, b, j;
+        let l;
+        let a;
+        let _panel = null;
+        const _body = INNER_HTML;
 
         init();
 
@@ -28,7 +61,7 @@ export class VerseEditUI {
             i();
         }
         function c() {
-            m = new YAHOO.widget.Panel("verseedit_panelObj", {
+            _panel = new YAHOO.widget.Panel("verseedit_panelObj", {
                 width: "600px",
                 height: "200px",
                 fixedcenter: true,
@@ -36,19 +69,19 @@ export class VerseEditUI {
                 visible: false,
                 constraintoviewport: true,
             });
-            m.render(document.body);
-            m.setHeader("Edit Bible Verse");
-            m.setBody(g);
-            m.hide();
-            m.bringToTop();
+            _panel.render(document.body);
+            _panel.setHeader("Edit Bible Verse");
+            _panel.setBody(_body);
+            _panel.hide();
+            _panel.bringToTop();
         }
         function i() {
             $("#updateVerseTextButton").click(function () {
                 h();
-                f();
+                hide();
             });
             $("#cancelVerseTextButton").click(function () {
-                f();
+                hide();
             });
         }
         function h() {
@@ -56,7 +89,7 @@ export class VerseEditUI {
             var o = getVerseFromArray(e, b, j);
             $RvW.bibledbObj[1].updateVerse(e, b, j, a);
         }
-        function d(o, t, p, q) {
+        function setValue(o, t, p, q) {
             e = parseInt(o) + 1;
             b = parseInt(t) + 1;
             j = parseInt(p) + 1;
@@ -70,13 +103,13 @@ export class VerseEditUI {
             $("#currentVerseTextDiv").css("font-family", s);
             $("#updatedVerseTextDiv").css("font-family", s);
         }
-        function k() {
+        function show() {
             air.trace("showing edit UI");
-            m.show();
-            m.bringToTop();
+            _panel.show();
+            _panel.bringToTop();
         }
-        function f() {
-            m.hide();
+        function hide() {
+            _panel.hide();
         }
     }
 }

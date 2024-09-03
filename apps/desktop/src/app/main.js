@@ -59,6 +59,7 @@ import {
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
+import VIEWS from "@/views";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -282,7 +283,6 @@ $RvW.bibleVersionSelObj = null;
 $RvW.remoteVV_UI_Obj = null;
 $RvW.updateVV_UI_Obj = null;
 $RvW.editVerse_UI_Obj = null;
-$RvW.version_UI_Content = null;
 $RvW.newUpdateObj = null;
 $RvW.enterForSearchActive = true;
 $RvW.enterForBibleRef = false;
@@ -827,7 +827,7 @@ function setupNavWindow() {
 }
 
 function setupTheme() {
-    var a = document.getElementById("themeList").value;
+    const a = document.getElementById("themeList").value;
     switch (a) {
         case "1":
             document.body.style.backgroundImage = "url(graphics/background2.png)";
@@ -840,38 +840,37 @@ function setupTheme() {
 }
 
 function setupTabContent() {
-    $RvW.bibleVersionSelObj = new BibleVersionSelector(loadViewTemplate("setup_biblesel"));
+    $RvW.bibleVersionSelObj = new BibleVersionSelector();
 
-    $RvW.remoteVV_UI_Obj = new RemoteSetupUIPanel(loadViewTemplate("setup_remote"));
-    $RvW.version_UI_Content = loadViewTemplate('version');
+    $RvW.remoteVV_UI_Obj = new RemoteSetupUIPanel();
 
-    setupTabViewTemplate("bible_verses", "bibleverseTab");
-    setupTabViewTemplate("screens", "screenTab");
+    setupTabView("bible_verses", "bibleverseTab");
+    setupTabView("screens", "screenTab");
 
-    $RvW.updateVV_UI_Obj = new AppUpdateUi(loadViewTemplate("setup_update"));
+    $RvW.updateVV_UI_Obj = new AppUpdateUi();
 
     fillTabs('configTab');
 
-    setupTabViewTemplate("nav", "navTab");
-    setupTabViewTemplate("search", "searchTab");
-    setupTabViewTemplate("html", "notesTab");
-    setupTabViewTemplate("schedule", "scheduleTab");
-    setupTabViewTemplate("song_nav", "songNavTab");
-    setupTabViewTemplate("song_lyrics", "lyricsTab");
+    setupTabView("nav", "navTab");
+    setupTabView("search", "searchTab");
+    setupTabView("html", "notesTab");
+    setupTabView("schedule", "scheduleTab");
+    setupTabView("song_nav", "songNavTab");
+    setupTabView("song_lyrics", "lyricsTab");
 
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
-    $RvW.notesObj = new Notes(loadViewTemplate("notesui"), 'notesPanelID');
-    $RvW.searchObj = new BibleSearch("./bible/" + getVersion1Filename());
+    $RvW.notesObj = new Notes();
+    $RvW.searchObj = new BibleSearch(`./bible/${getVersion1Filename()}`);
     $RvW.webServerObj = new WebServer('webroot');
     $RvW.webEngineObj = new WebEngine();
     $RvW.bibleRefObj = new BibleReference();
-    $RvW.editVerse_UI_Obj = new VerseEditUI(loadViewTemplate("bible_verse_edit"));
+    $RvW.editVerse_UI_Obj = new VerseEditUI();
     $RvW.songNumberObj = new SongNumber();
     $RvW.songManagerObj = new SongManager(true, true);
-    $RvW.songEditObj = new SongEdit(loadViewTemplate("song_edit"), loadViewTemplate('lyrics_create'));
+    $RvW.songEditObj = new SongEdit();
     $RvW.songNavObj = new SongNav();
     $RvW.helpObj = new HelpUiPanel();
-    $RvW.graphicsObj = new GraphicsMgr(loadViewTemplate("graphics"));
+    $RvW.graphicsObj = new GraphicsMgr();
 
     if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
@@ -884,24 +883,28 @@ function setupTabContent() {
     }
 }
 
-const loadViewTemplate = function (name) {
-    const filepath = `./views/${name}.html`;
+// const loadViewTemplate = function (name) {
+//     const filepath = `./views/${name}.html`;
+//
+//     const { File, FileStream, FileMode } = air;
+//     const { applicationDirectory: appDir } = File;
+//
+//     const file = appDir.resolvePath(filepath);
+//
+//     const prefsFS = new FileStream();
+//     prefsFS.open(file, FileMode.READ);
+//     const data = prefsFS.readMultiByte(prefsFS.bytesAvailable, 'utf-8');
+//     prefsFS.close();
+//
+//     return data;
+// }
 
-    const { File, FileStream, FileMode } = air;
-    const { applicationDirectory: appDir } = File;
-
-    const file = appDir.resolvePath(filepath);
-
-    const prefsFS = new FileStream();
-    prefsFS.open(file, FileMode.READ);
-    const data = prefsFS.readMultiByte(prefsFS.bytesAvailable, 'utf-8');
-    prefsFS.close();
-
-    return data;
-}
-
-function setupTabViewTemplate(name, mountPoint) {
-    document.getElementById(mountPoint).innerHTML = loadViewTemplate(name);
+function setupTabView(name, mountPoint) {
+    const html = VIEWS[name];
+    if (!html) {
+        air.trace(`[!] View template not found: ${name}`);
+    }
+    document.getElementById(mountPoint).innerHTML = html;
     fillTabs(mountPoint);
 }
 function fillTabs(a) {

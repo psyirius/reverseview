@@ -26,7 +26,6 @@
     "buildx-trace-resolutions:src": "tsc --traceResolution -p tsconfig.app.json",
     "build:src": "node build.src.js -p tsconfig.app.json",
     "build-trace-resolutions:src": "node build.src.js -tr -p tsconfig.app.json",
-    "build:views": "node build.views.js",
     "build:static": "node build.static.js",
     "build:styles": "node build.styles.js",
     "build:remote": "node build.remote.js",
