@@ -76,9 +76,3 @@ export function bibleRefBlur() {
 export function bibleRefFocus() {
     $RvW.enterForBibleRef = true;
 }
-export function nav_addVerse2Schedule() {
-    var b = $RvW.getBookValue();
-    var a = $RvW.getChapterValue();
-    var c = $RvW.getVerseValue();
-    $RvW.scheduleObj.processAddVerse(b, a, c);
-}
