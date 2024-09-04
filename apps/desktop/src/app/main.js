@@ -27,10 +27,9 @@ import { Config, configInit, svParameterSaveEvent } from "./config";
 import Preferences from './preferences';
 import SplashScreen from './splash';
 import Overlay from "./overlay";
-
-import { setup as setupUI } from './ui/main';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
+import { setup as setupUI } from './ui/main';
 import {
     bibleRefBlur,
     bibleRefFocus,
@@ -48,17 +47,20 @@ import {
 } from "@/p_window";
 import {
     apple,
-    backupWebroot, BibleReference, blankSlide,
+    backupWebroot,
+    BibleReference,
     clearSelectList,
     copyFile2AppStorage,
     createFolder,
-    fileExist, ImageIcon,
-    pluckapple, roundSearchBox, showLogoSlide
+    fileExist,
+    ImageIcon,
+    pluckapple,
+    roundSearchBox,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
+import {selectedBookRef} from "@stores/global";
 import {$RvW} from "@/rvw";
 import VIEWS from "@/views";
-import {selectedBookRef, selectedTab} from "@stores/global";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -641,6 +643,7 @@ function loadPreferences(callback) {
     const _cb = (e, store) => {
         if (e) {
             alert("[!] LoadPreferences: " + e);
+            air.trace(e);
             return;
         }
 
@@ -731,6 +734,7 @@ function setupConsole() {
 }
 
 function vvinit_continue() {
+    setupMenu();
     setupConsole();
 
     Toast.setup();
@@ -739,9 +743,10 @@ function vvinit_continue() {
     Overlay.setup();
 
     setTimeout(function () {
-        var a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
-        if (a == 1 && !firstTimeFlag) {
-            var c = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
+        const a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
+
+        if (a === 1 && !firstTimeFlag) {
+            let c = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
             if (c) {
                 c = copyFile2AppStorage("bible", "bible");
                 if (c) {
@@ -774,10 +779,9 @@ function vvinit_continue() {
         setupNavWindow();
         $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
         $RvW.putbook();
-        setupMenu();
-        nativeWindow.addEventListener("resize", setupNavWindow);
-        nativeWindow.addEventListener("close", $RvW.processExit);
-        nativeWindow.addEventListener("closing", beforeExit);
+        window.nativeWindow.addEventListener("resize", setupNavWindow);
+        window.nativeWindow.addEventListener("close", $RvW.processExit);
+        window.nativeWindow.addEventListener("closing", beforeExit);
         $RvW.newUpdateObj = new AppUpdater();
     }, 500);
 
@@ -838,22 +842,23 @@ function setupTheme() {
 
 function setupTabContent() {
     $RvW.bibleVersionSelObj = new BibleVersionSelector();
-
     $RvW.remoteVV_UI_Obj = new RemoteSetupUIPanel();
-
-    setupTabView("bible_verses", "bibleverseTab");
-    setupTabView("screens", "screenTab");
-
     $RvW.updateVV_UI_Obj = new AppUpdateUi();
 
-    fillTabs('configTab');
-
-    setupTabView("nav", "navTab");
-    setupTabView("search", "searchTab");
-    setupTabView("html", "notesTab");
-    setupTabView("schedule", "scheduleTab");
-    setupTabView("song_nav", "songNavTab");
+    // Right Tab
+    setupTabView("bible_verses", "bibleverseTab");
     setupTabView("song_lyrics", "lyricsTab");
+    setupTabView("notes", "notesTab");
+    setupTabView("search", "searchTab");
+    setupTabView("schedule", "scheduleTab");
+    setupTabView("graphics", "graphicsTab");
+    setupTabView("settings", "screenTab");
+
+    // Left Tab
+    setupTabView("nav", "navTab");
+    setupTabView("song_nav", "songNavTab");
+
+    fillTabs('configTab');
 
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes();
@@ -904,6 +909,7 @@ function setupTabView(name, mountPoint) {
     document.getElementById(mountPoint).innerHTML = html;
     fillTabs(mountPoint);
 }
+
 function fillTabs(a) {
     switch (a) {
         case "navTab": {
@@ -1108,123 +1114,6 @@ function fillNav() {
     updateRefMenu();
 
     $RvW.recentBibleRefs = new BibleRecentRefManager();
-}
-
-function setupLeftTabFrame() {
-    const tabs = [
-        {
-            label: "Bible",
-            content: '<div id="navTab">Bible</div>',
-        },
-        {
-            label: "Songs",
-            content: '<div id="songNavTab">Songs</div>',
-        },
-    ];
-
-    const { TabView, Tab } = $Y;
-
-    const tabview = new TabView();
-
-    tabs.forEach((tabMeta, index) => {
-        const tab = new Tab(tabMeta);
-        tabview.add(tab, index);
-    });
-
-    tabview.render('#container');
-
-    const lti = $RvW.rvwPreferences.get('app.state.leftTabActiveIndex', 0);
-    tabview.selectChild(lti);
-
-    tabview.after('selectionChange', (e) => {
-        const currentTab = e.newVal;
-
-        switch (currentTab.get('index')) {
-            case 0: {
-                $RvW.rightTabView.selectChild(0);
-                break;
-            }
-            case 1: {
-                $RvW.rightTabView.selectChild(1);
-                break;
-            }
-        }
-    });
-
-    $RvW.leftTabView = tabview;
-}
-function setupRightTabFrame() {
-    const tabs = [
-        {
-            label: "Verses",
-            content: '<div id="bibleverseTab" class="tabSubContainer" >Loading Bible Database ... </div>',
-        },
-        {
-            label: "Lyrics",
-            content: '<div id="lyricsTab" class="tabSubContainer">Lyrics</div>',
-        },
-        {
-            label: "Notes",
-            content: '<div id="notesTab" class="notesTabSubContainer">Notes</div>',
-        },
-        {
-            label: "Search",
-            content: '<div id="searchTab">Search</div>',
-        },
-        {
-            label: "Schedule",
-            content: '<div id="scheduleTab">Schedule</div>',
-        },
-        {
-            label: "Graphics",
-            content: '<div id="graphicsTab">Graphics</div>',
-        },
-        {
-            label: "Screens",
-            content: '<div id="screenTab">Screens</div>',
-        },
-    ];
-
-    const { TabView, Tab } = $Y;
-
-    const tabview = new TabView();
-
-    tabs.forEach((tabMeta, index) => {
-        const tab = new Tab(tabMeta);
-        tabview.add(tab, index);
-    });
-
-    tabview.render('#container2');
-
-    const rti = $RvW.rvwPreferences.get('app.state.rightTabActiveIndex', 0);
-    tabview.selectChild(rti);
-
-    function menuBarSync(currentTab) {
-        // air.trace('menuBarSync', currentTab.get('index'));
-        selectedTab.set(currentTab.get('index'));
-    }
-
-    menuBarSync(tabview.get('selection'));
-
-    tabview.after('selectionChange', (e) => {
-        const currentTab = e.newVal;
-
-        menuBarSync(currentTab);
-
-        // TODO: figure out store base tab sync
-        switch (currentTab.get('index')) {
-            case 0: {
-                $RvW.leftTabView.selectChild(0);
-                break;
-            }
-            case 1: {
-                $RvW.leftTabView.selectChild(1);
-                break;
-            }
-        }
-    });
-
-    $RvW.rightTabView = tabview;
 }
 
 function beforeExit() {
@@ -1542,8 +1431,6 @@ $RvW.english_booknames = [];
  * @param {YUI} Y
  */
 export function start(Y) {
-    setupUI();
-
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     SplashScreen.show();
@@ -1595,8 +1482,7 @@ export function start(Y) {
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
 
-        setupLeftTabFrame();
-        setupRightTabFrame();
+        setupUI();
 
         loadBibleInfo('en-US', function (e, data) {
             if (e) {

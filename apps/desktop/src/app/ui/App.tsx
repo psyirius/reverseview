@@ -1,5 +1,7 @@
 import {useState} from "@lib/zrx/hooks";
 import MenuBar from "./MenuBar";
+import LeftTab from "./LeftTab";
+import RightTab from "./RightTab";
 
 interface Props {
     dev?: boolean;
@@ -34,8 +36,9 @@ const App = ({dev}: Props) => {
 
             {/* App::Content */}
             <div id="wrapper">
-                <div id="container" class="tabContainer"></div>
-                <div id="container2" class="verseContainer"></div>
+                <LeftTab />
+                <RightTab />
+
                 <div id="cleared"></div>
             </div>
 
