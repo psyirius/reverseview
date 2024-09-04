@@ -15,12 +15,15 @@ const prog = new Command()
     .addOption(
         new Option('-p, --project <tsconfig>', 'choose a tsconfig')
     )
+    .addOption(
+        new Option('-w, --cwd <working-dir>', 'working directory')
+    )
 
 prog.parse(process.argv);
 
-const WORKING_DIR = process.cwd();
-
 const options = prog.opts();
+
+const WORKING_DIR = options.cwd || process.cwd();
 
 const configPath = path.join(
     WORKING_DIR,

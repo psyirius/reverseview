@@ -5,6 +5,7 @@ export default defineConfig({
         'src/index.js',
     ],
     format: ['cjs', 'esm'],
+    outExtension: (ctx) => ({ js: (ctx.format === 'cjs') ? '.cjs' : '.mjs' }),
     legacyOutput: true,
     splitting: false,
     sourcemap: true,

@@ -4,10 +4,14 @@
   "description": "Specialized typescript compiler built for the air runtime",
   "type": "module",
   "private": true,
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "scripts": {
-    "build": "node src/index.js"
+    "build": "node src/index.js -w ../../apps/desktop -p tsconfig.app.json",
+    "par": "tsx ./src/parcel.ts"
   },
   "dependencies": {
+    "@rvw/parcel-config": "workspace:*",
     "typescript": "^5.5.4",
     "ts-morph": "^23.0.0",
     "tslib": "^2.7.0",
@@ -20,9 +24,6 @@
     "@swc/helpers": "^0.5.12",
     "@swc/plugin-transform-imports": "^3.0.1",
     "@parcel/core": "^2.12.0",
-    "@parcel/cache": "^2.12.0",
-    "@parcel/fs": "^2.12.0",
-    "@parcel/utils": "^2.12.0",
     "esbuild": "^0.23.1",
     "rollup": "^4.21.2",
     "terser": "^5.31.6"

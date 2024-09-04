@@ -1,3 +1,7 @@
+import Data from './data.json';
+
+console.log(Data);
+
 export class Deferred {
     resolve = null;
     reject = null;
