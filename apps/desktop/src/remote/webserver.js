@@ -569,7 +569,7 @@ class WebSocketHandler {
     }
 
     init() {
-        const { ServerEvent, ClientEvent } = window.runtime.air.net.websockets.events;
+        const { ServerEvent, ClientEvent } = runtime.air.net.websockets.events;
 
         this._server.addEventListener(
             ServerEvent.SERVER_BOUND_SUCCESS, (e) => this._onServerIsReady(e));
@@ -582,7 +582,7 @@ class WebSocketHandler {
     }
 
     _debug_log(...msg) {
-        if (this._debug_log) {
+        if (this._debug) {
             air.trace(`[WebSocketHandler]: `, ...msg);
         }
     }
@@ -644,10 +644,19 @@ export class WebServer {
     stop() {
         if (this.isActive()) {
             try {
-                if (this.m_serverSocket.listening) this.m_serverSocket.close();
-                // if (this.m_serverWebSocket.listening) this.m_serverWebSocket.close();
+                if (this.m_serverSocket.listening) {
+                    this.m_serverSocket.close();
+                    this.m_serverSocket = null;
+                }
+                if (this.m_serverWebSocket.listening) {
+                    this.m_serverWebSocket.close();
+                    this.m_serverWebSocket = null;
+                }
             } catch (e) {
                 // FIXME: crashes when there is an active client connected to the ws server
+                // FIXME: websocket server is not stopping when clients are connected
+                // ERROR: #2002: Operation attempted on invalid socket.
+                // NOTE: It's stopping the server though, but cannot re-bind to another interface
                 air.trace(e);
             }
             this.m_listening = false;

@@ -8,7 +8,7 @@ export default function QRCode({ text }: Props) {
     const qrRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        air.trace('QRCode', text);
+        // air.trace('QRCode', text);
 
         // prevent appending multiple QR codes
         qrRef.current!.innerHTML = '';

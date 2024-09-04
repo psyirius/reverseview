@@ -65,7 +65,10 @@ function loadNetworkInterfaces() {
 
 loadNetworkInterfaces();
 
-// TODO: Add a Text field to insert theme of the view
+// TODO:
+// - Add a Text field to insert theme of the view
+// - List connected remote clients
+// - Show port availability
 const remoteItemList = [
     { id: 1,  label: 'Control'                , path: '/control.html'                   },
 
@@ -129,13 +132,13 @@ export default function RemoteSetupDialog({}: Props) {
         if (enabled) {
             air.trace('Remote Enabled');
 
-            if ($RvW.webServerObj.isActive()) {
-                Toast.show(
-                    "Remote ReVerseVIEW",
-                    "Remote is already enabled!",
-                );
-                return;
-            }
+            // if ($RvW.webServerObj.isActive()) {
+            //     Toast.show(
+            //         "Remote ReVerseVIEW",
+            //         "Remote is already enabled!",
+            //     );
+            //     return;
+            // }
 
             if (isNaN(port)) {
                 Toast.show(
@@ -170,13 +173,13 @@ export default function RemoteSetupDialog({}: Props) {
         } else {
             air.trace('Remote Disabled');
 
-            if (!$RvW.webServerObj.isActive()) {
-                Toast.show(
-                    "Remote ReVerseVIEW",
-                    "Remote is already disabled!",
-                );
-                return;
-            }
+            // if (!$RvW.webServerObj.isActive()) {
+            //     Toast.show(
+            //         "Remote ReVerseVIEW",
+            //         "Remote is already disabled!",
+            //     );
+            //     return;
+            // }
 
             $RvW.webServerObj.stop();
         }
