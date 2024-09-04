@@ -405,21 +405,22 @@ export class SongManager {
         function processImportSongDB() {
             new SongImporter();
         }
+
         function processImportSongXML() {
-            var aN = new SongPortXML();
-            aN.init(sng, null, null, 1);
-            aN.importXML();
+            const spx = new SongPortXML(sng, null, null, 1);
+            spx.importXML();
         }
+
         function processExportSongXML() {
-            var aN = new SongPortXML();
-            aN.init(sng, null, null, 1);
-            aN.exportAll();
+            const spx = new SongPortXML(sng, null, null, 1);
+            spx.exportAll();
         }
+
         function processExportCatXML() {
-            var aN = new SongPortXML();
-            aN.init(sng, ab, null, 2);
-            aN.exportByCat();
+            const spx = new SongPortXML(sng, ab, null, 2);
+            spx.exportByCat();
         }
+
         function addImportSongs(aN) {
             var aO = aN.data.length;
             for (var aP = 0; aP < aO; aP++) {

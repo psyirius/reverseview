@@ -7,6 +7,14 @@ declare global {
             constructor();
         }
 
+        class Date extends Object {
+            constructor();
+        }
+
+        class Array extends Object {
+            constructor();
+        }
+
         namespace flash {
             namespace events {
                 class Event extends Object {
@@ -100,6 +108,30 @@ declare global {
                 class Responder {
                     constructor(result: Function, status?: Function);
                 }
+
+                class FileReference extends events.EventDispatcher {
+                    constructor();
+
+                    public static readonly permissionStatus: string;
+
+                    public readonly creationDate: Date;
+                    public readonly creator: string;
+                    public readonly data: utils.ByteArray;
+                    public readonly extension: string;
+                    public readonly modificationDate: Date;
+                    public readonly name: string;
+                    public readonly size: number;
+                    public readonly type: string;
+
+                    public browse(typeFilter?: Array): boolean;
+                    public cancel(): void;
+                    public download(request: URLRequest, defaultFileName?: string): void;
+                    public load(): void;
+                    public requestPermission(): void;
+                    public save(data: any, defaultFileName?: string): void;
+                    public upload(request: URLRequest, uploadDataFieldName?: string, testUpload?: boolean): void;
+                    public uploadUnencoded(request: URLRequest): void;
+                }
             }
 
             namespace crypto {
@@ -107,9 +139,7 @@ declare global {
             }
 
             namespace filesystem {
-                class File {
-                    constructor(path?: string);
-
+                class File extends net.FileReference {
                     static readonly userDirectory: File;
                     static readonly desktopDirectory: File;
                     static readonly documentsDirectory: File;
@@ -131,6 +161,38 @@ declare global {
                     downloaded: boolean;
 
                     // ...
+
+                    constructor(path?: string);
+
+                    public static createTempDirectory(): File;
+                    public static createTempFile(): File;
+                    public static getRootDirectories(): Array;
+
+                    public override cancel(): void;
+                    public override requestPermission(): void;
+
+                    public browseForDirectory(title: string): void;
+                    public browseForOpen(title: string, typeFilter?: Array): void;
+                    public browseForOpenMultiple(title: string, typeFilter?: Array): void;
+                    public browseForSave(title: string): void;
+                    public canonicalize(): void;
+                    public clone(): File;
+                    public copyTo(newLocation: net.FileReference, overwrite?: boolean): void;
+                    public copyToAsync(newLocation: net.FileReference, overwrite?: boolean): void;
+                    public createDirectory(): void;
+                    public deleteDirectory(deleteDirectoryContents?: boolean): void;
+                    public deleteDirectoryAsync(deleteDirectoryContents?: boolean): void;
+                    public deleteFile(): void;
+                    public deleteFileAsync(): void;
+                    public getDirectoryListing(): Array;
+                    public getDirectoryListingAsync(): void;
+                    public getRelativePath(ref: net.FileReference, useDotDot?: boolean): string;
+                    public moveTo(newLocation: net.FileReference, overwrite?: boolean): void;
+                    public moveToAsync(newLocation: net.FileReference, overwrite?: boolean): void;
+                    public moveToTrash(): void;
+                    public moveToTrashAsync(): void;
+                    public openWithDefaultApplication(): void;
+                    public resolvePath(path: string): File;
                 }
 
                 enum FileMode {

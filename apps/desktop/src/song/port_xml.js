@@ -5,144 +5,127 @@ import {$RvW} from "@/rvw";
 import {fixHTTPS_Link, specialCategory} from "@app/common";
 
 export class SongPortXML {
-    constructor() {
-        this.init = p;
-        this.exportAll = l;
-        this.exportByCat = f;
-        this.exportSingle = h;
-        this.importXML = e;
-        var c = null;
-        var m = null;
-        var j = null;
-        var k = 0;
-        var d = null;
-        function p(r, t, s, u) {
-            c = r;
-            m = t;
-            j = s;
-            k = u;
-        }
-        function l() {
-            var r = new Song();
+    constructor(song, category, s, exk) {
+        this.exportAll = exportAll;
+        this.exportByCat = exportByCat;
+        this.exportSingle = exportSingle;
+        this.importXML = importXML;
+
+        const m_song = song;
+        const m_category = category;
+        const j = s;
+        let m_exportKind = exk;
+
+        function exportAll() {
+            const r = new Song();
             r.init();
-            var w = b();
-            var u = '<?xml version="1.0" encoding="UTF-8"?>\n';
-            u = u + "<songDB>\n";
-            u = u + "<type>XMLsong</type>\n";
-            u =
-                u +
-                "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
-            var y = c.data.length;
-            for (var t = 0; t < y; t++) {
-                if (!specialCategory(c.data[t].cat)) {
-                    var v = c.data[t].name;
+
+            const w = generateExportXmlFilename();
+            let u = '<?xml version="1.0" encoding="UTF-8"?>\n';
+            u += "<songDB>\n";
+            u += "<type>XMLsong</type>\n";
+            u += "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
+
+            for (let t = 0; t < m_song.data.length; t++) {
+                if (!specialCategory(m_song.data[t].cat)) {
+                    let v = m_song.data[t].name;
                     v = v.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    v = v.replace(/([\x26])/g, "and");
+                    v = v.replace(/(\x26)/g, "and");
                     r.name = v;
-                    r.catIndex = c.data[t].cat;
-                    r.font = c.data[t].font;
-                    r.font2 = c.data[t].font2;
-                    r.timestamp = c.data[t].timestamp;
-                    r.yvideo = c.data[t].yvideo;
-                    r.bkgnd_fname = c.data[t].bkgndfname;
-                    r.key = c.data[t].key;
-                    r.copyright = c.data[t].copy;
-                    r.notes = c.data[t].notes;
-                    r.name2 = c.data[t].title2;
-                    if (c.data[t].tags != null) {
-                        r.tags = c.data[t].tags;
-                    } else {
-                        r.tags = "";
-                    }
-                    r.slideseq = c.data[t].slideseq;
-                    var x = c.data[t].lyrics;
-                    var s = x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    r.slides = s;
-                    var x = c.data[t].lyrics2;
-                    if (x != null) {
-                        var s = x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                        r.slides2 = s;
-                    } else {
-                        r.slides2 = "";
-                    }
-                    u = u + q(r);
+                    r.catIndex = m_song.data[t].cat;
+                    r.font = m_song.data[t].font;
+                    r.font2 = m_song.data[t].font2;
+                    r.timestamp = m_song.data[t].timestamp;
+                    r.yvideo = m_song.data[t].yvideo;
+                    r.bkgnd_fname = m_song.data[t].bkgndfname;
+                    r.key = m_song.data[t].key;
+                    r.copyright = m_song.data[t].copy;
+                    r.notes = m_song.data[t].notes;
+                    r.name2 = m_song.data[t].title2;
+                    r.tags = m_song.data[t].tags != null ? m_song.data[t].tags : "";
+                    r.slideseq = m_song.data[t].slideseq;
+                    r.slides = m_song.data[t].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
+                    const x = m_song.data[t].lyrics2;
+                    r.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
+                    u += q(r);
                 }
             }
-            u = u + "</songDB>\n";
-            g(u, w);
+
+            u += "</songDB>\n";
+
+            saveToFile(u, w);
         }
-        function f() {
-            if (m == "_ALL") {
-                k = 1;
-                l();
+
+        function exportByCat() {
+            if (m_category === "_ALL") {
+                m_exportKind = 1;
+                exportAll();
                 return false;
             }
-            if (specialCategory(m)) {
+
+            if (specialCategory(m_category)) {
                 Toast.show("Song Database", "Only user added lyrics can be exported");
                 return false;
             }
-            var z = new Song();
+
+            const z = new Song();
             z.init();
-            var t = b();
-            var v = '<?xml version="1.0" encoding="UTF-8"?>\n';
-            v = v + "<songDB>\n";
-            v = v + "<type>XMLsong</type>\n";
-            v =
-                v +
-                "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
-            var r = true;
-            var y = c.data.length;
-            for (var u = 0; u < y; u++) {
-                if (c.data[u].cat == m) {
-                    r = false;
-                    var w = c.data[u].name;
+
+            const t = generateExportXmlFilename();
+
+            let v = '<?xml version="1.0" encoding="UTF-8"?>\n';
+            v += "<songDB>\n";
+            v += "<type>XMLsong</type>\n";
+            v += "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
+
+            let errored = true;
+            for (let u = 0; u < m_song.data.length; u++) {
+                if (m_song.data[u].cat === m_category) {
+                    errored = false;
+                    let w = m_song.data[u].name;
                     w = w.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    w = w.replace(/([\x26])/g, "and");
+                    w = w.replace(/(\x26)/g, "and");
                     z.name = w;
-                    z.catIndex = c.data[u].cat;
-                    z.font = c.data[u].font;
-                    z.font2 = c.data[u].font2;
-                    z.timestamp = c.data[u].timestamp;
-                    z.yvideo = c.data[u].yvideo;
-                    z.bkgnd_fname = c.data[u].bkgndfname;
-                    z.key = c.data[u].key;
-                    z.copyright = c.data[u].copy;
-                    z.notes = c.data[u].notes;
-                    z.name2 = c.data[u].title2;
-                    if (c.data[u].tags != null) {
-                        z.tags = c.data[u].tags;
-                    } else {
-                        z.tags = "";
-                    }
-                    z.slideseq = c.data[u].slideseq;
-                    z.subcat = c.data[u].subcat;
-                    var x = c.data[u].lyrics;
-                    var s = x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    z.slides = s;
-                    var x = c.data[u].lyrics2;
-                    if (x != null) {
-                        var s = x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                        z.slides2 = s;
-                    } else {
-                        z.slides2 = "";
-                    }
-                    v = v + q(z);
+                    z.catIndex = m_song.data[u].cat;
+                    z.font = m_song.data[u].font;
+                    z.font2 = m_song.data[u].font2;
+                    z.timestamp = m_song.data[u].timestamp;
+                    z.yvideo = m_song.data[u].yvideo;
+                    z.bkgnd_fname = m_song.data[u].bkgndfname;
+                    z.key = m_song.data[u].key;
+                    z.copyright = m_song.data[u].copy;
+                    z.notes = m_song.data[u].notes;
+                    z.name2 = m_song.data[u].title2;
+                    z.tags = m_song.data[u].tags != null ? m_song.data[u].tags : "";
+                    z.slideseq = m_song.data[u].slideseq;
+                    z.subcat = m_song.data[u].subcat;
+                    z.slides = m_song.data[u].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
+                    const x = m_song.data[u].lyrics2;
+                    z.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
+                    v += q(z);
                 }
             }
-            v = v + "</songDB>\n";
-            if (r) {
+            v += "</songDB>\n";
+            if (errored) {
                 Toast.show(
                     "Song Database",
                     "Database contains invalid Category. Contact VerseVIEW"
                 );
             } else {
-                g(v, t);
+                saveToFile(v, t);
             }
         }
-        function h() { }
-        function e() {
-            d = air.File.desktopDirectory;
-            var s = new window.runtime.Array();
+
+        function exportSingle() {
+            Toast.show(
+                "Song Database",
+                "Exporting single song is not supported in XML format."
+            );
+        }
+
+        function importXML() {
+            const d = air.File.desktopDirectory;
+            const s = new runtime.Array();
             s.push(new air.FileFilter("VerseVIEW Song DB", "*.xml"));
             d.browseForOpen("Select Song DB in XML format.", s);
             d.addEventListener(air.Event.SELECT, r);
@@ -153,8 +136,8 @@ export class SongPortXML {
                 u.onreadystatechange = function () {
                     if (u.readyState < 4) {
                     }
-                    if (u.readyState == 4) {
-                        var x = u.responseXML;
+                    if (u.readyState === 4) {
+                        const x = u.responseXML;
                         t(x);
                     }
                 };
@@ -187,88 +170,93 @@ export class SongPortXML {
                 }
             }
         }
-        function b() {
-            var t = new Date();
-            var s = t.toDateString();
-            var r = "";
-            switch (k) {
+
+        function generateExportXmlFilename() {
+            const s = new Date().toDateString();
+            switch (m_exportKind) {
                 case 1:
-                    r = "vvsongs_" + s + ".xml";
-                    break;
+                    return `vvsongs_${s}.xml`;
                 case 2:
-                    r = m + "_songs_" + s + ".xml";
-                    break;
+                    return `${m_category}_songs_${s}.xml`;
                 case 3:
-                    r = "vvsongs_" + s + ".xml";
-                    break;
+                    return `vvsongs_${s}.xml`;
                 default:
-                    break;
+                    return null;
             }
-            return r;
         }
         function i(r) {
-            var s = "";
-            s = s + "<song>\n";
-            s = s + "  <category>" + r.catIndex + "</category>\n";
-            s = s + "  <name>" + r.name + "</name>\n";
-            s = s + "  <font>" + r.font + "</font>\n";
-            s = s + "  <font2>" + r.font2 + "</font2>\n";
-            s = s + "  <timestamp>" + r.timestamp + "</timestamp>\n";
-            s = s + "  <yvideo>" + test_get_songlink(r.name) + "</yvideo>\n";
-            s = s + "  <bkgnd>" + r.bkgnd_fname + "</bkgnd>\n";
-            s = s + "  <key>" + r.key + "</key>\n";
-            s = s + "  <copyright>" + r.copyright + "</copyright>\n";
-            s = s + "  <notes>" + r.notes + "</notes>\n";
-            s = s + "  <slide><![CDATA[" + r.slides + "]]></slide>\n";
-            s = s + "  <slide2><![CDATA[" + r.slides2 + "]]></slide2>\n";
-            s = s + "  <name2><![CDATA[" + r.name2 + "]]></name2>\n";
-            s = s + "  <tags><![CDATA[" + r.tags + "]]></tags>\n";
-            s = s + "  <slideseq><![CDATA[" + r.slideseq + "]]></slideseq>\n";
-            s = s + "</song>\n";
+            let s = "";
+            s += "<song>\n";
+            s += "  <category>" + r.catIndex + "</category>\n";
+            s += "  <name>" + r.name + "</name>\n";
+            s += "  <font>" + r.font + "</font>\n";
+            s += "  <font2>" + r.font2 + "</font2>\n";
+            s += "  <timestamp>" + r.timestamp + "</timestamp>\n";
+            s += "  <yvideo>" + test_get_songlink(r.name) + "</yvideo>\n";
+            s += "  <bkgnd>" + r.bkgnd_fname + "</bkgnd>\n";
+            s += "  <key>" + r.key + "</key>\n";
+            s += "  <copyright>" + r.copyright + "</copyright>\n";
+            s += "  <notes>" + r.notes + "</notes>\n";
+            s += "  <slide><![CDATA[" + r.slides + "]]></slide>\n";
+            s += "  <slide2><![CDATA[" + r.slides2 + "]]></slide2>\n";
+            s += "  <name2><![CDATA[" + r.name2 + "]]></name2>\n";
+            s += "  <tags><![CDATA[" + r.tags + "]]></tags>\n";
+            s += "  <slideseq><![CDATA[" + r.slideseq + "]]></slideseq>\n";
+            s += "</song>\n";
             return s;
         }
         function q(r) {
-            var s = "";
-            s = s + "<song>\n";
-            s = s + "  <category>" + r.catIndex + "</category>\n";
-            s = s + "  <name>" + r.name + "</name>\n";
-            s = s + "  <font>" + r.font + "</font>\n";
-            s = s + "  <font2>" + r.font2 + "</font2>\n";
-            s = s + "  <timestamp>" + r.timestamp + "</timestamp>\n";
-            if (r.yvideo == "null") {
-                s = s + "  <yvideo></yvideo>\n";
-            } else {
-                s = s + "  <yvideo>" + r.yvideo + "</yvideo>\n";
-            }
-            s = s + "  <bkgnd>" + r.bkgnd_fname + "</bkgnd>\n";
-            s = s + "  <key>" + r.key + "</key>\n";
-            s = s + "  <copyright>" + r.copyright + "</copyright>\n";
-            s = s + "  <notes>" + r.notes + "</notes>\n";
-            s = s + "  <slide><![CDATA[" + r.slides + "]]></slide>\n";
-            s = s + "  <slide2><![CDATA[" + r.slides2 + "]]></slide2>\n";
-            s = s + "  <name2><![CDATA[" + r.name2 + "]]></name2>\n";
-            s = s + "  <tags><![CDATA[" + r.tags + "]]></tags>\n";
-            s = s + "  <slideseq><![CDATA[" + r.slideseq + "]]></slideseq>\n";
-            s = s + "  <subcat><![CDATA[" + r.subcat + "]]></subcat>\n";
-            s = s + "</song>\n";
+            let s = "";
+            s += "<song>\n";
+            s += "  <category>" + r.catIndex + "</category>\n";
+            s += "  <name>" + r.name + "</name>\n";
+            s += "  <font>" + r.font + "</font>\n";
+            s += "  <font2>" + r.font2 + "</font2>\n";
+            s += "  <timestamp>" + r.timestamp + "</timestamp>\n";
+            s += r.yvideo === "null" ? `  <yvideo></yvideo>\n` : `  <yvideo>${r.yvideo}</yvideo>\n`;
+            s += "  <bkgnd>" + r.bkgnd_fname + "</bkgnd>\n";
+            s += "  <key>" + r.key + "</key>\n";
+            s += "  <copyright>" + r.copyright + "</copyright>\n";
+            s += "  <notes>" + r.notes + "</notes>\n";
+            s += "  <slide><![CDATA[" + r.slides + "]]></slide>\n";
+            s += "  <slide2><![CDATA[" + r.slides2 + "]]></slide2>\n";
+            s += "  <name2><![CDATA[" + r.name2 + "]]></name2>\n";
+            s += "  <tags><![CDATA[" + r.tags + "]]></tags>\n";
+            s += "  <slideseq><![CDATA[" + r.slideseq + "]]></slideseq>\n";
+            s += "  <subcat><![CDATA[" + r.subcat + "]]></subcat>\n";
+            s += "</song>\n";
             return s;
         }
-        function g(s, w) {
-            var t = "./vvexport/" + w;
-            var r = air.File.desktopDirectory;
-            r = r.resolvePath(t);
-            var u = new air.FileStream();
-            u.addEventListener(air.Event.CLOSE, v);
-            u.openAsync(r, air.FileMode.WRITE);
-            u.writeMultiByte(s, "utf-8");
-            u.close();
-            function v() {
-                Toast.show(
-                    "Song Database",
-                    "Exported to " + w + " under vvexport folder on the Desktop."
-                );
-            }
+
+        function saveToFile(content, filename) {
+            const { File, FileStream, FileMode, Event } = air;
+            const { desktopDirectory } = File;
+
+            const out = desktopDirectory.resolvePath(filename);
+            out.browseForSave("Save As");
+            out.addEventListener(Event.SELECT, function saveData(event) {
+                const newFile = event.target;
+
+                if (!newFile.exists) {
+                    const stream = new FileStream();
+                    stream.openAsync(newFile, FileMode.WRITE);
+                    stream.addEventListener(Event.CLOSE, function () {
+                        Toast.show(
+                            "Song Database",
+                            `Exported to ${newFile.name}`
+                        );
+                    });
+                    stream.writeMultiByte(content, "utf-8");
+                    stream.close();
+                } else {
+                    Toast.show(
+                        "Song Database",
+                        "File already exists. Choose a different name."
+                    );
+                }
+            });
         }
+
         function o(t) {
             var u = new Song();
             var C = t.getElementsByTagName("song").length;

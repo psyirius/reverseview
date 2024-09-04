@@ -40,23 +40,23 @@ export class SongNav {
         let searchDelay = null;
         const searchDelayTime = 600;
 
-        var N = [];
-        var y = null;
-        var s = true;
-        var W = false;
-        var Q = -1;
-        var n = -1;
-        var a = 0;
-        var b = "";
-        var v = 20;
-        var m_keywords = [];
-        var m_suggestion_defer = null;
-        var aa = 30;
-        var ag = false;
-        var L = false;
-        var m = "";
-        var B = null;
-        var m_songTitle = [];
+        let N = [];
+        let y = null;
+        let s = true;
+        let W = false;
+        let Q = -1;
+        let n = -1;
+        let a = 0;
+        let b = "";
+        let v = 20;
+        let m_keywords = [];
+        let m_suggestion_defer = null;
+        let aa = 30;
+        let ag = false;
+        let L = false;
+        let m = "";
+        let B = null;
+        let m_songTitle = [];
         const m_isDebug = false;
 
         init();
@@ -593,33 +593,34 @@ export class SongNav {
                 update_songList(sqlRes, am, ag);
             }
         }
+
         function processExportSongDB() {
-            var ap = "./song/default.db";
-            var am = air.File.applicationStorageDirectory;
-            am = am.resolvePath(ap);
-            var al = air.File.desktopDirectory;
-            var aq = "./vvexport/default_songs.db";
-            al = al.resolvePath(aq);
-            am.addEventListener(air.Event.COMPLETE, an);
-            am.addEventListener(air.IOErrorEvent.IO_ERROR, ao);
-            am.copyToAsync(al, true);
-            function an() {
+            const { File } = air;
+            const { applicationStorageDirectory, desktopDirectory } = File;
+
+            const src = applicationStorageDirectory.resolvePath("./song/default.db");
+            const dst = desktopDirectory.resolvePath("./vvexport/default_songs.db");
+
+            src.addEventListener(air.Event.COMPLETE, function() {
                 Toast.show(
                     "Song Database",
                     'Song database saved to Desktop under the "vvexport" folder'
                 );
-            }
-            function ao() {
+            });
+            src.addEventListener(air.IOErrorEvent.IO_ERROR, function() {
                 Toast.show(
                     "Song Database",
                     "Unable to save the song database to the Desktop"
                 );
-            }
+            });
+            src.copyToAsync(dst, true);
         }
+
         function sn_add2schedule() {
-            var al = $RvW.songManagerObj.getSongID(a, ag);
+            const al = $RvW.songManagerObj.getSongID(a, ag);
             $RvW.scheduleObj.processAddSong(al);
         }
+
         function j() {
             y.name = "Trading my Sorrows";
             y.catIndex = "English";

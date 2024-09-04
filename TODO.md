@@ -107,6 +107,7 @@ https://github.com/ThaUnknown/simple-store-svelte/
 https://github.com/ExtendScript/extendscript-es5-shim
 https://github.com/ExtendScript/extendscript-es6-shim
 https://www.npmjs.com/package/es-set
+https://github.com/dyxribo/log4air
 
 https://github.com/ianharrigan/hxWebSockets
 https://github.com/thomasuster/haxe-websocket-server

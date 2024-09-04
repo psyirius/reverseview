@@ -63,8 +63,6 @@ const SONG_EDIT_BODY_CONTENT = `<div class="ui grid vvrow">
   </div>
 </div>
 
-
-
 <!-- **** FONTS **** -->
 <div class="ui grid vvrow30">
   <div class="four wide column">
@@ -92,7 +90,6 @@ const SONG_EDIT_BODY_CONTENT = `<div class="ui grid vvrow">
   </div>
 </div>
 
-
 <!-- **** SECONDARY FONTS **** -->
 <div class="ui grid vvrow40">
   <div class="four wide column">
@@ -106,7 +103,6 @@ const SONG_EDIT_BODY_CONTENT = `<div class="ui grid vvrow">
     </div>
   </div>
 </div>
-
 
 <!-- **** KEY, COPYRIGHT, YouTUBE **** -->
 <div class="ui grid">
@@ -130,9 +126,6 @@ const SONG_EDIT_BODY_CONTENT = `<div class="ui grid vvrow">
     </div>
   </div>
 </div>
-
-
-
 
 <div class="ui grid">
   <div id="se_slides" class="style2"></div><br>

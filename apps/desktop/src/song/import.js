@@ -10,11 +10,8 @@ export class SongImporter {
         var g = null;
         var createStmt = null;
 
-        init();
+        r();
 
-        function init() {
-            r();
-        }
         function r() {
             k = air.File.desktopDirectory;
             const t = new window.runtime.Array();
