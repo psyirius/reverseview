@@ -1369,8 +1369,6 @@ export function configInit() {
     document.getElementById("presentConfigShowVVLogo").checked = !!g;
     document.getElementById("presentConfigShowCustomLogo").checked = !!b;
 
-    $RvW.remoteVV_UI_Obj.configure();
-
     {
         fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
         fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));

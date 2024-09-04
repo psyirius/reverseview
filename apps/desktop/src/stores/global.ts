@@ -6,10 +6,17 @@ import {
     readable,
     writable,
 } from '@/utils/_store'
+import {$RvW} from "@/rvw";
 
 export enum ColorTheme {
     LIGHT = 0,
     DARK = 1,
+}
+
+export interface NetworkInterfaceInfo {
+    name: string;
+    addr: string;
+    mac?: string;
 }
 
 export const selectedTab: Writable<number> = writable(0);
@@ -18,6 +25,8 @@ export const menuYtLink: Writable<string | null> = writable(null);
 export const navNotifyMessage: Writable<string | null> = writable(null);
 export const showRemotePanel: Writable<boolean> = writable(false);
 export const remoteEnabled: Writable<boolean> = writable(false);
-export const localIpList: Writable<string[]> = writable([]);
+export const localIpList: Writable<NetworkInterfaceInfo[]> = writable([]);
+export const remoteCustomHostname: Writable<string> = writable('');
+export const remoteListenPort: Writable<number> = writable(50000);
 
 export const colorTheme: Writable<ColorTheme> = writable(ColorTheme.DARK);

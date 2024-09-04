@@ -90,6 +90,10 @@ declare global {
     const SourceViewer: any;
     const NativeWindowInitOptions: any;
 
+    const Clipboard: any;
+    const ClipboardFormats: any;
+    const NetworkInfo: any;
+
     // data
     export type SQLMode = runtime.flash.data.SQLMode;
     const SQLMode: typeof runtime.flash.data.SQLMode;
