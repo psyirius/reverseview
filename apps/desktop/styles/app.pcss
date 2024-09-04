@@ -170,22 +170,38 @@ td.navtd {
     /* overflow: hidden; */ /* if you don't want #second to wrap below #first */
 }
 
-#wrapper {
-    margin-left: 300px;
-    padding: 10px;
-    border: 1px;
+#content {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    user-select: none;
+
+    //background: #0b2e13;
 }
+
+#wrapper {
+    margin-left: 22.5rem; /* also hardcoded width in #container */
+    padding: 0.5rem;
+    //border: 1px;
+    //background: #0b2e13;
+}
+
+#container {
+    float: left;
+    width: 22.5rem;
+    margin-left: -22.5rem;
+    /* background-color: #FFA; */
+}
+
 #container2 {
     float: right;
     width: 100%;
     /* background-color: #CCF; */
 }
-#container {
-    float: left;
-    width: 300px;
-    margin-left: -300px;
-    /* background-color: #FFA; */
-}
+
 #cleared {
     clear: both;
 }

@@ -34,12 +34,22 @@ const App = ({dev}: Props) => {
 
             <MenuBar/>
 
-            {/* App::Content */}
-            <div id="wrapper">
-                <LeftTab />
-                <RightTab />
+            {/*<div class="column">*/}
+            {/*    <div class="ui console segment">*/}
+            {/*        <div class="ui top right attached label">*/}
+            {/*            Console*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
-                <div id="cleared"></div>
+            {/* App::Content */}
+            <div id="content">
+                <div id="wrapper">
+                    <LeftTab/>
+                    <RightTab/>
+
+                    {/*<div id="cleared"></div>*/}
+                </div>
             </div>
 
             {/* Dialog box for Version Management */}

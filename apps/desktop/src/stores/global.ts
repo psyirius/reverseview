@@ -18,6 +18,7 @@ export interface NetworkInterfaceInfo {
     mac?: string;
 }
 
+// Right Tab
 export const selectedTab: Writable<number> = writable(0);
 export const selectedBookRef: Writable<string> = writable('');
 export const menuYtLink: Writable<string | null> = writable(null);

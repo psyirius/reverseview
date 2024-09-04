@@ -66,18 +66,12 @@ export default function LeftTab() {
 
         const rti = $RvW.rvwPreferences.get('app.state.rightTabActiveIndex', 0);
         tabview.selectChild(rti);
-
-        function menuBarSync(currentTab: any) {
-            // air.trace('menuBarSync', currentTab.get('index'));
-            selectedTab.set(currentTab.get('index'));
-        }
-
-        menuBarSync(tabview.get('selection'));
+        selectedTab.set(rti);
 
         tabview.after('selectionChange', (e: any) => {
             const currentTab = e.newVal;
 
-            menuBarSync(currentTab);
+            selectedTab.set(currentTab.get('index'));
 
             // TODO: figure out store base tab sync
             switch (currentTab.get('index')) {

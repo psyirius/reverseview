@@ -4,6 +4,7 @@ import {call_nextSlide, call_prevSlide, closePresentWindowMain} from "@/p_window
 import {nav_addVerse2Schedule} from "@/navigation";
 import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
+import {useEffect} from "@lib/zrx/hooks";
 
 const handlers = {
     present: () => {
@@ -58,11 +59,26 @@ const menuItems = [
     { tooltip: 'Next Slide',         icon: '/icons/images/32/right.png',   onClick: handlers.next },
 ]
 
+const notificationMessages = [];
+
 export default function MenuBar() {
     const activeTabIndex = useStoreState(selectedTab);
     const activeBookRef = useStoreState(selectedBookRef);
     const ytLink = useStoreState(menuYtLink);
     const notification = useStoreState(navNotifyMessage);
+
+    useEffect(() => {
+        if (!!notification) {
+            notificationMessages.forEach(e => clearTimeout(e));
+            notificationMessages.length = 0;
+
+            const t = setTimeout(() => {
+                navNotifyMessage.set(null);
+            }, 3000);
+
+            notificationMessages.push(t);
+        }
+    }, [notification]);
 
     return (
         <div style="width: 100%">
@@ -122,7 +138,10 @@ export default function MenuBar() {
                 </div>}
 
                 {/* Notification Message */}
-                {notification && <div className="item">{notification}</div>}
+                {notification && <a class="ui label basic item">
+                    {notification}&nbsp;&nbsp;&nbsp;
+                    <i class="icon times circle" onClick={() => navNotifyMessage.set(null)}></i>
+                </a>}
             </div>
         </div>
     );

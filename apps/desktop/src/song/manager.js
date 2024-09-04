@@ -730,7 +730,7 @@ export class SongManager {
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.execute();
             function aO(aR) {
-                __debug("Succesfuly got all data from Song DB");
+                __debug("Successfully got all data from Song DB");
                 sng = aP.getResult();
                 a();
                 $RvW.scheduleObj.init();

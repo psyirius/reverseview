@@ -39,9 +39,9 @@ const parsedConfig = ts.parseJsonConfigFileContent(
 const program = ts.createProgram(parsedConfig.fileNames, parsedConfig.options);
 const emitResult = program.emit();
 
-program.getSourceFiles().forEach(sourceFile => {
-    console.log(sourceFile.fileName);
-});
+// program.getSourceFiles().forEach(sourceFile => {
+//     console.log(sourceFile.fileName);
+// });
 
 // Get any diagnostics (errors/warnings) during the compilation
 const allDiagnostics = ts

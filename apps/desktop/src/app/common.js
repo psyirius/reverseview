@@ -552,13 +552,6 @@ export function roundSearchBox(a) {
 
 export function showNotification(a) {
     navNotifyMessage.set(a);
-    clearNotification();
-}
-
-function clearNotification() {
-    setTimeout(function () {
-        navNotifyMessage.set(null);
-    }, 3000);
 }
 
 function getDate() {

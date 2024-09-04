@@ -169,13 +169,17 @@ const settings = `
                                 <input type="checkbox" id="mainConfigEnable" Checked> Enable Main Presentation<br>
                                 <b>Main Presentation Screen</b><br>
                                 <select id="selectScreenID" class="selectboxStyle"></select>
-                <button id="refresh-screens-main">Refresh</button>
+                                <button id="refresh-screens-main" class="ui icon button mini">
+<!--                                    <i class="sync icon"></i>-->Refresh
+                                </button>
                         </div>
                         <div class="four wide column">
                                 <input type="checkbox" id="stageConfigEnable"> Enable Stage Presentation<br>
                                 <b>Stage Presentation Screen</b><br>
                                 <select id="selectStageScreenID" class="selectboxStyle"></select>
-                <button id="refresh-screens-stage">Refresh</button>
+                                <button id="refresh-screens-stage" class="ui icon button mini">
+<!--                                    <i class="sync icon"></i>-->Refresh
+                                </button>
                         </div>
                 </div>
                 <br>
@@ -224,7 +228,7 @@ const settings = `
                                         <input type="checkbox" id="presentConfigEnableShadow"> Enable Outline<br><br><br>
 
                                         <input type="checkbox" id="presentConfigShowDateTime"> Show Date and Time<br>
-                                        <input type="checkbox" id="presentConfigShowVVLogo"> Show VerseVIEW Logo<br>
+                                        <input type="checkbox" id="presentConfigShowVVLogo"> Show ReVerseVIEW Logo<br>
                                         <input type="checkbox" id="presentConfigShowCustomLogo"> Show Custom Logo<br>
                                         <input name="customLogoText1" type="text" id="customLogoText1" size="40"><br>
                                         <input name="customLogoText2" type="text" id="customLogoText2" size="40"><br><br>

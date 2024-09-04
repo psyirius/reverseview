@@ -462,16 +462,19 @@ export default function RemoteSetupDialog({}: Props) {
                         </select>
 
                         <button
+                            class="ui icon button mini"
                             onClick={loadNetworkInterfaces}
                             disabled={enabled}
-                        >Refresh</button>
+                        >
+                            <i class="sync icon"></i> Refresh
+                        </button>
                     </div>
 
                     <div class="form-group row field">
                         <label>Port</label>
 
                         <div class="ui grid">
-                            <div
+                        <div
                                 class="six wide column"
                                 data-tooltip="Select Port (49152 to 65535)"
                                 data-position="right center"
