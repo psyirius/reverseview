@@ -101,52 +101,49 @@ export default function MenuBar() {
                 ))}
 
                 {/* Verse Menu */}
-                {(activeTabIndex == 0) && <div className="menu">
+                {(activeTabIndex == 0) && <>
                     <div className="item">
                         {activeBookRef}
                     </div>
 
-                    <div className="item">
-                        <a
-                            className="item"
-                            data-tooltip="Add to Schedule"
-                            data-position="left center"
-                            onClick={handlers.addVerseToSchedule}
-                        >
-                            <i className="add icon"></i>
-                        </a>
+                    <div
+                        className="item"
+                        data-tooltip="Add to Schedule"
+                        data-position="left center"
+                        onClick={handlers.addVerseToSchedule}
+                    >
+                        <i className="add icon"></i>
                     </div>
-                </div>}
+                </>}
 
                 {/* Lyric Menu */}
-                {(activeTabIndex == 1) && <div className="menu">
-                    <div className="item">
-                        <div
-                            className={"item" + ((ytLink == null) ? "" : " disabled")}
-                            disabled={(ytLink == null)}
-                            data-tooltip="YouTube"
-                            data-position="left center"
-                            onClick={() => handlers.gotoLink(ytLink)}
-                        >
-                            <i className="video icon"></i>
-                        </div>
-
-                        <div
-                            className="item"
-                            data-tooltip="Add to Schedule"
-                            data-position="left center"
-                            onClick={handlers.addSongToSchedule}
-                        >
-                            <i className="add icon"></i>
-                        </div>
+                {(activeTabIndex == 1) && <>
+                    <div
+                        className={"item" + ((ytLink == null) ? "" : " disabled")}
+                        disabled={(ytLink == null)}
+                        data-tooltip="YouTube"
+                        data-position="left center"
+                        onClick={() => handlers.gotoLink(ytLink)}
+                    >
+                        <i className="video icon"></i>
                     </div>
-                </div>}
+
+                    <div
+                        className="item"
+                        data-tooltip="Add to Schedule"
+                        data-position="left center"
+                        onClick={handlers.addSongToSchedule}
+                    >
+                        <i className="add icon"></i>
+                    </div>
+                </>}
 
                 {/* Notification Message */}
-                {notification && <a class="ui label basic item">
-                    {notification}&nbsp;&nbsp;&nbsp;
-                    <i class="icon times circle" onClick={() => navNotifyMessage.set(null)}></i>
-                </a>}
+                {notification && <div className="item">
+                    <a class="ui label basic" onClick={() => navNotifyMessage.set(null)}>
+                        {notification}
+                    </a>
+                </div>}
             </div>
         </div>
     );
