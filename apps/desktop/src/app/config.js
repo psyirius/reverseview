@@ -1,4 +1,4 @@
-import {BibleUpdater} from "@/setup";
+import {BibleUpdater} from "@/bible/setup";
 import {fillTagList, getTags2Array} from "@/tags";
 import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";

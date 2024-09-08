@@ -1,7 +1,7 @@
 import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
 import {Prompt} from "@app/prompt";
-import {processNavBibleRefFind} from "@/navigation";
+import {processNavBibleRefFind} from "@/bible/navigation";
 import {clearSelectList, ImageIcon} from "@app/common";
 import {$RvW} from "@/rvw";
 

@@ -13,24 +13,92 @@
   <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
 
   <!-- dojo toolkit v1.17.3 -->
-  <script type="text/javascript" data-dojo-config="async: true" src="lib/dojo/dojo.js"></script>
-  <!--    <script type="text/javascript" src="lib/dijit/dijit.js"></script>-->
+  <script type="text/javascript" src="lib/dojo/dojo.js"></script>
+<!--  <script type="text/javascript" src="lib/dijit/dijit.js"></script>-->
   <link rel="stylesheet" type="text/css" href="lib/dijit/themes/claro/claro.css"/>
 
   <!-- app entrypoint (loaded with dojo) -->
-  <script type="text/javascript" src="js/app/boot.sb.js"></script>
+<!--  <script type="text/javascript" src="js/app/boot.sb.js"></script>-->
 
   <script type="text/javascript" charset="utf-8">
     // This is the function that the parent will call to send messages to the child
     window.childSandboxBridge.sayHello = function (message) {
       // This is the function that the child will call to send messages to the parent
       window.parentSandboxBridge.sayHello("through the looking glass: " + message);
+      window.parentSandboxBridge.sayHello("runtime: " + typeof window.runtime);
+      window.parentSandboxBridge.sayHello("htmlLoader: " + typeof window.htmlLoader);
+      window.parentSandboxBridge.sayHello("navigator: " + typeof window.navigator);
     }
   </script>
+
+  <style type="text/css">
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .pageOverlay {
+      top: 0;
+      left: 0;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 1001;
+      display: block;
+    }
+
+    #loadingOverlay {
+      background:  #fff url('/lib/dijit/themes/claro/images/progressBarAnim.gif') no-repeat 10px 23px;
+    }
+
+    .loadingMessage {
+      padding: 25px 40px;
+      color: #999;
+    }
+  </style>
 </head>
 
 <body class="claro">
 
+<div id="loadingOverlay" class="loadingOverlay pageOverlay">
+  <div class="loadingMessage">Loading...</div>
+</div>
+
+<h1>Demo: Loading Overlay</h1>
+<p>The rest of your page...</p>
+
+<script type="text/javascript" charset="utf-8">
+  require({
+    has: {
+      "dojo-firebug": true,
+      'csp-restrictions': true,
+    },
+    isDebug: true,
+    debugAtAllCosts: true,
+    parseOnLoad: true,
+    async: true,
+    locale: "en-us",
+    baseUrl: "/js/",
+    packages: [
+      { name: "dojo", location: "../lib/dojo" },
+      { name: "dijit", location: "../lib/dijit" },
+      { name: "dojox", location: "../lib/dojox" },
+    ],
+    paths: {
+      // jquery: "../node_modules/jquery/dist/jquery.slim.min",
+      jquery: "lib/jquery/jquery-3.7.1.min",
+    },
+    aliases: {},
+    map: {},
+  }, [
+    "dojo/_base/declare", "dojo/dom", "dojo/dom-style",
+    "dojo/domReady!"
+  ], function(declare, dom, domStyle) {
+    alert("Hello, world!");
+  });
+</script>
 </body>
 
 </html>

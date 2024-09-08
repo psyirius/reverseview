@@ -3,6 +3,7 @@ import {setupVerseEditObject} from "@/bible/edit";
 import {manageVersion, showBrowse} from "@/bible/version";
 import {promoteVV} from "@app/common";
 import {$RvW} from "@/rvw";
+import {showRemotePanel} from "@stores/global";
 
 const MAIN_MENU = [
     {
@@ -125,7 +126,7 @@ function show_editVerse_UI() {
     $RvW.editVerse_UI_Obj.show();
 }
 function remoteVV_UI() {
-    $RvW.remoteVV_UI_Obj.show();
+    showRemotePanel.set(true);
 }
 function show_updateVV_UI() {
     $RvW.newUpdateObj.checkForUpdates();

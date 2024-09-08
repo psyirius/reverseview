@@ -138,6 +138,22 @@
 }
 
 .xui {
+    .box {
+        display: -webkit-box;
+
+        &.reverse {
+            -webkit-box-direction: reverse;
+        }
+
+        &.normal {
+            -webkit-box-direction: normal;
+        }
+    }
+
+    .inline-box {
+        display: -webkit-inline-box;
+    }
+
     &.dialog {
         position: fixed;
         z-index: 1000;

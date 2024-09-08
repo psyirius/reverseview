@@ -23,21 +23,18 @@ var verFile = null;
 var vdebug = false;
 
 export function loadBibleVersion() {
-    var c;
     const b = "xml/version.xml";
-    let file = air.File.applicationStorageDirectory;
-    file = file.resolvePath(b);
-    let a;
-    c = new XMLHttpRequest();
+    let file = air.File.applicationStorageDirectory.resolvePath(b);
+    let c = new XMLHttpRequest();
     c.onreadystatechange = function () {
         if (c.readyState === 4) {
-            a = c.responseXML.documentElement;
+            let a = c.responseXML.documentElement;
             var f = a.getElementsByTagName("version").length;
             $RvW.bibleVersionArray[0][0] = "None";
             for (let i = 0; i < f; i++) {
                 var d = i + 1;
                 var e = a.getElementsByTagName("version")[i];
-                $RvW.bibleVersionArray[d] = new Array();
+                $RvW.bibleVersionArray[d] = [];
                 $RvW.bibleVersionArray[d][0] = e.getElementsByTagName("name")[0].textContent;
                 $RvW.bibleVersionArray[d][1] = e.getElementsByTagName("file")[0].textContent;
                 $RvW.bibleVersionArray[d][2] = e.getElementsByTagName("font")[0].textContent;
@@ -58,11 +55,11 @@ export function loadBibleVersion() {
     c.send(null);
 }
 
-export function versionFill(b) {
+export function versionFill(setup) {
     clearSelectList("version1Menu");
     clearSelectList("version2Menu");
-    const a = $RvW.bibleVersionArray.length;
-    for (let i = 1; i < a; i++) {
+
+    for (let i = 1; i < $RvW.bibleVersionArray.length; i++) {
         document.getElementById("version1Menu").options[i] = new Option(
             $RvW.bibleVersionArray[i][0],
             i
@@ -72,19 +69,19 @@ export function versionFill(b) {
             i
         );
     }
-    document.getElementById("version1Menu").selectedIndex =
-        $RvW.vvConfigObj.get_version1();
-    document.getElementById("version2Menu").selectedIndex =
-        $RvW.vvConfigObj.get_version2();
+
+    document.getElementById("version1Menu").selectedIndex = $RvW.vvConfigObj.get_version1();
+    document.getElementById("version2Menu").selectedIndex = $RvW.vvConfigObj.get_version2();
+
     document.getElementById("version1Text").innerHTML =
         "Primary: " + $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
     document.getElementById("version2Text").innerHTML =
         "Secondary: " + $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
-    document.getElementById("booknameStyle").selectedIndex =
-        $RvW.vvConfigObj.get_booknamestyle() - 1;
-    document.getElementById("englishList").checked =
-        $RvW.vvConfigObj.get_listinenglish();
-    if (b) {
+
+    document.getElementById("booknameStyle").selectedIndex = $RvW.vvConfigObj.get_booknamestyle() - 1;
+    document.getElementById("englishList").checked = $RvW.vvConfigObj.get_listinenglish();
+
+    if (setup) {
         document
             .getElementById("versionSave")
             .addEventListener("click", saveVersionSelection, false);
@@ -166,7 +163,7 @@ function fillVersionPanel() {
         .addEventListener("click", saveVersion, false);
     document
         .getElementById("closeVersionButton")
-        .addEventListener("click", panelClose, false);
+        .addEventListener("click", () => versionManageDialog.hide(), false);
     document
         .getElementById("addFontVersionButton")
         .addEventListener("click", addFontVersionBible, false);
@@ -488,48 +485,35 @@ function continueLoadingDB() {
     $RvW.bibleVersionArray[b][5] = "";
     $RvW.bibleVersionArray[b][6] = new_sel_font;
     $RvW.bibleVersionArray[b][7] = new_booknames;
-    var d = generateVersionXML();
-    var c = "./xml/version.xml";
-    save2file(d, c, false);
+    save2file(generateVersionXML(), "./xml/version.xml", false);
     loadVersionList();
     versionFill(false);
 }
 
 function generateVersionXML() {
-    var a = "";
-    var b = $RvW.bibleVersionArray.length;
-    a = a + '<?xml version="1.0" encoding="UTF-8"?>\n';
-    a = a + "<bibleversion>\n";
-    for (let i = 1; i < b; i++) {
-        a = a + "  <version>\n";
-        a = a + "    <name>" + $RvW.bibleVersionArray[i][0] + "</name>\n";
-        a = a + "    <file>" + $RvW.bibleVersionArray[i][1] + "</file>\n";
-        a = a + "    <font>" + $RvW.bibleVersionArray[i][2] + "</font>\n";
-        a = a + "    <copyright>" + $RvW.bibleVersionArray[i][3] + "</copyright>\n";
-        a =
-            a +
-            "    <fontsizefactor>" +
-            $RvW.bibleVersionArray[i][4] +
-            "</fontsizefactor>\n";
-        a = a + "    <searchfile>" + $RvW.bibleVersionArray[i][5] + "</searchfile>\n";
-        a =
-            a + "    <selectedfont>" + $RvW.bibleVersionArray[i][6] + "</selectedfont>\n";
-        a = a + "    <booknames>" + $RvW.bibleVersionArray[i][7] + "</booknames>\n";
-        a = a + "  </version>\n";
+    let a = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    a += "<bibleversion>\n";
+    for (let i = 1; i < $RvW.bibleVersionArray.length; i++) {
+        a += "  <version>\n";
+        a += "    <name>" + $RvW.bibleVersionArray[i][0] + "</name>\n";
+        a += "    <file>" + $RvW.bibleVersionArray[i][1] + "</file>\n";
+        a += "    <font>" + $RvW.bibleVersionArray[i][2] + "</font>\n";
+        a += "    <copyright>" + $RvW.bibleVersionArray[i][3] + "</copyright>\n";
+        a += "    <fontsizefactor>" + $RvW.bibleVersionArray[i][4] + "</fontsizefactor>\n";
+        a += "    <searchfile>" + $RvW.bibleVersionArray[i][5] + "</searchfile>\n";
+        a += "    <selectedfont>" + $RvW.bibleVersionArray[i][6] + "</selectedfont>\n";
+        a += "    <booknames>" + $RvW.bibleVersionArray[i][7] + "</booknames>\n";
+        a += "  </version>\n";
     }
-    a = a + "</bibleversion>\n";
+    a += "</bibleversion>\n";
     return a;
 }
 
 export function showBrowse() {
-    var a = new window.runtime.Array();
+    const a = new runtime.Array();
     a.push(new air.FileFilter("VerseVIEW Bible Database", "*.db"));
     verFile.browseForOpen("Select VerseVIEW Bible Database", a);
     verFile.addEventListener(air.Event.SELECT, loadBibleDBEvent);
-}
-
-function panelClose() {
-    versionManageDialog.hide();
 }
 
 function addFontVersionBible() {
@@ -544,7 +528,7 @@ function addFontVersionBibleOK() {
     $RvW.bibleVersionArray[g][6] = b;
     var a = $RvW.bibleVersionArray[g][2].split(",");
     var f = $.inArray(b, a);
-    if (f == -1) {
+    if (f === -1) {
         Toast.show("Adding new font: " + b);
         $RvW.bibleVersionArray[g][2] = $RvW.bibleVersionArray[g][2] + "," + b;
     } else {
@@ -640,7 +624,7 @@ export function manageVersion() {
 }
 
 export function processSingleVersion() {
-    var a = document.getElementById("singleVersionBoxID").checked;
+    const a = document.getElementById("singleVersionBoxID").checked;
     $RvW.vvConfigObj.set_singleVersion(a);
     document.getElementById("version2Menu").disabled = !!$RvW.vvConfigObj.get_singleVersion();
     $RvW.vvConfigObj.save();
@@ -657,10 +641,9 @@ export function getVersion1Name() {
     return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
 }
 export function updateVersionXML() {
-    var b = generateVersionXML();
-    var a = "./xml/version.xml";
-    save2file(b, a, false);
+    save2file(generateVersionXML(), "./xml/version.xml", false);
 }
+
 function __versionDbg(a) {
     if (vdebug) {
         air.trace("[Version.js].... " + a);

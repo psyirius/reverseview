@@ -34,9 +34,9 @@
     // alert('BOOTING!');
 
     // execute main
-    require(dojoConfig, ["app", "dojo/domReady!"], (app) => {
-        // alert('BOOTED!');
-
-        app.start();
-    });
+    // require(dojoConfig, ["app", "dojo/domReady!"], (app) => {
+    //     // alert('BOOTED!');
+    //
+    //     app.start();
+    // });
 }());

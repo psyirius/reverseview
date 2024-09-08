@@ -2,7 +2,6 @@ import * as $ from 'jquery';
 
 import { WebEngine } from "@/remote/webengine";
 import { WebServer } from "@/remote/webserver";
-import { RemoteSetupUIPanel } from "@/remote/setup";
 import { WordBrain } from "@/words/wordbrain";
 import { WordLearner } from "@/words/wordlearner";
 import { SongManager } from "@/song/manager";
@@ -17,7 +16,7 @@ import { GraphicsMgr } from "@/graphics/graphics";
 import {setPrimaryBooknames} from "@/bible/booknames";
 import {VerseEditUI} from "@/bible/edit";
 import {BibleRecentRefManager} from "@/bible/recent";
-import {BibleVersionSelector} from "@/setup";
+import {BibleVersionSelector} from "@/bible/setup";
 import {Scheduler} from "@/schedule";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible, verseClass} from "@/bible/manager";
 import {AppUpdater, AppUpdateUi} from "./update";
@@ -35,7 +34,7 @@ import {
     bibleRefFocus,
     processNavBibleRef,
     processNavBibleRefFind
-} from "@/navigation";
+} from "@/bible/navigation";
 import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/versionupdate";
 import {
     call_nextSlide,
@@ -58,7 +57,7 @@ import {
     roundSearchBox,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
-import {selectedBookRef} from "@stores/global";
+import {selectedBookRef, selectedTab} from "@stores/global";
 import {$RvW} from "@/rvw";
 import VIEWS from "@/views";
 
@@ -281,7 +280,6 @@ $RvW.chordsImportExportObj = null;
 $RvW.songNavObj = null;
 $RvW.helpObj = null;
 $RvW.bibleVersionSelObj = null;
-$RvW.remoteVV_UI_Obj = null;
 $RvW.updateVV_UI_Obj = null;
 $RvW.editVerse_UI_Obj = null;
 $RvW.newUpdateObj = null;
@@ -526,6 +524,7 @@ $RvW.putver = function(a) {
     $RvW.updateVerseContainer();
 }
 function verseChange() {
+    selectedTab.set(0); // switch to verses page if not already
     const a = $RvW.getVerseValue();
     $RvW.scroll_to_view = true;
     $RvW.highlightVerse(a);
@@ -734,6 +733,7 @@ function setupConsole() {
 }
 
 function vvinit_continue() {
+    setupUI();
     setupMenu();
     setupConsole();
 
@@ -842,7 +842,6 @@ function setupTheme() {
 
 function setupTabContent() {
     $RvW.bibleVersionSelObj = new BibleVersionSelector();
-    $RvW.remoteVV_UI_Obj = new RemoteSetupUIPanel();
     $RvW.updateVV_UI_Obj = new AppUpdateUi();
 
     // Right Tab
@@ -1481,8 +1480,6 @@ export function start(Y) {
         $RvW.systemFontList = $RvW.systemFontList.concat([
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
-
-        setupUI();
 
         loadBibleInfo('en-US', function (e, data) {
             if (e) {

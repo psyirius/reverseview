@@ -1,5 +1,5 @@
 import {getdata} from "@/bible/manager";
-import {setBookChVer} from "@/navigation";
+import {setBookChVer} from "@/bible/navigation";
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 

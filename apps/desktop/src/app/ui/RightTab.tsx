@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef} from "@lib/zrx/hooks";
+import {useEffect, useId, useRef, useState} from "@lib/zrx/hooks";
 import {$RvW} from "@/rvw";
 import {selectedTab} from "@stores/global";
 
@@ -9,6 +9,7 @@ import RightSearchTab from "@app/ui/tabs/RightSearchTab";
 import RightNotesTab from "@app/ui/tabs/RightNotesTab";
 import RightScheduleTab from "@app/ui/tabs/RightScheduleTab";
 import RightGraphicsTab from "@app/ui/tabs/RightGraphicsTab";
+import {useStoreState} from "@/utils/hooks";
 
 const tabs = [
     {
@@ -54,6 +55,10 @@ export default function LeftTab() {
 
     const container = useRef<HTMLDivElement>(null);
 
+    const [tabView, setTabView] = useState(null);
+
+    const activeTab = useStoreState(selectedTab);
+
     useEffect(() => {
         // @ts-ignore
         const { TabView } = $Y;
@@ -87,7 +92,15 @@ export default function LeftTab() {
         });
 
         $RvW.rightTabView = tabview;
+
+        setTabView(tabview);
     }, []);
+
+    useEffect(() => {
+        if (tabView) {
+            $RvW.rightTabView.selectChild(activeTab);
+        }
+    }, [activeTab]);
 
     return (
         <div id={id} ref={container} class="verseContainer">

@@ -1,3 +1,4 @@
+- [ ] Render Views in a bg worker and stream it to the screen on the Canvas
 - [ ] Compress and embed assets files into a swf and unpack or first run or when needed
 - [ ] Zefania XML : Checkup & Externalize
 - [ ] UI Scaling

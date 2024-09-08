@@ -1,5 +1,5 @@
+import { Component } from '@lib/zrx/preact';
 import {useState, useEffect, useId, useRef} from '@lib/zrx/hooks';
-import { Component, render } from '@lib/zrx/preact';
 import {showRemotePanel, localIpList, remoteEnabled, remoteCustomHostname, remoteListenPort} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";
@@ -100,8 +100,7 @@ interface Props {
 }
 
 export default function RemoteSetupDialog({}: Props) {
-    // const id = useId();
-    const id = 'remote-setup-modal';
+    const id = useId();
 
     if (!remoteCustomHostname.get()) {
         remoteCustomHostname.set($RvW.vvConfigObj.get_myhostname());
@@ -121,6 +120,37 @@ export default function RemoteSetupDialog({}: Props) {
     const [useHostname, setUseHostname] = useState(false);
     const [selectedIp, setSelectedIp] = useState(0);
     const [selectedView, setSelectedView] = useState(1);
+    const [panel, setPanel] = useState(null);
+
+    // Init Dialog Panel
+    useEffect(() => {
+        const panel = new $Y.Panel({
+            headerContent   : 'Remote',
+            srcNode         : '#' + id,
+            width           : '60%',
+            height          : 'auto',
+            zIndex          : 100,
+            centered        : true,
+            modal           : true,
+            render          : true,
+            visible         : false, // make visible explicitly with .show()
+        });
+
+        panel.on('visibleChange', function (e: any) {
+            showRemotePanel.set(e.newVal);
+        });
+
+        setPanel(panel);
+    }, []);
+
+    // panel visibility
+    useEffect(() => {
+        if (open) {
+            panel?.show();
+        } else {
+            panel?.hide();
+        }
+    }, [open]);
 
     // link updater
     useEffect(() => {
@@ -129,6 +159,8 @@ export default function RemoteSetupDialog({}: Props) {
 
     // server control
     useEffect(() => {
+        if (!$RvW.webServerObj) return;
+
         if (enabled) {
             air.trace('Remote Enabled');
 
@@ -293,329 +325,183 @@ export default function RemoteSetupDialog({}: Props) {
         remoteEnabled.update(e => !e);
     }
 
-    // return (
-    //     open && (
-    //         <div id={id} class="xui dialog center">
-    //             <div class="header">
-    //                 <p class="caption dm-sans">Remote</p>
-    //
-    //                 <div class="buttons">
-    //                     <button class="close" onClick={() => showRemotePanel.set(false)}>&times;</button>
-    //                 </div>
-    //             </div>
-    //
-    //             <div class="body dm-sans">
-    //                 <div class="ui form container segment">
-    //                     <div class="ui grid">
-    //                         {/* LEFT COLUMN */}
-    //                         <div class="seven wide column">
-    //                             <div class="form-group row field">
-    //                                 <label>IP Address</label>
-    //
-    //                                 <select name="select" class="form-control">
-    //                                     {ipList.map((text: string, i: number) => (
-    //                                         <option value={i} key={i}>{text}</option>
-    //                                     ))}
-    //                                 </select>
-    //                             </div>
-    //
-    //                             <div class="form-group row field">
-    //                                 <label>Port</label>
-    //
-    //                                 <div class="ui grid">
-    //                                     <div
-    //                                         class="six wide column"
-    //                                         data-tooltip="Select Port (49152 to 65535)"
-    //                                         data-position="right center"
-    //                                         data-variation="basic small"
-    //                                     >
-    //                                         <input
-    //                                             type="number"
-    //                                             class="form-control form-control-sm"
-    //                                             value={port}
-    //                                             min={49152}
-    //                                             max={65535}
-    //                                             placeholder="Enter Port Number"
-    //                                         />
-    //                                     </div>
-    //                                 </div>
-    //
-    //                                 <div class="ten wide column">
-    //                                     <button
-    //                                         class="ui primary button"
-    //                                         data-tooltip="Enable/Disable Remote"
-    //                                         data-position="right center"
-    //                                         data-variation="basic small"
-    //                                         onClick={updateQRCode}
-    //                                     >ENABLE
-    //                                     </button>
-    //                                 </div>
-    //                             </div>
-    //
-    //                             <div class="form-group row field">
-    //                                 <label>Enter Hostname</label>
-    //
-    //                                 <div
-    //                                     class="ui grid"
-    //                                     data-tooltip="Enter hostname of the computer"
-    //                                     data-position="right center"
-    //                                     data-variation="basic small"
-    //                                 >
-    //                                     <div class="six wide column">
-    //                                         <input
-    //                                             type="text"
-    //                                             class="form-control form-control-sm"
-    //                                         />
-    //                                     </div>
-    //
-    //                                     <div class="ten wide column field">
-    //                                         <div class="inline field">
-    //                                             <div class="ui toggle checkbox">
-    //                                                 <input type="checkbox" tabIndex={0}/>
-    //                                                 <label>Use Hostname</label>
-    //                                             </div>
-    //                                         </div>
-    //                                     </div>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //
-    //                         <div class="two wide column"></div>
-    //
-    //                         {/* RIGHT COLUMN */}
-    //                         <div class="seven wide column">
-    //                             <div class="form-group row field">
-    //                                 <span id="remoteVVStatus">Remote Disabled</span>
-    //                             </div>
-    //
-    //                             <div class="form-group row field">
-    //                                 <label>Remote Link</label>
-    //
-    //                                 <div
-    //                                     data-tooltip="Select the remote function for the corresponding QR code and link"
-    //                                     data-position="bottom right"
-    //                                     data-variation="basic small"
-    //                                 >
-    //                                     <select name="select" class="form-control">
-    //                                         {remoteItemList.map((item, i) => (
-    //                                             <option value={item.id} key={i}>{item.label}</option>
-    //                                         ))}
-    //                                     </select>
-    //                                 </div>
-    //                             </div>
-    //
-    //                             <div class="form-group row field">
-    //                                 <div ref={qrRef}></div>
-    //                             </div>
-    //
-    //                             <div class="form-group row field">
-    //                                 <div class="ui grid">
-    //                                     <div class="ten wide column">
-    //                                         <input
-    //                                             type="text"
-    //                                             class="form-control form-control-sm"
-    //                                             value={remoteLink}
-    //                                             placeholder="Link to remote"
-    //                                             readOnly={true}
-    //                                         />
-    //                                     </div>
-    //
-    //                                     <div class="four wide column">
-    //                                         <button
-    //                                             class="ui primary button"
-    //                                             id="configRemoteCopy"
-    //                                             data-tooltip="Copy remote link to clipboard"
-    //                                             data-position="left center"
-    //                                             data-variation="basic small"
-    //                                         >COPY
-    //                                         </button>
-    //                                     </div>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     )
-    // );
-
     return (
-        <div id={id} class="ui form container segment">
-            <div id="generalPanelDIV_delete" class="ui grid remoteVVDIV">
-                {/* LEFT COLUMN */}
-                <div class="seven wide column">
-                    <div class="form-group row field">
-                        <label>Network Interface</label>
+        <div id={id}>
+            <div class="yui3-widget-bd">
+                <div class="ui form container segment">
+                    <div id="generalPanelDIV_delete" class="ui grid remoteVVDIV">
+                        {/* LEFT COLUMN */}
+                        <div class="seven wide column">
+                            <div class="form-group row field">
+                                <label>Network Interface</label>
 
-                        <select
-                            name="select"
-                            class="form-control"
-                            ref={ipSelectRef}
-                            onChange={onNetworkInterfaceChange}
-                            value={selectedIp}
-                            disabled={enabled}
-                        >
-                            {ipList.map(({name, addr}, i: number) => (
-                                <option value={i} key={i}>{addr} ({name})</option>
-                            ))}
-                        </select>
+                                <select
+                                    name="select"
+                                    class="form-control"
+                                    ref={ipSelectRef}
+                                    onChange={onNetworkInterfaceChange}
+                                    value={selectedIp}
+                                    disabled={enabled}
+                                >
+                                    {ipList.map(({name, addr}, i: number) => (
+                                        <option value={i} key={i}>{addr} ({name})</option>
+                                    ))}
+                                </select>
 
-                        <button
-                            class="ui icon button mini"
-                            onClick={loadNetworkInterfaces}
-                            disabled={enabled}
-                        >
-                            <i class="sync icon"></i> Refresh
-                        </button>
-                    </div>
-
-                    <div class="form-group row field">
-                        <label>Port</label>
-
-                        <div class="ui grid">
-                        <div
-                                class="six wide column"
-                                data-tooltip="Select Port (49152 to 65535)"
-                                data-position="right center"
-                                data-variation="basic small"
-                            >
-                                {/* FIXME: Entering non-numeric crashing */}
-                                <input
-                                    type="number"
-                                    class="form-control form-control-sm"
-                                    id="configRemotePort"
-                                    value={port}
-                                    min={49152}
-                                    max={65535}
-                                    onChange={onPortChange}
-                                    placeholder="Enter Port Number"
-                                    disabled={(ipList.length === 0) || enabled}
-                                />
+                                <button
+                                    class="ui icon button mini"
+                                    onClick={loadNetworkInterfaces}
+                                    disabled={enabled}
+                                >
+                                    <i class="sync icon"></i> Refresh
+                                </button>
                             </div>
 
-                            <div class="ten wide column">
-                                <button
-                                    class="ui primary button"
-                                    id="saveRemoteVVSettings"
-                                    data-tooltip="Enable/Disable Remote"
+                            <div class="form-group row field">
+                                <label>Port</label>
+
+                                <div class="ui grid">
+                                    <div
+                                        class="six wide column"
+                                        data-tooltip="Select Port (49152 to 65535)"
+                                        data-position="right center"
+                                        data-variation="basic small"
+                                    >
+                                        {/* FIXME: Entering non-numeric crashing */}
+                                        <input
+                                            type="number"
+                                            class="form-control form-control-sm"
+                                            id="configRemotePort"
+                                            value={port}
+                                            min={49152}
+                                            max={65535}
+                                            onChange={onPortChange}
+                                            placeholder="Enter Port Number"
+                                            disabled={(ipList.length === 0) || enabled}
+                                        />
+                                    </div>
+
+                                    <div class="ten wide column">
+                                        <button
+                                            class="ui primary button"
+                                            id="saveRemoteVVSettings"
+                                            data-tooltip="Enable/Disable Remote"
+                                            data-position="right center"
+                                            data-variation="basic small"
+                                            onClick={onRemoteEnableToggle}
+                                        >{enabled ? 'Disable' : 'Enable'}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row field" id="remote-custom-hostname">
+                                <label>Enter Hostname</label>
+
+                                <div
+                                    class="ui grid"
+                                    data-tooltip="Enter hostname of the computer"
                                     data-position="right center"
                                     data-variation="basic small"
-                                    onClick={onRemoteEnableToggle}
-                                >{ enabled ? 'Disable' : 'Enable' }</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row field" id="remote-custom-hostname">
-                        <label>Enter Hostname</label>
-
-                        <div
-                            class="ui grid"
-                            data-tooltip="Enter hostname of the computer"
-                            data-position="right center"
-                            data-variation="basic small"
-                        >
-                            <div class="six wide column">
-                                <input
-                                    type="text"
-                                    class="form-control form-control-sm"
-                                    ref={hostnameInputRef}
-                                    value={getHostname()}
-                                    onChange={onHostnameChange}
-                                    disabled={ipList.length === 0}
-                                />
-                            </div>
-
-                            <div class="ten wide column field">
-                                <div class="inline field">
-                                    <div class="ui toggle checkbox">
+                                >
+                                    <div class="six wide column">
                                         <input
-                                            type="checkbox"
-                                            tabIndex={0}
-                                            ref={hostnameToggleRef}
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            ref={hostnameInputRef}
+                                            value={getHostname()}
+                                            onChange={onHostnameChange}
                                             disabled={ipList.length === 0}
-                                            checked={useHostname}
-                                            onChange={onUseHostnameChange}
                                         />
-                                        <label>Use Hostname</label>
+                                    </div>
+
+                                    <div class="ten wide column field">
+                                        <div class="inline field">
+                                            <div class="ui toggle checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    tabIndex={0}
+                                                    ref={hostnameToggleRef}
+                                                    disabled={ipList.length === 0}
+                                                    checked={useHostname}
+                                                    onChange={onUseHostnameChange}
+                                                />
+                                                <label>Use Hostname</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="two wide column"></div>
+                        <div class="two wide column"></div>
 
-                {/* RIGHT COLUMN */}
-                <div class="seven wide column">
-                    {/* Status Text */}
-                    <div class="form-group row field">
-                        <span>{
-                            enabled
-                            ? 'Remote is Enabled'
-                            : 'Remote is Disabled'
-                        }</span>
-                    </div>
-
-                    {enabled && <>
-                        <div class="form-group row field" id="remoteLinkList">
-                            <label>Remote Link</label>
-
-                            <div
-                                data-tooltip="Select the remote function for the corresponding QR code and link"
-                                data-position="bottom right"
-                                data-variation="basic small"
-                            >
-                                <select
-                                    name="select"
-                                    class="form-control"
-                                    id="remoteVVRemoteFunc"
-                                    value={selectedView}
-                                    onChange={onRemoteViewChange}
-                                >
-                                    {remoteItemList.map((item, i) => (
-                                        <option value={item.id} key={i}>{item.label}</option>
-                                    ))}
-                                </select>
+                        {/* RIGHT COLUMN */}
+                        <div class="seven wide column">
+                            {/* Status Text */}
+                            <div class="form-group row field">
+                            <span>{
+                                enabled
+                                    ? 'Remote is Enabled'
+                                    : 'Remote is Disabled'
+                            }</span>
                             </div>
-                        </div>
 
-                        <div class="form-group row field">
-                            <QRCode text={remoteLink} />
-                        </div>
+                            {enabled && <>
+                                <div class="form-group row field" id="remoteLinkList">
+                                    <label>Remote Link</label>
 
-                        <div class="form-group row field">
-                            <div class="ui grid">
-                                <div class="ten wide column">
-                                    <input
-                                        type="text"
-                                        class="form-control form-control-sm"
-                                        id="configRemoteLink"
-                                        value={remoteLink}
-                                        readOnly={true}
-                                        placeholder="Url to access the remote UI or View"
-                                    />
-                                </div>
-                                <div class="four wide column">
-                                    <button
-                                        class="ui primary button"
-                                        onClick={copyRemoteLink}
-                                        data-tooltip="Copy remote link to clipboard"
-                                        data-position="left center"
+                                    <div
+                                        data-tooltip="Select the remote function for the corresponding QR code and link"
+                                        data-position="bottom right"
                                         data-variation="basic small"
-                                    >Copy</button>
+                                    >
+                                        <select
+                                            name="select"
+                                            class="form-control"
+                                            id="remoteVVRemoteFunc"
+                                            value={selectedView}
+                                            onChange={onRemoteViewChange}
+                                        >
+                                            {remoteItemList.map((item, i) => (
+                                                <option value={item.id} key={i}>{item.label}</option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="form-group row field">
+                                    <QRCode text={remoteLink}/>
+                                </div>
+
+                                <div class="form-group row field">
+                                    <div class="ui grid">
+                                        <div class="ten wide column">
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm"
+                                                id="configRemoteLink"
+                                                value={remoteLink}
+                                                readOnly={true}
+                                                placeholder="Url to access the remote UI or View"
+                                            />
+                                        </div>
+                                        <div class="four wide column">
+                                            <button
+                                                class="ui primary button"
+                                                onClick={copyRemoteLink}
+                                                data-tooltip="Copy remote link to clipboard"
+                                                data-position="left center"
+                                                data-variation="basic small"
+                                            >Copy
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>}
                         </div>
-                    </>}
+                    </div>
                 </div>
             </div>
         </div>
     );
-}
-
-export function mount(at: string) {
-    render(<RemoteSetupDialog/>, document.getElementById(at)!);
 }

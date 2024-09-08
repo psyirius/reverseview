@@ -23,6 +23,7 @@
             { name: "@", location: "./" },
             { name: "@app", location: "app" },
             { name: "@lib", location: "lib" },
+            { name: "@core", location: "core" },
             { name: "@stores", location: "stores" },
             { name: "@components", location: "ui/components" },
             // jsx

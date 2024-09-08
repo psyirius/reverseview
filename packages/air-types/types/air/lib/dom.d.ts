@@ -1,1 +1,1 @@
-// extend
+/// <reference no-default-lib="true"/>

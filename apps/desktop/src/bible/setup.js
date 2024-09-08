@@ -1,89 +1,33 @@
 import {loadVersion} from "@/bible/version";
 import {clearSelectList, UnZip} from "@app/common";
-
-const INNER_HTML = `
-<div class="generalPanelDIV">
-    <div class="generalheading2">Bible Version Selection
-    </div>
-    <br>
-
-    <div class="style2">
-        <label>Primary </label>
-        <select name="version1Menu" id="version1Menu" class="selectboxStyle"></select> 
-        <div class="style2" id="version1Text"></div>
-        
-        <br>
-        
-        <label>Secondary </label>
-        <select name="version2Menu" id="version2Menu" class="selectboxStyle"></select>
-          <div class="style2" id="version2Text"></div>
-          
-          <br>
-          
-          <input type="checkbox" id="singleVersionBoxID" value="checkbox" unchecked> Display Only Version 1 <br>
-        <input type="checkbox" id="multipleVerseID" value="checkbox" > Display 2 verse per slide <br>
-
-        <br>
-        Book Name Style <br>
-        <select name="booknameStyle" id="booknameStyle" class="selectboxStyle">
-            <option value="1" selected>English</option>
-            <option value="2">Primary Language</option>
-            <option value="3">Primary Language with English</option>
-            <option value="4">Primary Language with Secondary</option>
-        </select><BR>
-        <input type="checkbox" id="englishList" value="checkbox" unchecked> Book selection in English
-        
-        <br>
-        <br>
-
-        <input type="button" id="versionSave" value=" SAVE ">
-
-                        
-    </div>
-    
-    <br><br>
-    
-    <div class="style2">
-        <input type="checkbox" id="navDualLanguageID" checked>Dual language display for Navigation
-        <br><br>
-        
-          <div class="style2">Navigation Font Size</div>
-          <div id="sliderbg">
-            <div id="sliderthumb"><img src="lib/yui2/slider/assets/thumb-n.gif"></div>
-        </div>
-    </div>
-    <br>
-</div>
-`;
+import {showBibleSelectPanel} from "@stores/global";
+import {mount as mountBibleSelectorDialog} from "@app/ui/BibleSelectorDialog";
 
 export class BibleVersionSelector {
     constructor() {
         this.show = show;
         this.hide = hide;
 
-        let _panel = null;
-        const _body = INNER_HTML;
+        mountBibleSelectorDialog("bible-select-dialog");
 
-        _setupPanel();
+        const _panel = new $Y.Panel({
+            headerContent   : 'Bible Version Selection',
+            srcNode         : '#bible-select-dialog',
+            width           : "300px",
+            height          : 'auto',
+            zIndex          : 100,
+            centered        : true,
+            modal           : true,
+            render          : true,
+            visible         : false, // make visible explicitly with .show()
+        });
 
-        function _setupPanel() {
-            _panel = new YAHOO.widget.Panel("panelObj2", {
-                width: "300px",
-                fixedcenter: true,
-                modal: true,
-                visible: false,
-                constraintoviewport: true,
-            });
-            _panel.render(document.body);
-            _panel.setHeader("Bible Version Selection");
-            _panel.setBody(_body);
-            _panel.hide();
-            _panel.bringToTop();
-        }
+        _panel.on('visibleChange', function (e) {
+            showBibleSelectPanel.set(e.newVal);
+        });
 
         function show() {
             _panel.show();
-            _panel.bringToTop();
         }
 
         function hide() {

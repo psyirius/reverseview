@@ -1,15 +1,14 @@
-import {useState} from "@lib/zrx/hooks";
 import MenuBar from "./MenuBar";
 import LeftTab from "./LeftTab";
 import RightTab from "./RightTab";
+import SandboxFrame from "@app/ui/SandboxFrame";
+import RemoteSetupDialog from "@app/ui/RemoteSetupDialog";
 
 interface Props {
     dev?: boolean;
 }
 
 const App = ({dev}: Props) => {
-    const [show, setShow] = useState(true);
-
     return (
         <>
             {/*{dev && (*/}
@@ -20,17 +19,13 @@ const App = ({dev}: Props) => {
             {/*    </div>*/}
             {/*)}*/}
 
-            {/*<div>*/}
-            {/*    <button*/}
-            {/*        onClick={() => {*/}
-            {/*            setShow(!show);*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        {show ? "Hide" : "Show"}*/}
-            {/*    </button>*/}
-
-            {/*    {show ? <Counter /> : <div>No counter</div>}*/}
-            {/*</div>*/}
+            {/*<SandboxFrame*/}
+            {/*    id="UI"*/}
+            {/*    src="uix.html"*/}
+            {/*    sandboxRoot="http://ui.reverseview.air/"*/}
+            {/*    allowcrossDomainxhr="true"*/}
+            {/*    documentRoot="app:/"*/}
+            {/*></SandboxFrame>*/}
 
             <MenuBar/>
 
@@ -77,10 +72,17 @@ const App = ({dev}: Props) => {
             <div id="toast-container"></div>
 
             {/* ------------------------------------------------ */}
+
             <div id="popovers"></div>
             <div id="tooltips"></div>
             <div id="overlays"></div>
             <div id="modals"></div>
+            <div id="dialogs">
+                <RemoteSetupDialog />
+                <div id="bible-select-dialog"></div>
+            </div>
+
+            {/* ------------------------------------------------ */}
         </>
     );
 };

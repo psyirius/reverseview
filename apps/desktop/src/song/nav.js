@@ -15,7 +15,7 @@ import {Toast} from "@app/toast";
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 import {clearSelectList, ImageIcon, isBlank, roundSearchBox, showNotification} from "@app/common";
 import {$RvW} from "@/rvw";
-import {menuYtLink} from "@stores/global";
+import {menuYtLink, selectedTab} from "@stores/global";
 
 export class SongNav {
     constructor() {
@@ -122,53 +122,40 @@ export class SongNav {
             roundSearchBox(document.getElementById("songnav_editbox"));
         }
         function l() {
-            document
-                .getElementById("songnav_category")
-                .addEventListener("change", R, false);
-            document
-                .getElementById("songnav_tags")
-                .addEventListener("change", ac, false);
+            document.getElementById("songnav_category").addEventListener("change", songnav_category_change, false);
+            document.getElementById("songnav_tags").addEventListener("change", songnav_tags_change, false);
             $("#songnav_filterbox").hide();
-
-            document
-                .getElementById("songnav_searchbutton")
-                .addEventListener("click", e, false);
-            document
-                .getElementById("songnav_searchauthorbutton")
-                .addEventListener("click", aj, false);
-            document
-                .getElementById("songnav_clearbutton")
-                .addEventListener("click", i, false);
-            YAHOO.util.Event.addListener("songnav_editbox", "blur", ah);
-            YAHOO.util.Event.addListener("songnav_editbox", "focus", ad);
+            document.getElementById("songnav_searchbutton").addEventListener("click", songnav_search, false);
+            document.getElementById("songnav_searchauthorbutton").addEventListener("click", songnav_searchauthor, false);
+            document.getElementById("songnav_clearbutton").addEventListener("click", songnav_clear, false);
+            YAHOO.util.Event.addListener("songnav_editbox", "blur", songnav_editbox_onblur);
+            YAHOO.util.Event.addListener("songnav_editbox", "focus", songnav_editbox_focus);
             $("#songnav_editbox").keyup(sn_searchSong);
-            document.getElementById("ly_edit").addEventListener("click", x, false);
-            document
-                .getElementById("ly_add2schedule")
-                .addEventListener("click", F, false);
-            document.getElementById("ly_present").addEventListener("click", r, false);
-            document.getElementById("ly_copy").addEventListener("click", ak, false);
+            document.getElementById("ly_edit").addEventListener("click", ly_edit, false);
+            document.getElementById("ly_add2schedule").addEventListener("click", ly_add2schedule, false);
+            document.getElementById("ly_present").addEventListener("click", ly_present, false);
+            document.getElementById("ly_copy").addEventListener("click", ly_copy, false);
         }
-        function ah() {
+        function songnav_editbox_onblur() {
             W = false;
         }
-        function ad() {
+        function songnav_editbox_focus() {
             W = true;
         }
         function isSongSearchEditActive() {
             return W;
         }
-        function x() {
+        function ly_edit() {
             if ($RvW.songNavObj != null) {
                 $RvW.songNavObj.sn_editSong();
             }
         }
-        function F() {
+        function ly_add2schedule() {
             $RvW.learner.finishLearning();
             $RvW.songNavObj.sn_add2schedule();
             showNotification("Added to schedule");
         }
-        function r() {
+        function ly_present() {
             $RvW.songNavObj.sn_presentSong();
         }
         function setFormats() {
@@ -179,7 +166,7 @@ export class SongNav {
                 }
             }
         }
-        function R() {
+        function songnav_category_change() {
             const am = document.getElementById("songnav_category").selectedIndex;
             const al = document.getElementById("songnav_category").options[am].text;
             __debug("Selected Category Value: " + al);
@@ -188,7 +175,7 @@ export class SongNav {
             ag = false;
             $RvW.songManagerObj.getSongsFromCat(al);
         }
-        function ac() {
+        function songnav_tags_change() {
             const am = $("#songnav_tags option:selected").text();
             let al = "";
             if (searchDelay != null) {
@@ -200,7 +187,7 @@ export class SongNav {
                     al = "%" + am + "%";
                     $RvW.songManagerObj.searchRecords(al, SongSearchType.TAGS);
                 } else {
-                    i();
+                    songnav_clear();
                 }
                 searchDelay = null;
             }, searchDelayTime);
@@ -406,23 +393,23 @@ export class SongNav {
                 searchDelay = null;
             }, searchDelayTime);
         }
-        function e() {
+        function songnav_search() {
             var al = document.getElementById("songnav_editbox").value;
             al = $.trim(al);
             al = "%" + al + "%";
             $RvW.songManagerObj.searchRecords(al, SongSearchType.LYRICS);
         }
-        function aj() {
+        function songnav_searchauthor() {
             var al = document.getElementById("songnav_editbox").value;
             var am = "%" + al + "%";
             $RvW.songManagerObj.searchRecords(am, SongSearchType.AUTHOR);
         }
-        function i() {
+        function songnav_clear() {
             ag = false;
             $RvW.learner.cancelLearning();
             $("#songnav_editbox").val("");
             setTag2All();
-            R();
+            songnav_category_change();
         }
         function J(at) {
             var az = $RvW.vvConfigObj.get_navFontSize() + "px";
@@ -569,7 +556,7 @@ export class SongNav {
             var am = "%" + an + "%";
             $RvW.songManagerObj.searchRecords(am, SongSearchType.TAGS);
         }
-        function ak(am) {
+        function ly_copy(am) {
             var al = document.getElementById(am.target.id).innerHTML;
             var an = "%" + al + "%";
             $RvW.songManagerObj.searchRecords(an, SongSearchType.AUTHOR);
@@ -637,7 +624,7 @@ export class SongNav {
             m = document.getElementById("songnav_filterbox").value;
             m = m.toLowerCase();
             __debug("Filter value changed..." + m);
-            R();
+            songnav_category_change();
         }
         function C(ao, am) {
             var al = m;
@@ -658,6 +645,7 @@ export class SongNav {
             }
         }
         function U() {
+            var ao;
             var au = m_songTitle;
             var av = m_songTitle.length;
             if (au != null) {
@@ -665,7 +653,7 @@ export class SongNav {
                     ao.unsubscribe("rowMouseoverEvent", ao.onEventHighlightRow);
                     ao.unsubscribe("rowMouseoutEvent", ao.onEventUnhighlightRow);
                     ao.unsubscribe("rowClickEvent", ao.onEventSelectRow);
-                    ao.unsubscribe("rowSelectEvent", an);
+                    ao.unsubscribe("rowSelectEvent", _onSelectItemInDataList);
                 }
                 var am = [
                     { key: "ID", hiddden: true },
@@ -687,30 +675,35 @@ export class SongNav {
                     selectionMode: "single",
                     renderLoopSize: 0,
                 };
-                var ao = new YAHOO.widget.DataTable("songnav_songlistnew", am, ar, ap);
+                ao = new YAHOO.widget.DataTable("songnav_songlistnew", am, ar, ap);
                 ao.hideColumn("ID");
                 L = false;
                 ao.subscribe("rowMouseoverEvent", ao.onEventHighlightRow);
                 ao.subscribe("rowMouseoutEvent", ao.onEventUnhighlightRow);
-                ao.subscribe("rowClickEvent", ao.onEventSelectRow);
-                ao.subscribe("rowSelectEvent", an);
-                ao.subscribe("renderEvent", al);
-                at.subscribe("pageChange", aq);
+                ao.subscribe("rowClickEvent", function () {
+                    selectedTab.set(1); // make the lyrics tab active if on another tab
+
+                    ao.onEventSelectRow.apply(ao, arguments);
+                });
+                ao.subscribe("rowSelectEvent", _onSelectItemInDataList);
+                ao.subscribe("renderEvent", onRender);
+                at.subscribe("pageChange", onPageChange);
                 s = false;
-                function aq() {
+                function onPageChange() {
                     L = true;
                 }
-                function al() {
+                function onRender() {
                     if (L) {
                         L = false;
                     }
                     ao.selectRow(ao.getTrEl(0));
                 }
-                function an() {
-                    var aw = ao.getSelectedTrEls()[0];
-                    var record = ao.getRecord(aw);
+                function _onSelectItemInDataList() {
+                    const [aw] = ao.getSelectedTrEls();
+                    const record = ao.getRecord(aw);
+
                     if (record != null) {
-                        if (Q != -1) {
+                        if (Q !== -1) {
                             a = Q;
                             b = n;
                             ab();

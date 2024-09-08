@@ -16,6 +16,7 @@
       "@/*": ["./*"],
       "@lib/*": ["lib/*"],
       "@app/*": ["app/*"],
+      "@core/*": ["core/*"],
       "@stores/*": ["stores/*"],
       "@components/*": ["ui/components/*"],
     },
