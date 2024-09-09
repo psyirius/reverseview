@@ -1112,10 +1112,10 @@ export class SongEdit {
             return ac[1];
         }
         function _is_valid_category(ac) {
-            if (ac !== "_ALL") {
+            if (ac !== "ALL") {
                 return true;
             } else {
-                alert("_ALL is reserved Category");
+                alert("ALL is reserved Category");
                 return false;
             }
         }

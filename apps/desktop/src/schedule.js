@@ -3,106 +3,108 @@ import {SongLyrics} from "@/song/lyrics";
 import {Prompt} from "@app/prompt";
 import {processNavBibleRefFind} from "@/bible/navigation";
 import {clearSelectList, ImageIcon} from "@app/common";
+import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
 export class Scheduler {
     constructor() {
-        this.init = init;
         this.changeFontsizeScheduleTab = changeFontsizeScheduleTab;
+
         this.processAddSong = processAddSong;
         this.processAddVerse = processAddVerse;
         this.getScheduleText = getScheduleText;
         this.getScheduleList = getScheduleList;
+
         this.processRemotePresent = processRemotePresent;
         this.getSongIndexFromSch = getSongIndexFromSch;
+
         this.processUp = processUp;
         this.processDown = processDown;
         this.processDelete = processDelete;
         this.processDeleteAll = processDeleteAll;
 
-        var M;
-        var N = 0;
-        var C = false;
-        var K = "./xml/schedule.db";
-        var R;
-        var E;
-        var Q;
-        var z;
-        var c;
-        var y = null;
-        var t = null;
+        const _is_debug = false;
+
+        let M;
+        let N = 0;
+        let K = "./xml/schedule.db";
+        let _dbConnection = null;
+        let t = null;
+
+        init();
 
         function init() {
-            A("Initializing Schedule");
+            _debug_log("Initializing Schedule");
             M = 0;
+            k();
             v();
             w();
         }
+
         function changeFontsizeScheduleTab() {
-            var X = $RvW.vvConfigObj.get_navFontSize();
+            const X = $RvW.vvConfigObj.get_navFontSize();
             document.getElementById("sch_verseTextID").style.fontSize = X + "px";
         }
+
         function v() {
-            document
-                .getElementById("sch_selectID")
-                .addEventListener("change", p, false);
+            document.getElementById("sch_selectID").addEventListener("change", onSelChange, false);
             document.getElementById("sch_upID").addEventListener("click", processUp, false);
             document.getElementById("sch_downID").addEventListener("click", processDown, false);
             document.getElementById("sch_deleteID").addEventListener("click", processDelete, false);
-            document
-                .getElementById("sch_deleteAllID")
-                .addEventListener("click", processDeleteAll, false);
-            document
-                .getElementById("sch_show_in_lyrics")
-                .addEventListener("click", r, false);
+            document.getElementById("sch_deleteAllID").addEventListener("click", processDeleteAll, false);
+            document.getElementById("sch_show_in_lyrics").addEventListener("click", showInLyrics, false);
         }
+
         function k() {
-            R = new ImageIcon(
+            new ImageIcon(
                 "sch_upID",
                 " Move Schedule Item UP ",
                 "graphics/icon/up.png",
                 "graphics/icon/up.png",
                 ""
             );
-            E = new ImageIcon(
+            new ImageIcon(
                 "sch_downID",
                 " Move Schedule Item DOWN ",
                 "graphics/icon/down.png",
                 "graphics/icon/down.png",
                 ""
             );
-            Q = new ImageIcon(
+            new ImageIcon(
                 "sch_deleteID",
                 " REMOVE Selected Schedule Item ",
                 "graphics/icon/sch_del.png",
                 "graphics/icon/sch_del.png",
                 ""
             );
-            z = new ImageIcon(
+            new ImageIcon(
                 "sch_deleteAllID",
                 " CLEAR Schedule ",
                 "graphics/icon/sch_delall.png",
                 "graphics/icon/sch_delall.png",
                 ""
             );
-            c = new ImageIcon(
-                "sch_presentID",
-                " PRESENT Selected Schedule Item ",
-                "graphics/icon/present_48.png",
-                "graphics/icon/present_48.png",
-                ""
-            );
+            // new ImageIcon(
+            //     "sch_presentID",
+            //     " PRESENT Selected Schedule Item ",
+            //     "graphics/icon/present_48.png",
+            //     "graphics/icon/present_48.png",
+            //     ""
+            // );
         }
+
         function processAddVerse(Z, Y, aa) {
             var X = f();
             H(false, Z, Y, aa, 0, X);
         }
+
         function processAddSong(Y) {
             var X = f();
             if (d(Y)) {
                 H(true, 0, 0, 0, Y, X);
             }
         }
+
         function d(X) {
             var ab = true;
             if (t.data != null) {
@@ -119,10 +121,11 @@ export class Scheduler {
             }
             return ab;
         }
+
         function processUp() {
             var aa = document.getElementById("sch_selectID");
             var Z = aa.selectedIndex;
-            A("Selected Index: " + Z);
+            _debug_log("Selected Index: " + Z);
             if (Z != 0) {
                 var X = D(Z);
                 var ac = L(Z);
@@ -132,14 +135,15 @@ export class Scheduler {
                 G(X, ab);
                 G(Y, ac);
             } else {
-                A("First record...Can not move up.");
+                _debug_log("First record...Can not move up.");
             }
         }
+
         function processDown() {
             var ab = document.getElementById("sch_selectID");
             var Z = ab.selectedIndex;
             var aa = 0;
-            A("Selected Index: " + Z);
+            _debug_log("Selected Index: " + Z);
             if (t.data != null) {
                 aa = t.data.length;
             }
@@ -152,23 +156,27 @@ export class Scheduler {
                 G(X, ac);
                 G(Y, ad);
             } else {
-                A("Last record...Can not move down.");
+                _debug_log("Last record...Can not move down.");
             }
         }
+
         function processDelete() {
-            A("About to delete Selected");
+            _debug_log("About to delete Selected");
             W(getSelectedSchedule());
         }
+
         function processDeleteAll() {
-            A("About to delete ALL Records from Selected DB. New confirm");
+            _debug_log("About to delete ALL Records from Selected DB. New confirm");
             var X = "SCHEDULE";
             var Y = "Are you sure you want to delete ALL schedule entries?";
             Prompt.exec(X, Y, n);
         }
-        function p() {
+
+        function onSelChange() {
             M = document.getElementById("sch_selectID").selectedIndex;
             e();
         }
+
         function x() {
             var Z = document.getElementById("sch_selectID");
             var Y = Z.selectedIndex;
@@ -184,6 +192,7 @@ export class Scheduler {
                 }
             }
         }
+
         function processRemotePresent(Z, Y) {
             if (t.data != null) {
                 var X = t.data[Z];
@@ -197,11 +206,13 @@ export class Scheduler {
                 }
             }
         }
+
         function j() {
             J();
         }
+
         function i() {
-            A("Updating Schedule UI");
+            _debug_log("Updating Schedule UI");
             if (t.data != null) {
                 clearSelectList("sch_selectID");
                 var Y = t.data.length;
@@ -223,8 +234,9 @@ export class Scheduler {
                 );
             }
         }
+
         function V() {
-            A("Updating Schedule UI");
+            _debug_log("Updating Schedule UI");
             if (t.data != null) {
                 clearSelectList("sch_selectID");
                 var Y = t.data.length;
@@ -246,11 +258,13 @@ export class Scheduler {
                 $("#sch_show_in_lyrics").hide();
             }
         }
+
         function e() {
             var X = document.getElementById("sch_selectID");
             X.selectedIndex = M;
             u(M);
         }
+
         function u(ai) {
             $("#sch_show_in_lyrics").show();
             if (t.data != null) {
@@ -367,18 +381,21 @@ export class Scheduler {
                 }
             }
         }
+
         function L(X) {
             if (t.data != null) {
                 var Y = t.data[X];
                 return Y.sch_order;
             }
         }
+
         function D(X) {
             if (t.data != null) {
                 var Y = t.data[X];
                 return Y.schId;
             }
         }
+
         function f() {
             var Y = 0;
             if (t.data != null) {
@@ -391,9 +408,10 @@ export class Scheduler {
                 }
             }
             Y++;
-            A("Next Order Value: " + Y);
+            _debug_log("Next Order Value: " + Y);
             return Y;
         }
+
         function b(ae, X, ad, Z, ac) {
             let Y = null;
             if (ae) {
@@ -407,6 +425,7 @@ export class Scheduler {
             }
             return Y;
         }
+
         function getSelectedSchedule() {
             const Y = document.getElementById("sch_selectID");
             if (Y.selectedIndex === -1) {
@@ -415,6 +434,7 @@ export class Scheduler {
             }
             return Y.options[Y.selectedIndex].value;
         }
+
         function getScheduleText(ab) {
             var Y = "";
             if (t.data != null) {
@@ -437,6 +457,7 @@ export class Scheduler {
             }
             return Y;
         }
+
         function getScheduleList(type) {
             let res = [];
 
@@ -481,23 +502,26 @@ export class Scheduler {
 
             return res;
         }
+
         function getSongIndexFromSch(Y) {
             if (t.data != null) {
                 var X = t.data[Y];
                 return X.songID;
             }
         }
-        function A(X) {
-            if (C) {
+
+        function _debug_log(X) {
+            if (_is_debug) {
                 air.trace("[SCHEDULE]..." + X);
             }
         }
+
         function J() {
             if (t.data != null) {
                 var Y = t.data.length;
                 for (var Z = 0; Z < Y; Z++) {
                     var X = t.data[Z];
-                    A(
+                    _debug_log(
                         X.schId +
                         " | " +
                         X.isSong +
@@ -514,38 +538,40 @@ export class Scheduler {
                     );
                 }
             } else {
-                A("No verse Scheduled");
+                _debug_log("No verse Scheduled");
             }
         }
+
         function O() {
-            y.close();
+            _dbConnection.close();
         }
+
         function w() {
-            y = new air.SQLConnection();
-            y.addEventListener(air.SQLEvent.OPEN, Y);
-            y.addEventListener(air.SQLErrorEvent.ERROR, X);
+            _dbConnection = new air.SQLConnection();
+            _dbConnection.addEventListener(air.SQLEvent.OPEN, Y);
+            _dbConnection.addEventListener(air.SQLErrorEvent.ERROR, X);
             var Z = air.File.applicationStorageDirectory.resolvePath(K);
-            y.openAsync(Z);
+            _dbConnection.openAsync(Z);
             function Y(aa) {
-                A("DB was created successfully");
+                _debug_log("DB was created successfully");
                 h();
             }
             function X(aa) {
-                A("Error message:", aa.error.message);
-                A("Details (create schedule DB):", aa.error.details);
+                _debug_log("Error message:", aa.error.message);
+                _debug_log("Details (create schedule DB):", aa.error.details);
             }
         }
+
         function h() {
-            A("Creating schedule table...");
+            _debug_log("Creating schedule table...");
             var aa = new air.SQLStatement();
-            aa.sqlConnection = y;
-            var Z = "CREATE TABLE IF NOT EXISTS sch (schId INTEGER PRIMARY KEY AUTOINCREMENT, isSong BOOLEAN, book INTEGER, ch INTEGER, ver INTEGER, songID INTEGER, sch_order INTEGER )";
-            aa.text = Z;
+            aa.sqlConnection = _dbConnection;
+            aa.text = "CREATE TABLE IF NOT EXISTS sch (schId INTEGER PRIMARY KEY AUTOINCREMENT, isSong BOOLEAN, book INTEGER, ch INTEGER, ver INTEGER, songID INTEGER, sch_order INTEGER )";
             aa.addEventListener(air.SQLEvent.RESULT, Y);
             aa.addEventListener(air.SQLErrorEvent.ERROR, X);
             aa.execute();
             function Y(ab) {
-                A("Schedule table created.");
+                _debug_log("Schedule table created.");
                 aa.removeEventListener(air.SQLEvent.RESULT, Y);
                 aa.removeEventListener(air.SQLErrorEvent.ERROR, X);
                 a();
@@ -553,16 +579,17 @@ export class Scheduler {
             function X(ab) {
                 aa.removeEventListener(air.SQLEvent.RESULT, Y);
                 aa.removeEventListener(air.SQLErrorEvent.ERROR, X);
-                A("Error message:" + ab.error.message);
-                A("Details in creating schedule table :" + ab.error.details);
+                _debug_log("Error message:" + ab.error.message);
+                _debug_log("Details in creating schedule table :" + ab.error.details);
             }
         }
+
         function H(Z, ad, ac, ae, Y, aa) {
-            A(
+            _debug_log(
                 "Adding Record " + ad + " " + ac + " " + ae + " " + aa + " " + Z + " " + Y
             );
             var ab = new air.SQLStatement();
-            ab.sqlConnection = y;
+            ab.sqlConnection = _dbConnection;
             ab.text = "INSERT INTO sch (isSong, book, ch, ver, songID, sch_order) VALUES (:is, :b, :c, :v, :sid, :o);";
             ab.addEventListener(air.SQLEvent.RESULT, af);
             ab.addEventListener(air.SQLErrorEvent.ERROR, X);
@@ -576,7 +603,7 @@ export class Scheduler {
             function af(ah) {
                 ab.removeEventListener(air.SQLEvent.RESULT, af);
                 ab.removeEventListener(air.SQLErrorEvent.ERROR, X);
-                A("Inserted in to schedule DB sucessfully...");
+                _debug_log("Inserted in to schedule DB sucessfully...");
                 a();
             }
             function X(ah) {
@@ -588,10 +615,11 @@ export class Scheduler {
                 air.trace("event.error.message:" + ah.error.message);
             }
         }
+
         function W(Z) {
-            A("Deleting schedule record with keyValue as primary key...");
+            _debug_log("Deleting schedule record with keyValue as primary key...");
             var Y = new air.SQLStatement();
-            Y.sqlConnection = y;
+            Y.sqlConnection = _dbConnection;
             Y.text = "DELETE FROM sch WHERE schId = :id;";
             Y.addEventListener(air.SQLEvent.RESULT, X);
             Y.addEventListener(air.SQLErrorEvent.ERROR, aa);
@@ -611,15 +639,16 @@ export class Scheduler {
             function aa(ac) {
                 Y.removeEventListener(air.SQLEvent.RESULT, X);
                 Y.removeEventListener(air.SQLErrorEvent.ERROR, aa);
-                A("Error deleting record from schedule DB");
-                A("event.error.code:" + ac.error.code);
-                A("event.error.message:" + ac.error.message);
+                _debug_log("Error deleting record from schedule DB");
+                _debug_log("event.error.code:" + ac.error.code);
+                _debug_log("event.error.message:" + ac.error.message);
             }
         }
+
         function n() {
-            A("Deleting ALL schedule record with keyValue as primary key...");
+            _debug_log("Deleting ALL schedule record with keyValue as primary key...");
             var X = new air.SQLStatement();
-            X.sqlConnection = y;
+            X.sqlConnection = _dbConnection;
             X.text = "DELETE FROM sch;";
             X.addEventListener(air.SQLEvent.RESULT, aa);
             X.addEventListener(air.SQLErrorEvent.ERROR, Y);
@@ -633,15 +662,16 @@ export class Scheduler {
             function Y(ab) {
                 X.removeEventListener(air.SQLEvent.RESULT, aa);
                 X.removeEventListener(air.SQLErrorEvent.ERROR, Y);
-                A("Error deleting record from schedule DB");
-                A("event.error.code:" + ab.error.code);
-                A("event.error.message:" + ab.error.message);
+                _debug_log("Error deleting record from schedule DB");
+                _debug_log("event.error.code:" + ab.error.code);
+                _debug_log("event.error.message:" + ab.error.message);
             }
         }
+
         function G(Y, aa) {
-            A("Swapping Order Value for Key " + Y + " to " + aa);
+            _debug_log("Swapping Order Value for Key " + Y + " to " + aa);
             var Z = new air.SQLStatement();
-            Z.sqlConnection = y;
+            Z.sqlConnection = _dbConnection;
             Z.text = "UPDATE sch SET sch_order = :val WHERE schId = :id;";
             Z.addEventListener(air.SQLEvent.RESULT, ab);
             Z.addEventListener(air.SQLErrorEvent.ERROR, X);
@@ -651,21 +681,22 @@ export class Scheduler {
             function ab(ad) {
                 Z.removeEventListener(air.SQLEvent.RESULT, ab);
                 Z.removeEventListener(air.SQLErrorEvent.ERROR, X);
-                A("Changed the order value");
+                _debug_log("Changed the order value");
                 a();
             }
             function X(ad) {
                 Z.removeEventListener(air.SQLEvent.RESULT, ab);
                 Z.removeEventListener(air.SQLErrorEvent.ERROR, X);
-                A("Error updating the order value");
-                A("event.error.code:" + ad.error.code);
-                A("event.error.message:" + ad.error.message);
+                _debug_log("Error updating the order value");
+                _debug_log("event.error.code:" + ad.error.code);
+                _debug_log("event.error.message:" + ad.error.message);
             }
         }
+
         function a() {
-            A("Getting ALL Data from Schedule DB");
+            _debug_log("Getting ALL Data from Schedule DB");
             var Z = new air.SQLStatement();
-            Z.sqlConnection = y;
+            Z.sqlConnection = _dbConnection;
             Z.text = "SELECT * FROM sch ORDER BY sch_order ASC";
             Z.addEventListener(air.SQLEvent.RESULT, X);
             Z.addEventListener(air.SQLErrorEvent.ERROR, Y);
@@ -673,16 +704,17 @@ export class Scheduler {
             function X(ab) {
                 Z.removeEventListener(air.SQLEvent.RESULT, X);
                 Z.removeEventListener(air.SQLErrorEvent.ERROR, Y);
-                A("Succesfuly got all data from schedule DB");
+                _debug_log("Succesfuly got all data from schedule DB");
                 t = Z.getResult();
                 V();
             }
             function Y(ab) {
                 Z.removeEventListener(air.SQLEvent.RESULT, X);
                 Z.removeEventListener(air.SQLErrorEvent.ERROR, Y);
-                A("Error getting all records");
+                _debug_log("Error getting all records");
             }
         }
+
         function F(af, Z, Y) {
             var ae = "";
             var X = af.split(")");
@@ -691,15 +723,16 @@ export class Scheduler {
                 var ad = X[0].split("(");
                 var ab = ad[0];
                 var aa = ad[1];
-                ae += '<span style="font-family:' + Z + ';">' + ab + "</span>";
-                ae += '<span style="font-family:' + Y + ';"> (' + aa + ") </span>";
-                ae += '<span style="font-family:' + Z + ';">' + ac + "</span>";
+                ae += `<span style="font-family:${Z};">${ab}</span>`;
+                ae += `<span style="font-family:${Y};"> (${aa}) </span>`;
+                ae += `<span style="font-family:${Z};">${ac}</span>`;
             } else {
-                ae += '<span style="font-family:' + Z + ';">' + af + "</span>";
+                ae += `<span style="font-family:${Z};">${af}</span>`;
             }
             return ae;
         }
-        function r() {
+
+        function showInLyrics() {
             var Z = document.getElementById("sch_selectID");
             var Y = Z.selectedIndex;
             if (t.data != null) {

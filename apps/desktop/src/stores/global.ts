@@ -35,6 +35,7 @@ export const selectedBookRef: Writable<string> = writable('');
 export const menuYtLink: Writable<string | null> = writable(null);
 export const navNotifyMessage: Writable<string | null> = writable(null);
 export const showRemotePanel: Writable<boolean> = writable(false);
+export const showBibleNotesEditPanel: Writable<boolean> = writable(false);
 export const showBibleSelectPanel: Writable<boolean> = writable(false);
 export const remoteEnabled: Writable<boolean> = writable(false);
 export const localIpList: Writable<NetworkInterfaceInfo[]> = writable([]);

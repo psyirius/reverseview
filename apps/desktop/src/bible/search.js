@@ -1,8 +1,8 @@
 import { PostIt } from "@/notes/notes";
 import {getVersion1Font} from "@/bible/version";
 import {getVerseFromArray, verseClass} from "@/bible/manager";
-import {Toast} from "@app/toast";
 import {clearSelectList, filesave2vvexport} from "@app/common";
+import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
 export class BibleSearch {
@@ -237,8 +237,7 @@ export class BibleSearch {
                     var aj = "searchVC1_" + i;
                     var ae = "searchVC2_" + i;
                     var an = I.data[i];
-                    am[i] = new PostIt();
-                    am[i].init(af, an.bookNum, an.chNum, an.verseNum);
+                    am[i] = new PostIt(af, an.bookNum, an.chNum, an.verseNum);
                     var Z = u[i];
                     var X = s[i];
                     Z = g(Z);

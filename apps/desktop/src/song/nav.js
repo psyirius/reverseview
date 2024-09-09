@@ -13,7 +13,7 @@ import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
-import {clearSelectList, ImageIcon, isBlank, roundSearchBox, showNotification} from "@app/common";
+import {clearSelectList, ImageIcon, roundSearchBox, showNotification} from "@app/common";
 import {$RvW} from "@/rvw";
 import {menuYtLink, selectedTab} from "@stores/global";
 
@@ -94,6 +94,34 @@ export class SongNav {
             fillTagList();
             s = true;
         }
+
+        function hideLyricsElements() {
+            $("#ly_name2").hide();
+            $("#ly_edit").hide();
+            $("#ly_add2schedule").hide();
+            $("#ly_present").hide();
+            $("#ly_slide").hide();
+            $("#ly_tags").hide();
+            $("#ly_cat").hide();
+            $("#ly_key").hide();
+            $("#ly_copy").hide();
+            $("#ly_notes").hide();
+        }
+
+        function showLyricsElements() {
+            $("#ly_name").show();
+            $("#ly_name2").show();
+            $("#ly_edit").show();
+            $("#ly_add2schedule").show();
+            $("#ly_present").show();
+            $("#ly_slide").show();
+            $("#ly_tags").show();
+            $("#ly_cat").show();
+            $("#ly_key").show();
+            $("#ly_copy").show();
+            $("#ly_notes").show();
+        }
+
         function Z() {
             new ImageIcon(
                 "songnav_searchbutton",
@@ -210,7 +238,7 @@ export class SongNav {
             if (searchMode === SongSearchType.TITLE && numWordsInQuery === 1) {
                 const av = sqlRes.data.length;
                 for (let ap = 0; ap < av; ap++) {
-                    if (category === "_ALL" || sqlRes.data[ap].cat === category) {
+                    if (category === "ALL" || sqlRes.data[ap].cat === category) {
                         const aw = sqlRes.data[ap].name.toLowerCase();
                         const ar = aw.indexOf(searchQuery.toLowerCase());
                         if (ar === 0) {
@@ -250,7 +278,7 @@ export class SongNav {
                 var an = 0;
                 var aw = "";
                 for (var ar = 0; ar < au; ar++) {
-                    if (am == "_ALL") {
+                    if (am == "ALL") {
                         var av = ap.data[ar].name;
                         if (C(av)) {
                             var aq = ap.data[ar].id;
@@ -278,7 +306,7 @@ export class SongNav {
                 const { data } = sqlResult;
 
                 for (let ii = 0; ii < data.length; ii++) {
-                    if (category === "_ALL") {
+                    if (category === "ALL") {
                         const ar = data[ii].name;
                         const an = C(ar, query);
                         if (an) {
@@ -308,7 +336,7 @@ export class SongNav {
             var ao = ap;
             clearSelectList("songnav_category");
             document.getElementById("songnav_category").options[0] = new Option(
-                "_ALL",
+                "ALL",
                 0
             );
             if (ao.data != null) {
@@ -360,14 +388,14 @@ export class SongNav {
         function sn_deleteSongByCat() {
             var ao = document.getElementById("songnav_category").selectedIndex;
             var an = document.getElementById("songnav_category").options[ao].text;
-            if (an != "_ALL") {
+            if (an != "ALL") {
                 var am = "Song Database";
                 var ap = 'Do you want to delete ALL songs from "' + an + '" category?';
                 Prompt.exec(am, ap, al);
             } else {
                 Toast.show(
                     "Song Database",
-                    "Can not delete the _ALL category. Please select a specific category."
+                    "Can not delete the ALL category. Please select a specific category."
                 );
             }
             function al() {
@@ -722,61 +750,4 @@ export class SongNav {
             }
         }
     }
-}
-
-function hideLyricsElements() {
-    $("#ly_name2").hide();
-    $("#ly_edit").hide();
-    $("#ly_add2schedule").hide();
-    $("#ly_present").hide();
-    $("#ly_slide").hide();
-    $("#ly_tags").hide();
-    $("#ly_cat").hide();
-    $("#ly_key").hide();
-    $("#ly_copy").hide();
-    $("#ly_notes").hide();
-}
-
-function showLyricsElements() {
-    $("#ly_name").show();
-    $("#ly_name2").show();
-    $("#ly_edit").show();
-    $("#ly_add2schedule").show();
-    $("#ly_present").show();
-    $("#ly_slide").show();
-    $("#ly_tags").show();
-    $("#ly_cat").show();
-    $("#ly_key").show();
-    $("#ly_copy").show();
-    $("#ly_notes").show();
-}
-
-export function splitIN2(j) {
-    const a = [];
-
-    for (let b = 0; b < j.length; b++) {
-        const h = isBlank(j[b]);
-        const k = j[b].split("<BR>");
-        let d = "";
-        let c = 1;
-        if (!h) {
-            for (let g = 0; g < k.length; g++) {
-                if (c === 2) {
-                    d = d + k[g];
-                    a.push(d);
-                    d = "";
-                    c = 1;
-                } else {
-                    d = `${d + k[g]}<BR>`;
-                    c++;
-                }
-            }
-            if (c === 2) {
-                a.push(d);
-            }
-        } else {
-            a.push(d);
-        }
-    }
-    return a;
 }

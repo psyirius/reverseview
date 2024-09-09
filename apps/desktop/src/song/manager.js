@@ -1,17 +1,46 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-import { SongPortXML } from "./port_xml";
-import { SongImporter } from "./import";
-import { splitIN2 } from "./nav";
+import {SongPortXML} from "./port_xml";
+import {SongImporter} from "./import";
 import {removeTag} from "@/tags";
 import {SongSearchType} from "@/const";
 import {insertError, insertResult} from "@/song/indexing";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
-import {save2file} from "@app/common";
+import {isBlank, save2file} from "@app/common";
 import {$RvW} from "@/rvw";
+
+export function splitIN2(j) {
+    const a = [];
+
+    for (let b = 0; b < j.length; b++) {
+        const h = isBlank(j[b]);
+        const k = j[b].split("<BR>");
+        let d = "";
+        let c = 1;
+        if (!h) {
+            for (let g = 0; g < k.length; g++) {
+                if (c === 2) {
+                    d = d + k[g];
+                    a.push(d);
+                    d = "";
+                    c = 1;
+                } else {
+                    d = `${d + k[g]}<BR>`;
+                    c++;
+                }
+            }
+            if (c === 2) {
+                a.push(d);
+            }
+        } else {
+            a.push(d);
+        }
+    }
+    return a;
+}
 
 export class SongManager {
     constructor(_arg1, _arg2) {
@@ -44,7 +73,7 @@ export class SongManager {
         var ad = "./song/default.db";
         var m_sqlConnection = null;
         var aA = null;
-        var ab = "_ALL";
+        var ab = "ALL";
         var av = null;
         var az = [];
         var ae = [];
@@ -733,8 +762,7 @@ export class SongManager {
                 __debug("Successfully got all data from Song DB");
                 sng = aP.getResult();
                 a();
-                $RvW.scheduleObj.init();
-                $RvW.songNavObj.update_songList(sng, "_ALL");
+                $RvW.songNavObj.update_songList(sng, "ALL");
             }
             function aN(aR) {
                 __debug("Song Manager data error...");
@@ -748,7 +776,7 @@ export class SongManager {
             sqlStatement.text = "SELECT * FROM sm ORDER BY name ASC";
             sqlStatement.addEventListener(air.SQLEvent.RESULT, function onResult() {
                 __debug("Succesfuly got all data from Song DB");
-                callback(null, $RvW.songNavObj.get_songList(sqlStatement.getResult(), "_ALL", query));
+                callback(null, $RvW.songNavObj.get_songList(sqlStatement.getResult(), "ALL", query));
             });
             sqlStatement.addEventListener(air.SQLErrorEvent.ERROR, function onError(aS) {
                 __debug("Song Manager data error...");
@@ -951,8 +979,7 @@ export class SongManager {
             __debug("Getting ALL Data from Original Song DB");
             var aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
-            var aQ = "INSERT INTO sm SELECT NULL,name,cat,font,font2,timestamp,yvideo,bkgndfname,key,copy,notes,lyrics,lyrics2,title2,tags,slideseq,rating,chordsavailable,usagecount,subcat FROM newstuff.sm WHERE cat = :cat1 OR cat = :cat2 OR cat = :cat3";
-            aP.text = aQ;
+            aP.text = "INSERT INTO sm SELECT NULL,name,cat,font,font2,timestamp,yvideo,bkgndfname,key,copy,notes,lyrics,lyrics2,title2,tags,slideseq,rating,chordsavailable,usagecount,subcat FROM newstuff.sm WHERE cat = :cat1 OR cat = :cat2 OR cat = :cat3";
             aP.addEventListener(air.SQLEvent.RESULT, aO);
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.parameters[":cat1"] = "VV Malayalam 2021";

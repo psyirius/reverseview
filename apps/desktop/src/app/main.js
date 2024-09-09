@@ -25,7 +25,6 @@ import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/versio
 import { Config, configInit, svParameterSaveEvent } from "./config";
 import Preferences from './preferences';
 import SplashScreen from './splash';
-import Overlay from "./overlay";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import { setup as setupUI } from './ui/main';
@@ -554,85 +553,78 @@ $RvW.updateVerseContainer = function() {
     previousSelVerse = 0;
     $RvW.priFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     $RvW.secFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-    var a = document.getElementById("navDualLanguageID").checked;
-    $RvW.vvConfigObj.set_navDualLanguage(a);
+    $RvW.vvConfigObj.set_navDualLanguage(document.getElementById("navDualLanguageID").checked);
     $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
     $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
     $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
     getdata();
 }
+
 $RvW.updateVerseContainer_continue = function() {
-    var p = $RvW.content1.length;
-    var n = "";
-    n = n + "<table border=1>";
+    let htm = "<table border=1>";
+
     if ($RvW.vvConfigObj.get_navDualLanguage()) {
-        n =
-            n +
-            '<tr><td width="4%"></td><td width="48%"></td><td width="48%"></td></tr>';
+        htm += '<tr><td width="4%"></td><td width="48%"></td><td width="48%"></td></tr>';
     } else {
-        n = n + '<tr><td width="4%"></td><td width="96%"></td></tr>';
+        htm += '<tr><td width="4%"></td><td width="96%"></td></tr>';
     }
-    for (let i = 0; i < p; i++) {
-        var a = "TC_" + i;
+
+    for (let i = 0; i < $RvW.content1.length; i++) {
+        const a = `TC_${i}`;
+        htm += `<tr class="vcClass" id="${a}"><td width="4%">`;
+        const h1 = `NC_${i}`;
+        htm += `<div class="vcClassIcon" id="${h1}"><img class="vcClassIcon" src="../graphics/icon/notes_s.png" alt=""></div>`;
+
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
-            n = n + '<tr class="vcClass" id="' + a + '"><td width="4%">';
-            var h = "NC_" + i;
-            n =
-                n +
-                '<div class="vcClassIcon" id="' +
-                h +
-                '"><img class="vcClassIcon" src="../graphics/icon/notes_s.png"></div>';
-            n = n + '</td><td class="navtd" width="48%">';
-            var h = "VC1_" + i;
-            n = n + '<div class="vcClass" id="' + h + '">a</div>';
-            n = n + '</td><td class="navtd" width="48%">';
-            var h = "VC2_" + i;
-            n = n + '<div class="vcClass" id="' + h + '">b</div>';
-            n = n + "</td></tr>";
+            htm += '</td><td class="navtd" width="48%">';
+            const h2 = `VC1_${i}`;
+            htm += `<div class="vcClass" id="${h2}">a</div>`;
+            htm += '</td><td class="navtd" width="48%">';
+            const h3 = `VC2_${i}`;
+            htm += `<div class="vcClass" id="${h3}">b</div>`;
         } else {
-            n = n + '<tr class="vcClass" id="' + a + '"><td width="4%">';
-            var h = "NC_" + i;
-            n =
-                n +
-                '<div class="vcClassIcon" id="' +
-                h +
-                '"><img class="vcClassIcon" src="../graphics/icon/notes_s.png"></div>';
-            n = n + '</td><td class="navtd" width="96%">';
-            var h = "VC1_" + i;
-            n = n + '<div class="vcClass" id="' + h + '">x</div>';
-            n = n + "</td></tr>";
+            htm += '</td><td class="navtd" width="96%">';
+            const h2 = `VC1_${i}`;
+            htm += `<div class="vcClass" id="${h2}">x</div>`;
         }
+
+        htm += "</td></tr>";
     }
-    n = n + "</table>";
-    document.getElementById("verseTab").innerHTML = n;
-    var o = [];
-    var c = [];
-    var b = [];
-    for (let i = 0; i < p; i++) {
-        var m = "VC1_" + i;
-        var g = "VC2_" + i;
-        var e = "NC_" + i;
-        o[i] = new PostIt();
-        o[i].init(e, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
+    htm += "</table>";
+
+    document.getElementById("verseTab").innerHTML = htm;
+
+    const o = [];
+    const c = [];
+    const b = [];
+
+    for (let i = 0; i < $RvW.content1.length; i++) {
+        const m = `VC1_${i}`;
+        const g = `VC2_${i}`;
+        const e = `NC_${i}`;
+
+        o[i] = new PostIt(e, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
+
         c[i] = new verseClass();
-        var l = $RvW.content1[i];
-        var k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+        const l = $RvW.content1[i];
+        const k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
         c[i].init(m, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
+
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
             b[i] = new verseClass();
-            var l = $RvW.content2[i];
-            var k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+            const l = $RvW.content2[i];
+            const k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
             b[i].init(g, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
         }
     }
+
     if ($RvW.notesObj != null) {
-        var j = document.getElementById("nm_note_type1");
-        if (j.checked) {
+        if (document.getElementById("nm_note_type1").checked) {
             $RvW.notesObj.getNotes(bookval, chval, 0);
         }
     }
-    var d = $RvW.getVerseValue();
-    $RvW.highlightVerse(d);
+
+    $RvW.highlightVerse($RvW.getVerseValue());
 }
 
 function loadPreferences(callback) {
@@ -686,14 +678,14 @@ function activateMainWindow() {
             }
         }
 
-        nativeWindow.x = bounds.x;
-        nativeWindow.y = bounds.y;
-        nativeWindow.width = bounds.width;
-        nativeWindow.height = bounds.height;
-
         if ((maximized === true) && (nativeWindow.displayState !== NativeWindowDisplayState.MAXIMIZED)) {
             nativeWindow.maximize();
         } else {
+            nativeWindow.x = bounds.x;
+            nativeWindow.y = bounds.y;
+            nativeWindow.width = bounds.width;
+            nativeWindow.height = bounds.height;
+
             nativeWindow.restore();
         }
     }
@@ -739,8 +731,6 @@ function vvinit_continue() {
 
     Toast.setup();
     Prompt.setup();
-
-    Overlay.setup();
 
     setTimeout(function () {
         const a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
@@ -845,7 +835,7 @@ function setupTabContent() {
     $RvW.updateVV_UI_Obj = new AppUpdateUi();
 
     // Right Tab
-    setupTabView("bible_verses", "bibleverseTab");
+    /* setupTabView("bible_verses", "bibleverseTab"); */
     setupTabView("song_lyrics", "lyricsTab");
     setupTabView("notes", "notesTab");
     setupTabView("search", "searchTab");
@@ -854,8 +844,8 @@ function setupTabContent() {
     setupTabView("settings", "screenTab");
 
     // Left Tab
-    setupTabView("nav", "navTab");
-    setupTabView("song_nav", "songNavTab");
+    /* setupTabView("nav", "navTab"); */ fillNav();
+    /* setupTabView("song_nav", "songNavTab"); */
 
     fillTabs('configTab');
 
@@ -875,8 +865,8 @@ function setupTabContent() {
 
     if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
-        const b = backupWebroot();
-        if (b) {
+
+        if (backupWebroot()) {
             copyFile2AppStorage("webroot", "webroot");
             task2Complete();
         }
@@ -911,10 +901,6 @@ function setupTabView(name, mountPoint) {
 
 function fillTabs(a) {
     switch (a) {
-        case "navTab": {
-            fillNav();
-            break;
-        }
         case "configTab": {
             versionFill(true);
             configInit();

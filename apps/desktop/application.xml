@@ -25,4 +25,8 @@
 	</icon>
     <customUpdateUI>false</customUpdateUI>
     <allowBrowserInvocation>false</allowBrowserInvocation>
+    <extensions>
+<!--        <extensionID>com.example.Extension1</extensionID>-->
+<!--        <extensionID>com.example.Extension2</extensionID>-->
+    </extensions>
 </application>

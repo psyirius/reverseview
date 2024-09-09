@@ -100,7 +100,7 @@ interface Props {
 }
 
 export default function RemoteSetupDialog({}: Props) {
-    const id = useId();
+    const container = useRef(null);
 
     if (!remoteCustomHostname.get()) {
         remoteCustomHostname.set($RvW.vvConfigObj.get_myhostname());
@@ -126,7 +126,7 @@ export default function RemoteSetupDialog({}: Props) {
     useEffect(() => {
         const panel = new $Y.Panel({
             headerContent   : 'Remote',
-            srcNode         : '#' + id,
+            srcNode         : container.current!,
             width           : '60%',
             height          : 'auto',
             zIndex          : 100,
@@ -326,7 +326,7 @@ export default function RemoteSetupDialog({}: Props) {
     }
 
     return (
-        <div id={id}>
+        <div ref={container}>
             <div class="yui3-widget-bd">
                 <div class="ui form container segment">
                     <div id="generalPanelDIV_delete" class="ui grid remoteVVDIV">
@@ -367,14 +367,14 @@ export default function RemoteSetupDialog({}: Props) {
                                         data-position="right center"
                                         data-variation="basic small"
                                     >
-                                        {/* FIXME: Entering non-numeric crashing */}
+                                        {/* FIXME: Entering non-numeric crashing (if number type input is used) */}
                                         <input
-                                            type="number"
+                                            type="text"
                                             class="form-control form-control-sm"
                                             id="configRemotePort"
                                             value={port}
-                                            min={49152}
-                                            max={65535}
+                                            // min={49152}
+                                            // max={65535}
                                             onChange={onPortChange}
                                             placeholder="Enter Port Number"
                                             disabled={(ipList.length === 0) || enabled}

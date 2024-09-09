@@ -57,7 +57,7 @@ export class SongPortXML {
         }
 
         function exportByCat() {
-            if (m_category === "_ALL") {
+            if (m_category === "ALL") {
                 m_exportKind = 1;
                 exportAll();
                 return false;

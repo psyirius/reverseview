@@ -1,9 +1,36 @@
-import {NotesInfo} from "./notes";
 import {insertError, insertResult} from "@/song/indexing";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName} from "@app/common";
 import {$RvW} from "@/rvw";
+
+function notesInfo(db) {
+    let i;
+    let conn = new air.SQLConnection();
+    conn.addEventListener(air.SQLEvent.OPEN, function() {
+        const statement = new air.SQLStatement();
+        statement.sqlConnection = conn;
+        statement.text = "SELECT * FROM notesInfoTable";
+        statement.addEventListener(air.SQLEvent.RESULT, function(l) {
+            var k = statement.getResult();
+            if (k.data != null) {
+                var j = k.data[0];
+                $RvW.notesManageObj.nm_addRecord_ext(j.noteInfoName, j.noteInfoDes, db);
+                conn = null;
+            }
+        });
+        statement.addEventListener(air.SQLErrorEvent.ERROR, function(j) {
+            alert("Invalid Notes Database");
+        });
+        statement.execute();
+    });
+    conn.addEventListener(air.SQLErrorEvent.ERROR, function(j) {
+        air.trace("[N Info] Error message:", j.error.message);
+        air.trace("Details (open Conn DB):", j.error.details);
+    });
+    i = air.File.applicationStorageDirectory.resolvePath(`./notes/${db}`);
+    conn.openAsync(i);
+}
 
 export class NotesManager {
     constructor(ftflg) {
@@ -151,7 +178,7 @@ export class NotesManager {
                 Y.copyTo(Z, true);
                 Y = null;
                 Toast.show("Bible Notes", "Notes Database Added to VerseVIEW");
-                var ab = new NotesInfo(ac);
+                notesInfo(ac);
             }
         }
         function O() {
