@@ -12,7 +12,7 @@ import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/ver
 import {isBlank, save2file} from "@app/common";
 import {$RvW} from "@/rvw";
 
-export function splitIN2(j) {
+function splitIN2(j) {
     const a = [];
 
     for (let b = 0; b < j.length; b++) {
@@ -68,7 +68,7 @@ export class SongManager {
         this.test2_updateRecords = test2_updateRecords;
         this.test2_getOrgsonglist = test2_getOrgsonglist;
 
-        var m_isDebug = false;
+        var m_isDebug = true;
         var ax = false;
         var ad = "./song/default.db";
         var m_sqlConnection = null;
@@ -97,10 +97,10 @@ export class SongManager {
         var aM;
         var af;
         var ao;
-        var sng = null;
-        var sqlRes = null;
+        var songz = [];
+        var songx = [];
+        var songy = [];
         var aq = null;
-        var f = null;
         var aj = null;
         var aH = null;
         var T = 0;
@@ -137,25 +137,21 @@ export class SongManager {
             return aN;
         }
         function D(aR) {
-            var aQ;
-            aQ = aR.split("<slide>");
+            var aQ = aR.split("<slide>");
             aQ.splice(aQ.length - 1, 1);
-            var aO = $RvW.vvConfigObj.get_hideStanzaNumber();
-            if (aO) {
-                var aN = aQ.length;
-                for (var aP = 0; aP < aN; aP++) {
+            if ($RvW.vvConfigObj.get_hideStanzaNumber()) {
+                for (var aP = 0; aP < aQ.length; aP++) {
                     aQ[aP] = aQ[aP].replace(/^-?[0-9]*\.?[0-9]+/, "");
                 }
             }
-            var aO = $RvW.vvConfigObj.get_show2lines();
-            if (aO) {
+            if ($RvW.vvConfigObj.get_show2lines()) {
                 aQ = splitIN2(aQ);
             }
             return aQ;
         }
         function j(aQ, aP) {
             var aN = aQ.length;
-            var aO = new Array();
+            var aO = [];
             for (var aR = 0; aR < aN; aR++) {
                 if (aP[aR] == null) {
                     aO.push("");
@@ -166,10 +162,10 @@ export class SongManager {
             return aO;
         }
         function n() {
-            var aO = sng.data.length;
+            var aO = songz.length;
             for (var aN = 0; aN < aO; aN++) {
-                az[aN] = sng.data[aN].name;
-                ae[aN] = sng.data[aN].id;
+                az[aN] = songz[aN].name;
+                ae[aN] = songz[aN].id;
             }
         }
         function addSong(aN, aP, aO) {
@@ -209,9 +205,9 @@ export class SongManager {
             }
             if (aR == null) {
                 if (aQ) {
-                    aP = sqlRes.data[aO].id;
+                    aP = songx[aO].id;
                 } else {
-                    aP = sng.data[aO].id;
+                    aP = songz[aO].id;
                 }
             } else {
                 aP = aR;
@@ -239,10 +235,11 @@ export class SongManager {
             Q(aP);
         }
         function deleteSong(aN, aO) {
+            let aP;
             if (aO) {
-                var aP = sqlRes.data[aN].id;
+                aP = songx[aN].id;
             } else {
-                var aP = sng.data[aN].id;
+                aP = songz[aN].id;
             }
             X(aP);
         }
@@ -252,36 +249,30 @@ export class SongManager {
         function getSongObjWithID(aS) {
             let aP = false;
             const so = new Song();
-            so.init();
             so.slides = [];
-            const aN = sng.data.length;
-            for (let aQ = 0; aQ < aN; aQ++) {
-                if (sng.data[aQ].id === aS) {
-                    so.name = sng.data[aQ].name;
-                    so.catIndex = sng.data[aQ].cat;
-                    so.font = sng.data[aQ].font;
-                    so.font2 = sng.data[aQ].font2;
-                    so.timestamp = sng.data[aQ].timestamp;
-                    so.yvideo = sng.data[aQ].yvideo;
-                    so.bkgnd_fname = sng.data[aQ].bkgndfname;
-                    so.key = sng.data[aQ].key;
-                    so.copyright = sng.data[aQ].copy;
-                    so.notes = sng.data[aQ].notes;
-                    so.slides = D(sng.data[aQ].lyrics);
-                    const aO = sng.data[aQ].lyrics2;
-                    if (aO != null) {
-                        so.slides2 = D(aO);
-                    } else {
-                        so.slides2 = [];
-                    }
+            for (let aQ = 0; aQ < songz.length; aQ++) {
+                if (songz[aQ].id === aS) {
+                    so.name = songz[aQ].name;
+                    so.catIndex = songz[aQ].cat;
+                    so.font = songz[aQ].font;
+                    so.font2 = songz[aQ].font2;
+                    so.timestamp = songz[aQ].timestamp;
+                    so.yvideo = songz[aQ].yvideo;
+                    so.bkgnd_fname = songz[aQ].bkgndfname;
+                    so.key = songz[aQ].key;
+                    so.copyright = songz[aQ].copy;
+                    so.notes = songz[aQ].notes;
+                    so.slides = D(songz[aQ].lyrics);
+                    const aO = songz[aQ].lyrics2;
+                    so.slides2 = aO != null ? D(aO) : [];
                     so.slides2 = j(so.slides, so.slides2);
-                    so.name2 = sng.data[aQ].title2;
-                    so.tags = sng.data[aQ].tags;
-                    so.slideseq = sng.data[aQ].slideseq;
-                    so.rating = sng.data[aQ].rating;
-                    so.chordsavailable = sng.data[aQ].chordsavailable;
-                    so.usagecount = sng.data[aQ].usagecount;
-                    so.subcat = sng.data[aQ].subcat;
+                    so.name2 = songz[aQ].title2;
+                    so.tags = songz[aQ].tags;
+                    so.slideseq = songz[aQ].slideseq;
+                    so.rating = songz[aQ].rating;
+                    so.chordsavailable = songz[aQ].chordsavailable;
+                    so.usagecount = songz[aQ].usagecount;
+                    so.subcat = songz[aQ].subcat;
                     aP = true;
                     break;
                 }
@@ -295,36 +286,31 @@ export class SongManager {
         function getSongObjWithName(aQ) {
             var aP = false;
             var aS = new Song();
-            aS.init();
-            aS.slides = new Array();
-            var aN = sng.data.length;
+            aS.slides = [];
+            var aN = songz.length;
             for (var aR = 0; aR < aN; aR++) {
-                if (sng.data[aR].name == aQ) {
-                    aS.name = sng.data[aR].name;
-                    aS.catIndex = sng.data[aR].cat;
-                    aS.font = sng.data[aR].font;
-                    aS.font2 = sng.data[aR].font2;
-                    aS.timestamp = sng.data[aR].timestamp;
-                    aS.yvideo = sng.data[aR].yvideo;
-                    aS.bkgnd_fname = sng.data[aR].bkgndfname;
-                    aS.key = sng.data[aR].key;
-                    aS.copyright = sng.data[aR].copy;
-                    aS.notes = sng.data[aR].notes;
-                    aS.slides = D(sng.data[aR].lyrics);
-                    var aO = sng.data[aR].lyrics2;
-                    if (aO != null) {
-                        aS.slides2 = D(aO);
-                    } else {
-                        aS.slides2 = new Array();
-                    }
+                if (songz[aR].name == aQ) {
+                    aS.name = songz[aR].name;
+                    aS.catIndex = songz[aR].cat;
+                    aS.font = songz[aR].font;
+                    aS.font2 = songz[aR].font2;
+                    aS.timestamp = songz[aR].timestamp;
+                    aS.yvideo = songz[aR].yvideo;
+                    aS.bkgnd_fname = songz[aR].bkgndfname;
+                    aS.key = songz[aR].key;
+                    aS.copyright = songz[aR].copy;
+                    aS.notes = songz[aR].notes;
+                    aS.slides = D(songz[aR].lyrics);
+                    var aO = songz[aR].lyrics2;
+                    aS.slides2 = aO != null ? D(aO) : [];
                     aS.slides2 = j(aS.slides, aS.slides2);
-                    aS.name2 = sng.data[aR].title2;
-                    aS.tags = sng.data[aR].tags;
-                    aS.slideseq = sng.data[aR].slideseq;
-                    aS.rating = sng.data[aR].rating;
-                    aS.chordsavailable = sng.data[aR].chordsavailable;
-                    aS.usagecount = sng.data[aR].usagecount;
-                    aS.subcat = sng.data[aR].subcat;
+                    aS.name2 = songz[aR].title2;
+                    aS.tags = songz[aR].tags;
+                    aS.slideseq = songz[aR].slideseq;
+                    aS.rating = songz[aR].rating;
+                    aS.chordsavailable = songz[aR].chordsavailable;
+                    aS.usagecount = songz[aR].usagecount;
+                    aS.subcat = songz[aR].subcat;
                     aP = true;
                     break;
                 }
@@ -338,81 +324,72 @@ export class SongManager {
         function getSongID(aO, aP) {
             var aN = 0;
             if (!aP) {
-                aN = sng.data[aO].id;
+                aN = songz[aO].id;
             } else {
-                aN = sqlRes.data[aO].id;
+                aN = songx[aO].id;
             }
             return aN;
         }
         function getSongObj(aO, aQ) {
             var aP = new Song();
-            aP.init();
-            aP.slides = new Array();
+            aP.slides = [];
             if (!aQ) {
-                aP.name = sng.data[aO].name;
-                aP.catIndex = sng.data[aO].cat;
-                aP.font = sng.data[aO].font;
-                aP.font2 = sng.data[aO].font2;
-                aP.timestamp = sng.data[aO].timestamp;
-                aP.yvideo = sng.data[aO].yvideo;
-                aP.bkgnd_fname = sng.data[aO].bkgndfname;
-                aP.key = sng.data[aO].key;
-                aP.copyright = sng.data[aO].copy;
-                aP.notes = sng.data[aO].notes;
-                aP.slides = D(sng.data[aO].lyrics);
-                var aN = sng.data[aO].lyrics2;
-                if (aN != null) {
-                    aP.slides2 = D(aN);
-                } else {
-                    aP.slides2 = new Array();
-                }
+                aP.name = songz[aO].name;
+                aP.catIndex = songz[aO].cat;
+                aP.font = songz[aO].font;
+                aP.font2 = songz[aO].font2;
+                aP.timestamp = songz[aO].timestamp;
+                aP.yvideo = songz[aO].yvideo;
+                aP.bkgnd_fname = songz[aO].bkgndfname;
+                aP.key = songz[aO].key;
+                aP.copyright = songz[aO].copy;
+                aP.notes = songz[aO].notes;
+                aP.slides = D(songz[aO].lyrics);
+                var aN = songz[aO].lyrics2;
+                aP.slides2 = aN != null ? D(aN) : [];
                 aP.slides2 = j(aP.slides, aP.slides2);
-                aP.name2 = sng.data[aO].title2;
-                aP.tags = sng.data[aO].tags;
-                aP.slideseq = sng.data[aO].slideseq;
-                aP.rating = sng.data[aO].rating;
-                aP.chordsavailable = sng.data[aO].chordsavailable;
-                aP.usagecount = sng.data[aO].usagecount;
-                aP.subcat = sng.data[aO].subcat;
+                aP.name2 = songz[aO].title2;
+                aP.tags = songz[aO].tags;
+                aP.slideseq = songz[aO].slideseq;
+                aP.rating = songz[aO].rating;
+                aP.chordsavailable = songz[aO].chordsavailable;
+                aP.usagecount = songz[aO].usagecount;
+                aP.subcat = songz[aO].subcat;
             } else {
-                aP.name = sqlRes.data[aO].name;
-                aP.catIndex = sqlRes.data[aO].cat;
-                aP.font = sqlRes.data[aO].font;
-                aP.font2 = sqlRes.data[aO].font2;
-                aP.timestamp = sqlRes.data[aO].timestamp;
-                aP.yvideo = sqlRes.data[aO].yvideo;
-                aP.bkgnd_fname = sqlRes.data[aO].bkgndfname;
-                aP.key = sqlRes.data[aO].key;
-                aP.copyright = sqlRes.data[aO].copy;
-                aP.notes = sqlRes.data[aO].notes;
-                aP.slides = D(sqlRes.data[aO].lyrics);
-                var aN = sqlRes.data[aO].lyrics2;
-                if (aN != null) {
-                    aP.slides2 = D(aN);
-                } else {
-                    aP.slides2 = new Array();
-                }
+                aP.name = songx[aO].name;
+                aP.catIndex = songx[aO].cat;
+                aP.font = songx[aO].font;
+                aP.font2 = songx[aO].font2;
+                aP.timestamp = songx[aO].timestamp;
+                aP.yvideo = songx[aO].yvideo;
+                aP.bkgnd_fname = songx[aO].bkgndfname;
+                aP.key = songx[aO].key;
+                aP.copyright = songx[aO].copy;
+                aP.notes = songx[aO].notes;
+                aP.slides = D(songx[aO].lyrics);
+                var aN = songx[aO].lyrics2;
+                aP.slides2 = aN != null ? D(aN) : [];
                 aP.slides2 = j(aP.slides, aP.slides2);
-                aP.name2 = sqlRes.data[aO].title2;
-                aP.tags = sqlRes.data[aO].tags;
-                aP.slideseq = sqlRes.data[aO].slideseq;
-                aP.rating = sqlRes.data[aO].rating;
-                aP.chordsavailable = sqlRes.data[aO].chordsavailable;
-                aP.usagecount = sqlRes.data[aO].usagecount;
-                aP.subcat = sqlRes.data[aO].subcat;
+                aP.name2 = songx[aO].title2;
+                aP.tags = songx[aO].tags;
+                aP.slideseq = songx[aO].slideseq;
+                aP.rating = songx[aO].rating;
+                aP.chordsavailable = songx[aO].chordsavailable;
+                aP.usagecount = songx[aO].usagecount;
+                aP.subcat = songx[aO].subcat;
             }
             return aP;
         }
         function getSongsFromCat(aN) {
             ab = aN;
             __debug("In getSongsFromCat function " + aN);
-            $RvW.songNavObj.update_songList(sng, aN);
+            $RvW.songNavObj.update_songList({ data: songz }, aN);
         }
         function aK() {
-            var aN = sng.data.length;
+            var aN = songz.length;
             var aO = "";
             for (var aP = 0; aP < aN; aP++) {
-                aO = aO + sng.data[aP].name + "|" + sng.data[aP].cat + "\n";
+                aO += songz[aP].name + "|" + songz[aP].cat + "\n";
             }
             var aQ = "./song/songlist.txt";
             save2file(aO, aQ, false);
@@ -421,11 +398,9 @@ export class SongManager {
             return aq;
         }
         function d() {
-            if (f.data != null) {
-                var aO = f.data.length;
-                for (var aN = 0; aN < aO; aN++) {
-                    ap[aN] = f.data[aN].font;
-                }
+            var aO = songy.length;
+            for (var aN = 0; aN < aO; aN++) {
+                ap[aN] = songy[aN].font;
             }
         }
         function getFontList() {
@@ -436,17 +411,17 @@ export class SongManager {
         }
 
         function processImportSongXML() {
-            const spx = new SongPortXML(sng, null, null, 1);
+            const spx = new SongPortXML(songz, null, null, 1);
             spx.importXML();
         }
 
         function processExportSongXML() {
-            const spx = new SongPortXML(sng, null, null, 1);
+            const spx = new SongPortXML(songz, null, null, 1);
             spx.exportAll();
         }
 
         function processExportCatXML() {
-            const spx = new SongPortXML(sng, ab, null, 2);
+            const spx = new SongPortXML(songz, ab, null, 2);
             spx.exportByCat();
         }
 
@@ -476,36 +451,28 @@ export class SongManager {
             }
         }
         function checkSongExists(aO) {
-            if (sng.data != null) {
-                var aN = sng.data.length;
-                for (var aP = 0; aP < aN; aP++) {
-                    if (sng.data[aP].name == aO) {
-                        return true;
-                    }
+            var aN = songz.length;
+            for (var aP = 0; aP < aN; aP++) {
+                if (songz[aP].name == aO) {
+                    return true;
                 }
-                return false;
-            } else {
-                return false;
             }
+            return false;
         }
         function checkSongExistsInCat(aP, aN) {
-            if (sng.data != null) {
-                var aO = sng.data.length;
-                for (var aQ = 0; aQ < aO; aQ++) {
-                    var aS = sng.data[aQ].name;
-                    var aR = sng.data[aQ].cat;
-                    if (aS == aP && aR == aN) {
-                        return true;
-                    }
+            var aO = songz.length;
+            for (var aQ = 0; aQ < aO; aQ++) {
+                var aS = songz[aQ].name;
+                var aR = songz[aQ].cat;
+                if (aS == aP && aR == aN) {
+                    return true;
                 }
-                return false;
-            } else {
-                return false;
             }
+            return false;
         }
-        function __debug(aN) {
+        function __debug(...aN) {
             if (m_isDebug) {
-                air.trace("[SongManager]...." + aN);
+                air.trace("[SongManager]....", ...aN);
             }
         }
         function ah() {
@@ -751,18 +718,18 @@ export class SongManager {
         }
         function at() {
             __debug("Getting ALL Data from Song DB");
-            var aP = new air.SQLStatement();
-            aP.sqlConnection = m_sqlConnection;
-            var aQ = "SELECT * FROM sm ORDER BY name ASC";
-            aP.text = aQ;
-            aP.addEventListener(air.SQLEvent.RESULT, aO);
-            aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
-            aP.execute();
+            var sqlStatement = new air.SQLStatement();
+            sqlStatement.sqlConnection = m_sqlConnection;
+            sqlStatement.text = "SELECT * FROM sm ORDER BY name ASC";
+            sqlStatement.addEventListener(air.SQLEvent.RESULT, aO);
+            sqlStatement.addEventListener(air.SQLErrorEvent.ERROR, aN);
+            sqlStatement.execute();
             function aO(aR) {
+                const { data } = sqlStatement.getResult();
+                songz = data ?? [];
                 __debug("Successfully got all data from Song DB");
-                sng = aP.getResult();
                 a();
-                $RvW.songNavObj.update_songList(sng, "ALL");
+                $RvW.songNavObj.update_songList({ data: songz }, "ALL");
             }
             function aN(aR) {
                 __debug("Song Manager data error...");
@@ -806,14 +773,14 @@ export class SongManager {
             __debug("Getting ALL Unique Fonts from Song DB");
             var aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
-            var aQ = "SELECT DISTINCT font FROM sm ORDER BY font ASC";
-            aP.text = aQ;
+            aP.text = "SELECT DISTINCT font FROM sm ORDER BY font ASC";
             aP.addEventListener(air.SQLEvent.RESULT, aO);
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.execute();
             function aO(aR) {
                 __debug("Succesfuly got all fonts from Song DB");
-                f = aP.getResult();
+                const { data } = aP.getResult();
+                songy = data ?? [];
                 d();
             }
             function aN(aR) {
@@ -858,15 +825,16 @@ export class SongManager {
                 sqlQuery.removeEventListener(air.SQLEvent.RESULT, _onSqlResult);
                 sqlQuery.removeEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
-                sqlRes = sqlQuery.getResult();
-                if (aQ === SongSearchType.TAGS && sqlRes.data == null) {
+                const { data } = sqlQuery.getResult();
+                songx = data ?? [];
+                if (aQ === SongSearchType.TAGS && data == null) {
                     removeTag(aP);
                     Toast.show("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {
                         $RvW.wordbrain.findRecordBy_wordin(aP);
                     }
-                    $RvW.songNavObj.searchComplete(sqlRes, aQ);
+                    $RvW.songNavObj.searchComplete({data}, aQ);
                 }
             }
             function _onSqlError(aU) {
@@ -1006,13 +974,13 @@ export class SongManager {
             }
         }
         function ag() {
-            var aO = sng.data.length;
-            var aP = new Array(0, 0);
+            var aO = songz.length;
+            var aP = [0, 0];
             aP[0] = 0;
             aP[1] = 0;
             for (var aQ = 0; aQ < aO; aQ++) {
-                var aR = sng.data[aQ].subcat;
-                var aN = sng.data[aQ].cat;
+                var aR = songz[aQ].subcat;
+                var aN = songz[aQ].cat;
                 if (aN == "VV Malayalam 2021") {
                     if (aR != null && aR != "") {
                         if (parseInt(aR) > aP[0]) {
@@ -1037,11 +1005,11 @@ export class SongManager {
             $RvW.songNumberObj.setMaxHindi(aN[1]);
         }
         function aB() {
-            var aO = sng.data.length;
+            var aO = songz.length;
             alert("Number of records..." + aO);
             var aQ = 0;
-            var aP = sng.data[aQ].id;
-            var aN = sng.data[aQ].cat;
+            var aP = songz[aQ].id;
+            var aN = songz[aQ].cat;
             aR(aP, aN);
             function aR(aT, aS) {
                 var aW = new air.SQLStatement();
@@ -1072,8 +1040,8 @@ export class SongManager {
                 function aX() {
                     aQ++;
                     if (aQ < aO) {
-                        var a1 = sng.data[aQ].id;
-                        var a0 = sng.data[aQ].cat;
+                        var a1 = songz[aQ].id;
+                        var a0 = songz[aQ].cat;
                         aR(a1, a0);
                     } else {
                         alert("Song number update complete");
@@ -1082,11 +1050,11 @@ export class SongManager {
             }
         }
         function S() {
-            var aO = sng.data.length;
+            var aO = songz.length;
             var aQ = 0;
-            var aP = sng.data[aQ].id;
-            var aN = sng.data[aQ].cat;
-            var aR = sng.data[aQ].name.toLowerCase();
+            var aP = songz[aQ].id;
+            var aN = songz[aQ].cat;
+            var aR = songz[aQ].name.toLowerCase();
             aS(aP, aN, aR);
             function aS(aZ, aW, aV) {
                 var aU = new air.SQLStatement();
@@ -1116,9 +1084,9 @@ export class SongManager {
                 function aX() {
                     aQ++;
                     if (aQ < aO) {
-                        var a3 = sng.data[aQ].id;
-                        var a2 = sng.data[aQ].cat;
-                        var a4 = sng.data[aQ].name.toLowerCase();
+                        var a3 = songz[aQ].id;
+                        var a2 = songz[aQ].cat;
+                        var a4 = songz[aQ].name.toLowerCase();
                         aS(a3, a2, a4);
                     } else {
                         alert("Song number update complete");
@@ -1128,13 +1096,13 @@ export class SongManager {
         }
         function test2_updateRecords() {
             var aS = testName.length;
-            var aT = sng.data.length;
+            var aT = songz.length;
             for (var aQ = 0; aQ < aS; aQ++) {
                 var aO = testName[aQ].toLowerCase();
                 aO = test2_updatedname(aO);
                 var aR = false;
                 for (var aN = 0; aN < aT; aN++) {
-                    var aP = sng.data[aN].name;
+                    var aP = songz[aN].name;
                     aP = aP.toLowerCase();
                     if (aO == aP) {
                         aR = true;
@@ -1147,13 +1115,13 @@ export class SongManager {
             }
         }
         function test2_getOrgsonglist() {
-            var aS = new Array();
+            var aS = [];
             var aR = "";
-            var aO = sng.data.length;
+            var aO = songz.length;
             for (var aQ = 0; aQ < aO; aQ++) {
-                var aN = sng.data[aQ].cat;
-                var aP = sng.data[aQ].name;
-                var aT = sng.data[aQ].subcat;
+                var aN = songz[aQ].cat;
+                var aP = songz[aQ].name;
+                var aT = songz[aQ].subcat;
                 if (aN == "Malayalam 2020" || aN == "Hindi 2020") {
                     aR = aN + "|" + aP + "|" + aT;
                     aS.push(aR);
@@ -1162,10 +1130,10 @@ export class SongManager {
             return aS;
         }
         function w(aS) {
-            var aO = sng.data.length;
+            var aO = songz.length;
             __debug("record length " + aO);
             for (var aQ = 0; aQ < aO; aQ++) {
-                var aN = sng.data[aQ].cat;
+                var aN = songz[aQ].cat;
                 var aR = new Song();
                 if (aN == "Malayalam 2019") {
                     aR = getSongObj(aQ, false);
@@ -1183,7 +1151,7 @@ export class SongManager {
                             aR.tags = aR.tags + testTag3[aP] + ",";
                         }
                         aR.tags = aR.tags.slice(0, -1);
-                        updateSong(aR, aQ, sng.data[aQ].id, false);
+                        updateSong(aR, aQ, songz[aQ].id, false);
                     } else {
                         __debug("**** No Match **** : " + aR.name);
                     }

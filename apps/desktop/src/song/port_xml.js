@@ -18,7 +18,6 @@ export class SongPortXML {
 
         function exportAll() {
             const r = new Song();
-            r.init();
 
             const w = generateExportXmlFilename();
             let u = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -26,26 +25,26 @@ export class SongPortXML {
             u += "<type>XMLsong</type>\n";
             u += "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
 
-            for (let t = 0; t < m_song.data.length; t++) {
-                if (!specialCategory(m_song.data[t].cat)) {
-                    let v = m_song.data[t].name;
+            for (let t = 0; t < m_song.length; t++) {
+                if (!specialCategory(m_song[t].cat)) {
+                    let v = m_song[t].name;
                     v = v.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
                     v = v.replace(/(\x26)/g, "and");
                     r.name = v;
-                    r.catIndex = m_song.data[t].cat;
-                    r.font = m_song.data[t].font;
-                    r.font2 = m_song.data[t].font2;
-                    r.timestamp = m_song.data[t].timestamp;
-                    r.yvideo = m_song.data[t].yvideo;
-                    r.bkgnd_fname = m_song.data[t].bkgndfname;
-                    r.key = m_song.data[t].key;
-                    r.copyright = m_song.data[t].copy;
-                    r.notes = m_song.data[t].notes;
-                    r.name2 = m_song.data[t].title2;
-                    r.tags = m_song.data[t].tags != null ? m_song.data[t].tags : "";
-                    r.slideseq = m_song.data[t].slideseq;
-                    r.slides = m_song.data[t].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    const x = m_song.data[t].lyrics2;
+                    r.catIndex = m_song[t].cat;
+                    r.font = m_song[t].font;
+                    r.font2 = m_song[t].font2;
+                    r.timestamp = m_song[t].timestamp;
+                    r.yvideo = m_song[t].yvideo;
+                    r.bkgnd_fname = m_song[t].bkgndfname;
+                    r.key = m_song[t].key;
+                    r.copyright = m_song[t].copy;
+                    r.notes = m_song[t].notes;
+                    r.name2 = m_song[t].title2;
+                    r.tags = m_song[t].tags != null ? m_song[t].tags : "";
+                    r.slideseq = m_song[t].slideseq;
+                    r.slides = m_song[t].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
+                    const x = m_song[t].lyrics2;
                     r.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
                     u += q(r);
                 }
@@ -69,7 +68,6 @@ export class SongPortXML {
             }
 
             const z = new Song();
-            z.init();
 
             const t = generateExportXmlFilename();
 
@@ -79,28 +77,28 @@ export class SongPortXML {
             v += "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
 
             let errored = true;
-            for (let u = 0; u < m_song.data.length; u++) {
-                if (m_song.data[u].cat === m_category) {
+            for (let u = 0; u < m_song.length; u++) {
+                if (m_song[u].cat === m_category) {
                     errored = false;
-                    let w = m_song.data[u].name;
+                    let w = m_song[u].name;
                     w = w.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
                     w = w.replace(/(\x26)/g, "and");
                     z.name = w;
-                    z.catIndex = m_song.data[u].cat;
-                    z.font = m_song.data[u].font;
-                    z.font2 = m_song.data[u].font2;
-                    z.timestamp = m_song.data[u].timestamp;
-                    z.yvideo = m_song.data[u].yvideo;
-                    z.bkgnd_fname = m_song.data[u].bkgndfname;
-                    z.key = m_song.data[u].key;
-                    z.copyright = m_song.data[u].copy;
-                    z.notes = m_song.data[u].notes;
-                    z.name2 = m_song.data[u].title2;
-                    z.tags = m_song.data[u].tags != null ? m_song.data[u].tags : "";
-                    z.slideseq = m_song.data[u].slideseq;
-                    z.subcat = m_song.data[u].subcat;
-                    z.slides = m_song.data[u].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    const x = m_song.data[u].lyrics2;
+                    z.catIndex = m_song[u].cat;
+                    z.font = m_song[u].font;
+                    z.font2 = m_song[u].font2;
+                    z.timestamp = m_song[u].timestamp;
+                    z.yvideo = m_song[u].yvideo;
+                    z.bkgnd_fname = m_song[u].bkgndfname;
+                    z.key = m_song[u].key;
+                    z.copyright = m_song[u].copy;
+                    z.notes = m_song[u].notes;
+                    z.name2 = m_song[u].title2;
+                    z.tags = m_song[u].tags != null ? m_song[u].tags : "";
+                    z.slideseq = m_song[u].slideseq;
+                    z.subcat = m_song[u].subcat;
+                    z.slides = m_song[u].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
+                    const x = m_song[u].lyrics2;
                     z.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
                     v += q(z);
                 }

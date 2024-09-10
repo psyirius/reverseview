@@ -9,9 +9,12 @@ export default function LeftBibleTab() {
                         </div>
                     </div>
 
-                    <div class="two wide column"><span class="iconImageStyle"><img id="nav_bibleRef_findID"/></span>
+                    <div class="two wide column">
+                        <span class="iconImageStyle"><img id="nav_bibleRef_findID"/></span>
                     </div>
-                    <div class="two wide column"><span class="iconImageStyle"><img id="nav_bibleRef_presentID"/></span>
+
+                    <div class="two wide column">
+                        <span class="iconImageStyle"><img id="nav_bibleRef_presentID"/></span>
                     </div>
                 </div>
 
@@ -19,43 +22,46 @@ export default function LeftBibleTab() {
 
                 <table width="250" cellSpacing="0" cellPadding="0" align="center" style={{border: '0'}}>
                     <tbody>
-                        <tr>
-                            <td width="40">&nbsp;</td>
-                            <td>
-                                <div align="center" class="tempList">| BOOK</div>
-                            </td>
-                            <td>
-                                <div align="center" class="tempList">| CHAPTER</div>
-                            </td>
-                            <td>
-                                <div align="center" class="tempList">| VERSE</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="40">&nbsp;</td>
-                            <td height="53">
-                                <div align="center" class="tempList">
-                                    <select name="book" size={26} id="bookList" class="custom-select navListStyleNew" style="width:160px">
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div align="center" class="tempList">
-                                    <select name="chapter" size={26} id="chapterList" class="custom-select navListStyleNew" style="width:65px">
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div align="center" class="tempList">
-                                    <select name="verse" size={26} id="verseList" class="custom-select navListStyleNew" style="width:55px">
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan={3}>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td width="40">&nbsp;</td>
+                        <td>
+                            <div align="center" class="tempList">| BOOK</div>
+                        </td>
+                        <td>
+                            <div align="center" class="tempList">| CHAPTER</div>
+                        </td>
+                        <td>
+                            <div align="center" class="tempList">| VERSE</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="40">&nbsp;</td>
+                        <td height="53">
+                            <div align="center" class="tempList">
+                                <select name="book" size={26} id="bookList" class="custom-select navListStyleNew"
+                                        style="width:160px">
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div align="center" class="tempList">
+                                <select name="chapter" size={26} id="chapterList" class="custom-select navListStyleNew"
+                                        style="width:65px">
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div align="center" class="tempList">
+                                <select name="verse" size={26} id="verseList" class="custom-select navListStyleNew"
+                                        style="width:55px">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan={3}>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
 

@@ -24,11 +24,10 @@ export default function LeftTab() {
     const container = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // @ts-ignore
         const { TabView } = $Y;
 
         const tabview = new TabView({
-            srcNode: container.current,
+            srcNode: container.current!,
         });
 
         tabview.render();

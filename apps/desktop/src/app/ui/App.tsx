@@ -29,7 +29,7 @@ const App = ({dev}: Props) => {
             {/*    documentRoot="app:/"*/}
             {/*></SandboxFrame>*/}
 
-            <MenuBar/>
+            <MenuBar />
 
             {/*<div class="column">*/}
             {/*    <div class="ui console segment">*/}

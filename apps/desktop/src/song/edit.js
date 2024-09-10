@@ -1,6 +1,3 @@
-// TODO: yui-migrate
-// - YAHOO.widget.Panel
-
 import {addTagList, fillTagList} from "@/tags";
 import {SongPresenter} from "./present";
 import {Song} from '@/song/obj';
@@ -8,239 +5,23 @@ import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {apple, clearSelectList, isBlank, specialCategory} from "@app/common";
 import {$RvW} from "@/rvw";
-
-const SONG_EDIT_BODY_CONTENT = `<div class="ui grid vvrow">
-  <div class="eight wide column">
-    <div class="form-group row">
-      <label for="songEdit_NameID" class="col-sm col-form-label">Title</label>
-      <div class="col-sm">
-        <input type="text" class="form-control form-control-sm" id="songEdit_NameID" placeholder="Song Title">
-      </div>
-    </div>
-  </div>
-  <div class="six wide column">
-    <div class="form-group row">
-      <label for="songEdit_Name2ID" class="col-sm col-form-label">Title 2</label>
-      <div class="col-sm">
-        <input type="text" class="form-control form-control-sm" id="songEdit_Name2ID"
-          placeholder="Alternate Song Title">
-      </div>
-    </div>
-  </div>
-  <div class="two wide column">
-    <div class="form-group row">
-      <label for="songEdit_SongNumberID" class="col-sm col-form-label">#</label>
-      <div class="col-sm">
-        <input type="text" class="form-control form-control-sm" id="songEdit_SongNumberID"
-          placeholder="Song Number" readonly>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- **** CATEGORY **** -->
-<div class="ui grid vvrow30">
-  <div class="four wide column">
-    <label for="songnav_category2" class="col-form-label">Category</label>
-  </div>
-
-  <div class="six wide column">
-    <div class="form-group">
-      <select class="form-control" id="songnav_category2"></select>
-    </div>
-  </div>
-
-  <div class="one wide column">
-    <button type="button" class="btn btn-secondary btn-sm" id="songEdit_addCatButtonID">+</button>
-  </div>
-
-  <div class="three wide column">
-    <input type="text" class="form-control form-control-sm" id="se_catTextID" placeholder="New Category">
-  </div>
-
-  <div class="one wide column">
-    <button type="button" class="btn btn-secondary btn-sm" id="se_submitCatButtonID2">OK</button>
-  </div>
-</div>
-
-<!-- **** FONTS **** -->
-<div class="ui grid vvrow30">
-  <div class="four wide column">
-    <div class="form-group">
-      <label for="se_fontID2">Primary Font</label>
-    </div>
-  </div>
-
-  <div class="six wide column">
-    <div class="form-group">
-      <select class="form-control" id="se_fontID2"></select>
-    </div>
-  </div>
-
-  <div class="one wide column">
-    <button type="button" class="btn btn-secondary btn-sm" id="se_addFontButtonID2">+</button>
-  </div>
-
-  <div class="three wide column">
-    <input type="text" class="form-control form-control-sm" id="se_fontTextID" placeholder="New Font Name">
-  </div>
-
-  <div class="one wide column">
-    <button type="button" class="btn btn-secondary btn-sm" id="se_submitFontButtonID2">OK</button>
-  </div>
-</div>
-
-<!-- **** SECONDARY FONTS **** -->
-<div class="ui grid vvrow40">
-  <div class="four wide column">
-    <div class="form-group">
-      <label for="se_fontID2_2">Secondary Font</label>
-    </div>
-  </div>
-  <div class="six wide column">
-    <div class="form-group">
-      <select class="form-control" id="se_fontID2_2"></select>
-    </div>
-  </div>
-</div>
-
-<!-- **** KEY, COPYRIGHT, YouTUBE **** -->
-<div class="ui grid">
-  <div class="two wide column">
-    <div class="form-group">
-      <label for="se_keyID">Key</label>
-      <input type="text" class="form-control form-control-sm" id="se_keyID" placeholder="Key">
-    </div>
-  </div>
-  <div class="six wide column">
-    <div class="form-group">
-      <label for="se_copyrightID">Lyrics By</label>
-      <input type="text" class="form-control form-control-sm" id="se_copyrightID" placeholder="Author">
-    </div>
-  </div>
-  <div class="eight wide column">
-    <div class="form-group">
-      <label for="se_yvideoID">YouTube Link</label>
-      <input type="text" class="form-control form-control-sm" id="se_yvideoID"
-        placeholder="Example: https://www.youtube.com/watch?v=COQ6cni_TG8">
-    </div>
-  </div>
-</div>
-
-<div class="ui grid">
-  <div id="se_slides" class="style2"></div><br>
-</div>
-
-<div class="ui grid vvrow">
-  <div class="nine wide column">
-    <div class="form-group">
-      <button type="button" class="btn btn-dark btn-sm" id="songEdit_moveSlideLeftButtonID">&lt;</button>
-      <button type="button" class="btn btn-dark btn-sm" id="songEdit_moveSlideRightButtonID">&gt;</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songEdit_addSlideButtonID">ADD</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songEdit_dupSlideButtonID">DUPLICATE</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songEdit_deleteSlideButtonID">DELETE</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songEdit_createSlidesButtonID">CREATE</button>
-    </div>
-  </div>
-  <div class="two wide column">
-    <label for="se_sequenceID" class="invisible">Sequence</label>
-  </div>
-  <div class="five wide column">
-    <input type="text" class="form-control form-control-sm invisible" id="se_sequenceID" placeholder="1,2,3,2,4,2">
-  </div>
-</div>
-
-<div class="ui grid">
-  <div class="one wide column">
-    <div class="form-group">
-      <label for="se_notesID">Notes</label>
-    </div>
-  </div>
-  <div class="eight wide column">
-    <div class="form-group">
-      <textarea class="form-control form-control-sm" id="se_notesID" rows="1"></textarea>
-    </div>
-  </div>
-
-  <div class="one wide column">
-  </div>
-
-  <div class="one wide column">
-    <div class="form-group">
-      <label for="se_notesID">Tags</label>
-    </div>
-  </div>
-  <div class="five wide column">
-    <div class="form-group">
-      <textarea class="form-control form-control-sm" id="se_tagID" rows="1" placeholder="Worship,Slow"></textarea>
-    </div>
-  </div>
-</div>
-
-<div class="ui grid vvrow">
-  <div class="ten wide column">
-    <div class="form-group">
-      <button type="button" class="btn btn-primary btn-sm" id="se_presentID">PRESENT</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songEdit_saveButtonID">SAVE</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songAsNewEdit_saveButtonID">SAVE AS NEW</button>
-      <button type="button" class="btn btn-primary btn-sm" id="songEdit_cancelButtonID">CANCEL</button>
-    </div>
-  </div>
-
-  <div class="two wide column">
-  </div>
-
-  <!--
-    <div class="two wide column">
-      <label for="se_ratingID">Rating</label>
-    </div>
-
-    <div class="two wide column">
-        <input type="text" class="form-control form-control-sm" id="se_ratingID" placeholder="1-5">
-    </div>
-    -->
-</div>`;
-
-const LYRICS_CREATE_CONTENT = `<div class="style2">
-    <label for="se_quickSlideID"></label><textarea id="se_quickSlideID" style="width: 400px" class="textareaStyle4songslide"></textarea><label for="se_quickSlideID_2"></label><textarea id="se_quickSlideID_2" style="width: 400px" class="textareaStyle4songslide"></textarea>
-
-    <br>
-
-    <i>Separate the slides with the delimiter</i>
-
-    <br>
-
-    <i><code>\\r</code> for CR (carriage return)</i>,&nbsp;
-    <i><code>\\n</code> for LF (newline)</i>,&nbsp;
-    <i><code>\\t</code> for TAB</i>,&nbsp;
-    <i><code>\\s</code> for WHITESPACE</i>
-
-    <br>
-
-    <label for="se-slide-delimiter">Delimiter</label>
-    <input type="text" id="se-slide-delimiter" value="\\n\\n\\n">
-    <label for="se-trim-slides">Trim Slides</label>
-    <input type="checkbox" id="se-trim-slides">
-    <label for="se-trim-empty">Remove Empty</label>
-    <input type="checkbox" id="se-trim-empty">
-
-    <br>
-
-    <input type="button" id="se_generateID" value=" GENERATE SLIDES ">
-    <input type="button" id="se_generateCancelID" value=" CANCEL ">
-</div>`;
+import {showSongEditPanel, showLyricEditPanel} from "@stores/global";
 
 export class SongEdit {
     constructor() {
+        this.onPresent = onClick_se_presentID;
+        this.onSave = onClick_songEdit_saveButtonID;
+        this.onSaveAsNew = onClick_songAsNewEdit_saveButtonID;
+        this.onCancel = onClick_cancelButtonID;
+
+        this.onLyricEditOnGenerate = onClick_se_generateID;
+
         const _isDebug = false;
 
         let b = false;
         let v = -1;
         let _primaryKey = -1;
         let Z = false;
-        let _bodyContent = SONG_EDIT_BODY_CONTENT;
-        let _lyricsCreateContent = LYRICS_CREATE_CONTENT;
-        let _panel = null;
         let _slidesTabView;
         let u = "";
         let A = 0;
@@ -252,7 +33,6 @@ export class SongEdit {
 
             _fontsList = ["Arial", "Times New Roman", "Calibri"];
 
-            _setupPanel();
             _loadUsedFonts();
             _setupSlides();
             _setupEvents();
@@ -271,24 +51,9 @@ export class SongEdit {
                 Z = false;
             }
             _loadSong(song);
-            _panel.show();
+            showSongEditPanel.set(true);
         }
 
-        function _setupPanel() {
-            _debug("Generating Panel");
-
-            _panel = new YAHOO.widget.Panel("song-edit", {
-                width: "600px",
-                fixedcenter: true,
-                modal: true,
-                visible: false,
-                constraintoviewport: true,
-            });
-            _panel.render(document.body);
-            _panel.setHeader("Song ADD / EDIT");
-            _panel.setBody(_bodyContent);
-            _panel.hide();
-        }
         function _setupEvents() {
             _debug("Generating Events");
 
@@ -331,18 +96,6 @@ export class SongEdit {
             document
                 .getElementById("se_fontID2_2")
                 .addEventListener("change", onChange_se_fontID2_2, false);
-            document
-                .getElementById("se_presentID")
-                .addEventListener("click", onClick_se_presentID, false);
-            document
-                .getElementById("songEdit_saveButtonID")
-                .addEventListener("click", onClick_songEdit_saveButtonID, false);
-            document
-                .getElementById("songAsNewEdit_saveButtonID")
-                .addEventListener("click", onClick_songAsNewEdit_saveButtonID, false);
-            document
-                .getElementById("songEdit_cancelButtonID")
-                .addEventListener("click", onClick_cancelButtonID, false);
 
             document.getElementById("se_catTextID").style.visibility = "hidden";
             document.getElementById("se_submitCatButtonID2").style.visibility = "hidden";
@@ -592,7 +345,6 @@ export class SongEdit {
                 _clear_all_slides();
 
                 _append_Slide();
-                _append_Slide();
             }
             _slidesTabView.selectChild(0);
         }
@@ -745,29 +497,11 @@ export class SongEdit {
         function onClick_createSlidesButtonID() {
             _reset_seq_id();
 
-            const _createPanel = new YAHOO.widget.Panel("gpanelObj", {
-                width: "820px",
-                fixedcenter: true,
-                modal: true,
-                visible: false,
-                constraintoviewport: true,
-            });
-            _createPanel.render(document.body);
-            _createPanel.setHeader("Generate Slides");
-            _createPanel.setBody(_lyricsCreateContent);
-
             // todo: make reactive to window resize
             const windowHeight = ($(window).height() * 0.8) - 100 /* guide text height */;
 
             $("#se_quickSlideID").height(windowHeight);
             $("#se_quickSlideID_2").height(windowHeight);
-
-            document
-                .getElementById("se_generateID")
-                .addEventListener("click", onClick_se_generateID, false);
-            document
-                .getElementById("se_generateCancelID")
-                .addEventListener("click", onClick_se_generateCancelID, false);
 
             {
                 const al = document.getElementById("se_fontID2").selectedIndex;
@@ -812,115 +546,100 @@ export class SongEdit {
             document.getElementById("se_quickSlideID").value = primarySlidesList.join(delimiter);
             document.getElementById("se_quickSlideID_2").value = secondarySlidesList.join(delimiter);
 
-            _createPanel.show();
-            _createPanel.bringToTop();
+            showLyricEditPanel.set(true);
+        }
 
-            function _unescapeSlidesDelimiter(delimiter) {
-                let res = "";
-                for (let i = 0; i < delimiter.length; i++) {
-                    if (delimiter[i] === '\\') {
-                        i++;
-                        switch (delimiter[i]) {
-                            case 'n': res += '\n'; break;
-                            case 'r': res += '\r'; break;
-                            case 'v': res += '\v'; break;
-                            case 't': res += '\t'; break;
-                            case '\\': res += '\\'; break;
-                            case 's': res += ' '; break;
-                            case '0': res += '\0'; break;
-                            case 'x': {
-                                res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 2), 16));
-                                i += 2;
-                                break;
-                            }
-                            case 'u': {
-                                res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 4), 16));
-                                i += 4;
-                                break;
-                            }
-                            default: res += delimiter[i]; break;
+        function _unescapeSlidesDelimiter(delimiter) {
+            let res = "";
+            for (let i = 0; i < delimiter.length; i++) {
+                if (delimiter[i] === '\\') {
+                    i++;
+                    switch (delimiter[i]) {
+                        case 'n': res += '\n'; break;
+                        case 'r': res += '\r'; break;
+                        case 'v': res += '\v'; break;
+                        case 't': res += '\t'; break;
+                        case '\\': res += '\\'; break;
+                        case 's': res += ' '; break;
+                        case '0': res += '\0'; break;
+                        case 'x': {
+                            res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 2), 16));
+                            i += 2;
+                            break;
                         }
-                    } else {
-                        res += delimiter[i];
+                        case 'u': {
+                            res += String.fromCharCode(parseInt(delimiter.substr(i + 1, 4), 16));
+                            i += 4;
+                            break;
+                        }
+                        default: res += delimiter[i]; break;
                     }
-                }
-                return res;
-            }
-
-            function onClick_se_generateID() {
-                // GENERATE SLIDES
-                _current_slide_num = 1;
-
-                const trimEmpty = $Y.one("#se-trim-empty").get('checked');
-                const trimSlides = $Y.one("#se-trim-slides").get('checked');
-                const _delimiter = $("#se-slide-delimiter").val();
-
-                _debug("Delimiter: " + _delimiter);
-                _debug("Trim Empty: " + trimEmpty);
-                _debug("Trim Slides: " + trimSlides);
-
-                $RvW.rvwPreferences.set("app.state.song.create.delimiter", _delimiter);
-                $RvW.rvwPreferences.set("app.state.song.create.trim_empty", trimEmpty);
-                $RvW.rvwPreferences.set("app.state.song.create.trim_slides", trimSlides);
-                $RvW.rvwPreferences.commit();
-
-                const delimiter = _unescapeSlidesDelimiter(_delimiter);
-
-                const av = document.getElementById("se_quickSlideID").value;
-                let sl1 = av.split(delimiter);
-                const au = document.getElementById("se_quickSlideID_2").value;
-                let sl2 = au.split(delimiter);
-
-                if (trimSlides) {
-                    sl1 = sl1.map((slide) => slide.trim());
-                    sl2 = sl2.map((slide) => slide.trim());
-                }
-
-                if (trimEmpty) {
-                    sl1 = sl1.filter((slide) => !!slide.trim());
-                    sl2 = sl2.filter((slide) => !!slide.trim());
-                }
-
-                // FIXME: make it more efficient
-
-                if (sl2[0] != null) {
-                    _append_Slide(sl1[0], sl2[0]);
                 } else {
-                    _append_Slide(sl1[0], null);
+                    res += delimiter[i];
                 }
+            }
+            return res;
+        }
 
-                let aw = _slidesTabView.item(1);
-                while (aw != null) {
-                    _slidesTabView.remove(aw.get("index"));
-                    aw = _slidesTabView.item(1);
+        function onClick_se_generateID() {
+            // GENERATE SLIDES
+            _current_slide_num = 1;
+
+            const trimEmpty = $Y.one("#se-trim-empty").get('checked');
+            const trimSlides = $Y.one("#se-trim-slides").get('checked');
+            const _delimiter = $("#se-slide-delimiter").val();
+
+            _debug("Delimiter: " + _delimiter);
+            _debug("Trim Empty: " + trimEmpty);
+            _debug("Trim Slides: " + trimSlides);
+
+            $RvW.rvwPreferences.set("app.state.song.create.delimiter", _delimiter);
+            $RvW.rvwPreferences.set("app.state.song.create.trim_empty", trimEmpty);
+            $RvW.rvwPreferences.set("app.state.song.create.trim_slides", trimSlides);
+            $RvW.rvwPreferences.commit();
+
+            const delimiter = _unescapeSlidesDelimiter(_delimiter);
+
+            const av = document.getElementById("se_quickSlideID").value;
+            let sl1 = av.split(delimiter);
+            const au = document.getElementById("se_quickSlideID_2").value;
+            let sl2 = au.split(delimiter);
+
+            if (trimSlides) {
+                sl1 = sl1.map((slide) => slide.trim());
+                sl2 = sl2.map((slide) => slide.trim());
+            }
+
+            if (trimEmpty) {
+                sl1 = sl1.filter((slide) => !!slide.trim());
+                sl2 = sl2.filter((slide) => !!slide.trim());
+            }
+
+            // FIXME: make it more efficient
+
+            if (sl2[0] != null) {
+                _append_Slide(sl1[0], sl2[0]);
+            } else {
+                _append_Slide(sl1[0], null);
+            }
+
+            let aw = _slidesTabView.item(1);
+            while (aw != null) {
+                _slidesTabView.remove(aw.get("index"));
+                aw = _slidesTabView.item(1);
+            }
+
+            _current_slide_num = 2;
+
+            for (let ix = 1; ix < sl1.length; ix++) {
+                if (sl2[ix] != null) {
+                    _append_Slide(sl1[ix], sl2[ix]);
+                } else {
+                    _append_Slide(sl1[ix], null);
                 }
-
-                _current_slide_num = 2;
-
-                for (let ix = 1; ix < sl1.length; ix++) {
-                    if (sl2[ix] != null) {
-                        _append_Slide(sl1[ix], sl2[ix]);
-                    } else {
-                        _append_Slide(sl1[ix], null);
-                    }
-                }
-
-                onClick_se_generateCancelID();
-            }
-            function onClick_se_generateCancelID() {
-                _setup_clickHandlers();
-                _createPanel.hide();
             }
 
-            function _setup_clickHandlers() {
-                document
-                    .getElementById("se_generateID")
-                    .removeEventListener("click", onClick_se_generateID, false);
-
-                document
-                    .getElementById("se_generateCancelID")
-                    .removeEventListener("click", onClick_se_generateCancelID, false);
-            }
+            showLyricEditPanel.set(false);
         }
 
         function deleteCurrentSlide() {
@@ -1076,7 +795,7 @@ export class SongEdit {
                     _debug("Updating song..");
                     $RvW.songManagerObj.updateSong(ac, v, _primaryKey, Z);
                 }
-                _panel.hide();
+                showSongEditPanel.set(false);
                 return true;
             } else {
                 _debug("Extract Data failed");
@@ -1105,7 +824,7 @@ export class SongEdit {
         }
 
         function _close_panel() {
-            _panel.hide();
+            showSongEditPanel.set(false);
         }
         function G(ad) {
             const ac = ad.split('"');

@@ -83,7 +83,9 @@ declare global {
     // interface Matrix {}
 
     // ...
-    const Screen: any;
+    export type Screen = runtime.flash.display.Screen;
+    const Screen: typeof runtime.flash.display.Screen;
+
     const Rectangle: any;
     const HTMLLoader: any;
     const URLRequest: any;

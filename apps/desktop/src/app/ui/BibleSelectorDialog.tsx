@@ -29,95 +29,95 @@ export default function BibleSelectorDialog() {
     }
 
     return (
-        <div class="generalPanelDIV">
-            <div class="generalheading2">Bible Version Selection</div>
-
-            <br/>
-
-            <div class="style2">
-                <label>Primary</label>
-
-                <select
-                    name="version1Menu"
-                    id="version1Menu"
-                    class="selectboxStyle"
-                    value={bibleVersion1}
-                    onClick={(e) => selectedBibleVersion1.set((e.target as HTMLSelectElement).selectedIndex)}
-                >
-                    {bibleVersions.map((version, i) => (
-                        <option value={i} key={i}>{version}</option>
-                    ))}
-                </select>
-
-                <div class="style2" id="version1Text"></div>
+        <div class="yui3-widget-bd">
+            <div class="generalPanelDIV">
+                <div class="generalheading2">Bible Version Selection</div>
 
                 <br/>
 
-                <label>Secondary</label>
+                <div class="style2">
+                    <label>Primary</label>
 
-                <select
-                    name="version2Menu"
-                    id="version2Menu"
-                    class="selectboxStyle"
-                    value={bibleVersion2}
-                    onClick={(e) => selectedBibleVersion2.set((e.target as HTMLSelectElement).selectedIndex)}
-                >
-                    {bibleVersions.map((version, i) => (
-                        <option value={i} key={i}>{version}</option>
-                    ))}
-                </select>
+                    <select
+                        name="version1Menu"
+                        id="version1Menu"
+                        class="selectboxStyle"
+                        value={bibleVersion1}
+                        onClick={(e) => selectedBibleVersion1.set((e.target as HTMLSelectElement).selectedIndex)}
+                    >
+                        {bibleVersions.map((version, i) => (
+                            <option value={i} key={i}>{version}</option>
+                        ))}
+                    </select>
 
-                <div class="style2" id="version2Text"></div>
+                    <div class="style2" id="version1Text"></div>
 
-                <br/>
+                    <br/>
 
-                <input type="checkbox" id="singleVersionBoxID" value="checkbox"/> Display Only Version 1 <br/>
-                <input type="checkbox" id="multipleVerseID" value="checkbox"/> Display 2 verse per slide <br/>
+                    <label>Secondary</label>
 
-                <br/>
-                Book Name Style
-                <br/>
+                    <select
+                        name="version2Menu"
+                        id="version2Menu"
+                        class="selectboxStyle"
+                        value={bibleVersion2}
+                        onClick={(e) => selectedBibleVersion2.set((e.target as HTMLSelectElement).selectedIndex)}
+                    >
+                        {bibleVersions.map((version, i) => (
+                            <option value={i} key={i}>{version}</option>
+                        ))}
+                    </select>
 
-                <select name="booknameStyle" id="booknameStyle" class="selectboxStyle">
-                    <option value="1" selected>English</option>
-                    <option value="2">Primary Language</option>
-                    <option value="3">Primary Language with English</option>
-                    <option value="4">Primary Language with Secondary</option>
-                </select>
+                    <div class="style2" id="version2Text"></div>
 
-                <br/>
+                    <br/>
 
-                <input type="checkbox" id="englishList" value="checkbox"/> Book selection in English
+                    <input type="checkbox" id="singleVersionBoxID" value="checkbox"/> Display Only Version 1 <br/>
+                    <input type="checkbox" id="multipleVerseID" value="checkbox"/> Display 2 verse per slide <br/>
 
-                <br/>
-                <br/>
+                    <br/>
+                    Book Name Style
+                    <br/>
 
-                <button id="versionSave" class="ui icon button mini" onClick={onClickSave}>
-                    Save
-                </button>
-            </div>
+                    <select name="booknameStyle" id="booknameStyle" class="selectboxStyle">
+                        <option value="1" selected>English</option>
+                        <option value="2">Primary Language</option>
+                        <option value="3">Primary Language with English</option>
+                        <option value="4">Primary Language with Secondary</option>
+                    </select>
 
-            <br/>
-            <br/>
+                    <br/>
 
-            <div class="style2">
-                <input type="checkbox" id="navDualLanguageID" checked/>Dual language display for Navigation
+                    <input type="checkbox" id="englishList" value="checkbox"/> Book selection in English
 
-                <br/>
-                <br/>
+                    <br/>
+                    <br/>
 
-                <div class="style2">Navigation Font Size</div>
-
-                <div id="sliderbg">
-                    <div id="sliderthumb"><img src="lib/yui2/slider/assets/thumb-n.gif"/></div>
+                    <button id="versionSave" class="ui icon button mini" onClick={onClickSave}>
+                        Save
+                    </button>
                 </div>
-            </div>
 
-            <br/>
+                <br/>
+                <br/>
+
+                <div class="style2">
+                    <input type="checkbox" id="navDualLanguageID" checked/>Dual language display for Navigation
+
+                    <br/>
+                    <br/>
+
+                    <div class="style2">Navigation Font Size</div>
+
+                    <div id="nav-font-size-slider"></div>
+                </div>
+
+                <br/>
+            </div>
         </div>
     );
 }
 
 export function mount(at: string) {
-    render(<BibleSelectorDialog/>, document.getElementById(at)!);
+    render(<BibleSelectorDialog />, document.getElementById(at)!);
 }

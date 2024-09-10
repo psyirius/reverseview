@@ -347,3 +347,147 @@ export class BibleDB {
         }
     }
 }
+
+function newSQLConnection(db, callback, mode = air.SQLMode.READ) {
+    const conn = new air.SQLConnection();
+
+    conn.addEventListener(air.SQLEvent.OPEN, function (event) {
+        if (!callback(null, conn, () => conn.close())) {
+            conn.close();
+        }
+    });
+    conn.addEventListener(air.SQLErrorEvent.ERROR, function (event) {
+        callback(event.error, null);
+        conn.close();
+    });
+
+    const dbFile = air.File.applicationStorageDirectory.resolvePath(db);
+    conn.openAsync(dbFile, mode);
+}
+
+function executeSQL(conn, query, params, callback) {
+    const stmt = new air.SQLStatement();
+    stmt.sqlConnection = conn;
+    if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+            stmt.parameters[key] = String(value);
+        });
+    }
+    stmt.text = query;
+
+    stmt.addEventListener(air.SQLEvent.RESULT, function (event) {
+        callback(null, event.target.getResult());
+    });
+    stmt.addEventListener(air.SQLErrorEvent.ERROR, function (event) {
+        callback(event.error, null);
+    });
+
+    stmt.execute();
+}
+
+const bibleDbMap = {
+    'en-US': 'kjv.db',
+};
+
+export function loadBibleBookNames(bibleVersionId, callback) {
+    newSQLConnection(`./bible/${bibleDbMap[bibleVersionId]}`, function (e, conn, closeConn) {
+        if (e) {
+            return callback(e);
+        }
+
+        // Get bible metadata
+        executeSQL(conn, `
+SELECT
+    *
+FROM
+    configuration
+;
+`.trim(), null, function (e, result) {
+            if (e) {
+                return callback(e);
+            }
+
+            const rows = result.data;
+
+            // will have only one row
+            const {title, description, booknames, fonts} = rows[0];
+
+            callback(null, {
+                title,
+                description,
+                booknames: JSON.parse('[' + booknames + ']'),
+                fonts: fonts.split(',').map((font) => font.trim()),
+            });
+
+            closeConn();
+        });
+
+        return true;
+    }, air.SQLMode.READ);
+}
+
+export function loadBibleInfo(bibleId, callback) {
+    const numChMap = {};
+
+    newSQLConnection(`./bible/${bibleDbMap[bibleId]}`, function (e, conn, closeConn) {
+        if (e) {
+            return callback(e);
+        }
+
+        // Get Num of chapters per book
+        executeSQL(conn, `
+SELECT
+    bookNum,
+    COUNT(DISTINCT chNum) AS numChapters
+FROM
+    words
+GROUP BY
+    bookNum
+;
+`.trim(), null, function (e, result) {
+            if (e) {
+                return callback(e);
+            }
+
+            const rows = result.data;
+
+            rows.forEach(({ bookNum, numChapters }) => {
+                // air.trace(bookNum, numChapters);
+                numChMap[bookNum] = [numChapters];
+            });
+
+            // Get Num of verses per chapter
+            executeSQL(conn, `
+SELECT
+    bookNum,
+    chNum,
+    COUNT(*) AS numVerses
+FROM
+    words
+GROUP BY
+    bookNum,
+    chNum
+;
+`.trim(), null, function (e, result) {
+                if (e) {
+                    return callback(e);
+                }
+
+                const rows = result.data;
+
+                rows.forEach(({ bookNum, chNum, numVerses }) => {
+                    // air.trace(bookNum, chNum, numVerses);
+                    numChMap[bookNum].push(numVerses);
+                });
+
+                // TODO: Verify
+
+                callback(null, [numChMap]);
+
+                closeConn();
+            });
+        });
+
+        return true;
+    }, air.SQLMode.READ);
+}

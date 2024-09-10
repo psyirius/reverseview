@@ -20,6 +20,8 @@ declare var YAHOO: YUI2;
 interface YUI3 {
     Promise: any;
     Panel: any;
+    TabView: any;
+    Slider: any;
 
     Plugin: {
         AutoComplete: any;

@@ -53,12 +53,11 @@ import {
     fileExist,
     ImageIcon,
     pluckapple,
-    roundSearchBox,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
 import {selectedBookRef, selectedTab} from "@stores/global";
+import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
-import VIEWS from "@/views";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -76,14 +75,14 @@ DEV: {
         // const classPath = 'flash.utils.ByteArray';
         const classPath = 'air.net.websockets.WebSocketServer';
 
-        let as3Val = window.runtime;
+        let asx = window.runtime;
 
         const splits = classPath.split('.');
         while (splits.length > 0) {
-            as3Val = as3Val[splits.shift()];
+            asx = asx[splits.shift()];
         }
 
-        air.trace('[[[.....As3.....]]]: ' + String(as3Val));
+        air.trace('[[[.....As3.....]]]: ' + String(asx));
 
         // const obj = new as3Val();
     } catch (e) {
@@ -94,7 +93,9 @@ DEV: {
     copyFile2AppStorage("webroot", "webroot");
 }
 
-window.htmlLoader.addEventListener(runtime.flash.events.HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCRIPT_EXCEPTION, function(event) {
+const { HTMLUncaughtScriptExceptionEvent } = runtime.flash.events;
+
+window.htmlLoader.addEventListener(HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCRIPT_EXCEPTION, function(event) {
     event.preventDefault();
 
     air.trace(`>>>Uncaught Script Exception<<<: ${event.exceptionValue}`);
@@ -765,12 +766,12 @@ function vvinit_continue() {
         SplashScreen.close();
 
         activateMainWindow();
-
         setupNavWindow();
+
         $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
         $RvW.putbook();
         window.nativeWindow.addEventListener("resize", setupNavWindow);
-        window.nativeWindow.addEventListener("close", $RvW.processExit);
+        window.nativeWindow.addEventListener("close", () => $RvW.processExit());
         window.nativeWindow.addEventListener("closing", beforeExit);
         $RvW.newUpdateObj = new AppUpdater();
     }, 500);
@@ -836,19 +837,20 @@ function setupTabContent() {
 
     // Right Tab
     /* setupTabView("bible_verses", "bibleverseTab"); */
-    setupTabView("song_lyrics", "lyricsTab");
-    setupTabView("notes", "notesTab");
-    setupTabView("search", "searchTab");
-    setupTabView("schedule", "scheduleTab");
-    setupTabView("graphics", "graphicsTab");
-    setupTabView("settings", "screenTab");
+    /* setupTabView("song_lyrics", "lyricsTab"); */
+    /* setupTabView("notes", "notesTab"); */
+    /* setupTabView("search", "searchTab"); */
+    /* setupTabView("schedule", "scheduleTab"); */
+    /* setupTabView("graphics", "graphicsTab"); */
+    /* setupTabView("settings", "screenTab"); */ setupSettingsTab();
 
     // Left Tab
     /* setupTabView("nav", "navTab"); */ fillNav();
     /* setupTabView("song_nav", "songNavTab"); */
 
-    fillTabs('configTab');
+    versionFill(true); configInit();
 
+    $RvW.scheduleObj = new Scheduler();
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes();
     $RvW.searchObj = new BibleSearch(`./bible/${getVersion1Filename()}`);
@@ -890,177 +892,157 @@ function setupTabContent() {
 //     return data;
 // }
 
-function setupTabView(name, mountPoint) {
-    const html = VIEWS[name];
-    if (!html) {
-        air.trace(`[!] View template not found: ${name}`);
-    }
-    document.getElementById(mountPoint).innerHTML = html;
-    fillTabs(mountPoint);
+// function setupTabView(name, mountPoint) {
+//     const html = VIEWS[name];
+//     if (!html) {
+//         air.trace(`[!] View template not found: ${name}`);
+//     }
+//     document.getElementById(mountPoint).innerHTML = html;
+//     fillTabs(mountPoint);
+// }
+
+function setupSettingsTab() {
+    document.getElementById("thirdview_opacity").value =
+        $RvW.vvConfigObj.get_svOpacity();
+    document.getElementById("thirdview_height").value =
+        $RvW.vvConfigObj.get_svHeight();
+    document.getElementById("thirdview_fcolor").value =
+        $RvW.vvConfigObj.get_svFcolor();
+    document.getElementById("thirdview_position").value =
+        $RvW.vvConfigObj.get_svPosition();
+    document.getElementById("thirdview_maxFontSize").value =
+        $RvW.vvConfigObj.get_svMaxFontSize();
+    document.getElementById("thirdview_bcolor").value =
+        $RvW.vvConfigObj.get_svBcolor();
+    $("#thirdview_primary").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svShowPrimary() == "true" ? true : false
+    );
+    $("#thirdview_secondary").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svShowSecondary() == "true" ? true : false
+    );
+    $("#stageviewWindow").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svWindow() == "true" ? true : false
+    );
+    $("#stageviewGreenWindow").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svGreenWindow() == "true" ? true : false
+    );
+    $("#thirdview_outline").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svTextOutline() == "true" ? true : false
+    );
+    $("#thirdview_shadow").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svTextShadow() == "true" ? true : false
+    );
+    $("#stageSettingShowTime").prop(
+        "checked",
+        $RvW.vvConfigObj.get_svShowDate() == "true" ? true : false
+    );
+    $("#thirdview_opacity_range").range({
+        min: 0,
+        max: 10,
+        start: $RvW.vvConfigObj.get_svOpacity() * 10,
+        onChange: function (b) {
+            $("#thirdview_opacity").val(b / 10);
+            svParameterSaveEvent();
+        },
+    });
+    $("#thirdview_opacity").prop("disabled", true);
+    $("#thirdview_height_range").range({
+        min: 0,
+        max: 100,
+        start: $RvW.vvConfigObj.get_svHeight(),
+        onChange: function (b) {
+            $("#thirdview_height").val(b);
+            svParameterSaveEvent();
+        },
+    });
+    $("#thirdview_height").prop("disabled", true);
+    $("#thirdview_position_range").range({
+        min: 0,
+        max: 100,
+        start: $RvW.vvConfigObj.get_svPosition(),
+        onChange: function (b) {
+            $("#thirdview_position").val(b);
+            svParameterSaveEvent();
+        },
+    });
+    $("#thirdview_position").prop("disabled", true);
+    $("#thirdview_maxFontSize_range").range({
+        min: 10,
+        max: 100,
+        start: $RvW.vvConfigObj.get_svMaxFontSize(),
+        onChange: function (b) {
+            $("#thirdview_maxFontSize").val(b);
+            svParameterSaveEvent();
+        },
+    });
+    $("#thirdview_maxFontSize").prop("disabled", true);
+    $("#thirdview_fcolor_range").range({
+        min: 0,
+        max: 80,
+        start: $RvW.vvConfigObj.get_svFcolor(),
+        onChange: function (b) {
+            $("#thirdview_fcolor").val(b);
+            svParameterSaveEvent();
+            var c = "#" + $RvW.colorChart[$("#thirdview_fcolor").val()];
+            $("#thirdview_fcolor").css({ "background-color": c });
+        },
+    });
+    $("#thirdview_fcolor").prop("disabled", true);
+    $("#thirdview_bcolor_range").range({
+        min: 0,
+        max: 81,
+        start: $RvW.vvConfigObj.get_svBcolor(),
+        onChange: function (b) {
+            $("#thirdview_bcolor").val(b);
+            svParameterSaveEvent();
+            var c = "#" + $RvW.colorChart[$("#thirdview_bcolor").val()];
+            $("#thirdview_bcolor").css({ "background-color": c });
+        },
+    });
+    $("#thirdview_bcolor").prop("disabled", true);
 }
 
-function fillTabs(a) {
-    switch (a) {
-        case "configTab": {
-            versionFill(true);
-            configInit();
-            break;
-        }
-        case 'scheduleTab': {
-            $RvW.scheduleObj = new Scheduler();
-            break;
-        }
-        case 'graphicsTab': {
-            break;
-        }
-        case 'monitorTab': {
-            break;
-        }
-        case 'searchField': {
-            roundSearchBox(document.getElementById("adSearch"));
-            break;
-        }
-        case 'screenTab': {
-            document.getElementById("thirdview_opacity").value =
-                $RvW.vvConfigObj.get_svOpacity();
-            document.getElementById("thirdview_height").value =
-                $RvW.vvConfigObj.get_svHeight();
-            document.getElementById("thirdview_fcolor").value =
-                $RvW.vvConfigObj.get_svFcolor();
-            document.getElementById("thirdview_position").value =
-                $RvW.vvConfigObj.get_svPosition();
-            document.getElementById("thirdview_maxFontSize").value =
-                $RvW.vvConfigObj.get_svMaxFontSize();
-            document.getElementById("thirdview_bcolor").value =
-                $RvW.vvConfigObj.get_svBcolor();
-            $("#thirdview_primary").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svShowPrimary() == "true" ? true : false
-            );
-            $("#thirdview_secondary").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svShowSecondary() == "true" ? true : false
-            );
-            $("#stageviewWindow").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svWindow() == "true" ? true : false
-            );
-            $("#stageviewGreenWindow").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svGreenWindow() == "true" ? true : false
-            );
-            $("#thirdview_outline").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svTextOutline() == "true" ? true : false
-            );
-            $("#thirdview_shadow").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svTextShadow() == "true" ? true : false
-            );
-            $("#stageSettingShowTime").prop(
-                "checked",
-                $RvW.vvConfigObj.get_svShowDate() == "true" ? true : false
-            );
-            $("#thirdview_opacity_range").range({
-                min: 0,
-                max: 10,
-                start: $RvW.vvConfigObj.get_svOpacity() * 10,
-                onChange: function (b) {
-                    $("#thirdview_opacity").val(b / 10);
-                    svParameterSaveEvent();
-                },
-            });
-            $("#thirdview_opacity").prop("disabled", true);
-            $("#thirdview_height_range").range({
-                min: 0,
-                max: 100,
-                start: $RvW.vvConfigObj.get_svHeight(),
-                onChange: function (b) {
-                    $("#thirdview_height").val(b);
-                    svParameterSaveEvent();
-                },
-            });
-            $("#thirdview_height").prop("disabled", true);
-            $("#thirdview_position_range").range({
-                min: 0,
-                max: 100,
-                start: $RvW.vvConfigObj.get_svPosition(),
-                onChange: function (b) {
-                    $("#thirdview_position").val(b);
-                    svParameterSaveEvent();
-                },
-            });
-            $("#thirdview_position").prop("disabled", true);
-            $("#thirdview_maxFontSize_range").range({
-                min: 10,
-                max: 100,
-                start: $RvW.vvConfigObj.get_svMaxFontSize(),
-                onChange: function (b) {
-                    $("#thirdview_maxFontSize").val(b);
-                    svParameterSaveEvent();
-                },
-            });
-            $("#thirdview_maxFontSize").prop("disabled", true);
-            $("#thirdview_fcolor_range").range({
-                min: 0,
-                max: 80,
-                start: $RvW.vvConfigObj.get_svFcolor(),
-                onChange: function (b) {
-                    $("#thirdview_fcolor").val(b);
-                    svParameterSaveEvent();
-                    var c = "#" + $RvW.colorChart[$("#thirdview_fcolor").val()];
-                    $("#thirdview_fcolor").css({ "background-color": c });
-                },
-            });
-            $("#thirdview_fcolor").prop("disabled", true);
-            $("#thirdview_bcolor_range").range({
-                min: 0,
-                max: 81,
-                start: $RvW.vvConfigObj.get_svBcolor(),
-                onChange: function (b) {
-                    $("#thirdview_bcolor").val(b);
-                    svParameterSaveEvent();
-                    var c = "#" + $RvW.colorChart[$("#thirdview_bcolor").val()];
-                    $("#thirdview_bcolor").css({ "background-color": c });
-                },
-            });
-            $("#thirdview_bcolor").prop("disabled", true);
-            break;
-        }
-    }
-}
+// function fillTabs(a) {
+//     switch (a) {
+//         case 'searchField': {
+//             roundSearchBox(document.getElementById("adSearch"));
+//             break;
+//         }
+//     }
+// }
 
 function updateBookNameVar() {
-    const a = new XMLHttpRequest();
-    a.onreadystatechange = function () {
-        if (a.readyState < 4) {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState < 4) {
             air.trace("BOOK NAME: Loading...");
         }
-        if (a.readyState === 4) {
-            const c = a.responseXML.documentElement;
-            b(c);
+
+        if (xhr.readyState === 4) {
+            const e = xhr.responseXML.documentElement;
+            air.trace("********Processing bookname");
+            const d = e.getElementsByTagName("b").length;
+            for (let c = 0; c < d; c++) {
+                $RvW.booknames[c] = e.getElementsByTagName("b")[c].textContent;
+            }
         }
     };
-    a.open("GET", "./xml/booknames.xml", false);
-    a.send(null);
-    function b(e) {
-        air.trace("********Processing bookname");
-        const d = e.getElementsByTagName("b").length;
-        for (let c = 0; c < d; c++) {
-            $RvW.booknames[c] = e.getElementsByTagName("b")[c].textContent;
-        }
-    }
+    xhr.open("GET", "./xml/booknames.xml", false);
+    xhr.send(null);
 }
+
 function fillNav() {
     $RvW.putbook();
     $RvW.putch();
     document.getElementById("bookList").addEventListener("change", $RvW.putch, false);
-    document
-        .getElementById("chapterList")
-        .addEventListener("change", $RvW.putver, false);
-    document
-        .getElementById("verseList")
-        .addEventListener("change", verseChange, false);
+    document.getElementById("chapterList").addEventListener("change", $RvW.putver, false);
+    document.getElementById("verseList").addEventListener("change", verseChange, false);
     new ImageIcon(
         "searchButtonID",
         " SEARCH ",
@@ -1068,12 +1050,8 @@ function fillNav() {
         "graphics/icon/search_32.png",
         ""
     );
-    document
-        .getElementById("nav_bibleRef_presentID")
-        .addEventListener("click", processNavBibleRef, false);
-    document
-        .getElementById("nav_bibleRef_findID")
-        .addEventListener("click", processNavBibleRefFind, false);
+    document.getElementById("nav_bibleRef_presentID").addEventListener("click", processNavBibleRef, false);
+    document.getElementById("nav_bibleRef_findID").addEventListener("click", processNavBibleRefFind, false);
     new ImageIcon(
         "nav_bibleRef_presentID",
         " QUICK PRESENT ",
@@ -1088,14 +1066,11 @@ function fillNav() {
         "graphics/icon/search_s.png",
         ""
     );
-    document
-        .getElementById("nav_bibleRefID")
-        .addEventListener("blur", bibleRefBlur, false);
-    document
-        .getElementById("nav_bibleRefID")
-        .addEventListener("focus", bibleRefFocus, false);
+    document.getElementById("nav_bibleRefID").addEventListener("blur", bibleRefBlur, false);
+    document.getElementById("nav_bibleRefID").addEventListener("focus", bibleRefFocus, false);
 
     $RvW.enterForSearchActive = true;
+
     updateRefMenu();
 
     $RvW.recentBibleRefs = new BibleRecentRefManager();
@@ -1114,6 +1089,7 @@ function beforeExit() {
     // main window state
     {
         const { NativeWindowDisplayState, Screen } = air;
+        const { nativeWindow } = window;
 
         const windowState = {
             bounds: {
@@ -1122,7 +1098,7 @@ function beforeExit() {
                 width: nativeWindow.width,
                 height: nativeWindow.height,
             },
-            maximized: nativeWindow.displayState === NativeWindowDisplayState.MAXIMIZED,
+            maximized: (nativeWindow.displayState === NativeWindowDisplayState.MAXIMIZED),
         }
 
         $RvW.rvwPreferences.set('app.state.window', windowState);
@@ -1262,150 +1238,6 @@ function setupVConfig() {
         return a;
     }
     return a;
-}
-
-function newSQLConnection(db, callback, mode = air.SQLMode.READ) {
-    const conn = new air.SQLConnection();
-
-    conn.addEventListener(air.SQLEvent.OPEN, function (event) {
-        if (!callback(null, conn, () => conn.close())) {
-            conn.close();
-        }
-    });
-    conn.addEventListener(air.SQLErrorEvent.ERROR, function (event) {
-        callback(event.error, null);
-        conn.close();
-    });
-
-    const dbFile = air.File.applicationStorageDirectory.resolvePath(db);
-    conn.openAsync(dbFile, mode);
-}
-
-function executeSQL(conn, query, params, callback) {
-    const stmt = new air.SQLStatement();
-    stmt.sqlConnection = conn;
-    if (params) {
-        Object.entries(params).forEach(([key, value]) => {
-            stmt.parameters[key] = String(value);
-        });
-    }
-    stmt.text = query;
-
-    stmt.addEventListener(air.SQLEvent.RESULT, function (event) {
-        callback(null, event.target.getResult());
-    });
-    stmt.addEventListener(air.SQLErrorEvent.ERROR, function (event) {
-        callback(event.error, null);
-    });
-
-    stmt.execute();
-}
-
-const bibleDbMap = {
-    'en-US': 'kjv.db',
-};
-
-function loadBibleBookNames(bibleVersionId, callback) {
-    newSQLConnection(`./bible/${bibleDbMap[bibleVersionId]}`, function (e, conn, closeConn) {
-        if (e) {
-            return callback(e);
-        }
-
-        // Get bible metadata
-        executeSQL(conn, `
-SELECT
-    *
-FROM
-    configuration
-;
-`.trim(), null, function (e, result) {
-            if (e) {
-                return callback(e);
-            }
-
-            const rows = result.data;
-
-            // will have only one row
-            const {title, description, booknames, fonts} = rows[0];
-
-            callback(null, {
-                title,
-                description,
-                booknames: JSON.parse('[' + booknames + ']'),
-                fonts: fonts.split(',').map((font) => font.trim()),
-            });
-
-            closeConn();
-        });
-
-        return true;
-    }, air.SQLMode.READ);
-}
-
-function loadBibleInfo(bibleId, callback) {
-    const numChMap = {};
-
-    newSQLConnection(`./bible/${bibleDbMap[bibleId]}`, function (e, conn, closeConn) {
-        if (e) {
-            return callback(e);
-        }
-
-        // Get Num of chapters per book
-        executeSQL(conn, `
-SELECT
-    bookNum,
-    COUNT(DISTINCT chNum) AS numChapters
-FROM
-    words
-GROUP BY
-    bookNum
-;
-`.trim(), null, function (e, result) {
-            if (e) {
-                return callback(e);
-            }
-
-            const rows = result.data;
-
-            rows.forEach(({ bookNum, numChapters }) => {
-                // air.trace(bookNum, numChapters);
-                numChMap[bookNum] = [numChapters];
-            });
-
-            // Get Num of verses per chapter
-            executeSQL(conn, `
-SELECT
-    bookNum,
-    chNum,
-    COUNT(*) AS numVerses
-FROM
-    words
-GROUP BY
-    bookNum,
-    chNum
-;
-`.trim(), null, function (e, result) {
-                if (e) {
-                    return callback(e);
-                }
-
-                const rows = result.data;
-
-                rows.forEach(({ bookNum, chNum, numVerses }) => {
-                    // air.trace(bookNum, chNum, numVerses);
-                    numChMap[bookNum].push(numVerses);
-                });
-
-                // TODO: Verify
-
-                callback(null, [numChMap]);
-
-                closeConn();
-            });
-        });
-
-        return true;
-    }, air.SQLMode.READ);
 }
 
 $RvW.booknames = [];

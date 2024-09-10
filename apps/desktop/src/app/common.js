@@ -240,37 +240,29 @@ function stopWatch() {
 
 export class FontSizeSlider {
     constructor() {
-        var d = null;
-        var e = 14;
+        const _slider = new $Y.Slider({
+            axis: 'x',
+            min: 0,
+            max: 200,
+            length: 200,
+            value: ($RvW.vvConfigObj.get_navFontSize() - 8) * 10,
+            after : {
+                valueChange: function() {
+                    const fz = Math.round(_slider.get('value')) / 10 + 8;
+                    $RvW.vvConfigObj.set_navFontSize(fz);
 
-        d = YAHOO.widget.Slider.getHorizSlider(
-            "sliderbg",
-            "sliderthumb",
-            0,
-            200,
-            20
-        );
-        var h = ($RvW.vvConfigObj.get_navFontSize() - 8) * 10;
-        d.setValue(h, true);
-        c();
+                    // Update the font size
+                    $RvW.updateVerseContainer();
+                    $RvW.searchObj.setFontSize(fz);
+                    $RvW.scheduleObj.changeFontsizeScheduleTab();
 
-        function c() {
-            d.subscribe("change", f);
-        }
+                    air.trace("Slider value changed:", fz);
+                }
+            }
+        });
 
-        function f() {
-            var h = Math.round(d.getValue());
-            var j = h / 10 + 8;
-            $RvW.vvConfigObj.set_navFontSize(j);
-            processFontSizeChange();
-        }
+        _slider.render('#nav-font-size-slider');
     }
-}
-
-function processFontSizeChange() {
-    $RvW.updateVerseContainer();
-    $RvW.searchObj.setFontSize($RvW.vvConfigObj.get_navFontSize());
-    $RvW.scheduleObj.changeFontsizeScheduleTab();
 }
 
 export class BibleReference {

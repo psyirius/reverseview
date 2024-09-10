@@ -5,14 +5,63 @@ declare global {
 
         class Object {
             constructor();
+            // ...
         }
 
         class Date extends Object {
             constructor();
+            // ...
         }
 
         class Array extends Object {
             constructor();
+
+            // ...
+        }
+
+        class Vector<T> extends Object {
+            fixed: boolean;
+            length: uint;
+
+            constructor(length?: uint, fixed?: boolean);
+
+            concat(...args: T[]): Vector<T>;
+
+            every(callback: Function, thisObject?: Object): boolean;
+
+            filter(callback: Function, thisObject?: Object): Vector<T>;
+
+            forEach(callback: Function, thisObject?: Object): void;
+
+            indexOf(searchElement: T, fromIndex?: int): int;
+
+            join(sep?: String): String;
+
+            lastIndexOf(searchElement: T, fromIndex?: int): int;
+
+            map(callback: Function, thisObject?: Object): Vector<T>;
+
+            pop(): T;
+
+            push(...args: T[]): uint;
+
+            reverse(): Vector<T>;
+
+            shift(): T;
+
+            slice(startIndex?: int, endIndex?: int): Vector<T>;
+
+            some(callback: Function, thisObject?: Object): boolean;
+
+            sort(compareFunction: Function): Vector<T>;
+
+            splice(startIndex: int, deleteCount?: uint, ...items: T[]): Vector<T>;
+
+            toLocaleString(): String;
+
+            toString(): String;
+
+            unshift(...args: T[]): uint;
         }
 
         namespace flash {
@@ -203,6 +252,213 @@ declare global {
                 }
 
                 class FileStream {}
+            }
+
+            namespace geom {
+                class Rectangle extends Object {
+                    bottom: number;
+                    left: number;
+                    right: number;
+                    top: number;
+
+                    height: number;
+                    width: number;
+
+                    x: number;
+                    y: number;
+
+                    bottomRight: Point;
+
+                    constructor(x?: number, y?: number, width?: number, height?: number);
+
+                    clone(): Rectangle;
+
+                    contains(x: number, y: number): boolean;
+
+                    // ...
+                }
+
+                class Point extends Object {
+                    constructor(x?: number, y?: number);
+
+                    add(v: Point): Point;
+
+                    clone(): Point;
+
+                    // ...
+                }
+
+                class Matrix extends Object {
+                    constructor(a?: number, b?: number, c?: number, d?: number, tx?: number, ty?: number);
+
+                    // ...
+                }
+            }
+
+            namespace filters {
+                abstract class BitmapFilter extends Object {
+                    constructor();
+
+                    clone(): BitmapFilter;
+                }
+
+                class GradientGlowFilter extends BitmapFilter {}
+                class GradientBevelFilter extends BitmapFilter {}
+                class BevelFilter extends BitmapFilter {}
+                class ShaderFilter extends BitmapFilter {}
+                class DisplacementMapFilter extends BitmapFilter {}
+                class BlurFilter extends BitmapFilter {}
+                class GlowFilter extends BitmapFilter {}
+                class DropShadowFilter extends BitmapFilter {}
+                class ColorMatrixFilter extends BitmapFilter {}
+                class ConvolutionFilter extends BitmapFilter {}
+
+                enum BitmapFilterQuality {
+                    LOW = 1,
+                    MEDIUM = 2,
+                    HIGH = 3,
+                }
+
+                enum BitmapFilterType {
+                    INNER = 'inner',
+                    OUTER = 'outer',
+                    FULL = 'full',
+                }
+            }
+
+            namespace display {
+                class BitmapData extends Object {
+                    readonly height: int;
+                    readonly width: int;
+                    readonly rect: geom.Rectangle;
+                    readonly transparent: boolean;
+
+                    constructor(width: int, height: int, transparent?: boolean, fillColor?: uint);
+
+                    applyFilter(sourceBitmapData: BitmapData, sourceRect: geom.Rectangle, destPoint: geom.Point, filter: filters.BitmapFilter): void;
+
+                    dispose(): void;
+                    lock(): void;
+                    unlock(changeRect?: geom.Rectangle): void;
+                    scroll(x: int, y: int): void;
+                    histogram(hRect?: geom.Rectangle): Vector<Vector<number>>;
+                }
+
+                class Screen extends events.EventDispatcher {
+                    static getScreensForRectangle(rect: geom.Rectangle): Array;
+
+                    readonly bounds: geom.Rectangle;
+                    readonly colorDepth: int;
+                    static readonly mainScreen: Screen;
+                    static readonly screens: Array;
+                    readonly visibleBounds: geom.Rectangle;
+                }
+
+                class NativeWindowInitOptions extends Object {
+                    constructor();
+
+                    maximizable: boolean;
+                    minimizable: boolean;
+                    owner: NativeWindow;
+                    renderMode: NativeWindowRenderMode;
+                    resizable: boolean;
+                    systemChrome: NativeWindowSystemChrome;
+                    transparent: boolean;
+                    type: NativeWindowType;
+                }
+
+                class NativeWindow extends events.EventDispatcher {
+                    readonly active: boolean;
+                    alwaysInFront: boolean;
+                    bounds: geom.Rectangle;
+                    readonly closed: boolean;
+                    readonly displayState: NativeWindowDisplayState;
+                    height: number;
+                    static readonly isSupported: boolean;
+                    readonly maximizable: boolean;
+                    maxSize: geom.Point;
+                    menu: NativeMenu;
+                    readonly minimizable: boolean;
+                    minSize: geom.Point;
+                    readonly owner: NativeWindow;
+                    readonly renderMode: NativeWindowRenderMode;
+                    readonly resizable: boolean;
+                    readonly stage: Stage;
+                    static readonly supportsMenu: boolean;
+                    static readonly supportsNotification: boolean;
+                    static readonly supportsTransparency: boolean;
+                    readonly systemChrome: NativeWindowSystemChrome;
+                    static readonly systemMaxSize: geom.Point;
+                    static readonly systemMinSize: geom.Point;
+                    title: string;
+                    readonly transparent: boolean;
+                    readonly type: NativeWindowType;
+                    visible: boolean;
+                    width: number;
+                    x: number;
+                    y: number;
+
+                    constructor(initOptions: NativeWindowInitOptions);
+                    activate(): void;
+                    close(): void;
+                    globalToScreen(globalPoint: geom.Point): geom.Point;
+                    listOwnedWindows(): Vector<NativeWindow>;
+                    maximize(): void;
+                    minimize(): void;
+                    notifyUser(type: string): void;
+                    orderInBackOf(window: NativeWindow): boolean;
+                    orderInFrontOf(window: NativeWindow): boolean;
+                    orderToBack(): boolean;
+                    orderToFront(): boolean;
+                    restore(): void;
+                    startMove(): boolean;
+                    startResize(edgeOrCorner?: string): boolean;
+                }
+
+                enum NativeWindowType {
+                    LIGHTWEIGHT = "lightweight",
+                    NORMAL = "normal",
+                    UTILITY = "utility",
+                }
+
+                enum NativeWindowDisplayState {
+                    MAXIMIZED = "maximized",
+                    MINIMIZED = "minimized",
+                    NORMAL = "normal",
+                }
+
+                enum NativeWindowRenderMode {
+                    AUTO = "auto",
+                    CPU = "cpu",
+                    DIRECT = "direct",
+                }
+
+                enum NativeWindowSystemChrome {
+                    ALTERNATE = "alternate",
+                    NONE = "none",
+                    STANDARD = "standard",
+                }
+
+                class NativeMenu extends events.EventDispatcher {
+                    constructor();
+                }
+
+                enum StageDisplayState {
+                    FULL_SCREEN = "fullScreen",
+                    FULL_SCREEN_INTERACTIVE = "fullScreenInteractive",
+                    NORMAL = "normal",
+                }
+
+                enum StageQuality {
+                    BEST = "best",
+                    HIGH = "high",
+                    LOW = "low",
+                    MEDIUM = "medium",
+                }
+
+                class Stage {
+                    // ...
+                }
             }
         }
     }

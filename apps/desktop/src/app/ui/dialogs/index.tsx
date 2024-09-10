@@ -1,5 +1,7 @@
 import RemoteSetupDialog from './RemoteSetup'
 import BibleNotesEditDialog from "./BibleNotesEdit";
+import SongEditDialog from "@app/ui/dialogs/SongEdit";
+import LyricEditDialog from "@app/ui/dialogs/LyricEdit";
 
 export default function Dialogs() {
     const id = 'dialogs';
@@ -7,6 +9,8 @@ export default function Dialogs() {
     return (
         <div id={id}>
             <RemoteSetupDialog />
+            <SongEditDialog />
+            <LyricEditDialog />
 
             <div id="bible-select-dialog"></div>
 

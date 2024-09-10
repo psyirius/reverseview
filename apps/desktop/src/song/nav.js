@@ -88,7 +88,6 @@ export class SongNav {
             Z();
             l();
             y = new Song();
-            y.init();
             y.slides = [];
             getTags2Array();
             fillTagList();
@@ -589,23 +588,23 @@ export class SongNav {
             var an = "%" + al + "%";
             $RvW.songManagerObj.searchRecords(an, SongSearchType.AUTHOR);
         }
-        function searchComplete(sqlRes, al) {
-            __debug("Search Complete " + sqlRes);
+        function searchComplete(res, al) {
+            __debug("Search Complete " + res);
 
-            if (sqlRes.data != null) {
+            if (res.data != null) {
                 ag = true;
                 $("#search_error_notification").html("");
                 showLyricsElements();
                 var an = document.getElementById("songnav_category").selectedIndex;
                 var am = document.getElementById("songnav_category").options[an].text;
-                _loadSuggestions(sqlRes, am, al);
-                update_songList(sqlRes, am, ag);
+                _loadSuggestions(res, am, al);
+                update_songList(res, am, ag);
             } else {
                 m_keywords = [];
                 hideLyricsElements();
                 $("#ly_name").html("No matching song found.");
                 $("#search_error_notification").html("No match");
-                update_songList(sqlRes, am, ag);
+                update_songList(res, am, ag);
             }
         }
 

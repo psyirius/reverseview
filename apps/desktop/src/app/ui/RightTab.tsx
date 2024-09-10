@@ -60,11 +60,10 @@ export default function LeftTab() {
     const activeTab = useStoreState(selectedTab);
 
     useEffect(() => {
-        // @ts-ignore
         const { TabView } = $Y;
 
         const tabview = new TabView({
-            srcNode: container.current,
+            srcNode: container.current!,
         });
 
         tabview.render();

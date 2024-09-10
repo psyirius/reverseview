@@ -32,12 +32,18 @@ export default function BibleNotesEditDialog({}: Props) {
                     {
                         name  : 'save',
                         label : 'Save',
-                        action: () => $RvW.notesObj.onSave(),
+                        action: (e: any) => {
+                            e.preventDefault();
+                            $RvW.notesObj.onSave()
+                        },
                     },
                     {
                         name  : 'close',
                         label : 'Close',
-                        action:() => $RvW.notesObj.onCancel(),
+                        action:(e: any) => {
+                            e.preventDefault();
+                            $RvW.notesObj.onCancel()
+                        },
                     }
                 ]
             }

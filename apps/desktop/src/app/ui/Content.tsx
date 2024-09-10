@@ -5,8 +5,8 @@ export default function Content() {
     return (
         <div id="content">
             <div id="wrapper">
-                <LeftTab/>
-                <RightTab/>
+                <LeftTab />
+                <RightTab />
 
                 {/*<div id="cleared"></div>*/}
             </div>
