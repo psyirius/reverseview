@@ -7,10 +7,10 @@ export const Prompt = {
 
         const dialog = this.__instance = new $Y.Panel({
             width      : 410,
-            zIndex     : 60,
+            zIndex     : 1000,
             centered   : true,
             modal      : true,
-            render     : '#confirm-panel',
+            render     : '#prompt-panel',
             visible    : false, // make visible explicitly with .show()
             buttons    : {
                 header: ['close'],

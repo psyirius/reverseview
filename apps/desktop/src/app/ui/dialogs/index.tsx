@@ -1,35 +1,23 @@
 import RemoteSetupDialog from './RemoteSetup'
 import BibleNotesEditDialog from "./BibleNotesEdit";
-import SongEditDialog from "@app/ui/dialogs/SongEdit";
-import LyricEditDialog from "@app/ui/dialogs/LyricEdit";
+import SongEditDialog from "./SongEdit";
+import LyricEditDialog from "./LyricEdit";
+import BibleManageDialog from "./BibleManage";
+import BibleSelectorDialog from "./BibleSelector";
+import BibleVerseEditDialog from "./BibleVerseEdit";
+import PromptDialog from "./Prompt";
 
 export default function Dialogs() {
-    const id = 'dialogs';
-
     return (
-        <div id={id}>
+        <div id="dialogs">
             <RemoteSetupDialog />
             <SongEditDialog />
             <LyricEditDialog />
-
-            <div id="bible-select-dialog"></div>
-
-            {/* Modal::Confirm */}
-            <div id="confirm-panel"></div>
-
-            {/* Dialog box for Song Edit */}
-            <div id="song-edit">
-                <div class="hd"></div>
-                <div class="bd"></div>
-            </div>
-
-            {/* Dialog box for Version Management */}
-            <div id="versionManageDialog">
-                <div class="hd"></div>
-                <div class="bd"></div>
-            </div>
-
+            <BibleSelectorDialog />
+            <BibleManageDialog />
             <BibleNotesEditDialog />
+            <BibleVerseEditDialog />
+            <PromptDialog />
         </div>
     );
 }

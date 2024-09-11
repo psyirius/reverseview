@@ -5,10 +5,10 @@ import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName, save2file} from "@app/common";
 import {$RvW} from "@/rvw";
+import {showBibleManagePanel} from "@stores/global";
 
 $RvW.bibleVersionArray = ["", ""];
 
-var versionManageDialog;
 var new_fname,
     new_title,
     new_font,
@@ -20,7 +20,7 @@ var new_fname,
 var bibleDB;
 var dbFilename_hold = "";
 var verFile = null;
-var vdebug = false;
+var vdebug = true;
 
 export function loadBibleVersion() {
     const b = "xml/version.xml";
@@ -80,24 +80,9 @@ export function versionFill(setup) {
 
     document.getElementById("booknameStyle").selectedIndex = $RvW.vvConfigObj.get_booknamestyle() - 1;
     document.getElementById("englishList").checked = $RvW.vvConfigObj.get_listinenglish();
-
-    if (setup) {
-        document
-            .getElementById("versionSave")
-            .addEventListener("click", saveVersionSelection, false);
-
-        versionManageDialog = new YAHOO.widget.Panel("versionManageDialog", {
-            width: "700px",
-            fixedcenter: true,
-            modal: true,
-            visible: false,
-            constraintoviewport: true,
-        });
-        versionManageDialog.render();
-    }
 }
 
-function saveVersionSelection() {
+export function saveVersionSelection() {
     var f = $RvW.vvConfigObj.get_version1();
     var e = $RvW.vvConfigObj.get_version2();
     var b = document.getElementById("version1Menu").selectedIndex;
@@ -156,27 +141,14 @@ function fillVersionPanel() {
         .getElementById("selectVersionList")
         .addEventListener("change", updateVersionDetails, false);
     document
-        .getElementById("deleteVersionButton")
-        .addEventListener("click", deleteVersionConfirm, false);
-    document
-        .getElementById("saveVersionButton")
-        .addEventListener("click", saveVersion, false);
-    document
-        .getElementById("closeVersionButton")
-        .addEventListener("click", () => versionManageDialog.hide(), false);
-    document
         .getElementById("addFontVersionButton")
         .addEventListener("click", addFontVersionBible, false);
     document
         .getElementById("okFontVersionButton")
         .addEventListener("click", addFontVersionBibleOK, false);
-    document
-        .getElementById("browseVersionButton")
-        .addEventListener("click", showBrowse, false);
     verFile = new air.File();
     document.getElementById("versionVersionTextbox").disabled = true;
     document.getElementById("copyrightVersionTextarea").disabled = true;
-    document.getElementById("saveVersionButton").disabled = false;
     loadVersionList();
 }
 
@@ -233,15 +205,6 @@ function updateVersionDetails() {
     }
 }
 
-function toggleSaveButton() {
-    const a = document.getElementById("saveVersionButton").disabled;
-    document.getElementById("saveVersionButton").disabled = !a;
-}
-
-function toggleLoadButton() {
-    __versionDbg("Activating Load button....");
-}
-
 function deleteVersion() {
     var e = air.File.applicationStorageDirectory;
     var d = e.resolvePath("./xml/version.xml");
@@ -292,7 +255,7 @@ function deleteVersion() {
     }
 }
 
-function deleteVersionConfirm() {
+export function deleteVersionConfirm() {
     var a = document.getElementById("selectVersionList").selectedIndex;
     var b = document.getElementById("selectVersionList").options[a].value;
     if (b === $RvW.vvConfigObj.get_version1() || b === $RvW.vvConfigObj.get_version2()) {
@@ -311,7 +274,7 @@ function deleteVersionConfirm() {
     }
 }
 
-function saveVersion() {
+export function saveVersion() {
     var b = document.getElementById("selectVersionList").selectedIndex;
     var d = document.getElementById("selectVersionList").options[b].value;
     var a = document.getElementById("fontVersionList").selectedIndex;
@@ -554,71 +517,7 @@ function hideFontVersionBox() {
 }
 
 export function manageVersion() {
-    const INNER_HTML = `
-<div class="ui form">
-    <div id="versionDivID" class="ui grid">
-        <div class="six wide column">
-            <select size="10" class="form-control" id="selectVersionList">
-                <option value="0">English KJV</option>
-            </select>
-        </div>
-
-        <div class="ten wide column">
-            <div class="form-group row">
-                <label for="versionVersionTextbox" class="col-sm col-form-label">Version</label>
-                <div class="col-sm">
-                    <input type="text" class="form-control form-control-sm" id="versionVersionTextbox">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="fontVersionList" class="col-sm col-form-label">Font</label>
-                <div class="col-sm">
-                    <div class="ui grid">
-                        <div class="six wide column">
-                            <select name="select" class="form-control" id="fontVersionList">
-                                <option value="0">Times New Roman</option>
-                            </select>
-                        </div>
-                        <div class="six wide column">
-                            <button class="ui  button" id="addFontVersionButton">+</button>
-                            <input type="text" class="form-control form-control-sm" id="addFontVersionTextbox"    placeholder="New font name">
-                        </div>
-                        <!--
-                        <div class="four wide column">
-                            <input type="text" class="form-control form-control-sm" id="addFontVersionTextbox"    placeholder="New font name">
-                        </div>
-                        -->
-                        <div class="two wide column">
-                            <button class="ui  button" id="okFontVersionButton">ADD</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="copyrightVersionTextarea" class="col-sm col-form-label">Copyright</label>
-                <div class="col-sm">
-                    <input type="text" class="form-control form-control-sm" id="copyrightVersionTextarea">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="ui grid">
-        <div class="sixteen wide column">
-            <button class="ui  button" id="browseVersionButton">ADD BIBLE</button>
-            <button class="ui  button" id="deleteVersionButton">DELETE BIBLE</button>
-            <button class="ui  button" id="saveVersionButton">SAVE</button>
-            <button class="ui  button" id="closeVersionButton">CLOSE</button>
-        </div>
-    </div>
-</div>
-`;
-
-    versionManageDialog.setHeader("Bible Version Manager");
-    versionManageDialog.setBody(INNER_HTML);
-    versionManageDialog.show();
+    showBibleManagePanel.set(true);
     fillVersionPanel();
     hideFontVersionBox();
 }
@@ -637,9 +536,11 @@ export function getVersion1Filename() {
 export function getVersion1Font() {
     return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
 }
+
 export function getVersion1Name() {
     return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
 }
+
 export function updateVersionXML() {
     save2file(generateVersionXML(), "./xml/version.xml", false);
 }

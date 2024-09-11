@@ -305,8 +305,8 @@ export class BibleReference {
             if (C && E[1] != null) {
                 m = E[0] + " " + E[1].toLowerCase();
                 if (E[2] != null) {
-                    var y = E[2].indexOf(":");
-                    if (y != -1) {
+                    const y = E[2].indexOf(":");
+                    if (y !== -1) {
                         E = E[2].split(":");
                         p = E[0];
                         e = E[1];
@@ -320,8 +320,8 @@ export class BibleReference {
             } else {
                 m = E[0].toLowerCase();
                 if (E[1] != null) {
-                    var y = E[1].indexOf(":");
-                    if (y != -1) {
+                    const y = E[1].indexOf(":");
+                    if (y !== -1) {
                         E = E[1].split(":");
                         p = E[0];
                         e = E[1];

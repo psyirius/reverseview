@@ -16,7 +16,6 @@ import { GraphicsMgr } from "@/graphics/graphics";
 import {setPrimaryBooknames} from "@/bible/booknames";
 import {VerseEditUI} from "@/bible/edit";
 import {BibleRecentRefManager} from "@/bible/recent";
-import {BibleVersionSelector} from "@/bible/setup";
 import {Scheduler} from "@/schedule";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible, verseClass} from "@/bible/manager";
 import {AppUpdater, AppUpdateUi} from "./update";
@@ -279,7 +278,6 @@ $RvW.chordsDatabaseObj = null;
 $RvW.chordsImportExportObj = null;
 $RvW.songNavObj = null;
 $RvW.helpObj = null;
-$RvW.bibleVersionSelObj = null;
 $RvW.updateVV_UI_Obj = null;
 $RvW.editVerse_UI_Obj = null;
 $RvW.newUpdateObj = null;
@@ -832,7 +830,6 @@ function setupTheme() {
 }
 
 function setupTabContent() {
-    $RvW.bibleVersionSelObj = new BibleVersionSelector();
     $RvW.updateVV_UI_Obj = new AppUpdateUi();
 
     // Right Tab

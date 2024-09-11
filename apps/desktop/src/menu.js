@@ -3,7 +3,7 @@ import {setupVerseEditObject} from "@/bible/edit";
 import {manageVersion, showBrowse} from "@/bible/version";
 import {promoteVV} from "@app/common";
 import {$RvW} from "@/rvw";
-import {showRemotePanel} from "@stores/global";
+import {showBibleSelectPanel, showRemotePanel} from "@stores/global";
 
 const MAIN_MENU = [
     {
@@ -112,7 +112,7 @@ function songDB_Import_xml() {
     $RvW.songManagerObj.processImportSongXML();
 }
 function setup_bible_version() {
-    $RvW.bibleVersionSelObj.show();
+    showBibleSelectPanel.set(true);
 }
 function add_bible_version() {
     manageVersion();

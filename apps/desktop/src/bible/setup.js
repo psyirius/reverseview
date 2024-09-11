@@ -1,40 +1,5 @@
 import {loadVersion} from "@/bible/version";
 import {clearSelectList, UnZip} from "@app/common";
-import {showBibleSelectPanel} from "@stores/global";
-import {mount as mountBibleSelectorDialog} from "@app/ui/BibleSelectorDialog";
-
-export class BibleVersionSelector {
-    constructor() {
-        this.show = show;
-        this.hide = hide;
-
-        mountBibleSelectorDialog("bible-select-dialog");
-
-        const _panel = new $Y.Panel({
-            headerContent   : 'Bible Version Selection',
-            srcNode         : '#bible-select-dialog',
-            width           : "300px",
-            height          : 'auto',
-            zIndex          : 100,
-            centered        : true,
-            modal           : true,
-            render          : true,
-            visible         : false, // make visible explicitly with .show()
-        });
-
-        _panel.on('visibleChange', function (e) {
-            showBibleSelectPanel.set(e.newVal);
-        });
-
-        function show() {
-            _panel.show();
-        }
-
-        function hide() {
-            _panel.hide();
-        }
-    }
-}
 
 export class BibleUpdater {
     constructor() {

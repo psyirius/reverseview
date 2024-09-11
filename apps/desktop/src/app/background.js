@@ -161,15 +161,14 @@ export const BgContext = {
         }
     },
     generateBkgndXML: function () {
-        var a = BgContext.filename.length;
-        var d = "<backgroundlist>\n";
-        for (var b = 0; b < a; b++) {
-            d = d + "  <bkg>\n";
-            d = d + "    <name>" + BgContext.name[b] + "</name>\n";
-            d = d + "    <filename>" + BgContext.filename[b] + "</filename>\n";
-            d = d + "  </bkg>\n";
+        let d = "<backgroundlist>\n";
+        for (let i = 0; i < BgContext.filename.length; i++) {
+            d += "  <bkg>\n";
+            d += "    <name>" + BgContext.name[i] + "</name>\n";
+            d += "    <filename>" + BgContext.filename[i] + "</filename>\n";
+            d += "  </bkg>\n";
         }
-        d = d + "</backgroundlist>\n";
+        d += "</backgroundlist>\n";
         return d;
     },
     setNumOfPicsInRow: function (a) {
@@ -198,12 +197,11 @@ export const BgContext = {
 
 class ColorPicker {
     constructor() {
-        this.init = g;
-        this.cp_reset = e;
+        this.init = init;
+        this.cp_reset = cp_reset;
         var d = null;
-        var b = null;
 
-        function g() {
+        function init() {
             d = new YAHOO.widget.ColorPicker("colorPickerID", {
                 showcontrols: false,
                 showhexcontrols: false,
@@ -214,7 +212,6 @@ class ColorPicker {
                     HUE_THUMB: "graphics/hue_thumb.png"
                 }
             });
-            (b = YAHOO.util.Event), d;
             d.on("rgbChange", a);
             YAHOO.namespace("example.container");
             YAHOO.example.container.tt1cp = new YAHOO.widget.Tooltip("tt1cp", {
@@ -225,7 +222,7 @@ class ColorPicker {
                 context: "cp_save_id",
                 text: "Save as Default"
             });
-            document.getElementById("cp_reset_id").addEventListener("click", e, false);
+            document.getElementById("cp_reset_id").addEventListener("click", cp_reset, false);
             document.getElementById("cp_save_id").addEventListener("click", f, false);
         }
 
@@ -233,7 +230,7 @@ class ColorPicker {
             let textColorHEX = d.get("hex");
         }
 
-        function e() {
+        function cp_reset() {
             d.setValue([255, 255, 255], false);
         }
 

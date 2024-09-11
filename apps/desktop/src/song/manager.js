@@ -102,7 +102,7 @@ export class SongManager {
         var songy = [];
         var aq = null;
         var aj = null;
-        var aH = null;
+        var _importProgressPanel = null;
         var T = 0;
 
         init(_arg1, _arg2);
@@ -115,18 +115,17 @@ export class SongManager {
         }
         function aw() {
             __debug("Generating ProgressPanel");
-            aH = new YAHOO.widget.Panel("panelObj2xx", {
+            _importProgressPanel = new YAHOO.widget.Panel("panelObj2xx", {
                 width: "400px",
                 fixedcenter: true,
                 modal: true,
                 visible: false,
                 constraintoviewport: true,
             });
-            aH.render(document.body);
-            aH.setHeader("Song Import Progress");
-            var aN = '<span id="total"></span> songs remaining';
-            aH.setBody(aN);
-            aH.hide();
+            _importProgressPanel.render(document.body);
+            _importProgressPanel.setHeader("Song Import Progress");
+            _importProgressPanel.setBody('<span id="total"></span> songs remaining');
+            _importProgressPanel.hide();
         }
         function ay(aQ) {
             var aN = "";
@@ -561,15 +560,13 @@ export class SongManager {
         }
         function s(aN, aR) {
             if (T == 0) {
-                aH.show();
+                _importProgressPanel.show();
             }
             var aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
             var aS = "";
-            aS +=
-                "INSERT INTO sm (name, cat, font, font2, timestamp, yvideo, bkgndfname, key, copy, notes, lyrics, lyrics2, title2, tags, slideseq, rating, chordsavailable, usagecount,subcat)";
-            aS +=
-                " SELECT :n, :cat, :fon, :fon2, :ts, :yv, :bkg, :key, :cop, :not, :lyr, :lyr2, :n2, :tag, :seq, :rate, :chords, :count, :subcat";
+            aS += "INSERT INTO sm (name, cat, font, font2, timestamp, yvideo, bkgndfname, key, copy, notes, lyrics, lyrics2, title2, tags, slideseq, rating, chordsavailable, usagecount,subcat)";
+            aS += " SELECT :n, :cat, :fon, :fon2, :ts, :yv, :bkg, :key, :cop, :not, :lyr, :lyr2, :n2, :tag, :seq, :rate, :chords, :count, :subcat";
             if (!aN) {
                 aS +=
                     " WHERE NOT EXISTS (SELECT 1 FROM sm WHERE name = :n AND cat = :cat)";
@@ -607,7 +604,7 @@ export class SongManager {
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
                 if (aR) {
                     if (T == 0) {
-                        aH.hide();
+                        _importProgressPanel.hide();
                         Toast.show(
                             "Song Database",
                             "Song Lyrics imported to the Song Database complete."
@@ -644,7 +641,7 @@ export class SongManager {
                 }
                 if (T == 0) {
                     __debug("Record count done.. ");
-                    aH.hide();
+                    _importProgressPanel.hide();
                 }
             }
             function aQ(aU) {
