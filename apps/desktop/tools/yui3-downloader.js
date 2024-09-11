@@ -262,6 +262,7 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             ['widget-base', 'assets/skins/night/widget-base.css'],
 
             ['slider-base', 'assets/skins/sam/slider-base.css'],
+            ['slider-base', 'assets/skins/sam/thumb-x.png'],
             ['slider-base', 'assets/skins/night/slider-base.css'],
 
             ['resize-base', 'assets/skins/sam/resize-base.css'],

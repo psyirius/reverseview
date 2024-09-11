@@ -1357,10 +1357,8 @@ export function configInit() {
     document.getElementById("show2LinesSlides").checked = !!$RvW.vvConfigObj.get_show2lines();
     document.getElementById("hideStanzaNumber").checked = !!$RvW.vvConfigObj.get_hideStanzaNumber();
     document.getElementById("fitLineSetup").checked = $RvW.vvConfigObj.get_pformat_multiplelines();
-    var d = $RvW.vvConfigObj.get_logoText1();
-    document.getElementById("customLogoText1").value = d;
-    var c = $RvW.vvConfigObj.get_logoText2();
-    document.getElementById("customLogoText2").value = c;
+    document.getElementById("customLogoText1").value = $RvW.vvConfigObj.get_logoText1();
+    document.getElementById("customLogoText2").value = $RvW.vvConfigObj.get_logoText2();
     var k = $RvW.vvConfigObj.get_showDateTime();
     var g = $RvW.vvConfigObj.get_showVVLogo();
     var b = $RvW.vvConfigObj.get_showCustomLogo();

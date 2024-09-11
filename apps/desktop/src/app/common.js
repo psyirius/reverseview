@@ -256,7 +256,7 @@ export class FontSizeSlider {
                     $RvW.searchObj.setFontSize(fz);
                     $RvW.scheduleObj.changeFontsizeScheduleTab();
 
-                    air.trace("Slider value changed:", fz);
+                    // air.trace("Slider value changed:", fz);
                 }
             }
         });
