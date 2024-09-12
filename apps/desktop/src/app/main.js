@@ -1286,9 +1286,7 @@ export function start(Y) {
         $RvW.vvConfigObj.load(vvinit_continue);
 
         $RvW.learner = new WordLearner();
-
         $RvW.wordbrain = new WordBrain();
-        $RvW.wordbrain.init();
     }
 
     loadPreferences(() => {

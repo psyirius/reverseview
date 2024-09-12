@@ -46,18 +46,17 @@ export class SongNav {
         let W = false;
         let Q = -1;
         let n = -1;
-        let a = 0;
-        let b = "";
+        let _itemID = 0;
+        let _itemTitle = "";
         let v = 20;
         let m_keywords = [];
         let m_suggestion_defer = null;
         let aa = 30;
         let ag = false;
-        let L = false;
         let m = "";
         let B = null;
         let m_songTitle = [];
-        const m_isDebug = false;
+        const m_isDebug = true;
 
         init();
 
@@ -224,7 +223,7 @@ export class SongNav {
         }
         function sn_editSong() {
             __debug("Launch panel edit song..");
-            $RvW.songEditObj.showEditPanel(y, true, a, ag);
+            $RvW.songEditObj.showEditPanel(y, true, _itemID, ag);
         }
         function _loadSuggestions(sqlRes, category, searchMode) {
             m_keywords = [];
@@ -272,15 +271,15 @@ export class SongNav {
             }
             m_songTitle.length = 0;
             if (ap.data != null) {
-                var au = ap.data.length;
-                __debug("update_songList: Number of songs: " + au);
+                __debug("update_songList: Number of songs: " + ap.data.length);
                 var an = 0;
                 var aw = "";
-                for (var ar = 0; ar < au; ar++) {
+                var aq;
+                for (let ar = 0; ar < ap.data.length; ar++) {
                     if (am == "ALL") {
-                        var av = ap.data[ar].name;
+                        let av = ap.data[ar].name;
                         if (C(av)) {
-                            var aq = ap.data[ar].id;
+                            aq = ap.data[ar].id;
                             m_songTitle.push({ ID: ar, Title: av });
                         }
                     } else {
@@ -289,7 +288,7 @@ export class SongNav {
                             var al = ap.data[ar].title2;
                             var ao = ap.data[ar].font;
                             if (C(av)) {
-                                var aq = ap.data[ar].id;
+                                aq = ap.data[ar].id;
                                 m_songTitle.push({ ID: ar, Title: av });
                             }
                         }
@@ -354,8 +353,12 @@ export class SongNav {
             document.getElementById("songnav_category").selectedIndex = 0;
         }
         function ab() {
-            y = $RvW.songManagerObj.getSongObj(a, ag);
-            J(y);
+            try {
+                y = $RvW.songManagerObj.getSongObj(_itemID, ag);
+                render_lyrics(y);
+            } catch {
+                render_lyrics(null);
+            }
         }
         function sn_presentSong() {
             const al = new SongPresenter(y);
@@ -374,12 +377,12 @@ export class SongNav {
         }
         function sn_deleteSong() {
             var al = "Song Database";
-            var an = 'Do you want to delete "' + b + '" ?';
+            var an = 'Do you want to delete "' + _itemTitle + '" ?';
             Prompt.exec(al, an, am);
             function am() {
-                var ao = a;
-                if (a != 0) {
-                    a = a - 1;
+                var ao = _itemID;
+                if (_itemID != 0) {
+                    _itemID = _itemID - 1;
                 }
                 $RvW.songManagerObj.deleteSong(ao, ag);
             }
@@ -398,7 +401,7 @@ export class SongNav {
                 );
             }
             function al() {
-                a = 0;
+                _itemID = 0;
                 $RvW.songManagerObj.deleteSongByCat(an);
             }
         }
@@ -438,49 +441,68 @@ export class SongNav {
             setTag2All();
             songnav_category_change();
         }
-        function J(at) {
-            var az = $RvW.vvConfigObj.get_navFontSize() + "px";
-            document.getElementById("ly_slide").style.fontSize = az;
-            var an = at.name;
-            if (at.catIndex == "VV Malayalam 2021" || at.catIndex == "VV Hindi 2021") {
-                an += " (" + at.subcat + ") ";
+
+        function render_lyrics(s) {
+            __debug("Render Lyrics: ", JSON.stringify(s));
+
+            if (!s) {
+                // Reset the lyrics
+                document.getElementById("ly_name").innerHTML = '';
+                document.getElementById("ly_name2").innerHTML = '';
+                document.getElementById("ly_cat").innerHTML = '';
+                document.getElementById("ly_key").innerHTML = '';
+                document.getElementById("ly_copy").innerHTML = '';
+                document.getElementById("ly_notes").innerHTML = '';
+                document.getElementById("ly_slide").innerHTML = '';
+                document.getElementById("ly_tags").innerHTML = '';
+
+                menuYtLink.set(null);
+                $("#ly_copy").hide();
+
+                return;
             }
-            document.getElementById("ly_name").innerHTML = an;
-            if (at.name2 != "null") {
-                document.getElementById("ly_name2").innerHTML = at.name2;
-                const aF = $RvW.specialFontList.indexOf(at.font);
+
+            document.getElementById("ly_slide").style.fontSize = $RvW.vvConfigObj.get_navFontSize() + "px";
+            let name = s.name;
+            if (s.catIndex == "VV Malayalam 2021" || s.catIndex == "VV Hindi 2021") {
+                name += ` (${s.subcat}) `;
+            }
+            document.getElementById("ly_name").innerHTML = name;
+            if (s.name2 != "null") {
+                document.getElementById("ly_name2").innerHTML = s.name2;
+                const aF = $RvW.specialFontList.indexOf(s.font);
                 if (aF === -1) {
-                    document.getElementById("ly_name2").style.fontFamily = at.font;
+                    document.getElementById("ly_name2").style.fontFamily = s.font;
                 } else {
                     document.getElementById("ly_name2").style.fontFamily = "Arial";
                 }
             } else {
                 document.getElementById("ly_name2").innerHTML = "";
             }
-            document.getElementById("ly_cat").innerHTML = at.catIndex;
-            document.getElementById("ly_key").innerHTML = at.key;
-            if (at.copyright == "" || at.copyright == null) {
+            document.getElementById("ly_cat").innerHTML = s.catIndex;
+            document.getElementById("ly_key").innerHTML = s.key;
+            if (!s.copyright) {
                 $("#ly_copy").hide();
             } else {
                 $("#ly_copy").show();
             }
-            document.getElementById("ly_copy").innerHTML = at.copyright;
-            document.getElementById("ly_notes").innerHTML = at.notes;
+            document.getElementById("ly_copy").innerHTML = s.copyright;
+            document.getElementById("ly_notes").innerHTML = s.notes;
             // menubar
             {
-                if (!!at.yvideo) {
-                    B = at.yvideo;
+                if (!!s.yvideo) {
+                    B = s.yvideo;
                 } else {
                     B = null;
                 }
                 menuYtLink.set(B);
             }
-            document.getElementById("ly_slide").style.fontFamily = at.font;
-            var aC = at.slides2[0];
+            document.getElementById("ly_slide").style.fontFamily = s.font;
+            let aC = s.slides2[0];
             if (aC == "") {
                 aC = null;
             }
-            var au = at.slides.length;
+            var au = s.slides.length;
             var aB = "";
             var aH = window.nativeWindow.bounds.width;
             var aw = 5;
@@ -497,44 +519,42 @@ export class SongNav {
                 aw = 1;
             }
             aB = aB + '<div class="ui cards">';
-            for (var aD = 0; aD < au; aD++) {
+            for (let i = 0; i < au; i++) {
                 if (aC != null) {
-                    aB =
-                        aB +
+                    aB +=
                         '<div class="card"><div class="content"><div class="header">' +
-                        (aD + 1) +
+                        (i + 1) +
                         '</div><div class="meta"></div><div class="description"><div id="lyricsID' +
-                        aD +
+                        i +
                         '" class="context"></div><div id="lyricsID' +
-                        aD +
+                        i +
                         '_2" class="context"></div></div></div></div>';
                 } else {
-                    aB =
-                        aB +
+                    aB +=
                         '<div class="card"><div class="content"><div class="header">' +
-                        (aD + 1) +
+                        (i + 1) +
                         '</div><div class="meta"></div><div class="description"><div id="lyricsID' +
-                        aD +
+                        i +
                         '" class="context"></div></div></div></div>';
                 }
-                var av = (aD + 1) % aw;
+                const av = (i + 1) % aw;
                 if (av === 0) {
-                    aB = aB + "</div>";
-                    aB = aB + '<div class="ui cards">';
+                    aB += "</div>";
+                    aB += '<div class="ui cards">';
                 }
             }
-            aB = aB + "</div>";
+            aB += "</div>";
             document.getElementById("ly_slide").innerHTML = aB;
             var ar = [];
             var am = [];
-            for (var aD = 0; aD < au; aD++) {
+            for (let aD = 0; aD < au; aD++) {
                 var ay = "lyricsID" + aD;
                 var aq = "lyricsID" + aD + "_2";
-                document.getElementById(ay).style.fontFamily = at.font;
-                ar[aD] = new SongLyrics(at, ay, aD, 1);
+                document.getElementById(ay).style.fontFamily = s.font;
+                ar[aD] = new SongLyrics(s, ay, aD, 1);
                 if (aC != null) {
-                    document.getElementById(aq).style.fontFamily = at.font2;
-                    am[aD] = new SongLyrics(at, aq, aD, 2);
+                    document.getElementById(aq).style.fontFamily = s.font2;
+                    am[aD] = new SongLyrics(s, aq, aD, 2);
                 }
             }
             if (ag) {
@@ -547,36 +567,30 @@ export class SongNav {
                 }
             }
             document.getElementById("ly_tags").innerHTML = "";
-            if (at.tags != null && at.tags !== "") {
-                __debug("Tags : " + at.tags);
-                var aE = at.tags.split(",");
-                var al = aE.length;
-                var ap = "";
-                for (var aD = 0; aD < al; aD++) {
-                    var ao = '<button type="button" class="btn btn-outline-secondary btn-sm" id="tag_' +
-                        aD +
-                        '">' +
-                        aE[aD].toUpperCase() +
-                        "</button>\n";
-                    ap += ao;
+            if (s.tags != null && s.tags !== "") {
+                __debug("Tags : " + s.tags);
+                const aE = s.tags.split(",");
+                let ap = "";
+                for (let i = 0; i < aE.length; i++) {
+                    ap += `<button type="button" class="btn btn-outline-secondary btn-sm" id="tag_${i}">${aE[i].toUpperCase()}</button>`;
                 }
                 __debug("Tags Content : " + ap);
                 document.getElementById("ly_tags").innerHTML = ap;
-                for (var aD = 0; aD < al; aD++) {
-                    var ax = "tag_" + aD;
-                    document.getElementById(ax).addEventListener("click", q, false);
+                for (let i = 0; i < aE.length; i++) {
+                    document.getElementById(`tag_${i}`).addEventListener("click", q, false);
                 }
             }
         }
+
         function sn_backupGlobalID() {
-            Q = a;
-            n = b;
+            Q = _itemID;
+            n = _itemTitle;
         }
         function sn_showLyricsByID(al) {
             air.trace("show lyrics by ID called.. ");
             y = $RvW.songManagerObj.getSongObjWithID(al);
-            air.trace("show lyrics by ID called.. " + y.name + "  " + a + "   " + b);
-            J(y);
+            air.trace(`show lyrics by ID called.. ${y.name}  ${_itemID}   ${_itemTitle}`);
+            render_lyrics(y);
         }
         function q(al) {
             var an = document.getElementById(al.target.id).innerHTML;
@@ -631,7 +645,7 @@ export class SongNav {
         }
 
         function sn_add2schedule() {
-            const al = $RvW.songManagerObj.getSongID(a, ag);
+            const al = $RvW.songManagerObj.getSongID(_itemID, ag);
             $RvW.scheduleObj.processAddSong(al);
         }
 
@@ -645,7 +659,7 @@ export class SongNav {
             y.notes = "None";
             y.slides[0] = "Slide 1";
             y.slides[1] = "Slide 2";
-            J(y);
+            render_lyrics(y);
         }
         function H() {
             m = document.getElementById("songnav_filterbox").value;
@@ -666,84 +680,91 @@ export class SongNav {
                 return false;
             }
         }
-        function __debug(al) {
+        function __debug(...al) {
             if (m_isDebug) {
-                air.trace("[SongNav]...." + al);
+                air.trace("[SongNav]....", ...al);
             }
         }
         function U() {
-            var ao;
             var au = m_songTitle;
             var av = m_songTitle.length;
             if (au != null) {
-                if (ao != null) {
-                    ao.unsubscribe("rowMouseoverEvent", ao.onEventHighlightRow);
-                    ao.unsubscribe("rowMouseoutEvent", ao.onEventUnhighlightRow);
-                    ao.unsubscribe("rowClickEvent", ao.onEventSelectRow);
-                    ao.unsubscribe("rowSelectEvent", _onSelectItemInDataList);
-                }
-                var am = [
-                    { key: "ID", hiddden: true },
-                    { key: "Title", sortable: true, resizeable: true, minWidth: 500 },
-                ];
-                var ar = new YAHOO.util.DataSource(m_songTitle);
-                ar.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-                ar.responseSchema = { fields: [{ key: "ID" }, { key: "Title" }] };
-                var at = new YAHOO.widget.Paginator({
+                let isRenderPending = false;
+                s = false;
+
+                const source = new YAHOO.util.DataSource(m_songTitle);
+                source.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+                source.responseSchema = { fields: [{ key: "ID" }, { key: "Title" }] };
+
+                const paginator = new YAHOO.widget.Paginator({
                     rowsPerPage: v,
                     template: YAHOO.widget.Paginator.TEMPLATE_DEFAULT,
                     rowsPerPageOptions: [20],
                     pageLinks: 3,
                 });
-                var ap = {
-                    sortedBy: { key: "Title", dir: "asc" },
-                    paginator: at,
+                const options = {
+                    sortedBy: {key: "Title", dir: "asc"},
+                    paginator: paginator,
                     draggableColumns: false,
                     selectionMode: "single",
                     renderLoopSize: 0,
                 };
-                ao = new YAHOO.widget.DataTable("songnav_songlistnew", am, ar, ap);
-                ao.hideColumn("ID");
-                L = false;
-                ao.subscribe("rowMouseoverEvent", ao.onEventHighlightRow);
-                ao.subscribe("rowMouseoutEvent", ao.onEventUnhighlightRow);
-                ao.subscribe("rowClickEvent", function () {
+                const dataTable = new YAHOO.widget.DataTable("songnav_songlistnew", [
+                    {key: "ID", hidden: true},
+                    {key: "Title", sortable: true, resizeable: true, minWidth: 500},
+                ], source, options);
+
+                dataTable.subscribe("rowMouseoverEvent", dataTable.onEventHighlightRow);
+                dataTable.subscribe("rowMouseoutEvent", dataTable.onEventUnhighlightRow);
+                dataTable.subscribe("rowClickEvent", function () {
                     selectedTab.set(1); // make the lyrics tab active if on another tab
 
-                    ao.onEventSelectRow.apply(ao, arguments);
+                    dataTable.onEventSelectRow.apply(this, arguments);
                 });
-                ao.subscribe("rowSelectEvent", _onSelectItemInDataList);
-                ao.subscribe("renderEvent", onRender);
-                at.subscribe("pageChange", onPageChange);
-                s = false;
-                function onPageChange() {
-                    L = true;
-                }
-                function onRender() {
-                    if (L) {
-                        L = false;
+                dataTable.subscribe("renderEvent", function() {
+                    __debug("onRender called...");
+                    if (isRenderPending) {
+                        isRenderPending = false;
                     }
-                    ao.selectRow(ao.getTrEl(0));
-                }
-                function _onSelectItemInDataList() {
-                    const [aw] = ao.getSelectedTrEls();
-                    const record = ao.getRecord(aw);
+                    const firstRow = dataTable.getTrEl(0);
 
-                    if (record != null) {
+                    __debug("First Row:", firstRow);
+
+                    if (firstRow) {
+                        dataTable.selectRow(firstRow);
+                    } else {
+                        _itemID = 0;
+                        _itemTitle = "";
+                        ab();
+                    }
+                });
+                paginator.subscribe("pageChange", function() {
+                    isRenderPending = true;
+                });
+                dataTable.subscribe("rowSelectEvent", _onSelectItemInDataList);
+
+                function _onSelectItemInDataList() {
+                    const [selectedEl] = dataTable.getSelectedTrEls();
+                    const selectedRecord = dataTable.getRecord(selectedEl);
+
+                    __debug("Selected Record: ", JSON.stringify(selectedRecord));
+
+                    if (selectedRecord != null) {
                         if (Q !== -1) {
-                            a = Q;
-                            b = n;
+                            _itemID = Q;
+                            _itemTitle = n;
                             ab();
                             Q = -1;
                             n = -1;
                         } else {
-                            a = record.getData("ID");
-                            b = record.getData("Title");
+                            _itemID = selectedRecord.getData("ID");
+                            _itemTitle = selectedRecord.getData("Title");
                             ab();
                         }
                     } else {
-                        a = 0;
-                        b = "";
+                        _itemID = 0;
+                        _itemTitle = "";
+                        ab();
                     }
                 }
             }

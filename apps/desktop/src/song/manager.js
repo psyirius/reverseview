@@ -397,9 +397,8 @@ export class SongManager {
             return aq;
         }
         function d() {
-            var aO = songy.length;
-            for (var aN = 0; aN < aO; aN++) {
-                ap[aN] = songy[aN].font;
+            for (let i = 0; i < songy.length; i++) {
+                ap[i] = songy[i].font;
             }
         }
         function getFontList() {
@@ -514,7 +513,7 @@ export class SongManager {
             }
         }
         function aG() {
-            __debug(" Creating song table...");
+            __debug("Creating song table...");
             aA = new air.SQLStatement();
             aA.sqlConnection = m_sqlConnection;
             var aN = "CREATE TABLE IF NOT EXISTS sm (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, cat TEXT, font TEXT, font2 TEXT, timestamp TEXT, yvideo TEXT, bkgndfname TEXT, key TEXT, copy TEXT, notes TEXT, lyrics TEXT lyrics2 TEXT title2 TEXT tags TEXT slideseq TEXT rating INTEGER chordsavailable Boolean usagecount INTEGER subcat TEXT )";
@@ -758,7 +757,7 @@ export class SongManager {
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.execute();
             function aO(aR) {
-                __debug("Succesfuly got all categories from Song DB");
+                __debug("Successfully got all categories from Song DB");
                 aq = aP.getResult();
                 $RvW.songNavObj.update_CategoryList(aq);
             }
@@ -775,7 +774,7 @@ export class SongManager {
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.execute();
             function aO(aR) {
-                __debug("Succesfuly got all fonts from Song DB");
+                __debug("Successfully got all fonts from Song DB");
                 const { data } = aP.getResult();
                 songy = data ?? [];
                 d();

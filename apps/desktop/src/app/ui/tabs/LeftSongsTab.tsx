@@ -1,3 +1,5 @@
+// Song Lyric Navigation
+
 export default function LeftSongsTab() {
     return (
         <div id="songNavTab">

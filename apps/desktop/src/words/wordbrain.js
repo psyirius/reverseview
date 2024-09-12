@@ -3,7 +3,6 @@ import {$RvW} from "@/rvw";
 
 export class WordBrain {
     constructor() {
-        this.init = init;
         this.addRecord = addRecord;
         this.addRecordBy_wordin_wordout = addRecordBy_wordin_wordout;
         this.findRecordBy_wordin = findRecordBy_wordin;
@@ -20,12 +19,10 @@ export class WordBrain {
         var C;
         var s;
         var m = null;
-        var v = false;
+        const _isDebug = false;
 
-        function init() {
-            a = false;
-            d();
-        }
+        d();
+
         function d() {
             m_sqlConn = new air.SQLConnection();
             m_sqlConn.addEventListener(air.SQLEvent.OPEN, p);
@@ -34,17 +31,17 @@ export class WordBrain {
             m_sqlConn.openAsync(D);
         }
         function p(D) {
-            r("Brain DB was created successfully");
+            __debug_log("Brain DB was created successfully");
             a = true;
             f();
         }
         function t(D) {
-            r("Error message:" + D.error.message);
-            r("Details (create DB):" + D.error.details);
+            __debug_log("Error message:" + D.error.message);
+            __debug_log("Details (create DB):" + D.error.details);
             a = false;
         }
         function f() {
-            r(" Creating song table...");
+            __debug_log(" Creating song table...");
             k = new air.SQLStatement();
             k.sqlConnection = m_sqlConn;
             var D = "CREATE TABLE IF NOT EXISTS wordbrain (id INTEGER PRIMARY KEY AUTOINCREMENT, wordin TEXT, wordout TEXT, count INTEGER )";
@@ -56,13 +53,13 @@ export class WordBrain {
         function b() {
             k.removeEventListener(air.SQLEvent.RESULT, b);
             k.removeEventListener(air.SQLErrorEvent.ERROR, l);
-            r("Notes Table created.....");
+            __debug_log("Notes Table created.....");
         }
         function l(D) {
             k.removeEventListener(air.SQLEvent.RESULT, b);
             k.removeEventListener(air.SQLErrorEvent.ERROR, l);
-            r("Error message:" + D.error.message);
-            r("Details in creating table :" + D.error.details);
+            __debug_log("Error message:" + D.error.message);
+            __debug_log("Details in creating table :" + D.error.details);
         }
         function o() {
             a = false;
@@ -80,16 +77,16 @@ export class WordBrain {
             E.parameters[":w_count"] = 1;
             E.execute();
             function D(J) {
-                r("Add record passed ");
+                __debug_log("Add record passed ");
                 E.removeEventListener(air.SQLEvent.RESULT, insertResult);
                 E.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
             }
             function F(J) {
                 E.removeEventListener(air.SQLEvent.RESULT, insertResult);
                 E.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
-                r("INSERT error:" + J.error);
-                r("event.error.code:" + J.error.code);
-                r("event.error.message:" + J.error.message);
+                __debug_log("INSERT error:" + J.error);
+                __debug_log("event.error.code:" + J.error.code);
+                __debug_log("event.error.message:" + J.error.message);
             }
         }
         function h(H) {
@@ -104,19 +101,19 @@ export class WordBrain {
             function D(I) {
                 F.removeEventListener(air.SQLEvent.RESULT, D);
                 F.removeEventListener(air.SQLErrorEvent.ERROR, E);
-                r("Add record count updated");
+                __debug_log("Add record count updated");
             }
             function E(I) {
                 F.removeEventListener(air.SQLEvent.RESULT, D);
                 F.removeEventListener(air.SQLErrorEvent.ERROR, E);
-                r("VV Word Brain count update error...");
-                r("Error message:" + I.error.message);
-                r("Details (Tried to increment the count):" + I.error.details);
+                __debug_log("VV Word Brain count update error...");
+                __debug_log("Error message:" + I.error.message);
+                __debug_log("Details (Tried to increment the count):" + I.error.details);
             }
         }
         function n(D) { }
         function addRecordBy_wordin_wordout(G, I) {
-            r("Adding Record by looking at word in and word out....");
+            __debug_log("Adding Record by looking at word in and word out....");
             var F = new air.SQLStatement();
             F.sqlConnection = m_sqlConn;
             F.addEventListener(air.SQLEvent.RESULT, D);
@@ -132,19 +129,19 @@ export class WordBrain {
                 var L = F.getResult();
                 if (L.data != null) {
                     var J = L.data[0].id;
-                    r("About to update count of word with ID: " + J);
+                    __debug_log("About to update count of word with ID: " + J);
                     h(J);
                 } else {
-                    r("No record found... going to add new");
+                    __debug_log("No record found... going to add new");
                     addRecord(G, I);
                 }
             }
             function E(J) {
                 F.removeEventListener(air.SQLEvent.RESULT, D);
                 F.removeEventListener(air.SQLErrorEvent.ERROR, E);
-                r("VV Word Brain search data error...");
-                r("Error message:" + J.error.message);
-                r("Details (Get Word IN/OUT data):" + J.error.details);
+                __debug_log("VV Word Brain search data error...");
+                __debug_log("Error message:" + J.error.message);
+                __debug_log("Details (Get Word IN/OUT data):" + J.error.details);
             }
         }
         function findRecordBy_wordin(qwrd) {
@@ -160,7 +157,7 @@ export class WordBrain {
             var H = m_sqlQuery.getResult();
             if (H.data != null) {
                 var D = H.data.length;
-                r(D);
+                __debug_log(D);
                 z = new Array();
                 c = "";
                 for (var F = 0; F < D; F++) {
@@ -173,15 +170,15 @@ export class WordBrain {
             }
         }
         function _onSqlError(D) {
-            r("VV Word Brain search data error...");
-            r("Error message:" + D.error.message);
-            r("Details (Get Word brain data):" + D.error.details);
+            __debug_log("VV Word Brain search data error...");
+            __debug_log("Error message:" + D.error.message);
+            __debug_log("Details (Get Word brain data):" + D.error.details);
         }
         function getSuggestions() {
             return z;
         }
-        function r(D) {
-            if (v) {
+        function __debug_log(D) {
+            if (_isDebug) {
                 air.trace("[VV Brain]...." + D);
             }
         }
