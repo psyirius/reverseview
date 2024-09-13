@@ -1,5 +1,12 @@
 ### ReVerseVIEW - Rebirth of the old-school (Adobe AIR) VerseVIEW in a modest way possible
 
+### Development - Setup
+- JDK 1.8
+- Adobe AIR SDK 32(adobe)/33(harman) (WebKit version) <= 33.1.1.743
+- Node.js 20.x
+- pnpm 9.x
+- haxe 4.x
+
 ### Notes
 - Typescript <5.5 is required for the project as 5.5 doesn't support ES3 target
 

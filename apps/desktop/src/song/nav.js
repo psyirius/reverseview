@@ -121,27 +121,27 @@ export class SongNav {
         }
 
         function Z() {
-            new ImageIcon(
-                "songnav_searchbutton",
-                " SEARCH Song Lyrics ",
-                "graphics/icon/search_32.png",
-                "graphics/icon/search_32.png",
-                ""
-            );
-            new ImageIcon(
-                "songnav_searchauthorbutton",
-                " SEARCH Song by Author ",
-                "graphics/icon/search_author_32.png",
-                "graphics/icon/search_author_32.png",
-                ""
-            );
-            new ImageIcon(
-                "songnav_clearbutton",
-                " CLEAR Search ",
-                "graphics/icon/clearsearch_32.png",
-                "graphics/icon/clearsearch_32.png",
-                ""
-            );
+            // new ImageIcon(
+            //     "songnav_searchbutton",
+            //     " SEARCH Song Lyrics ",
+            //     "graphics/icon/search_32.png",
+            //     "graphics/icon/search_32.png",
+            //     ""
+            // );
+            // new ImageIcon(
+            //     "songnav_searchauthorbutton",
+            //     " SEARCH Song by Author ",
+            //     "graphics/icon/search_author_32.png",
+            //     "graphics/icon/search_author_32.png",
+            //     ""
+            // );
+            // new ImageIcon(
+            //     "songnav_clearbutton",
+            //     " CLEAR Search ",
+            //     "graphics/icon/clearsearch_32.png",
+            //     "graphics/icon/clearsearch_32.png",
+            //     ""
+            // );
 
             roundSearchBox(document.getElementById("songnav_filterbox"));
             document.getElementById("songnav_filterbox").style.margin = "2px 0px 0px 10px";

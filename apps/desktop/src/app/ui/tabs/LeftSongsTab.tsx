@@ -19,24 +19,46 @@ export default function LeftSongsTab() {
 
             {/* TITLE SEQUENCE */}
             <div class="ui grid vvrow40">
-                <div class="nine wide column">
+                <div class="ten wide column">
                     <div class="ui search songsearch">
                         <div class="ui icon input">
-                            <input class="prompt" type="text" size={14} id="songnav_editbox" placeholder="Search"/>
+                            <input
+                                class="prompt"
+                                type="text"
+                                size={14}
+                                id="songnav_editbox"
+                                placeholder="Search"
+                            />
                         </div>
-                        <div class="results"></div>
                     </div>
                 </div>
 
+                <div class="six wide row">
+                    <div class="ui icon buttons">
+                        <button
+                            class="ui button"
+                            id="songnav_searchbutton"
+                            data-tooltip="Search by Lyrics"
+                        >
+                            <i class="file alternate icon"></i>
+                        </button>
 
-                <div class="one wide column">
-                    <span class="iconImageStyle"><img id="songnav_searchbutton"/></span>
-                </div>
-                <div class="one wide column">
-                    <span class="iconImageStyle"><img id="songnav_searchauthorbutton"/></span>
-                </div>
-                <div class="one wide column">
-                    <span class="iconImageStyle"><img id="songnav_clearbutton"/></span>
+                        <button
+                            class="ui button"
+                            id="songnav_searchauthorbutton"
+                            data-tooltip="Search by Author"
+                        >
+                            <i class="user icon"></i>
+                        </button>
+
+                        <button
+                            class="ui button"
+                            id="songnav_clearbutton"
+                            data-tooltip="Clear Filters"
+                        >
+                            <i class="times circle icon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
