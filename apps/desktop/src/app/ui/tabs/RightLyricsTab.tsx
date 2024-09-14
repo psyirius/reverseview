@@ -1,45 +1,63 @@
-
+import {navNotifyMessage} from "@stores/global";
+import {$RvW} from "@/rvw";
 
 
 export default function RightLyricsTab() {
+    function onClickEdit() {
+        $RvW.songNavObj.sn_editSong();
+    }
+
+    function onClickAdd2Schedule() {
+        $RvW.learner.finishLearning();
+        $RvW.songNavObj.sn_add2schedule();
+        navNotifyMessage.set("Added to schedule");
+    }
+
+    function onClickPresent() {
+        $RvW.songNavObj.sn_presentSong();
+    }
+
+    const actions = [
+        { label: 'Edit', icon: 'edit', onClick: onClickEdit },
+        { label: 'Present', icon: 'play', onClick: onClickPresent },
+        { label: 'Schedule', icon: 'plus square', onClick: onClickAdd2Schedule },
+    ]
+
     return (
         <div id="lyricsTab" class="tabSubContainer">
             {/* TITLE SEQUENCE */}
             <div class="ui grid">
-                <div class="ten wide column">
+                <div class="sixteen wide column">
                     <p class="h5" id="ly_name"></p>
                     <small class="h6 text-muted" id="ly_name2"></small>
                 </div>
-                {/*<div class="five wide column"></div>*/}
-                <div class="one wide column">
-
-                </div>
-                <div class="one wide column">
-                    <label for="ly_sequence" class="invisible">Sequence</label>
-                </div>
-                <div class="four wide column">
-                    <input type="text" class="form-control form-control-sm invisible" id="ly_sequence" placeholder=""/>
-                </div>
             </div>
+
             {/* BUTTONS */}
             <div class="ui grid">
                 <div class="sixteen wide column">
-                    <button type="button" class="btn btn-secondary btn-sm" id="ly_edit">EDIT</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="ly_add2schedule">SCHEDULE</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="ly_present">PRESENT</button>
+                    {actions.map((action, i) => (
+                        <button class="ui labeled icon button" onClick={action.onClick} key={i}>
+                            <i class={"icon " + action.icon}></i>
+                            {action.label}
+                        </button>
+                    ))}
                 </div>
             </div>
+
             {/* SLIDES */}
             <div class="ui grid">
                 <div class="column border border-primary">
                     <div id="ly_slide" class="ly_slide_class"></div>
                 </div>
             </div>
+
             {/* TAGS */}
             <div class="ui grid">
                 <div class="ten wide column" id="ly_tags">
                 </div>
             </div>
+
             {/* ADDITIONAL INFO */}
             <div class="ui grid">
                 <div class="three wide column">

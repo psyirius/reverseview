@@ -95,9 +95,9 @@ export class SongNav {
 
         function hideLyricsElements() {
             $("#ly_name2").hide();
-            $("#ly_edit").hide();
-            $("#ly_add2schedule").hide();
-            $("#ly_present").hide();
+            // $("#ly_edit").hide();
+            // $("#ly_add2schedule").hide();
+            // $("#ly_present").hide();
             $("#ly_slide").hide();
             $("#ly_tags").hide();
             $("#ly_cat").hide();
@@ -109,9 +109,9 @@ export class SongNav {
         function showLyricsElements() {
             $("#ly_name").show();
             $("#ly_name2").show();
-            $("#ly_edit").show();
-            $("#ly_add2schedule").show();
-            $("#ly_present").show();
+            // $("#ly_edit").show();
+            // $("#ly_add2schedule").show();
+            // $("#ly_present").show();
             $("#ly_slide").show();
             $("#ly_tags").show();
             $("#ly_cat").show();
@@ -157,9 +157,9 @@ export class SongNav {
             YAHOO.util.Event.addListener("songnav_editbox", "blur", songnav_editbox_onblur);
             YAHOO.util.Event.addListener("songnav_editbox", "focus", songnav_editbox_focus);
             $("#songnav_editbox").keyup(sn_searchSong);
-            document.getElementById("ly_edit").addEventListener("click", ly_edit, false);
-            document.getElementById("ly_add2schedule").addEventListener("click", ly_add2schedule, false);
-            document.getElementById("ly_present").addEventListener("click", ly_present, false);
+            // document.getElementById("ly_edit").addEventListener("click", ly_edit, false);
+            // document.getElementById("ly_add2schedule").addEventListener("click", ly_add2schedule, false);
+            // document.getElementById("ly_present").addEventListener("click", ly_present, false);
             document.getElementById("ly_copy").addEventListener("click", ly_copy, false);
         }
         function songnav_editbox_onblur() {

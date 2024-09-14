@@ -11,6 +11,8 @@ const toBuild = {
     'styles/fonts.pcss'             : '.air/css/fonts.css',
     'styles/graphics.pcss'          : '.air/css/graphics.css',
 
+    'styles/sandbox/app.pcss'       : '.air/css/sandbox/app.css',
+
     'styles/stageview.pcss'         : '.air/css/stageview.css',
     'styles/presentation.pcss'      : '.air/css/presentation.css',
 }

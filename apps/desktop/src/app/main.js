@@ -845,8 +845,6 @@ function setupTabContent() {
     /* setupTabView("nav", "navTab"); */ fillNav();
     /* setupTabView("song_nav", "songNavTab"); */
 
-    versionFill(true); configInit();
-
     $RvW.scheduleObj = new Scheduler();
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes();
@@ -861,6 +859,8 @@ function setupTabContent() {
     $RvW.songNavObj = new SongNav();
     $RvW.helpObj = new HelpUiPanel();
     $RvW.graphicsObj = new GraphicsMgr();
+
+    versionFill(true); configInit();
 
     if (!isUpToDate() && !task2Status()) {
         air.trace("About to copy webroot files...");
