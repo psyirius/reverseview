@@ -17,7 +17,7 @@ const tabs = [
     },
 ];
 
-export default function LeftTab() {
+export default function LeftPane() {
     // const id = useId();
     const id = 'container';
 

@@ -1,10 +1,8 @@
 import MenuBar from "./MenuBar";
-import LeftTab from "./LeftTab";
-import RightTab from "./RightTab";
-import Dialogs from "./dialogs/index";
 import Toaster from "./Toaster";
-import SandboxFrame from "@app/ui/SandboxFrame";
-import Content from "@app/ui/Content";
+import Dialogs from "./dialogs/index";
+import ContentPane from "./ContentPane";
+import SandboxFrame from "./SandboxFrame";
 
 interface Props {
     dev?: boolean;
@@ -39,7 +37,7 @@ const App = ({dev}: Props) => {
             {/*    </div>*/}
             {/*</div>*/}
 
-            <Content />
+            <ContentPane />
 
             {/* ------------------------------------------------ */}
 

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES5",
+    "importHelpers": true,
+    "noEmitHelpers": true,
+//    "downlevelIteration": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+}

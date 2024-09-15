@@ -13,7 +13,7 @@ export default function QRCode({ text }: Props) {
         // prevent appending multiple QR codes
         qrRef.current!.innerHTML = '';
 
-        // linked lib: QRCode
+        // global: QRCode
         // @ts-ignore
         new window.QRCode(qrRef.current!, text);
     }, [text]);

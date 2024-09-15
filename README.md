@@ -134,3 +134,5 @@ swfdump -abc ./app/lib/air/aircore.swf
 - https://cdn.jsdelivr.net/npm/alloy-ui@3.1.0-deprecated.83/build/resize-base/assets/skins/sam/resize-base.min.css
 - https://gander.wustl.edu/~wilson/store/yui/api/
 - https://github.com/liferay/liferay-frontend-projects/tree/master/third-party/projects/alloy-ui
+- https://www.infernojs.org/docs/guides/installation
+- https://glimmerjs.com/

@@ -49,7 +49,7 @@ const tabs = [
     },
 ];
 
-export default function LeftTab() {
+export default function RightPane() {
     // const id = useId();
     const id = 'container2';
 

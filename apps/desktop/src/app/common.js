@@ -4,7 +4,6 @@ import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
 import * as $ from "jquery";
-import {navNotifyMessage} from "@stores/global";
 
 export let apple = false;
 
@@ -540,10 +539,6 @@ export function roundSearchBox(a) {
     a.style.borderRadius = "4px";
     a.style.padding = "0px 0px 0px 5px";
     a.style.height = "30px";
-}
-
-export function showNotification(a) {
-    navNotifyMessage.set(a);
 }
 
 function getDate() {

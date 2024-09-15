@@ -1,9 +1,9 @@
-import {$RvW} from "@/rvw";
-import {blankSlide, showLogoSlide, showNotification} from "@app/common";
+import {useEffect} from "@lib/zrx/hooks";
+import {useStoreState} from "@/utils/hooks";
+import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, closePresentWindowMain} from "@/p_window";
 import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab} from "@stores/global";
-import {useStoreState} from "@/utils/hooks";
-import {useEffect} from "@lib/zrx/hooks";
+import {$RvW} from "@/rvw";
 
 const handlers = {
     present: () => {
@@ -40,13 +40,13 @@ const handlers = {
         const v = $RvW.getVerseValue();
         $RvW.scheduleObj.processAddVerse(b, c, v);
 
-        showNotification("Added verse to schedule");
+        navNotifyMessage.set("Added verse to schedule");
     },
     addSongToSchedule: () => {
         $RvW.learner.finishLearning();
         $RvW.songNavObj.sn_add2schedule();
 
-        showNotification("Added song to schedule");
+        navNotifyMessage.set("Added song to schedule");
     },
     gotoLink: (url: string) => {
         const al = new air.URLRequest(url);

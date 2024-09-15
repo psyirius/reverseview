@@ -13,9 +13,9 @@ import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
-import {clearSelectList, ImageIcon, roundSearchBox, showNotification} from "@app/common";
+import {clearSelectList, ImageIcon, roundSearchBox} from "@app/common";
 import {$RvW} from "@/rvw";
-import {menuYtLink, selectedTab} from "@stores/global";
+import {menuYtLink, navNotifyMessage, selectedTab} from "@stores/global";
 
 export class SongNav {
     constructor() {
@@ -179,7 +179,7 @@ export class SongNav {
         function ly_add2schedule() {
             $RvW.learner.finishLearning();
             $RvW.songNavObj.sn_add2schedule();
-            showNotification("Added to schedule");
+            navNotifyMessage.set("Added to schedule");
         }
         function ly_present() {
             $RvW.songNavObj.sn_presentSong();
