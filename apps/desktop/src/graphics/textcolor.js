@@ -39,8 +39,7 @@ export class TextColor {
                 .addEventListener("click", j, false);
         }
         function a() {
-            var m = new ColorPickerPanel();
-            m.init(i, 0);
+            var m = new ColorPickerPanel(i, 0);
         }
         function e(m) {
             i = m;

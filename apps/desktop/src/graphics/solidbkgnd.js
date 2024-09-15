@@ -30,8 +30,7 @@ export class SolidBackgroundColor {
                 .addEventListener("click", i, false);
         }
         function h() {
-            var l = new ColorPickerPanel();
-            l.init(e, 1);
+            var l = new ColorPickerPanel(e, 1);
         }
         function j(l) {
             e = l;

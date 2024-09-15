@@ -22,6 +22,7 @@ interface YUI3 {
     Panel: any;
     TabView: any;
     Slider: any;
+    Color: any;
 
     Plugin: {
         AutoComplete: any;

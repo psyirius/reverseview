@@ -1,4 +1,3 @@
-import {clearSelectList} from "@app/common";
 import {$RvW} from "@/rvw";
 
 let tags = [];
@@ -15,12 +14,14 @@ export function removeTag(a) {
     $RvW.vvConfigObj.save();
     tags.push("ALL");
 }
+
 export function addTagList(b) {
     const d = b.split(",");
     for (let c = 0; c < d.length; c++) {
         addTag(d[c].trim());
     }
 }
+
 function addTag(a) {
     if (isNewTag(a)) {
         tags.pop();
@@ -31,6 +32,7 @@ function addTag(a) {
         tags.push("ALL");
     }
 }
+
 function isNewTag(a) {
     if (a !== "ALL") {
         return $.inArray(a, tags) === -1;
@@ -38,28 +40,28 @@ function isNewTag(a) {
         return false;
     }
 }
+
 export function getTags2Array() {
     const a = $RvW.vvConfigObj.get_taglist();
     tags = a.split(",");
     tags.sort();
     tags.push("ALL");
 }
+
 export function fillTagList() {
-    const a = tags.length;
-    const b = clearSelectList("songnav_tags");
-    if (b) {
-        const c = document.createDocumentFragment();
-        const g = document.getElementById("songnav_tags");
-        for (let d = 0; d < a; d++) {
-            const e = document.createElement("option");
-            e.innerHTML = tags[d];
-            e.value = String(d);
-            c.appendChild(e);
+    /** @type {HTMLSelectElement} */
+    const el = document.getElementById("songnav_tags");
+    if (el) {
+        el.options.length = 0;
+
+        for (let i = 0; i < tags.length; i++) {
+            el.options[i] = new Option(tags[i], i);
         }
-        g.appendChild(c);
+
         setTag2All();
     }
 }
+
 export function setTag2All() {
     const a = tags.length;
     const b = "#songnav_tags option:eq(" + (a - 1) + ")";

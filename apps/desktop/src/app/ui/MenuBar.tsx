@@ -87,11 +87,11 @@ export default function MenuBar() {
 
     return (
         <div style="width: 100%">
-            <div className="ui mini menu">
+            <div class="ui mini menu">
                 {/* Menu Items */}
                 {menuItems.map(e => (
                     <a
-                        className="item"
+                        class="item"
                         data-tooltip={e.tooltip}
                         data-position="right center"
                         onClick={e.onClick}
@@ -102,44 +102,44 @@ export default function MenuBar() {
 
                 {/* Verse Menu */}
                 {(activeTabIndex == 0) && <>
-                    <div className="item">
+                    <div class="item">
                         {activeBookRef}
                     </div>
 
                     <div
-                        className="item"
+                        class="item"
                         data-tooltip="Add to Schedule"
                         data-position="left center"
                         onClick={handlers.addVerseToSchedule}
                     >
-                        <i className="add icon"></i>
+                        <i class="add icon"></i>
                     </div>
                 </>}
 
                 {/* Lyric Menu */}
                 {(activeTabIndex == 1) && <>
                     <div
-                        className={"item" + ((ytLink == null) ? "" : " disabled")}
+                        class={"item" + ((ytLink == null) ? "" : " disabled")}
                         disabled={(ytLink == null)}
                         data-tooltip="YouTube"
                         data-position="left center"
                         onClick={() => handlers.gotoLink(ytLink)}
                     >
-                        <i className="video icon"></i>
+                        <i class="video icon"></i>
                     </div>
 
                     <div
-                        className="item"
+                        class="item"
                         data-tooltip="Add to Schedule"
                         data-position="left center"
                         onClick={handlers.addSongToSchedule}
                     >
-                        <i className="add icon"></i>
+                        <i class="add icon"></i>
                     </div>
                 </>}
 
                 {/* Notification Message */}
-                {notification && <div className="item">
+                {notification && <div class="item">
                     <a class="ui label basic" onClick={() => navNotifyMessage.set(null)}>
                         {notification}
                     </a>

@@ -54,12 +54,10 @@ export class GradiantBackgroundColor {
                 .addEventListener("change", a, false);
         }
         function h() {
-            var r = new ColorPickerPanel();
-            r.init(p, 2);
+            var r = new ColorPickerPanel(p, 2);
         }
         function g() {
-            var r = new ColorPickerPanel();
-            r.init(n, 3);
+            var r = new ColorPickerPanel(n, 3);
         }
         function a() {
             f = document.getElementById("orientGradListID").selectedIndex;

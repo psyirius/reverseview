@@ -1,59 +1,90 @@
 import {$RvW} from "@/rvw";
 
 export class ColorPickerPanel {
-    constructor() {
-        this.init = n;
-        this.show = k;
-        var p = null;
-        var i = null;
-        var h = null;
-        var o = null;
-        var g = -1;
-        var a = YAHOO.util.Color;
-        function n(r, q) {
-            o = r;
-            g = q;
-            i = m();
-            document.getElementById("cp_panelx").innerHTML = i;
-            c();
-            j();
-        }
-        function c() {
-            if (g == 0) {
-                p = new YAHOO.widget.Dialog("yui-picker-panel", {
+    constructor(initValueHex, kind) {
+        this.show = show;
+
+        let _dialog = null;
+        let _picker = null;
+        let _hexValue = initValueHex;
+
+        document.getElementById('cp_panelx').innerHTML = `
+        <div id="yui-picker-panel" class="yui-picker-panel">
+            <div class="hd">Please choose a color:</div>
+            <div class="bd">
+                <div class="yui-picker" id="yui-picker"></div>
+            </div>
+            <div class="ft"></div>
+        </div>
+        `;
+
+        _initDialog();
+
+        function _initDialog() {
+            if (kind === 0) {
+                _dialog = new YAHOO.widget.Dialog("yui-picker-panel", {
                     width: "500px",
                     fixedcenter: true,
                     modal: false,
                     visible: true,
                     constraintoviewport: true,
                     buttons: [
-                        { text: "Color 1", handler: l, isDefault: true },
-                        { text: "Color 2", handler: d, isDefault: true },
-                        { text: "Close", handler: f },
+                        {
+                            text: "Color 1",
+                            handler() {
+                                $RvW.graphicsObj.assignColor(_hexValue, kind);
+                            },
+                            isDefault: true
+                        },
+                        {
+                            text: "Color 2",
+                            handler() {
+                                $RvW.graphicsObj.assignColor(_hexValue, 4);
+                            },
+                            isDefault: true
+                        },
+                        {
+                            text: "Close",
+                            handler() {
+                                _dialog.hide();
+                            }
+                        },
                     ],
                 });
             } else {
-                p = new YAHOO.widget.Dialog("yui-picker-panel", {
+                _dialog = new YAHOO.widget.Dialog("yui-picker-panel", {
                     width: "500px",
                     fixedcenter: true,
                     modal: false,
                     visible: true,
                     constraintoviewport: true,
                     buttons: [
-                        { text: "Submit", handler: l, isDefault: true },
-                        { text: "Close", handler: f },
+                        {
+                            text: "Submit",
+                            handler() {
+                                $RvW.graphicsObj.assignColor(_hexValue, kind);
+                            },
+                            isDefault: true
+                        },
+                        {
+                            text: "Close",
+                            handler() {
+                                _dialog.hide();
+                            }
+                        }
                     ],
                 });
             }
-            b();
-            p.hide();
-            p.render();
-            p.show();
-            p.bringToTop();
+            _setupColorPicker();
+            _dialog.hide();
+            _dialog.render();
+            _dialog.show();
+            _dialog.bringToTop();
         }
-        function b() {
-            h = new YAHOO.widget.ColorPicker("yui-picker", {
-                container: p,
+
+        function _setupColorPicker() {
+            _picker = new YAHOO.widget.ColorPicker("yui-picker", {
+                container: _dialog,
                 showcontrols: false,
                 showhexcontrols: false,
                 showhsvcontrols: false,
@@ -63,32 +94,18 @@ export class ColorPickerPanel {
                     HUE_THUMB: "graphics/hue_thumb.png",
                 },
             });
-            (Event = YAHOO.util.Event), h;
-            h.setValue(a.hex2rgb(o), false);
-            h.on("rgbChange", e);
+            _picker.setValue(
+                $Y.Color.toRGB(_hexValue),
+                false
+            );
+            _picker.on("rgbChange", function () {
+                _hexValue = _picker.get("hex");
+            });
         }
-        function m() {
-            var q = "";
-            q =
-                '<div id="yui-picker-panel" class="yui-picker-panel"><div class="hd">Please choose a color:</div><div class="bd"><div class="yui-picker" id="yui-picker"></div></div><div class="ft"></div></div>';
-            return q;
-        }
-        function j() { }
-        function e() {
-            o = h.get("hex");
-        }
-        function k() {
-            p.show();
-            p.bringToTop();
-        }
-        function l() {
-            $RvW.graphicsObj.assignColor(o, g);
-        }
-        function d() {
-            $RvW.graphicsObj.assignColor(o, 4);
-        }
-        function f() {
-            p.hide();
+
+        function show() {
+            _dialog.show();
+            _dialog.bringToTop();
         }
     }
 }

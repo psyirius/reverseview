@@ -6,6 +6,8 @@ import {
     readable,
     writable,
 } from '@/utils/_store'
+import {SongSearchType} from "@/const";
+import {Song} from "@/song/obj";
 
 export enum ColorTheme {
     LIGHT = 0,
@@ -29,15 +31,27 @@ export type BibleVersion = [
     string, // BookNames
 ];
 
+export type SongSearchQuery = {
+    type: SongSearchType,
+    value: string,
+}
+
 // Right Tab
 export const selectedTab: Writable<number> = writable(0);
 export const selectedBookRef: Writable<string> = writable('');
 export const menuYtLink: Writable<string | null> = writable(null);
 export const navNotifyMessage: Writable<string | null> = writable(null);
+export const songSearchQuery: Writable<SongSearchQuery | null> = writable(null);
+export const songCategories: Writable<string[]> = writable([]);
+export const songTags: Writable<string[]> = writable([]);
+export const selectedSongCategory: Writable<number> = writable(0);
+export const selectedSongTag: Writable<number> = writable(0);
+export const selectedSong: Writable<Song | null> = writable(undefined);
 export const showRemotePanel: Writable<boolean> = writable(false);
 export const showSongEditPanel: Writable<boolean> = writable(false);
 export const showLyricEditPanel: Writable<boolean> = writable(false);
 export const showBibleNotesEditPanel: Writable<boolean> = writable(false);
+export const showColorPickerPanel: Writable<boolean> = writable(false);
 export const showBibleManagePanel: Writable<boolean> = writable(false);
 export const showBibleSelectPanel: Writable<boolean> = writable(false);
 export const showVerseEditPanel: Writable<boolean> = writable(false);

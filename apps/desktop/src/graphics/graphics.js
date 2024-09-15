@@ -140,8 +140,7 @@ export class GraphicsMgr {
             }
         }
         function b() {
-            var x = new ColorPickerPanel();
-            x.init(textColor, 0);
+            var x = new ColorPickerPanel(textColor, 0);
         }
         function c(x) {
             f.setNumOfPicsInRow(x);
