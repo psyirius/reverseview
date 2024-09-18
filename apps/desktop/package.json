@@ -100,6 +100,7 @@
     "rollup-plugin-progress": "^1.1.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.78.0",
+    "vanilla-picker": "^2.12.3",
     "stylelint": "^16.8.2",
     "tailwindcss": "^3.4.10",
     "tslib": "^2.6.3",

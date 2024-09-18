@@ -1,0 +1,1 @@
+main script of the presentation (standalone)

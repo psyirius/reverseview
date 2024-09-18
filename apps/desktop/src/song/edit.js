@@ -1,4 +1,4 @@
-import {addTagList, fillTagList} from "@/tags";
+import {addTagList, fillTagsToUI} from "@/song/tags";
 import {SongPresenter} from "./present";
 import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
@@ -767,7 +767,7 @@ export class SongEdit {
                 }
 
                 addTagList(sngObj.tags);
-                fillTagList();
+                fillTagsToUI();
 
                 return sngObj;
             }

@@ -1,5 +1,5 @@
 import {BibleUpdater} from "@/bible/setup";
-import {fillTagList, getTags2Array} from "@/tags";
+import {fillTagsToUI, loadTagsFromConfig} from "@/song/tags";
 import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";
 import {addScreenSelectionEvent, fillScreenList} from "@/p_window";
@@ -1437,6 +1437,6 @@ export function configInit() {
     $("#thirdview_showTexture").change(svParameterSaveEvent);
     $("#thirdview_alignHorizontal").change(svParameterSaveEvent);
 
-    getTags2Array();
-    fillTagList();
+    loadTagsFromConfig();
+    fillTagsToUI();
 }

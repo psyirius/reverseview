@@ -7,7 +7,7 @@ import { WordLearner } from "@/words/wordlearner";
 import { SongManager } from "@/song/manager";
 import { SongNumber } from "@/song/number";
 import { SongNav } from "@/song/nav";
-import { setupMenu } from "@/menu";
+import { setupMenu } from "@app/menu";
 import { SongEdit } from "@/song/edit";
 import { NotesManager } from "@/notes/manage";
 import { Notes, PostIt } from "@/notes/notes";
@@ -16,7 +16,7 @@ import { GraphicsMgr } from "@/graphics/graphics";
 import {setPrimaryBooknames} from "@/bible/booknames";
 import {VerseEditUI} from "@/bible/edit";
 import {BibleRecentRefManager} from "@/bible/recent";
-import {Scheduler} from "@/schedule";
+import {Scheduler} from "@app/schedule";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible, verseClass} from "@/bible/manager";
 import {AppUpdater, AppUpdateUi} from "./update";
 import { HelpUiPanel } from "./help";
@@ -31,7 +31,6 @@ import {
     bibleRefBlur,
     bibleRefFocus,
     processNavBibleRef,
-    processNavBibleRefFind
 } from "@/bible/navigation";
 import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/versionupdate";
 import {
@@ -1045,22 +1044,6 @@ function fillNav() {
         " SEARCH ",
         "graphics/icon/search_32.png",
         "graphics/icon/search_32.png",
-        ""
-    );
-    document.getElementById("nav_bibleRef_presentID").addEventListener("click", processNavBibleRef, false);
-    document.getElementById("nav_bibleRef_findID").addEventListener("click", processNavBibleRefFind, false);
-    new ImageIcon(
-        "nav_bibleRef_presentID",
-        " QUICK PRESENT ",
-        "graphics/icon/qpresent_24.png",
-        "graphics/icon/qpresent_24.png",
-        ""
-    );
-    new ImageIcon(
-        "nav_bibleRef_findID",
-        " FIND ",
-        "graphics/icon/search_s.png",
-        "graphics/icon/search_s.png",
         ""
     );
     document.getElementById("nav_bibleRefID").addEventListener("blur", bibleRefBlur, false);

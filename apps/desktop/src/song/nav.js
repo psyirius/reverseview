@@ -4,7 +4,9 @@
 // - YAHOO.widget.Paginator
 // - YAHOO.widget.DataTable
 
-import {fillTagList, getTags2Array, setTag2All} from "@/tags";
+import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
+import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
+import {menuYtLink, selectedSongCategory, selectedTab, songCategories} from "@stores/global";
 import {SongSearchType} from "@/const";
 import {Deferred} from "@/utils/async";
 import {SongPresenter} from "@/song/present";
@@ -12,10 +14,8 @@ import {SongLyrics} from "@/song/lyrics";
 import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
-import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
-import {clearSelectList, ImageIcon, roundSearchBox} from "@app/common";
+import {roundSearchBox} from "@app/common";
 import {$RvW} from "@/rvw";
-import {menuYtLink, navNotifyMessage, selectedTab} from "@stores/global";
 
 export class SongNav {
     constructor() {
@@ -36,6 +36,9 @@ export class SongNav {
         this.sn_deleteSong = sn_deleteSong;
         this.sn_deleteSongByCat = sn_deleteSongByCat;
         this.showSuggestedList = showSuggestedList;
+        this.songnav_tags_change = songnav_tags_change;
+        this.songnav_category_change = songnav_category_change;
+        this.songnav_clear = songnav_clear;
 
         let searchDelay = null;
         const searchDelayTime = 600;
@@ -88,8 +91,8 @@ export class SongNav {
             l();
             y = new Song();
             y.slides = [];
-            getTags2Array();
-            fillTagList();
+            loadTagsFromConfig();
+            fillTagsToUI();
             s = true;
         }
 
@@ -121,46 +124,15 @@ export class SongNav {
         }
 
         function Z() {
-            // new ImageIcon(
-            //     "songnav_searchbutton",
-            //     " SEARCH Song Lyrics ",
-            //     "graphics/icon/search_32.png",
-            //     "graphics/icon/search_32.png",
-            //     ""
-            // );
-            // new ImageIcon(
-            //     "songnav_searchauthorbutton",
-            //     " SEARCH Song by Author ",
-            //     "graphics/icon/search_author_32.png",
-            //     "graphics/icon/search_author_32.png",
-            //     ""
-            // );
-            // new ImageIcon(
-            //     "songnav_clearbutton",
-            //     " CLEAR Search ",
-            //     "graphics/icon/clearsearch_32.png",
-            //     "graphics/icon/clearsearch_32.png",
-            //     ""
-            // );
-
             roundSearchBox(document.getElementById("songnav_filterbox"));
             document.getElementById("songnav_filterbox").style.margin = "2px 0px 0px 10px";
             roundSearchBox(document.getElementById("songnav_editbox"));
         }
         function l() {
-            document.getElementById("songnav_category").addEventListener("change", songnav_category_change, false);
-            document.getElementById("songnav_tags").addEventListener("change", songnav_tags_change, false);
             $("#songnav_filterbox").hide();
-            document.getElementById("songnav_searchbutton").addEventListener("click", songnav_search, false);
-            document.getElementById("songnav_searchauthorbutton").addEventListener("click", songnav_searchauthor, false);
-            document.getElementById("songnav_clearbutton").addEventListener("click", songnav_clear, false);
             YAHOO.util.Event.addListener("songnav_editbox", "blur", songnav_editbox_onblur);
             YAHOO.util.Event.addListener("songnav_editbox", "focus", songnav_editbox_focus);
             $("#songnav_editbox").keyup(sn_searchSong);
-            // document.getElementById("ly_edit").addEventListener("click", ly_edit, false);
-            // document.getElementById("ly_add2schedule").addEventListener("click", ly_add2schedule, false);
-            // document.getElementById("ly_present").addEventListener("click", ly_present, false);
-            document.getElementById("ly_copy").addEventListener("click", ly_copy, false);
         }
         function songnav_editbox_onblur() {
             W = false;
@@ -171,19 +143,6 @@ export class SongNav {
         function isSongSearchEditActive() {
             return W;
         }
-        function ly_edit() {
-            if ($RvW.songNavObj != null) {
-                $RvW.songNavObj.sn_editSong();
-            }
-        }
-        function ly_add2schedule() {
-            $RvW.learner.finishLearning();
-            $RvW.songNavObj.sn_add2schedule();
-            navNotifyMessage.set("Added to schedule");
-        }
-        function ly_present() {
-            $RvW.songNavObj.sn_presentSong();
-        }
         function setFormats() {
             v = (($RvW.tabHeight - 300) / 22);
             if (!s) {
@@ -192,26 +151,21 @@ export class SongNav {
                 }
             }
         }
-        function songnav_category_change() {
-            const am = document.getElementById("songnav_category").selectedIndex;
-            const al = document.getElementById("songnav_category").options[am].text;
+        function songnav_category_change(al = 'ALL') {
             __debug("Selected Category Value: " + al);
             $("#songnav_editbox").val("");
-            setTag2All();
+            clearTagFilter();
             ag = false;
             $RvW.songManagerObj.getSongsFromCat(al);
         }
-        function songnav_tags_change() {
-            const am = $("#songnav_tags option:selected").text();
-            let al = "";
+        function songnav_tags_change(am) {
             if (searchDelay != null) {
                 clearTimeout(searchDelay);
             }
             searchDelay = setTimeout(function () {
                 clearTimeout(searchDelay);
-                if (am !== "ALL") {
-                    al = "%" + am + "%";
-                    $RvW.songManagerObj.searchRecords(al, SongSearchType.TAGS);
+                if (am !== 'ALL') {
+                    $RvW.songManagerObj.searchRecords(`%${am}%`, SongSearchType.TAGS);
                 } else {
                     songnav_clear();
                 }
@@ -330,35 +284,19 @@ export class SongNav {
 
             return res;
         }
-        function update_CategoryList(ap) {
-            var ao = ap;
-            clearSelectList("songnav_category");
-            document.getElementById("songnav_category").options[0] = new Option(
-                "ALL",
-                0
-            );
-            if (ao.data != null) {
-                var al = ao.data.length;
-                var an = 1;
-                for (var am = 0; am < al; am++) {
-                    if (ao.data[am].cat != null) {
-                        document.getElementById("songnav_category").options[an] = new Option(
-                            ao.data[am].cat,
-                            an
-                        );
-                        an++;
-                    }
-                }
-            }
-            document.getElementById("songnav_category").selectedIndex = 0;
+        function update_CategoryList(categories) {
+            const catz = categories?.map((c) => String(c.cat).trim()).filter(e => !!e) || [];
+            air.trace("Update Category List: ", catz);
+            songCategories.set(catz);
+            selectedSongCategory.set(null);
         }
         function ab() {
             try {
                 y = $RvW.songManagerObj.getSongObj(_itemID, ag);
-                render_lyrics(y);
-            } catch {
-                render_lyrics(null);
+            } catch (e) {
+                y = null;
             }
+            render_lyrics(y);
         }
         function sn_presentSong() {
             const al = new SongPresenter(y);
@@ -388,21 +326,21 @@ export class SongNav {
             }
         }
         function sn_deleteSongByCat() {
-            var ao = document.getElementById("songnav_category").selectedIndex;
-            var an = document.getElementById("songnav_category").options[ao].text;
-            if (an != "ALL") {
-                var am = "Song Database";
-                var ap = 'Do you want to delete ALL songs from "' + an + '" category?';
-                Prompt.exec(am, ap, al);
+            const ao = selectedSongCategory.get();
+            if (ao !== null) {
+                const cat = songCategories.get()[ao];
+                Prompt.exec(
+                    'Song Database',
+                    `Do you want to delete ALL songs from "${cat}" category?`,
+                    () => {
+                    _itemID = 0;
+                    $RvW.songManagerObj.deleteSongByCat(cat);
+                });
             } else {
                 Toast.show(
                     "Song Database",
                     "Can not delete the ALL category. Please select a specific category."
                 );
-            }
-            function al() {
-                _itemID = 0;
-                $RvW.songManagerObj.deleteSongByCat(an);
             }
         }
         function sn_searchSong() {
@@ -423,22 +361,11 @@ export class SongNav {
                 searchDelay = null;
             }, searchDelayTime);
         }
-        function songnav_search() {
-            var al = document.getElementById("songnav_editbox").value;
-            al = $.trim(al);
-            al = "%" + al + "%";
-            $RvW.songManagerObj.searchRecords(al, SongSearchType.LYRICS);
-        }
-        function songnav_searchauthor() {
-            var al = document.getElementById("songnav_editbox").value;
-            var am = "%" + al + "%";
-            $RvW.songManagerObj.searchRecords(am, SongSearchType.AUTHOR);
-        }
         function songnav_clear() {
             ag = false;
             $RvW.learner.cancelLearning();
             $("#songnav_editbox").val("");
-            setTag2All();
+            clearTagFilter();
             songnav_category_change();
         }
 
@@ -577,7 +504,7 @@ export class SongNav {
                 __debug("Tags Content : " + ap);
                 document.getElementById("ly_tags").innerHTML = ap;
                 for (let i = 0; i < aE.length; i++) {
-                    document.getElementById(`tag_${i}`).addEventListener("click", q, false);
+                    document.getElementById(`tag_${i}`).addEventListener("click", filterByTag, false);
                 }
             }
         }
@@ -592,33 +519,29 @@ export class SongNav {
             air.trace(`show lyrics by ID called.. ${y.name}  ${_itemID}   ${_itemTitle}`);
             render_lyrics(y);
         }
-        function q(al) {
-            var an = document.getElementById(al.target.id).innerHTML;
-            var am = "%" + an + "%";
-            $RvW.songManagerObj.searchRecords(am, SongSearchType.TAGS);
-        }
-        function ly_copy(am) {
-            var al = document.getElementById(am.target.id).innerHTML;
-            var an = "%" + al + "%";
-            $RvW.songManagerObj.searchRecords(an, SongSearchType.AUTHOR);
+        function filterByTag(tag) {
+            const _tag = tag.target.innerHTML;
+            $RvW.songManagerObj.searchRecords(`%${_tag}%`, SongSearchType.TAGS);
         }
         function searchComplete(res, al) {
             __debug("Search Complete " + res);
+
+            const cix = selectedSongCategory.get();
+            const cat = cix === null ? 'ALL' : songCategories.get()[cix];
 
             if (res.data != null) {
                 ag = true;
                 $("#search_error_notification").html("");
                 showLyricsElements();
-                var an = document.getElementById("songnav_category").selectedIndex;
-                var am = document.getElementById("songnav_category").options[an].text;
-                _loadSuggestions(res, am, al);
-                update_songList(res, am, ag);
+
+                _loadSuggestions(res, cat, al);
+                update_songList(res, cat, ag);
             } else {
                 m_keywords = [];
                 hideLyricsElements();
                 $("#ly_name").html("No matching song found.");
                 $("#search_error_notification").html("No match");
-                update_songList(res, am, ag);
+                update_songList(res, cat, ag);
             }
         }
 

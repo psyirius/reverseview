@@ -18,7 +18,7 @@ import esbuild from 'rollup-plugin-esbuild';
 import amd from 'rollup-plugin-amd';
 
 import consts from 'rollup-plugin-consts';
-import million from "million/compiler";
+import million from 'million/compiler';
 
 // experimental compilation
 
@@ -26,28 +26,22 @@ rollup({
     input: ['exp/index.tsx'],
     // context: 'window',
     plugins: [
-        // million.rollup({
-        //     auto: true,
-        // }),
+        million.rollup({
+            auto: true,
+        }),
         // consts({
         //     environment: 'production',
         // }),
         // virtual({
         //     // 'src/vlib.ts': `export default function VLib(): string { return 'vlib'; }`,
         // }),
+        resolve(), //
         amd({}),
         commonjs(),
-        // esbuild({
-        //     drop: ['console'],
-        //     dropLabels: ['TEST', 'DEV'],
-        // }),
-        swc({
-            swc: {
-                jsc: {
-                    target: 'es3',
-                    externalHelpers: true,
-                }
-            }
+        alias({
+            entries: [
+                { find: 'preact', replacement: 'v0x' },
+            ]
         }),
         typescript({
             module: 'ESNext',
@@ -62,16 +56,25 @@ rollup({
             importHelpers: true,
             // downlevelIteration: true,
         }),
+        // esbuild({
+        //     drop: [
+        //         // 'console',
+        //         // 'debugger',
+        //     ],
+        //     dropLabels: ['TEST', 'DEV'],
+        // }),
+        // swc({
+        //     swc: {
+        //         jsc: {
+        //             target: 'es3',
+        //             externalHelpers: true,
+        //         }
+        //     }
+        // }),
         // strip({
         //     labels: ['TEST', 'DEV'],
         //     debugger: true,
         // }),
-        alias({
-            entries: [
-                // { find: 'preact', replacement: 'v0x' },
-            ]
-        }),
-        resolve(),
         // terser(),
         // multi(),
         progress({
@@ -92,20 +95,21 @@ rollup({
         'tslib',
 
         // swc
-        // '@swc/helpers/_/_type_of',
+        '@swc/helpers/_/_type_of',
     ],
-    treeshake: true,
-    // treeshake: false,
-}).then((bundle) => {
+    treeshake: false,
+}).then(async (bundle) => {
     console.dir(bundle, { depth: 6, showHidden: false });
 
-    bundle.write({
+    const ro = await bundle.write({
         dir: 'out',
         format: 'esm',
         indent: ' '.repeat(2),
         compact: false,
         minifyInternalExports: true,
     });
+
+    // console.dir(ro, { depth: 6, showHidden: false });
 }).catch((err) => {
     console.error(err);
 

@@ -1,4 +1,4 @@
-import {addTagList, fillTagList} from "@/tags";
+import {addTagList, fillTagsToUI} from "@/song/tags";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
@@ -332,7 +332,7 @@ export class SongPortXML {
             if (x) {
                 Toast.show("No New Songs to add.");
             } else {
-                fillTagList();
+                fillTagsToUI();
             }
             function w(D) {
                 if (D != null) {

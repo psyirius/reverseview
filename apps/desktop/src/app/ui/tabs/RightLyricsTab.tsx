@@ -1,5 +1,6 @@
 import {navNotifyMessage} from "@stores/global";
 import {$RvW} from "@/rvw";
+import {SongSearchType} from "@/const";
 
 
 export default function RightLyricsTab() {
@@ -15,6 +16,11 @@ export default function RightLyricsTab() {
 
     function onClickPresent() {
         $RvW.songNavObj.sn_presentSong();
+    }
+
+    function onClickOnAuthor(e: Event) {
+        const q = (e.target as HTMLButtonElement).innerText;
+        $RvW.songManagerObj.searchRecords(`%${q}%`, SongSearchType.AUTHOR);
     }
 
     const actions = [
@@ -63,26 +69,25 @@ export default function RightLyricsTab() {
                 <div class="three wide column">
                     <div class="form-group row">
                         <label for="ly_cat" class="col-sm col-form-label font-weight-bold">Category</label>
-                        <label type="text" class="col-sm col-form-label" id="ly_cat"> </label>
+                        <label id="ly_cat" type="text" class="col-sm col-form-label"></label>
                     </div>
                 </div>
                 <div class="two wide column">
                     <div class="form-group row">
                         <label for="ly_key" class="col-sm col-form-label font-weight-bold">Key</label>
-                        <label type="text" class="col-sm col-form-label" id="ly_key"> </label>
+                        <label id="ly_key" type="text" class="col-sm col-form-label"></label>
                     </div>
                 </div>
                 <div class="three wide column">
                     <div class="form-group row">
-                        <label for="ly_copy" class="col-sm col-form-label font-weight-bold">Lyrics By</label>
-                        {/* <label type="text" class="col-sm col-form-label" id="ly_copy"> </label> */}
-                        <button type="button" class="btn btn-outline-secondary btn-sm" id="ly_copy"></button>
+                        <label for="ly_copy" class="col-sm col-form-label font-weight-bold">Author</label>
+                        <button id="ly_copy" type="button" class="btn btn-outline-secondary btn-sm" onClick={onClickOnAuthor}></button>
                     </div>
                 </div>
                 <div class="eight wide column">
                     <div class="form-group row">
                         <label for="ly_notes" class="col-sm col-form-label font-weight-bold">Notes</label>
-                        <div type="text" class="col-sm col-form-label" id="ly_notes"></div>
+                        <div id="ly_notes" type="text" class="col-sm col-form-label"></div>
                     </div>
                 </div>
             </div>

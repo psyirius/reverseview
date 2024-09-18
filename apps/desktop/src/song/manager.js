@@ -3,7 +3,7 @@
 
 import {SongPortXML} from "./port_xml";
 import {SongImporter} from "./import";
-import {removeTag} from "@/tags";
+import {removeTag} from "@/song/tags";
 import {SongSearchType} from "@/const";
 import {insertError, insertResult} from "@/song/indexing";
 import {Song} from '@/song/obj';
@@ -759,7 +759,7 @@ export class SongManager {
             function aO(aR) {
                 __debug("Successfully got all categories from Song DB");
                 aq = aP.getResult();
-                $RvW.songNavObj.update_CategoryList(aq);
+                $RvW.songNavObj.update_CategoryList(aq.data);
             }
             function aN(aR) {
                 __debug("Song Manager data error while trying to get category...");
@@ -824,7 +824,7 @@ export class SongManager {
                 const { data } = sqlQuery.getResult();
                 songx = data ?? [];
                 if (aQ === SongSearchType.TAGS && data == null) {
-                    removeTag(aP);
+                    removeTag(aP.split("%")[1]);
                     Toast.show("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {

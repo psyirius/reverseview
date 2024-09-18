@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // MUST BE THE FIRST FILE IN THE PROJECT EVER TO BE LOADED
 "use strict";
 
@@ -6,7 +8,6 @@
 (window as any).globalThis ??= (window as any).global;
 
 // namespace provider
-// @ts-ignore
 !(function () {
     "use strict";
 
@@ -43,7 +44,6 @@
 
 DEV: {
     // console shim
-    // @ts-ignore
     !(function () {
         "use strict";
 

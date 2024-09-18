@@ -63,14 +63,13 @@ export class AppUpdater {
 
         var h = 30;
         var m = false;
-        var l = 0;
+        var verZ = version_number;
         var j = 0;
         var o = "";
         var b = "";
         var a = "";
         var k = null;
 
-        l = Number(version_number);
         k = Date.now();
         if (d()) {
             g(false);
@@ -117,7 +116,7 @@ export class AppUpdater {
                     o = v[1];
                     b = v[2];
                     a = v[3];
-                    if (j > l) {
+                    if (j > verZ) {
                         c();
                     } else {
                         if (u) {

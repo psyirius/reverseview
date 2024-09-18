@@ -7,19 +7,21 @@ document.getElementById('app').innerHTML = `
     <h1>Hello World!</h1>
     <p>This is a simple example of a TypeScript app.</p>
 `;
+
 console.log('TEST' + mix);
 
 TEST: {
     console.log('TEST' + mix);
 }
 
-var str;
+var str = '';
 DEV: for (let i = 0; i < 5; i++) {
     if (i === 1) {
         continue DEV;
     }
     str += i;
 }
+console.error(str);
 
 const fx = {
     catch: (e: Error) => {

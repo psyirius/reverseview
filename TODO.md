@@ -42,6 +42,7 @@
 - [ ] Use HAXE to widen the flash/as3 ecosystem
 - [ ] Run presentation rendering in a worker and stream it to the screen
 - [ ] utilize application sandboxing to unlock the full potential of the application
+- [ ] js exception logger with sourcemap support (in as3)
   - https://help.adobe.com/en_US/air/html/security/WS485a42d56cd1964150c3d3a8124ef1cbd62-7ffe.html
   - https://help.adobe.com/en_US/as3/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f08.html
   - https://help.adobe.com/en_US/air/html/dev/WS5b3ccc516d4fbf351e63e3d118666ade46-7f11.html
@@ -114,8 +115,6 @@ https://github.com/ianharrigan/hxWebSockets
 https://github.com/thomasuster/haxe-websocket-server
 https://github.com/MkFera/tso_client
 
-https://github.com/rousan/symbol-es6
-https://github.com/seanmonstar/symbol
 https://github.com/agera-air
 
 https://github.com/CC-Archived/SWFService/blob/master/src/client/SWFService/lib/promise.coffee/promise.js
@@ -135,3 +134,8 @@ https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#suppor
 
 ### DB
 https://gist.github.com/deckchairlabs/8a11c33311c01273deec7e739417dbc9
+
+## Polyfills
+https://github.com/rousan/es6-harmony
+https://github.com/rousan/symbol-es6
+https://github.com/seanmonstar/symbol
