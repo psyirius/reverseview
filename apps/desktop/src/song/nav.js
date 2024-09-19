@@ -5,8 +5,8 @@
 // - YAHOO.widget.DataTable
 
 import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
-import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 import {menuYtLink, selectedSongCategory, selectedTab, songCategories} from "@stores/global";
+import {roundSearchBox} from "@app/common";
 import {SongSearchType} from "@/const";
 import {Deferred} from "@/utils/async";
 import {SongPresenter} from "@/song/present";
@@ -14,7 +14,6 @@ import {SongLyrics} from "@/song/lyrics";
 import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
-import {roundSearchBox} from "@app/common";
 import {$RvW} from "@/rvw";
 
 export class SongNav {
@@ -25,7 +24,6 @@ export class SongNav {
         this.update_CategoryList = update_CategoryList;
         this.searchComplete = searchComplete;
         this.processExportSongDB = processExportSongDB;
-        this.isSongSearchEditActive = isSongSearchEditActive;
         this.sn_searchSong = sn_searchSong;
         this.sn_showLyricsByID = sn_showLyricsByID;
         this.sn_backupGlobalID = sn_backupGlobalID;
@@ -44,9 +42,8 @@ export class SongNav {
         const searchDelayTime = 600;
 
         let N = [];
-        let y = null;
+        let _currentSongObj = null;
         let s = true;
-        let W = false;
         let Q = -1;
         let n = -1;
         let _itemID = 0;
@@ -89,8 +86,8 @@ export class SongNav {
 
             Z();
             l();
-            y = new Song();
-            y.slides = [];
+            _currentSongObj = new Song();
+            _currentSongObj.slides = [];
             loadTagsFromConfig();
             fillTagsToUI();
             s = true;
@@ -126,23 +123,12 @@ export class SongNav {
         function Z() {
             roundSearchBox(document.getElementById("songnav_filterbox"));
             document.getElementById("songnav_filterbox").style.margin = "2px 0px 0px 10px";
-            roundSearchBox(document.getElementById("songnav_editbox"));
         }
+
         function l() {
             $("#songnav_filterbox").hide();
-            YAHOO.util.Event.addListener("songnav_editbox", "blur", songnav_editbox_onblur);
-            YAHOO.util.Event.addListener("songnav_editbox", "focus", songnav_editbox_focus);
-            $("#songnav_editbox").keyup(sn_searchSong);
         }
-        function songnav_editbox_onblur() {
-            W = false;
-        }
-        function songnav_editbox_focus() {
-            W = true;
-        }
-        function isSongSearchEditActive() {
-            return W;
-        }
+
         function setFormats() {
             v = (($RvW.tabHeight - 300) / 22);
             if (!s) {
@@ -151,6 +137,7 @@ export class SongNav {
                 }
             }
         }
+
         function songnav_category_change(al = 'ALL') {
             __debug("Selected Category Value: " + al);
             $("#songnav_editbox").val("");
@@ -158,27 +145,24 @@ export class SongNav {
             ag = false;
             $RvW.songManagerObj.getSongsFromCat(al);
         }
-        function songnav_tags_change(am) {
-            if (searchDelay != null) {
-                clearTimeout(searchDelay);
+
+        function songnav_tags_change(am = 'ALL') {
+            if (am !== 'ALL') {
+                $RvW.songManagerObj.searchRecords(`%${am}%`, SongSearchType.TAGS);
+            } else {
+                songnav_clear();
             }
-            searchDelay = setTimeout(function () {
-                clearTimeout(searchDelay);
-                if (am !== 'ALL') {
-                    $RvW.songManagerObj.searchRecords(`%${am}%`, SongSearchType.TAGS);
-                } else {
-                    songnav_clear();
-                }
-                searchDelay = null;
-            }, searchDelayTime);
         }
+
         function sn_newSong() {
             $RvW.songEditObj.showEditPanel(null, false, null);
         }
+
         function sn_editSong() {
             __debug("Launch panel edit song..");
-            $RvW.songEditObj.showEditPanel(y, true, _itemID, ag);
+            $RvW.songEditObj.showEditPanel(_currentSongObj, true, _itemID, ag);
         }
+
         function _loadSuggestions(sqlRes, category, searchMode) {
             m_keywords = [];
             let searchQuery = $.trim(document.getElementById("songnav_editbox").value);
@@ -211,6 +195,7 @@ export class SongNav {
                 }
             }
         }
+
         function showSuggestedList() {
             const an = $RvW.wordbrain.getSuggestions();
             const all_sugg = an.concat(m_keywords);
@@ -219,6 +204,7 @@ export class SongNav {
 
             m_suggestion_defer.resolve(all_sugg);
         }
+
         function update_songList(ap, am, at) {
             if (at == null) {
                 ag = false;
@@ -251,6 +237,7 @@ export class SongNav {
             }
             U();
         }
+
         function get_songList(sqlResult, category, query) {
             let res = [];
 
@@ -284,35 +271,28 @@ export class SongNav {
 
             return res;
         }
+
         function update_CategoryList(categories) {
             const catz = categories?.map((c) => String(c.cat).trim()).filter(e => !!e) || [];
             air.trace("Update Category List: ", catz);
             songCategories.set(catz);
             selectedSongCategory.set(null);
         }
+
         function ab() {
             try {
-                y = $RvW.songManagerObj.getSongObj(_itemID, ag);
+                _currentSongObj = $RvW.songManagerObj.getSongObj(_itemID, ag);
             } catch (e) {
-                y = null;
+                _currentSongObj = null;
             }
-            render_lyrics(y);
+            render_lyrics(_currentSongObj);
         }
+
         function sn_presentSong() {
-            const al = new SongPresenter(y);
+            const al = new SongPresenter(_currentSongObj);
             al.present();
         }
-        function O() {
-            __debug("Calling prev slide from song_nav.js");
-            call_prevSlide();
-        }
-        function k() {
-            __debug("Calling next slide from song_nav.js");
-            call_nextSlide();
-        }
-        function h() {
-            call_closePresentation();
-        }
+
         function sn_deleteSong() {
             var al = "Song Database";
             var an = 'Do you want to delete "' + _itemTitle + '" ?';
@@ -325,6 +305,7 @@ export class SongNav {
                 $RvW.songManagerObj.deleteSong(ao, ag);
             }
         }
+
         function sn_deleteSongByCat() {
             const ao = selectedSongCategory.get();
             if (ao !== null) {
@@ -343,29 +324,28 @@ export class SongNav {
                 );
             }
         }
+
         function sn_searchSong() {
             if (searchDelay != null) {
                 clearTimeout(searchDelay);
             }
             searchDelay = setTimeout(function () {
                 clearTimeout(searchDelay);
-                var al = document.getElementById("songnav_editbox").value;
+                let al = document.getElementById("songnav_editbox").value;
                 al = $.trim(al);
                 if ($.isNumeric(al)) {
                     $RvW.songManagerObj.searchRecords(al, SongSearchType.NUMBER);
                 } else {
                     $RvW.learner.addWord(al);
-                    al = al + "%";
-                    $RvW.songManagerObj.searchRecords(al, SongSearchType.TITLE);
+                    $RvW.songManagerObj.searchRecords(`${al}%`, SongSearchType.TITLE);
                 }
                 searchDelay = null;
             }, searchDelayTime);
         }
+
         function songnav_clear() {
             ag = false;
             $RvW.learner.cancelLearning();
-            $("#songnav_editbox").val("");
-            clearTagFilter();
             songnav_category_change();
         }
 
@@ -391,7 +371,7 @@ export class SongNav {
 
             document.getElementById("ly_slide").style.fontSize = $RvW.vvConfigObj.get_navFontSize() + "px";
             let name = s.name;
-            if (s.catIndex == "VV Malayalam 2021" || s.catIndex == "VV Hindi 2021") {
+            if (s.subcat) {
                 name += ` (${s.subcat}) `;
             }
             document.getElementById("ly_name").innerHTML = name;
@@ -417,73 +397,75 @@ export class SongNav {
             document.getElementById("ly_notes").innerHTML = s.notes;
             // menubar
             {
-                if (!!s.yvideo) {
-                    B = s.yvideo;
-                } else {
-                    B = null;
-                }
-                menuYtLink.set(B);
+                menuYtLink.set(s.yvideo || null);
             }
             document.getElementById("ly_slide").style.fontFamily = s.font;
-            let aC = s.slides2[0];
-            if (aC == "") {
-                aC = null;
-            }
-            var au = s.slides.length;
-            var aB = "";
-            var aH = window.nativeWindow.bounds.width;
-            var aw = 5;
+
+            let aC = s.slides2[0] || null;
+            const aH = window.nativeWindow.bounds.width;
+            let numCellsPerRow = 5;
             if (aH < 2000 && aH >= 1600) {
-                aw = 4;
+                numCellsPerRow = 4;
             }
             if (aH < 1600 && aH > 1300) {
-                aw = 3;
+                numCellsPerRow = 3;
             }
             if (aH <= 1300 && aH > 990) {
-                aw = 2;
+                numCellsPerRow = 2;
             }
             if (aH <= 990) {
-                aw = 1;
+                numCellsPerRow = 1;
             }
-            aB = aB + '<div class="ui cards">';
-            for (let i = 0; i < au; i++) {
+
+            let html = '<div class="ui cards">';
+            for (let i = 0; i < s.slides.length; i++) {
                 if (aC != null) {
-                    aB +=
-                        '<div class="card"><div class="content"><div class="header">' +
-                        (i + 1) +
-                        '</div><div class="meta"></div><div class="description"><div id="lyricsID' +
-                        i +
-                        '" class="context"></div><div id="lyricsID' +
-                        i +
-                        '_2" class="context"></div></div></div></div>';
+                    html +=
+                        '<div class="card">' +
+                            '<div class="content">' +
+                                '<div class="header">' + (i + 1) + '</div>' +
+                                '<div class="meta"></div>' +
+                                '<div class="description">' +
+                                    '<div id="lyricsID' + i + '" class="context"></div>' +
+                                    '<div id="lyricsID' + i + '_2" class="context"></div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>'
+                    ;
                 } else {
-                    aB +=
-                        '<div class="card"><div class="content"><div class="header">' +
-                        (i + 1) +
-                        '</div><div class="meta"></div><div class="description"><div id="lyricsID' +
-                        i +
-                        '" class="context"></div></div></div></div>';
+                    html +=
+                        '<div class="card">' +
+                            '<div class="content">' +
+                                '<div class="header">' + (i + 1) + '</div>' +
+                                '<div class="meta"></div>' +
+                                '<div class="description">' +
+                                    '<div id="lyricsID' + i + '" class="context"></div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>'
+                    ;
                 }
-                const av = (i + 1) % aw;
-                if (av === 0) {
-                    aB += "</div>";
-                    aB += '<div class="ui cards">';
+
+                if (((i + 1) % numCellsPerRow) === 0) {
+                    html += '</div>';
+                    html += '<div class="ui cards">';
                 }
             }
-            aB += "</div>";
-            document.getElementById("ly_slide").innerHTML = aB;
-            var ar = [];
-            var am = [];
-            for (let aD = 0; aD < au; aD++) {
-                var ay = "lyricsID" + aD;
-                var aq = "lyricsID" + aD + "_2";
+            html += "</div>";
+
+            document.getElementById("ly_slide").innerHTML = html;
+
+            for (let jjj = 0; jjj < s.slides.length; jjj++) {
+                const ay = "lyricsID" + jjj;
+                const aq = "lyricsID" + jjj + "_2";
                 document.getElementById(ay).style.fontFamily = s.font;
-                ar[aD] = new SongLyrics(s, ay, aD, 1);
+                new SongLyrics(s, ay, jjj, 1);
                 if (aC != null) {
                     document.getElementById(aq).style.fontFamily = s.font2;
-                    am[aD] = new SongLyrics(s, aq, aD, 2);
+                    new SongLyrics(s, aq, jjj, 2);
                 }
             }
+
             if (ag) {
                 let aA = document.getElementById("songnav_editbox").value;
                 aA = String(aA).trim();
@@ -493,6 +475,7 @@ export class SongNav {
                     // $(".context").mark(aA.toLowerCase());
                 }
             }
+
             document.getElementById("ly_tags").innerHTML = "";
             if (s.tags != null && s.tags !== "") {
                 __debug("Tags : " + s.tags);
@@ -515,9 +498,9 @@ export class SongNav {
         }
         function sn_showLyricsByID(al) {
             air.trace("show lyrics by ID called.. ");
-            y = $RvW.songManagerObj.getSongObjWithID(al);
-            air.trace(`show lyrics by ID called.. ${y.name}  ${_itemID}   ${_itemTitle}`);
-            render_lyrics(y);
+            _currentSongObj = $RvW.songManagerObj.getSongObjWithID(al);
+            air.trace(`show lyrics by ID called.. ${_currentSongObj.name}  ${_itemID}   ${_itemTitle}`);
+            render_lyrics(_currentSongObj);
         }
         function filterByTag(tag) {
             const _tag = tag.target.innerHTML;
@@ -573,16 +556,16 @@ export class SongNav {
         }
 
         function j() {
-            y.name = "Trading my Sorrows";
-            y.catIndex = "English";
-            y.font = "Ariel";
-            y.copyright = "Darrel Evans";
-            y.bkgnd_fname = "";
-            y.key = "c";
-            y.notes = "None";
-            y.slides[0] = "Slide 1";
-            y.slides[1] = "Slide 2";
-            render_lyrics(y);
+            _currentSongObj.name = "Trading my Sorrows";
+            _currentSongObj.catIndex = "English";
+            _currentSongObj.font = "Ariel";
+            _currentSongObj.copyright = "Darrel Evans";
+            _currentSongObj.bkgnd_fname = "";
+            _currentSongObj.key = "c";
+            _currentSongObj.notes = "None";
+            _currentSongObj.slides[0] = "Slide 1";
+            _currentSongObj.slides[1] = "Slide 2";
+            render_lyrics(_currentSongObj);
         }
         function H() {
             m = document.getElementById("songnav_filterbox").value;

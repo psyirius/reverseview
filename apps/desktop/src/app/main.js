@@ -1175,9 +1175,6 @@ function onMainWindowKeyUp(evt) {
             if ($RvW.enterForBibleRef) {
                 processNavBibleRef();
             }
-            if ($RvW.songNavObj.isSongSearchEditActive()) {
-                $RvW.songNavObj.sn_searchSong();
-            }
             break;
         case 27: /* Escape */
             closePresentWindowMain();

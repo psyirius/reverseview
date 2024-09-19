@@ -5,9 +5,9 @@ import {SongPortXML} from "./port_xml";
 import {SongImporter} from "./import";
 import {removeTag} from "@/song/tags";
 import {SongSearchType} from "@/const";
-import {insertError, insertResult} from "@/song/indexing";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
+import {insertError, insertResult} from "@/song/indexing";
 import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
 import {isBlank, save2file} from "@app/common";
 import {$RvW} from "@/rvw";
@@ -783,39 +783,37 @@ export class SongManager {
                 __debug("Song Manager data error while trying to get fonts...");
             }
         }
-        function searchRecords(aP, aQ, cb = null) {
-            __debug("Searching Song DB " + aQ);
+        function searchRecords(aP, type, cb = null) {
+            __debug("Searching Song DB | type: " + type);
 
             const sqlQuery = new air.SQLStatement();
             sqlQuery.sqlConnection = m_sqlConnection;
             sqlQuery.addEventListener(air.SQLEvent.RESULT, _onSqlResult);
             sqlQuery.addEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
-            let aT = "";
-            if (aQ === SongSearchType.TITLE) {
-                aT = "SELECT * FROM sm WHERE name LIKE :param1 OR title2 LIKE :param1";
+            let qqq = "";
+            if (type === SongSearchType.TITLE) {
+                qqq = "SELECT * FROM sm WHERE name LIKE :param1 OR title2 LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === SongSearchType.LYRICS) {
-                aT =
-                    "SELECT * FROM sm WHERE lyrics LIKE :param1 OR lyrics2 LIKE :param1 OR name LIKE :param1 OR subcat == :param2";
+            if (type === SongSearchType.LYRICS) {
+                qqq = "SELECT * FROM sm WHERE lyrics LIKE :param1 OR lyrics2 LIKE :param1 OR name LIKE :param1 OR subcat == :param2";
                 sqlQuery.parameters[":param1"] = aP;
-                var aS = /%/gi;
-                sqlQuery.parameters[":param2"] = aP.replace(aS, "");
+                sqlQuery.parameters[":param2"] = aP.replace(/%/gi, "");
             }
-            if (aQ === SongSearchType.TAGS) {
-                aT = "SELECT * FROM sm WHERE tags LIKE :param1";
+            if (type === SongSearchType.TAGS) {
+                qqq = "SELECT * FROM sm WHERE tags LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === SongSearchType.AUTHOR) {
-                aT = "SELECT * FROM sm WHERE copy LIKE :param1";
+            if (type === SongSearchType.AUTHOR) {
+                qqq = "SELECT * FROM sm WHERE copy LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            if (aQ === SongSearchType.NUMBER) {
-                aT = "SELECT * FROM sm WHERE subcat LIKE :param1";
+            if (type === SongSearchType.NUMBER) {
+                qqq = "SELECT * FROM sm WHERE subcat LIKE :param1";
                 sqlQuery.parameters[":param1"] = aP;
             }
-            sqlQuery.text = aT;
+            sqlQuery.text = qqq;
             sqlQuery.execute();
             function _onSqlResult(aU) {
                 sqlQuery.removeEventListener(air.SQLEvent.RESULT, _onSqlResult);
@@ -823,14 +821,14 @@ export class SongManager {
 
                 const { data } = sqlQuery.getResult();
                 songx = data ?? [];
-                if (aQ === SongSearchType.TAGS && data == null) {
+                if (type === SongSearchType.TAGS && data == null) {
                     removeTag(aP.split("%")[1]);
                     Toast.show("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {
                         $RvW.wordbrain.findRecordBy_wordin(aP);
                     }
-                    $RvW.songNavObj.searchComplete({data}, aQ);
+                    $RvW.songNavObj.searchComplete({data}, type);
                 }
             }
             function _onSqlError(aU) {
@@ -840,26 +838,25 @@ export class SongManager {
                 alert("Search function failed.");
             }
         }
-        function X(aQ) {
+        function X(id) {
             __debug("Deleting record with keyValue as primary key from Song Database...");
 
             const aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
-            let aR = "";
-            aR += "DELETE FROM sm WHERE id = :id;";
-            aP.text = aR;
-            aP.addEventListener(air.SQLEvent.RESULT, aN);
-            aP.addEventListener(air.SQLErrorEvent.ERROR, aO);
-            aP.parameters[":id"] = aQ;
+            aP.text = "DELETE FROM sm WHERE id = :id;";
+            aP.addEventListener(air.SQLEvent.RESULT, onResult);
+            aP.addEventListener(air.SQLErrorEvent.ERROR, onError);
+            aP.parameters[":id"] = id;
             aP.execute();
-            function aN(aS) {
+
+            function onResult(aS) {
                 aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 C();
                 F();
                 at();
             }
-            function aO(aS) {
+            function onError(aS) {
                 aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 __debug("Error deleting song DB");
@@ -867,28 +864,26 @@ export class SongManager {
                 __debug("event.error.message:" + aS.error.message);
             }
         }
-        function y(aP) {
+        function y(cat) {
             __debug("Deleting records based on category from Song Database...");
-            var aQ = new air.SQLStatement();
+            const aQ = new air.SQLStatement();
             aQ.sqlConnection = m_sqlConnection;
-            var aR = "";
-            aR += "DELETE FROM sm WHERE cat = :cat;";
-            aQ.text = aR;
-            aQ.addEventListener(air.SQLEvent.RESULT, aN);
-            aQ.addEventListener(air.SQLErrorEvent.ERROR, aO);
-            aQ.parameters[":cat"] = aP;
+            aQ.text = "DELETE FROM sm WHERE cat = :cat;";
+            aQ.addEventListener(air.SQLEvent.RESULT, onResult);
+            aQ.addEventListener(air.SQLErrorEvent.ERROR, onError);
+            aQ.parameters[":cat"] = cat;
             aQ.execute();
-            function aN(aS) {
-                aQ.removeEventListener(air.SQLEvent.RESULT, aN);
-                aQ.removeEventListener(air.SQLErrorEvent.ERROR, aO);
+            function onResult(aS) {
+                aQ.removeEventListener(air.SQLEvent.RESULT, onResult);
+                aQ.removeEventListener(air.SQLErrorEvent.ERROR, onError);
                 m_sqlConnection.compact();
                 C();
                 F();
                 at();
             }
-            function aO(aS) {
-                aQ.removeEventListener(air.SQLEvent.RESULT, aN);
-                aQ.removeEventListener(air.SQLErrorEvent.ERROR, aO);
+            function onError(aS) {
+                aQ.removeEventListener(air.SQLEvent.RESULT, onResult);
+                aQ.removeEventListener(air.SQLErrorEvent.ERROR, onError);
                 __debug("Error deleting song DB");
                 __debug("event.error.code:" + aS.error.code);
                 __debug("event.error.message:" + aS.error.message);
@@ -898,9 +893,7 @@ export class SongManager {
             __debug("Deleting Category for managed update from Song Database...");
             var aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
-            var aQ = "";
-            aQ += "DELETE FROM sm WHERE cat = :cat1 OR cat = :cat2 OR cat = :cat3;";
-            aP.text = aQ;
+            aP.text = "DELETE FROM sm WHERE cat = :cat1 OR cat = :cat2 OR cat = :cat3;";
             aP.addEventListener(air.SQLEvent.RESULT, aN);
             aP.addEventListener(air.SQLErrorEvent.ERROR, aO);
             aP.parameters[":cat1"] = "VV Malayalam 2021";
@@ -925,8 +918,7 @@ export class SongManager {
         }
         function g() {
             __debug("about to copy new records...");
-            var aN = "./song/default.db";
-            var aP = air.File.applicationDirectory.resolvePath(aN);
+            const aP = air.File.applicationDirectory.resolvePath("./song/default.db");
             m_sqlConnection.addEventListener(air.SQLEvent.ATTACH, aQ);
             m_sqlConnection.addEventListener(air.SQLErrorEvent.ERROR, aO);
             m_sqlConnection.attach("newstuff", aP);
@@ -951,7 +943,7 @@ export class SongManager {
             aP.parameters[":cat3"] = "VV Tamil 2021";
             aP.execute();
             function aO(aR) {
-                __debug("Succesfuly got all data from Original Song DB and inserted");
+                __debug("Successfully got all data from Original Song DB and inserted");
                 if (!isUpToDate()) {
                     Toast.show("Songs", "Updated song database");
                     task1Complete();
@@ -974,9 +966,9 @@ export class SongManager {
             var aP = [0, 0];
             aP[0] = 0;
             aP[1] = 0;
-            for (var aQ = 0; aQ < aO; aQ++) {
-                var aR = songz[aQ].subcat;
-                var aN = songz[aQ].cat;
+            for (let iii = 0; iii < aO; iii++) {
+                var aR = songz[iii].subcat;
+                var aN = songz[iii].cat;
                 if (aN == "VV Malayalam 2021") {
                     if (aR != null && aR != "") {
                         if (parseInt(aR) > aP[0]) {
@@ -996,16 +988,16 @@ export class SongManager {
             return aP;
         }
         function a() {
-            var aN = ag();
+            const aN = ag();
             $RvW.songNumberObj.setMaxMalayalam(aN[0]);
             $RvW.songNumberObj.setMaxHindi(aN[1]);
         }
         function aB() {
-            var aO = songz.length;
+            const aO = songz.length;
             alert("Number of records..." + aO);
-            var aQ = 0;
-            var aP = songz[aQ].id;
-            var aN = songz[aQ].cat;
+            let aQ = 0;
+            const aP = songz[aQ].id;
+            const aN = songz[aQ].cat;
             aR(aP, aN);
             function aR(aT, aS) {
                 var aW = new air.SQLStatement();
@@ -1055,14 +1047,11 @@ export class SongManager {
             function aS(aZ, aW, aV) {
                 var aU = new air.SQLStatement();
                 aU.sqlConnection = m_sqlConnection;
-                var a0 = "";
-                a0 += "UPDATE sm SET subcat=:songnumber WHERE id=:id;";
-                aU.text = a0;
+                aU.text = "UPDATE sm SET subcat=:songnumber WHERE id=:id;";
                 aU.addEventListener(air.SQLEvent.RESULT, aT);
                 aU.addEventListener(air.SQLErrorEvent.ERROR, aY);
                 aU.parameters[":id"] = aZ;
-                var a1 = $RvW.songNumberObj.assignSongNumber(aW, aV);
-                aU.parameters[":songnumber"] = a1;
+                aU.parameters[":songnumber"] = $RvW.songNumberObj.assignSongNumber(aW, aV);
                 aU.execute();
                 function aT(a2) {
                     aU.removeEventListener(air.SQLEvent.RESULT, aT);
@@ -1100,7 +1089,7 @@ export class SongManager {
                 for (var aN = 0; aN < aT; aN++) {
                     var aP = songz[aN].name;
                     aP = aP.toLowerCase();
-                    if (aO == aP) {
+                    if (aO === aP) {
                         aR = true;
                         break;
                     }

@@ -2,6 +2,8 @@
 - [ ] Compress and embed assets files into a swf and unpack or first run or when needed
 - [ ] Zefania XML : Checkup & Externalize
 - [ ] UI Scaling
+- [ ] test262 runner for the WebKit environment
+- [ ] Custom Introspector
 - [ ] REMOTE
   - [ ] highlight currently presenting
   - [ ] UI/UX FIX

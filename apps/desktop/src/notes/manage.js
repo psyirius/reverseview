@@ -5,21 +5,20 @@ import {clearSelectList, extractFileName} from "@app/common";
 import {$RvW} from "@/rvw";
 
 function notesInfo(db) {
-    let i;
     let conn = new air.SQLConnection();
     conn.addEventListener(air.SQLEvent.OPEN, function() {
         const statement = new air.SQLStatement();
         statement.sqlConnection = conn;
         statement.text = "SELECT * FROM notesInfoTable";
-        statement.addEventListener(air.SQLEvent.RESULT, function(l) {
-            var k = statement.getResult();
-            if (k.data != null) {
-                var j = k.data[0];
+        statement.addEventListener(air.SQLEvent.RESULT, function(e) {
+            const res = statement.getResult();
+            if (res.data != null) {
+                const j = res.data[0];
                 $RvW.notesManageObj.nm_addRecord_ext(j.noteInfoName, j.noteInfoDes, db);
                 conn = null;
             }
         });
-        statement.addEventListener(air.SQLErrorEvent.ERROR, function(j) {
+        statement.addEventListener(air.SQLErrorEvent.ERROR, function(e) {
             alert("Invalid Notes Database");
         });
         statement.execute();
@@ -28,15 +27,15 @@ function notesInfo(db) {
         air.trace("[N Info] Error message:", j.error.message);
         air.trace("Details (open Conn DB):", j.error.details);
     });
-    i = air.File.applicationStorageDirectory.resolvePath(`./notes/${db}`);
-    conn.openAsync(i);
+    conn.openAsync(
+        air.File.applicationStorageDirectory.resolvePath(`./notes/${db}`)
+    );
 }
 
 export class NotesManager {
     constructor(ftflg) {
         this.nm_addRecord_ext = nm_addRecord_ext;
 
-        var f = false;
         var h = ftflg;
         var A = true;
         var B = "./notes/nm.db";
@@ -51,7 +50,6 @@ export class NotesManager {
         var l;
 
         m();
-        f = false;
         o();
 
         function m() {
@@ -115,21 +113,19 @@ export class NotesManager {
             });
         }
         function j() {
-            var W = document.getElementById("nm_selectID").selectedIndex;
+            const W = document.getElementById("nm_selectID").selectedIndex;
             document.getElementById("nm_nameID").innerHTML = w.data[W].name;
-            document.getElementById("nm_descriptionID").innerHTML =
-                w.data[W].description;
+            document.getElementById("nm_descriptionID").innerHTML = w.data[W].description;
         }
         function y() {
-            var Y = document.getElementById("nm_selectID");
-            var aa = Y.options[Y.selectedIndex].value;
-            var X = l;
+            const Y = document.getElementById("nm_selectID");
+            const aa = Y.options[Y.selectedIndex].value;
+            const X = l;
             l = aa;
             R(aa, true);
             R(X, false);
-            var W = S(aa);
-            var Z = "./notes/" + W.filename;
-            $RvW.notesObj.init(Z);
+            const W = S(aa);
+            $RvW.notesObj.init(`./notes/${W.filename}`);
         }
         function U() {
             var aa = document.getElementById("nm_selectID");

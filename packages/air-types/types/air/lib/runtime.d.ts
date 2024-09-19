@@ -6,6 +6,8 @@ declare global {
         class Object {
             constructor();
             // ...
+
+            // toString(): string;
         }
 
         class Date extends Object {
@@ -17,6 +19,10 @@ declare global {
             constructor();
 
             // ...
+        }
+
+        // TODO: Implement this
+        class Class extends Object {
         }
 
         class Vector<T> extends Object {
@@ -65,9 +71,121 @@ declare global {
         }
 
         namespace flash {
-            namespace events {
-                class Event extends Object {
+            namespace errors {
+                class Error extends Object {
+                }
 
+                class SQLError extends Error {
+                    // ...
+                }
+            }
+
+            namespace events {
+                const enum EventType {
+                    ACTIVATE = 'activate',
+                    ADDED = 'added',
+                    // ...
+                }
+
+                class Event<T = EventType> extends Object {
+                    constructor(type: string, bubbles?: boolean, cancelable?: boolean);
+
+                    // Properties
+                    readonly bubbles: boolean;
+                    readonly cancelable: boolean;
+                    readonly currentTarget: Object;
+                    readonly eventPhase: uint;
+                    readonly target: Object;
+                    readonly type: T;
+
+                    // Methods
+                    clone(): Event<T>;
+                    formatToString(className: string, ...args: string[]): string;
+                    isDefaultPrevented(): boolean;
+                    preventDefault(): void;
+                    stopImmediatePropagation(): void;
+                    stopPropagation(): void;
+
+                    toString(): string;
+
+                    // Constants
+                    static readonly ACTIVATE: string;
+                    static readonly ADDED: string;
+                    static readonly ADDED_TO_STAGE: string;
+                    static readonly CANCEL: string;
+                    static readonly CHANGE: string;
+                    static readonly CLEAR: string;
+                    static readonly CLOSE: string;
+                    static readonly CLOSING: string;
+                    static readonly COMPLETE: string;
+                    static readonly CONNECT: string;
+                    static readonly COPY: string;
+                    // ...
+                }
+
+                const enum TextEventType {
+                    ACTIVATE = 'activate',
+                    ADDED = 'added',
+                }
+
+                class TextEvent<T = TextEventType> extends Event<T> {}
+                class ErrorEvent<T> extends TextEvent<T> {}
+
+                const enum SQLErrorEventType {
+                    ERROR = 'error',
+                }
+
+                class SQLErrorEvent<T = SQLErrorEventType> extends ErrorEvent<T> {
+                    constructor(type: T, bubbles?: boolean, cancelable?: boolean, error?: errors.SQLError);
+
+                    // Properties
+                    readonly error: errors.SQLError;
+
+                    // Constants
+                    static readonly ERROR = SQLErrorEventType.ERROR;
+                }
+
+                const enum SQLEventType {
+                    ANALYZE = 'analyze',
+                    ATTACH = 'attach',
+                    BEGIN = 'begin',
+                    CANCEL = 'cancel',
+                    CLOSE = 'close',
+                    COMMIT = 'commit',
+                    COMPACT = 'compact',
+                    DEANALYZE = 'deanalyze',
+                    DETACH = 'detach',
+                    OPEN = 'open',
+                    REENCRYPT = 'reencrypt',
+                    RELEASE_SAVEPOINT = 'releaseSavepoint',
+                    RESULT = 'result',
+                    ROLLBACK = 'rollback',
+                    ROLLBACK_TO_SAVEPOINT = 'rollbackToSavepoint',
+                    SCHEMA = 'schema',
+                    SET_SAVEPOINT = 'setSavepoint',
+                }
+
+                class SQLEvent<T = SQLEventType> extends Event<T> {
+                    // constructor();
+
+                    // Constants
+                    static readonly ANALYZE = SQLEventType.ANALYZE;
+                    static readonly ATTACH = SQLEventType.ATTACH;
+                    static readonly BEGIN = SQLEventType.BEGIN;
+                    static readonly CANCEL = SQLEventType.CANCEL;
+                    static readonly CLOSE = SQLEventType.CLOSE;
+                    static readonly COMMIT = SQLEventType.COMMIT;
+                    static readonly COMPACT = SQLEventType.COMPACT;
+                    static readonly DEANALYZE = SQLEventType.DEANALYZE;
+                    static readonly DETACH = SQLEventType.DETACH;
+                    static readonly OPEN = SQLEventType.OPEN;
+                    static readonly REENCRYPT = SQLEventType.REENCRYPT;
+                    static readonly RELEASE_SAVEPOINT = SQLEventType.RELEASE_SAVEPOINT;
+                    static readonly RESULT = SQLEventType.RESULT;
+                    static readonly ROLLBACK = SQLEventType.ROLLBACK;
+                    static readonly ROLLBACK_TO_SAVEPOINT = SQLEventType.ROLLBACK_TO_SAVEPOINT;
+                    static readonly SCHEMA = SQLEventType.SCHEMA;
+                    static readonly SET_SAVEPOINT = SQLEventType.SET_SAVEPOINT;
                 }
 
                 interface IEventDispatcher {
@@ -148,6 +266,28 @@ declare global {
                         pageSize?: int,
                         encryptionKey?: utils.ByteArray
                     ): void;
+                }
+
+                interface SQLStatementEventMap {
+                    'error': events.SQLErrorEvent<'error'>;
+                    'result': events.SQLEvent<'result'>;
+                }
+
+                class SQLStatement extends events.EventDispatcher {
+                    constructor();
+
+                    readonly executing: boolean;
+                    readonly parameters: object;
+
+                    itemClass: Class;
+                    sqlConnection: SQLConnection;
+                    text: string;
+
+                    addEventListener<K extends keyof SQLStatementEventMap>(type: K, listener: (this: SQLStatement, evt: SQLStatementEventMap[K]) => any, useCapture?: boolean, priority?: int, useWeakReference?: boolean): void;
+                    addEventListener(type: string, listener: (this: SQLStatement, evt: events.Event) => any, useCapture?: boolean, priority?: int, useWeakReference?: boolean): void;
+
+                    removeEventListener<K extends keyof SQLStatementEventMap>(type: K, listener: (this: SQLStatement, evt: SQLStatementEventMap[K]) => any, useCapture?: boolean): void;
+                    removeEventListener(type: string, listener: (this: SQLStatement, evt: events.Event) => any, useCapture?: boolean): void;
                 }
             }
 

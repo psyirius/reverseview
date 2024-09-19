@@ -52,12 +52,14 @@ function indexWords2Array() {
     var j = endTime - startTime;
     air.trace("Time to index to Array: " + j);
 }
+
 function getIndexFilepath() {
     var a = getVersion1Filename();
     var b = a.split(".");
     var c = b[0] + ".db";
     return c;
 }
+
 function createIndexDB() {
     indexConn = new air.SQLConnection();
     indexConn.addEventListener(air.SQLEvent.OPEN, indexOpenHandler);
@@ -67,14 +69,17 @@ function createIndexDB() {
     );
     indexConn.openAsync(dbFile);
 }
+
 function indexOpenHandler(a) {
     air.trace("DB was created successfully");
     createIndexTable();
 }
+
 function indexErrorHandler(a) {
     air.trace("Error message:", a.error.message);
     air.trace("Details (create DB):", a.error.details);
 }
+
 function createIndexTable() {
     air.trace("Creating table...");
     var d = new air.SQLStatement();
@@ -94,21 +99,20 @@ function createIndexTable() {
         air.trace("Details in creating table :", error.details);
     }
 }
+
 function addIndexData() {
-    if (count == 0) {
-        var c = new Date();
+    if (count === 0) {
+        const c = new Date();
         startTime = c.getTime();
         insertStmt = new air.SQLStatement();
         insertStmt.sqlConnection = indexConn;
-        var b = "";
-        b += "INSERT INTO words (word, bookNum, chNum, verseNum) VALUES (:word, :b, :c, :v);";
         insertStmt.sqlConnection.begin();
-        insertStmt.text = b;
+        insertStmt.text = "INSERT INTO words (word, bookNum, chNum, verseNum) VALUES (:word, :b, :c, :v);";
         insertStmt.addEventListener(air.SQLEvent.RESULT, insertResult);
         insertStmt.addEventListener(air.SQLErrorEvent.ERROR, insertError);
     }
-    var a = wordA.length;
-    if (count < a) {
+
+    if (count < wordA.length) {
         insertStmt.parameters[":word"] = wordA[count];
         insertStmt.parameters[":b"] = bookA[count];
         insertStmt.parameters[":c"] = chapterA[count];
@@ -122,27 +126,32 @@ function addIndexData() {
         insertStmt.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
     }
 }
-export function insertResult(c) {
-    var e = c.target;
-    var b = wordA.length;
-    if (count == b) {
-        var g = new Date();
-        endTime = g.getTime();
-        var f = endTime - startTime;
+
+/**
+ * @param {air.Event} e
+ * */
+export function insertResult(e) {
+    if (count === wordA.length) {
+        const now = new Date();
+        endTime = now.getTime();
+        const f = endTime - startTime;
         $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = getIndexFilepath();
         updateVersionXML();
         alert(
-            "Completed indexing " +
-            getVersion1Name() +
-            " Bible. Please restart VerseVIEW."
+            `Completed indexing ${getVersion1Name()} Bible. Please restart VerseVIEW.`
         );
     }
     addIndexData();
 }
-export function insertError(a) {
+
+/**
+ * @param {air.ErrorEvent} e
+ * */
+export function insertError(e) {
     insertStmt.removeEventListener(air.SQLEvent.RESULT, insertResult);
     insertStmt.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
-    air.trace("INSERT error:", a.error);
-    air.trace("event.error.code:", a.error.code);
-    air.trace("event.error.message:", a.error.message);
+
+    air.trace("INSERT error:", e.error);
+    air.trace("event.error.code:", e.error.code);
+    air.trace("event.error.message:", e.error.message);
 }

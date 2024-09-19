@@ -103,6 +103,9 @@ declare global {
     export type SQLConnection = runtime.flash.data.SQLConnection;
     const SQLConnection: typeof runtime.flash.data.SQLConnection;
 
+    export type SQLStatement = runtime.flash.data.SQLStatement;
+    const SQLStatement: typeof runtime.flash.data.SQLStatement;
+
     // filesystem
     export type File = runtime.flash.filesystem.File;
     const File: typeof runtime.flash.filesystem.File;
