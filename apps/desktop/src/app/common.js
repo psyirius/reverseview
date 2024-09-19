@@ -417,8 +417,7 @@ export class BibleReference {
         }
 
         function getVerseFont() {
-            var t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-            return t;
+            return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
         }
 
         function getErrorMessage() {
@@ -447,7 +446,7 @@ export class BibleReference {
 }
 
 export class ImageIcon {
-    constructor(a, n, e, d, b) {
+    constructor(a, n, e, d, b, ttp = 'bottom center') {
         this.disableIcon = disableIcon;
         this.enableIcon = enableIcon;
 
@@ -456,34 +455,37 @@ export class ImageIcon {
         const m_src = e;
         const m_srcActive = d;
         const m_srcDisabled = b;
+        
+        const el = document.getElementById(m_sel);
 
-        this.m_tooltip = new YAHOO.widget.Tooltip("ttip", {context: m_sel, text: m_text});
-
-        document.getElementById(m_sel).src = m_src;
-        document.getElementById(m_sel).addEventListener("mouseover", _on_mouseOver, false);
-        document.getElementById(m_sel).addEventListener("mouseout", _on_mouseOut, false);
-        document.getElementById(m_sel).style.border = "1px solid #ffffff";
+        el.src = m_src;
+        el.addEventListener("mouseover", _on_mouseOver, false);
+        el.addEventListener("mouseout", _on_mouseOut, false);
+        el.style.border = "1px solid #ffffff";
+        el.setAttribute("data-tooltip", m_text);
+        el.setAttribute("data-position", ttp);
+        el.setAttribute("data-inverted", '');
 
         function disableIcon() {
-            document.getElementById(m_sel).src = m_srcDisabled;
-            document.getElementById(m_sel).removeEventListener("mouseover", _on_mouseOver, false);
-            document.getElementById(m_sel).removeEventListener("mouseout", _on_mouseOut, false);
+            el.src = m_srcDisabled;
+            el.removeEventListener("mouseover", _on_mouseOver, false);
+            el.removeEventListener("mouseout", _on_mouseOut, false);
         }
 
         function enableIcon() {
-            document.getElementById(m_sel).src = m_src;
-            document.getElementById(m_sel).addEventListener("mouseover", _on_mouseOver, false);
-            document.getElementById(m_sel).addEventListener("mouseout", _on_mouseOut, false);
+            el.src = m_src;
+            el.addEventListener("mouseover", _on_mouseOver, false);
+            el.addEventListener("mouseout", _on_mouseOut, false);
         }
 
         function _on_mouseOver() {
-            document.getElementById(m_sel).src = m_srcActive;
-            document.getElementById(m_sel).style.border = "1px solid #87AFC7";
+            el.src = m_srcActive;
+            el.style.border = "1px solid #87AFC7";
         }
 
         function _on_mouseOut() {
-            document.getElementById(m_sel).src = m_src;
-            document.getElementById(m_sel).style.border = "1px solid #ffffff";
+            el.src = m_src;
+            el.style.border = "1px solid #ffffff";
         }
     }
 }

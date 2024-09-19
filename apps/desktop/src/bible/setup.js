@@ -13,14 +13,8 @@ export class BibleUpdater {
         loadSelectedBut.addEventListener("click", onLoadSelected, false);
         loadSelectedBut.disabled = true;
 
-        new YAHOO.widget.Tooltip("ttip1", {
-            context: checkUpdateBut,
-            text: "Check for Update",
-        });
-        new YAHOO.widget.Tooltip("ttip2", {
-            context: loadSelectedBut,
-            text: "Load selected",
-        });
+        checkUpdateBut.setAttribute('data-tooltip', 'Check for Update');
+        loadSelectedBut.setAttribute('data-tooltip', 'Load selected');
 
         function onCheckUpdate() {
             air.trace("Update Check......");

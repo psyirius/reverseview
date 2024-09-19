@@ -1,9 +1,6 @@
 // TODO: yui-migrate
 // - YAHOO.widget.ColorPicker
 // - YAHOO.util.Event
-// - YAHOO.example.container.tt1cp
-// - YAHOO.example.container.tt2cp
-// - YAHOO.widget.Tooltip
 
 import {Toast} from "@app/toast";
 import {save2file} from "@app/common";
@@ -213,17 +210,10 @@ class ColorPicker {
                 }
             });
             d.on("rgbChange", a);
-            YAHOO.namespace("example.container");
-            YAHOO.example.container.tt1cp = new YAHOO.widget.Tooltip("tt1cp", {
-                context: "cp_reset_id",
-                text: "Set to White Text"
-            });
-            YAHOO.example.container.tt2cp = new YAHOO.widget.Tooltip("tt2cp", {
-                context: "cp_save_id",
-                text: "Save as Default"
-            });
             document.getElementById("cp_reset_id").addEventListener("click", cp_reset, false);
+            document.getElementById("cp_reset_id").setAttribute('data-tooltip', 'Set to White Text');
             document.getElementById("cp_save_id").addEventListener("click", f, false);
+            document.getElementById("cp_save_id").setAttribute('data-tooltip', 'Save as Default');
         }
 
         function a(i) {

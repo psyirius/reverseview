@@ -7,6 +7,10 @@
 
     let count = $state(0);
 
+    $effect(() => {
+        console.log("count", count);
+    });
+
     function increment() {
         count += 1;
     }

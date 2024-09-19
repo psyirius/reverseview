@@ -8,7 +8,7 @@ import {$RvW} from "@/rvw";
 
 const searchSong = debounce((q: string) => {
     $RvW.songNavObj.sn_searchSong(q);
-}, 300);
+}, 200);
 
 export default function LeftSongsTab() {
     const categoryId = useId();

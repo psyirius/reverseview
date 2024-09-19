@@ -106,9 +106,9 @@ export default function LeftBibleTab() {
                         </div>
                     </div>
                     <div class="four wide column">
-                        <span class="iconImageStyle">
-                            <img id="searchButtonID" alt=""/>
-                        </span>
+                        <button id="searchButtonID" class="ui icon button">
+                            <i class="search icon"></i>
+                        </button>
                     </div>
                 </div>
             </div>

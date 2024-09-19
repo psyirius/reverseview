@@ -79,38 +79,6 @@ export class NotesManager {
                 .addEventListener("click", T, false);
             document.getElementById("nm_new_promptID").style.visibility = "hidden";
             YAHOO.namespace("example.container");
-            YAHOO.example.container.tt1 = new YAHOO.widget.Tooltip("tt1", {
-                context: "nm_sel_buttonID",
-                text: "Click to select this Notes file as active",
-            });
-            YAHOO.example.container.tt2 = new YAHOO.widget.Tooltip("tt2", {
-                context: "nm_deleteID",
-                text: "Click to delete this Notes file",
-            });
-            YAHOO.example.container.tt3 = new YAHOO.widget.Tooltip("tt3", {
-                context: "nm_add_buttonID",
-                text: "Click to load Notes file",
-            });
-            YAHOO.example.container.tt4 = new YAHOO.widget.Tooltip("tt4", {
-                context: "nm_newID",
-                text: "Click to create new Notes file",
-            });
-            YAHOO.example.container.tt5 = new YAHOO.widget.Tooltip("tt5", {
-                context: "nm_saveID",
-                text: "Click to save new Notes file",
-            });
-            YAHOO.example.container.tt6 = new YAHOO.widget.Tooltip("tt6", {
-                context: "nm_save_file_buttonID",
-                text: "Click to save the Notes file to Desktop",
-            });
-            YAHOO.example.container.tt7 = new YAHOO.widget.Tooltip("tt7", {
-                context: "nm_save_promptID",
-                text: "Click to initiate new Notes file",
-            });
-            YAHOO.example.container.tt8 = new YAHOO.widget.Tooltip("tt8", {
-                context: "nm_cancel_promptID",
-                text: "Click to cancel creating new Notes file",
-            });
         }
         function j() {
             const W = document.getElementById("nm_selectID").selectedIndex;
