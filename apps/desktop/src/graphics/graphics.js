@@ -28,8 +28,6 @@ export class GraphicsMgr {
         init();
 
         function init() {
-            $("#bkgnd_motion").hide();
-            $("#motion_bkgnddiv").hide();
             n = new TextColor();
             n.init();
             p = new SolidBackgroundColor();

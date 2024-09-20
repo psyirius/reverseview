@@ -163,8 +163,6 @@ export default function LeftSongsTab() {
             </div>
 
             <div class="style2">
-                {/* <b>Song Title</b><br> */}
-                <input type="text" id="songnav_filterbox" size={30}/><br/>
                 <div id="songnav_songlistnew" class="yui-skin-sam"></div>
             </div>
         </div>

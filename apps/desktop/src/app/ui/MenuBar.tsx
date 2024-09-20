@@ -4,6 +4,7 @@ import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, closePresentWindowMain} from "@/p_window";
 import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab} from "@stores/global";
 import {$RvW} from "@/rvw";
+import BibleRefSelect from "@app/ui/BibleRefSelect";
 
 const handlers = {
     present: () => {
@@ -121,6 +122,10 @@ export default function MenuBar() {
                         >
                             <i class="add icon"></i>
                         </button>
+                    </div>
+
+                    <div class="item">
+                        <BibleRefSelect />
                     </div>
                 </>}
 

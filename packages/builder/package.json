@@ -39,6 +39,7 @@
     "es-set": "^1.1.2",
     "function-bind": "^1.1.2",
     "terser": "^5.33.0",
+    "buble": "^0.20.0",
     "ts-morph": "^23.0.0",
     "tslib": "^2.7.0",
     "typescript": "^5.6.2"
@@ -49,6 +50,7 @@
     "@rollup/plugin-strip": "^3.0.4",
     "@rollup/plugin-swc": "^0.4.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-buble": "^1.0.3",
     "@umijs/mako": "^0.8.11",
     "inferno": "^8.2.3",
     "inferno-create-element": "^8.2.3",

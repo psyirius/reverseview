@@ -6,7 +6,6 @@
 
 import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
 import {menuYtLink, selectedSongCategory, selectedTab, songCategories} from "@stores/global";
-import {roundSearchBox} from "@app/common";
 import {SongSearchType} from "@/const";
 import {Deferred} from "@/utils/async";
 import {SongPresenter} from "@/song/present";
@@ -56,7 +55,7 @@ export class SongNav {
         let m = "";
         let B = null;
         let m_songTitle = [];
-        const m_isDebug = true;
+        const m_isDebug = false;
 
         init();
 
@@ -84,8 +83,6 @@ export class SongNav {
                 sn_searchSong();
             });
 
-            Z();
-            l();
             _currentSongObj = new Song();
             _currentSongObj.slides = [];
             loadTagsFromConfig();
@@ -118,15 +115,6 @@ export class SongNav {
             $("#ly_key").show();
             $("#ly_copy").show();
             $("#ly_notes").show();
-        }
-
-        function Z() {
-            roundSearchBox(document.getElementById("songnav_filterbox"));
-            document.getElementById("songnav_filterbox").style.margin = "2px 0px 0px 10px";
-        }
-
-        function l() {
-            $("#songnav_filterbox").hide();
         }
 
         function setFormats() {
@@ -566,12 +554,6 @@ export class SongNav {
             _currentSongObj.slides[0] = "Slide 1";
             _currentSongObj.slides[1] = "Slide 2";
             render_lyrics(_currentSongObj);
-        }
-        function H() {
-            m = document.getElementById("songnav_filterbox").value;
-            m = m.toLowerCase();
-            __debug("Filter value changed..." + m);
-            songnav_category_change();
         }
         function C(ao, am) {
             var al = m;

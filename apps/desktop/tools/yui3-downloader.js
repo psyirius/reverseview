@@ -54,6 +54,23 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'dd-ddm-base',
             'yui-throttle',
             'button-core',
+            'datatable-core',
+            'datatable-head',
+            'datatable-body',
+            'datatable-base',
+            'datatable-table',
+            'datatable-column-widths',
+            'datatable-message',
+            'datatable-mutable',
+            'datatable-sort',
+            'datatable-datasource',
+            'datatable-paginator',
+            'datatable-foot',
+            'template-base',
+            'template-micro',
+            'datatable-base',
+            'datatable-paginator',
+            'datatable-paginator-templates',
             'button',
             'escape',
             'dd-drag',
@@ -227,6 +244,8 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'highlight-accentfold',
             'json-parse-shim',
             'loader-rollup',
+            'datasource-local',
+            'node-menunav',
             'loader-yui3',
             'matrix',
             'node-event-html5',
@@ -245,6 +264,7 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             'cssgrids',
             'cssreset',
             'cssnormalize',
+            'cssgrids-responsive',
 
             'cssbutton',
             'app-transitions-css',
@@ -290,11 +310,21 @@ async function downloadModule(moduleName, extension = 'js', minified = true, fil
             ['autocomplete-list', 'assets/skins/sam/autocomplete-list.css'],
             ['autocomplete-list', 'assets/skins/night/autocomplete-list.css'],
 
+            ['datatable-base', 'assets/skins/sam/datatable-base.css'],
+            ['datatable-sort', 'assets/skins/sam/datatable-sort.css'],
+            ['datatable-message', 'assets/skins/sam/datatable-message.css'],
+            ['datatable-paginator', 'assets/skins/sam/datatable-paginator.css'],
+            ['node-menunav', 'assets/skins/sam/node-menunav.css'],
+
             ['console', 'lang/console.js'],
             ['console', 'lang/console_en.js'],
 
             ['autocomplete-list', 'lang/autocomplete-list.js'],
             ['autocomplete-list', 'lang/autocomplete-list_en.js'],
+
+            ['datatable-sort', 'lang/datatable-sort.js'],
+            ['datatable-message', 'lang/datatable-message.js'],
+            ['datatable-paginator', 'lang/datatable-paginator.js'],
         ];
 
         for (const [moduleName, filename] of modules) {

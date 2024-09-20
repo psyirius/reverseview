@@ -1000,15 +1000,6 @@ function setupSettingsTab() {
     $("#thirdview_bcolor").prop("disabled", true);
 }
 
-// function fillTabs(a) {
-//     switch (a) {
-//         case 'searchField': {
-//             roundSearchBox(document.getElementById("adSearch"));
-//             break;
-//         }
-//     }
-// }
-
 function updateBookNameVar() {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {

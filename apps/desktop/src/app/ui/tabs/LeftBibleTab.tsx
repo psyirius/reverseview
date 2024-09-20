@@ -1,5 +1,3 @@
-// Bible Verse Navigation
-
 import {processNavBibleRef, processNavBibleRefFind} from "@/bible/navigation";
 
 export default function LeftBibleTab() {

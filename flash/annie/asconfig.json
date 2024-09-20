@@ -1,0 +1,6 @@
+{
+  "type": "lib",
+  "config": "air",
+  "compilerOptions": {
+  }
+}

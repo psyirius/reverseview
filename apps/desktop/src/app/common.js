@@ -492,12 +492,6 @@ export function blankSlide() {
     $RvW.presentationContent = "";
 }
 
-export function roundSearchBox(a) {
-    a.style.borderRadius = "4px";
-    a.style.padding = "0px 0px 0px 5px";
-    a.style.height = "30px";
-}
-
 function getDate() {
     const e = new Date();
     const c = e.getMonth() + 1;

@@ -16,6 +16,13 @@
     "prisma-generator-as3": "workspace:*"
   },
   "devDependencies": {
+    "usfm-js": "^3.4.3",
+    "youversion-suggest": "^3.0.0",
+    "bible-scraper": "^2.2.0",
+    "bible-reference-toolkit": "^2.3.5",
+    "@apiverve/bible": "^1.1.4",
+    "bible-ref-parser": "^1.0.1",
+    "@bibletags/bibletags-versification": "^2.1.0",
     "axios": "^1.7.7",
     "prisma": "^5.19.0",
     "unified": "^11.0.5",
