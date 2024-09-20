@@ -1,25 +1,50 @@
-const INNER_HTML = `
-<div class="ui left labeled button" tabindex="0">
-  <a class="ui basic label">
-    Schedule
-  </a>
-  <div id="sch_deleteID" class="ui button">Remove Selected</div>
-  <div id="sch_deleteAllID" class="ui button">Remove All</div>
-  <div id="sch_upID" class="ui button">Move Up</div>
-  <div id="sch_downID" class="ui button">Move Down</div>
-</div>
-
-        <select class="custom-select navListStyleNew" size="5" style="width:300px" id="sch_selectID">
-                <option value=1>None</option>
-        </select>
-        <div id="sch_verseTextID"></div>
-<div class="ui divider"></div>
-<button class="ui compact button" id="sch_show_in_lyrics">Show in Lyrics Tab</button>
-`;
-
 export default function RightScheduleTab() {
     return (
-        <div id="scheduleTab" dangerouslySetInnerHTML={{__html: INNER_HTML}}>
+        <div id="scheduleTab">
+            <div class="ui items segment">
+                <div class="item">
+                    <div class="image">
+                        <div class="ui vertical labeled icon buttons">
+                            <button
+                                id="sch_deleteID"
+                                class="ui button"
+                            >
+                                <i class="minus square icon"></i>
+                                Remove
+                            </button>
+                            <button
+                                id="sch_deleteAllID"
+                                class="ui button"
+                            >
+                                <i class="trash icon"></i>
+                                Clear All
+                            </button>
+                            <button
+                                id="sch_upID"
+                                class="ui button"
+                            >
+                                <i class="caret up icon"></i>
+                                Move Up
+                            </button>
+                            <button
+                                id="sch_downID"
+                                class="ui button"
+                            >
+                                <i class="caret down icon"></i>
+                                Move Down
+                            </button>
+                        </div>
+                    </div>
+                    <div class="middle aligned content">
+                        <select class="custom-select navListStyleNew" size={8} style="width: 100%" id="sch_selectID">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sch_verseTextID"></div>
+            <div class="ui divider"></div>
+            <button class="ui compact button" id="sch_show_in_lyrics">Show in Lyrics Tab</button>
         </div>
     )
 }

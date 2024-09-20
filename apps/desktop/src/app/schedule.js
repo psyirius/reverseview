@@ -2,7 +2,7 @@ import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
 import {Prompt} from "@app/prompt";
 import {processNavBibleRefFind} from "@/bible/navigation";
-import {clearSelectList, ImageIcon} from "@app/common";
+import {clearSelectList} from "@app/common";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
@@ -56,41 +56,6 @@ export class Scheduler {
         }
 
         function k() {
-            new ImageIcon(
-                "sch_upID",
-                " Move Schedule Item UP ",
-                "graphics/icon/up.png",
-                "graphics/icon/up.png",
-                ""
-            );
-            new ImageIcon(
-                "sch_downID",
-                " Move Schedule Item DOWN ",
-                "graphics/icon/down.png",
-                "graphics/icon/down.png",
-                ""
-            );
-            new ImageIcon(
-                "sch_deleteID",
-                " REMOVE Selected Schedule Item ",
-                "graphics/icon/sch_del.png",
-                "graphics/icon/sch_del.png",
-                ""
-            );
-            new ImageIcon(
-                "sch_deleteAllID",
-                " CLEAR Schedule ",
-                "graphics/icon/sch_delall.png",
-                "graphics/icon/sch_delall.png",
-                ""
-            );
-            // new ImageIcon(
-            //     "sch_presentID",
-            //     " PRESENT Selected Schedule Item ",
-            //     "graphics/icon/present_48.png",
-            //     "graphics/icon/present_48.png",
-            //     ""
-            // );
         }
 
         function processAddVerse(Z, Y, aa) {
@@ -228,10 +193,6 @@ export class Scheduler {
             } else {
                 clearSelectList("sch_selectID");
                 document.getElementById("sch_verseTextID").innerHTML = "";
-                document.getElementById("sch_selectID").options[0] = new Option(
-                    "None",
-                    0
-                );
             }
         }
 
@@ -251,26 +212,22 @@ export class Scheduler {
             } else {
                 clearSelectList("sch_selectID");
                 document.getElementById("sch_verseTextID").innerHTML = "";
-                document.getElementById("sch_selectID").options[0] = new Option(
-                    "None",
-                    0
-                );
                 $("#sch_show_in_lyrics").hide();
             }
         }
 
         function e() {
-            var X = document.getElementById("sch_selectID");
+            const X = document.getElementById("sch_selectID");
             X.selectedIndex = M;
-            u(M);
+            sfhohfo(M);
         }
 
-        function u(ai) {
+        function sfhohfo(ai) {
             $("#sch_show_in_lyrics").show();
             if (t.data != null) {
                 var X = $RvW.vvConfigObj.get_navFontSize();
                 var ao = "";
-                if (t.data[ai].isSong == false) {
+                if (t.data[ai].isSong === false) {
                     var Z = t.data[ai];
                     var aq = $RvW.getSingleVerse(Z.book, Z.ch, Z.ver, 1);
                     var an = $RvW.getSingleVerse(Z.book, Z.ch, Z.ver, 2);
@@ -359,8 +316,8 @@ export class Scheduler {
                         ao = ao + "</div>";
                         document.getElementById("sch_verseTextID").style.fontSize = X + "px";
                         document.getElementById("sch_verseTextID").innerHTML = ao;
-                        var ab = new Array();
-                        var ag = new Array();
+                        var ab = [];
+                        var ag = [];
                         for (var ap = 0; ap < ae; ap++) {
                             var al = "schlyricsID" + ap;
                             document.getElementById(al).style.fontFamily = ak;

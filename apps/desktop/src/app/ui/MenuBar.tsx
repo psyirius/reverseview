@@ -87,10 +87,10 @@ export default function MenuBar() {
 
     return (
         <div style={{width: '100%'}}>
-            <div class="ui icon small compact menu fluid">
+            <div class="ui icon compact menu fluid">
                 {/* Menu Items */}
                 <div class="item">
-                    <div class="ui buttons small">
+                    <div class="ui buttons">
                         {menuItems.map(e => (
                             <button
                                 class="ui icon button"
@@ -127,7 +127,7 @@ export default function MenuBar() {
                 {/* Lyric Menu */}
                 {(activeTabIndex == 1) && <>
                     <div class="item">
-                        <div class="ui buttons small">
+                        <div class="ui buttons">
                             <button
                                 class={"ui icon button " + ((ytLink == null) ? "" : "disabled")}
                                 disabled={(ytLink == null)}
@@ -154,7 +154,7 @@ export default function MenuBar() {
 
                 {/* Notification Message */}
                 {notification && <div class="item">
-                    <a class="ui label small basic" onClick={() => navNotifyMessage.set(null)}>
+                    <a class="ui label basic" onClick={() => navNotifyMessage.set(null)}>
                         {notification}
                     </a>
                 </div>}

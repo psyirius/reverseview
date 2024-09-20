@@ -49,7 +49,6 @@ import {
     copyFile2AppStorage,
     createFolder,
     fileExist,
-    ImageIcon,
     pluckapple,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
@@ -101,9 +100,6 @@ window.htmlLoader.addEventListener(HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCR
         air.trace(`${trace.sourceURL}:${trace.line} - ${trace.functionName}`);
     }
 });
-
-// TODO:
-// - Export global functions to be used in other files
 
 $RvW.bookIndex = 0;
 $RvW.chapterIndex = 0;
@@ -571,7 +567,7 @@ $RvW.updateVerseContainer_continue = function() {
         const a = `TC_${i}`;
         htm += `<tr class="vcClass" id="${a}"><td width="4%">`;
         const h1 = `NC_${i}`;
-        htm += `<div class="vcClassIcon" id="${h1}"><img class="vcClassIcon" src="../graphics/icon/notes_s.png" alt=""></div>`;
+        htm += `<div class="vcClassIcon" id="${h1}"><i class="file alternate icon"></i></div>`;
 
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
             htm += '</td><td class="navtd" width="48%">';
@@ -1039,13 +1035,6 @@ function fillNav() {
     document.getElementById("bookList").addEventListener("change", $RvW.putch, false);
     document.getElementById("chapterList").addEventListener("change", $RvW.putver, false);
     document.getElementById("verseList").addEventListener("change", verseChange, false);
-    new ImageIcon(
-        "searchButtonID",
-        " SEARCH ",
-        "graphics/icon/search_32.png",
-        "graphics/icon/search_32.png",
-        ""
-    );
     document.getElementById("nav_bibleRefID").addEventListener("blur", bibleRefBlur, false);
     document.getElementById("nav_bibleRefID").addEventListener("focus", bibleRefFocus, false);
 

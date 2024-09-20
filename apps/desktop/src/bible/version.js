@@ -9,7 +9,7 @@ import {showBibleManagePanel} from "@stores/global";
 
 $RvW.bibleVersionArray = ["", ""];
 
-var new_fname,
+let new_fname,
     new_title,
     new_font,
     new_font_list,
@@ -17,10 +17,10 @@ var new_fname,
     new_sizefactor,
     new_booknames,
     new_sel_font;
-var bibleDB;
-var dbFilename_hold = "";
-var verFile = null;
-var vdebug = true;
+let bibleDB;
+let dbFilename_hold = "";
+let verFile = null;
+const __debug = true;
 
 export function loadBibleVersion() {
     const b = "xml/version.xml";
@@ -83,35 +83,35 @@ export function versionFill(setup) {
 }
 
 export function saveVersionSelection() {
-    var f = $RvW.vvConfigObj.get_version1();
-    var e = $RvW.vvConfigObj.get_version2();
-    var b = document.getElementById("version1Menu").selectedIndex;
-    var g = document.getElementById("version2Menu").selectedIndex;
-    __versionDbg("****************" + b + "  " + g);
-    __versionDbg(
+    const f = $RvW.vvConfigObj.get_version1();
+    const e = $RvW.vvConfigObj.get_version2();
+    const b = document.getElementById("version1Menu").selectedIndex;
+    const g = document.getElementById("version2Menu").selectedIndex;
+    __dbg("****************" + b + "  " + g);
+    __dbg(
         "****************" +
         $RvW.vvConfigObj.get_version1() +
         "  " +
         $RvW.vvConfigObj.get_version2()
     );
-    if (b != f) {
+    if (b !== f) {
         $RvW.bibledbObj[1].closeDB();
         $RvW.bibledbObj[1] = null;
         loadSQLBible(b, 1);
     }
-    if (g != e) {
+    if (g !== e) {
         $RvW.bibledbObj[2].closeDB();
         $RvW.bibledbObj[2] = null;
         loadSQLBible(g, 2);
     }
-    if (b != f) {
-        var a = "./bible/" + $RvW.bibleVersionArray[b][1];
-        __versionDbg("             Search file...." + a);
+    if (b !== f) {
+        const dbFile = "./bible/" + $RvW.bibleVersionArray[b][1];
+        __dbg("             Search file...." + dbFile);
         if ($RvW.searchObj != null) {
             $RvW.searchObj.close();
             $RvW.searchObj = null;
         }
-        $RvW.searchObj = new BibleSearch(a);
+        $RvW.searchObj = new BibleSearch(dbFile);
         document.getElementById("searchID").disabled = false;
         document.getElementById("adSearch").disabled = false;
         document.getElementById("adSearchButton").disabled = false;
@@ -122,9 +122,9 @@ export function saveVersionSelection() {
         "Secondary: " + $RvW.bibleVersionArray[g][0];
     $RvW.vvConfigObj.set_version1(b);
     $RvW.vvConfigObj.set_version2(g);
-    var d = $("#booknameStyle option:selected").val();
-    var c = $("#englishList").is(":checked");
-    __versionDbg(d + "  " + c);
+    const d = $("#booknameStyle option:selected").val();
+    const c = $("#englishList").is(":checked");
+    __dbg(d + "  " + c);
     $RvW.vvConfigObj.set_booknamestyle(d);
     $RvW.vvConfigObj.set_listinenglish(c);
     $RvW.loadBookNames();
@@ -164,7 +164,7 @@ function loadVersionList() {
         );
     }
     document.getElementById("selectVersionList").selectedIndex = 0;
-    __versionDbg("About to update version details....");
+    __dbg("About to update version details....");
     updateVersionDetails();
 }
 
@@ -545,8 +545,8 @@ export function updateVersionXML() {
     save2file(generateVersionXML(), "./xml/version.xml", false);
 }
 
-function __versionDbg(a) {
-    if (vdebug) {
-        air.trace("[Version.js].... " + a);
+function __dbg(...a) {
+    if (__debug) {
+        air.trace("[Version.js].... ", ...a);
     }
 }

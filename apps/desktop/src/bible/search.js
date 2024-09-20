@@ -217,7 +217,7 @@ export class BibleSearch {
                         al +
                         '<div class="vcClassIcon" id="' +
                         ag +
-                        '"><img class="vcClassIcon" src="../graphics/icon/notes_s.png"></div>';
+                        '"><i class="file alternate icon"></i></div>';
                     al = al + '</td><td class="navtd" width="48%">';
                     var ag = "searchVC1_" + i;
                     al = al + '<div class="vcClass" id="' + ag + '">a</div>';

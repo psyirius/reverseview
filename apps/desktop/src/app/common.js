@@ -445,51 +445,6 @@ export class BibleReference {
     }
 }
 
-export class ImageIcon {
-    constructor(a, n, e, d, b, ttp = 'bottom center') {
-        this.disableIcon = disableIcon;
-        this.enableIcon = enableIcon;
-
-        const m_sel = a;
-        const m_text = n;
-        const m_src = e;
-        const m_srcActive = d;
-        const m_srcDisabled = b;
-        
-        const el = document.getElementById(m_sel);
-
-        el.src = m_src;
-        el.addEventListener("mouseover", _on_mouseOver, false);
-        el.addEventListener("mouseout", _on_mouseOut, false);
-        el.style.border = "1px solid #ffffff";
-        el.setAttribute("data-tooltip", m_text);
-        el.setAttribute("data-position", ttp);
-        el.setAttribute("data-inverted", '');
-
-        function disableIcon() {
-            el.src = m_srcDisabled;
-            el.removeEventListener("mouseover", _on_mouseOver, false);
-            el.removeEventListener("mouseout", _on_mouseOut, false);
-        }
-
-        function enableIcon() {
-            el.src = m_src;
-            el.addEventListener("mouseover", _on_mouseOver, false);
-            el.addEventListener("mouseout", _on_mouseOut, false);
-        }
-
-        function _on_mouseOver() {
-            el.src = m_srcActive;
-            el.style.border = "1px solid #87AFC7";
-        }
-
-        function _on_mouseOut() {
-            el.src = m_src;
-            el.style.border = "1px solid #ffffff";
-        }
-    }
-}
-
 export function promoteVV(a) {
     presentationCtx.p_text1_arr = [];
     presentationCtx.p_text2_arr = [];

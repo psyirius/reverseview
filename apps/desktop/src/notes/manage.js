@@ -78,7 +78,6 @@ export class NotesManager {
                 .getElementById("nm_cancel_promptID")
                 .addEventListener("click", T, false);
             document.getElementById("nm_new_promptID").style.visibility = "hidden";
-            YAHOO.namespace("example.container");
         }
         function j() {
             const W = document.getElementById("nm_selectID").selectedIndex;

@@ -100,12 +100,13 @@ export default function LeftBibleTab() {
                 </p>
 
                 <div class="ui grid">
-                    <div class="ten wide column">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" size={14} id="searchID" placeholder="Word Search"/>
-                        </div>
-                    </div>
-                    <div class="four wide column">
+                    <div class="ui action input" style={{width: '100%', marginTop: '16px'}}>
+                        <input
+                            id="searchID"
+                            type="text"
+                            size={32}
+                            placeholder="Search words..."
+                        />
                         <button id="searchButtonID" class="ui icon button">
                             <i class="search icon"></i>
                         </button>
