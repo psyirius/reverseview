@@ -1,6 +1,8 @@
-import {presentationContentString} from "@app/common";
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
+
+// import $ from "jquery";
+import * as $ from "jquery";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
@@ -11,13 +13,23 @@ $RvW.presentationWindow = null;
 // Stage View Window
 $RvW.stageWindow = null;
 
-var pWindowX = "100";
-var pWindowY = "100";
-var stageViewWindowX = "100";
-var stageViewWindowY = "100";
-var dualScreen = true;
-var stageViewScreenIndex = 2;
-var index_for_presentationContent = 0;
+let pWindowX = "100";
+let pWindowY = "100";
+
+let stageViewWindowX = "100";
+let stageViewWindowY = "100";
+
+const dualScreen = true;
+
+let stageViewScreenIndex = 2;
+let index_for_presentationContent = 0;
+
+function presentationContentString(d, b, f, c, a) {
+    if (c === "" && a === "") {
+        return "";
+    }
+    return `${d}<newelement>${b}<newelement>${f}<newelement>${c}<newelement>${a}`;
+}
 
 // this sets the variables in the presentation window global context
 // this is not a class
@@ -139,15 +151,17 @@ function getCurrentScreen() {
     const a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
     return a.length > 0 ? a[0] : air.Screen.mainScreen;
 }
+
 function getScreenList() {
     return air.Screen.screens;
 }
-export function fillScreenList(idSel, savedIndex) {
+
+export function fillScreenList(elId, savedIndex) {
     const screens = getScreenList();
 
     /** @type {HTMLSelectElement} */
-    const el = document.getElementById(idSel);
-    el.innerHTML = "";
+    const el = document.getElementById(elId);
+    el.innerHTML = '';
 
     {
         function isSameRect(rect1, rect2) {
@@ -175,7 +189,7 @@ export function fillScreenList(idSel, savedIndex) {
         }
     }
 
-    setScreenIndex(idSel, savedIndex, screens.length);
+    setScreenIndex(elId, savedIndex, screens.length);
 }
 
 function saveSelectedScreenIndex() {
@@ -203,6 +217,7 @@ export function addScreenSelectionEvent() {
             saveSelectedScreenIndex();
             $RvW.vvConfigObj.save();
         }, false);
+
     document
         .getElementById("selectStageScreenID")
         .addEventListener("change", function processStageScreenSelChange() {
@@ -387,6 +402,7 @@ export function presentation() {
         }
     }
 }
+
 export function closePresentWindowMain() {
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.nativeWindow.close();
@@ -401,20 +417,25 @@ export function closePresentWindowMain() {
     }
     $RvW.presentationContent = "";
 }
+
 export function presentWindowClosed() {
     $RvW.presentWindowOpen = false;
     $RvW.presentationWindow = null;
 }
+
 function DOMIntializeCallback(a) {
     $RvW.presentationWindow.window.passVariable = passVariable;
     air.trace('>>> presentationWindow.htmlDOMInitialize')
 }
+
 function DOMIntializeStageViewCallback(a) {
     $RvW.stageWindow.window.passVariable = passVariable;
     air.trace('>>> stageWindow.htmlDOMInitialize')
 }
+
 function updatePresentationContent(b) {
-    var a = presentationCtx.p_text1_arr.length;
+    const a = presentationCtx.p_text1_arr.length;
+
     if (b) {
         index_for_presentationContent++;
         if (index_for_presentationContent >= a) {
@@ -426,6 +447,7 @@ function updatePresentationContent(b) {
             index_for_presentationContent = a - 1;
         }
     }
+
     $RvW.presentationContent = presentationContentString(
         presentationCtx.p_title,
         presentationCtx.p_text1_font,
@@ -434,6 +456,7 @@ function updatePresentationContent(b) {
         presentationCtx.p_text2_arr[index_for_presentationContent]
     );
 }
+
 export function call_nextSlide() {
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.nextSlide();
@@ -443,6 +466,7 @@ export function call_nextSlide() {
     }
     updatePresentationContent(true);
 }
+
 export function call_prevSlide() {
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.prevSlide();
@@ -452,11 +476,13 @@ export function call_prevSlide() {
     }
     updatePresentationContent(false);
 }
+
 export function call_showTheme() {
     if ($RvW.presentationWindow != null) {
         $RvW.presentationWindow.window.showThemeProcess();
     }
 }
+
 export function call_closePresentation() {
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.clearPresenter();

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lib/zrx",
+    "module": "ES6",
+    "moduleResolution": "Bundler",
+    "allowJs": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@lib/*": ["lib/*"],
+      "@app/*": ["app/*"],
+      "@core/*": ["core/*"],
+      "@stores/*": ["stores/*"],
+      "@components/*": ["ui/components/*"]
+    },
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.js",
+    "./src/**/*.tsx",
+    "./src/**/*.jsx",
+  ],
+}

@@ -40,3 +40,6 @@ keystores/
 /static/lib/dojox/*
 /static/lib/dijit/*
 /static/lib/alloyui/*
+
+# tmp/experimental files
+/static/gfx/*

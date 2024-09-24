@@ -7,6 +7,9 @@ import {clearSelectList, extractFileName, save2file} from "@app/common";
 import {$RvW} from "@/rvw";
 import {showBibleManagePanel} from "@stores/global";
 
+// import $ from "jquery";
+import * as $ from "jquery";
+
 $RvW.bibleVersionArray = ["", ""];
 
 let new_fname,
@@ -531,10 +534,6 @@ export function processSingleVersion() {
 
 export function getVersion1Filename() {
     return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
-}
-
-export function getVersion1Font() {
-    return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
 }
 
 export function getVersion1Name() {

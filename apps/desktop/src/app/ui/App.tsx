@@ -2,7 +2,9 @@ import MenuBar from "./MenuBar";
 import Toaster from "./Toaster";
 import Dialogs from "./dialogs/index";
 import ContentPane from "./ContentPane";
-import SandboxFrame from "./SandboxFrame";
+
+// import SandboxFrame from "./SandboxFrame";
+// import RenderCanvas from "@app/ui/RenderCanvas";
 
 interface Props {
     dev?: boolean;
@@ -18,6 +20,8 @@ const App = ({dev}: Props) => {
             {/*        </div>*/}
             {/*    </div>*/}
             {/*)}*/}
+
+            {/*<RenderCanvas />*/}
 
             {/*<SandboxFrame*/}
             {/*    id="UI"*/}

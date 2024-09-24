@@ -1,15 +1,17 @@
 import { PostIt } from "@/notes/notes";
-import {getVersion1Font} from "@/bible/version";
 import {getVerseFromArray, verseClass} from "@/bible/manager";
-import {clearSelectList, filesave2vvexport} from "@app/common";
-import {Toast} from "@app/toast";
+import {clearSelectList, filesave2vvexport} from "@/app/common";
+import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
+
+// import $ from "jquery";
+import * as $ from "jquery";
 
 export class BibleSearch {
     constructor(O) {
-        this.close = P;
-        this.setFontSize = A;
-        this.searchKeywordInit = J;
+        this.close = close;
+        this.setFontSize = setFontSize;
+        this.searchKeywordInit = searchKeywordInit;
 
         var r = 3;
         var K = null;
@@ -27,11 +29,15 @@ export class BibleSearch {
         var l = 0;
         var y = false;
         var H = false;
-        var u = new Array();
-        var s = new Array();
+        var u = [];
+        var s = [];
         var M = null;
 
         init();
+
+        function getVersion1Font() {
+            return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
+        }
 
         function init() {
             $("#searchID").css("font-family", getVersion1Font());
@@ -40,7 +46,7 @@ export class BibleSearch {
             v();
             G();
         }
-        function P() {
+        function close() {
             V();
             if (K != null) {
                 K = null;
@@ -387,7 +393,7 @@ export class BibleSearch {
                 f();
             }
         }
-        function J() {
+        function searchKeywordInit() {
             if (y) {
                 p();
             } else {
@@ -473,7 +479,7 @@ export class BibleSearch {
             }
             return ae;
         }
-        function A(X) {
+        function setFontSize(X) {
             r = X;
             if (I != null) {
                 k();

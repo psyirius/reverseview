@@ -2,8 +2,8 @@
 // - YAHOO.widget.ColorPicker
 // - YAHOO.util.Event
 
-import {Toast} from "@app/toast";
-import {save2file} from "@app/common";
+import {Toast} from "@/app/toast";
+import {save2file} from "@/app/common";
 import {$RvW} from "@/rvw";
 
 export const BgContext = {

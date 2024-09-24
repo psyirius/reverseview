@@ -123,6 +123,20 @@ https://github.com/CC-Archived/SWFService/blob/master/src/client/SWFService/lib/
 
 https://nextgenactionscript.com/tools-and-utilities/
 
+https://www.jsdelivr.com/?query=author%3A%20developit
+https://www.jsdelivr.com/package/npm/unistore
+https://www.jsdelivr.com/package/npm/preact-portal
+https://www.jsdelivr.com/package/npm/preact-virtual-list
+https://www.jsdelivr.com/package/npm/preact-scroll-viewport
+https://www.jsdelivr.com/package/npm/valoo
+https://www.jsdelivr.com/package/npm/preact-cycle
+https://www.jsdelivr.com/package/npm/preact-views
+https://www.jsdelivr.com/package/npm/hazelnut
+https://www.jsdelivr.com/package/npm/preact-richtextarea
+https://www.jsdelivr.com/package/npm/sleeper
+https://www.jsdelivr.com/package/npm/preact-slots
+https://www.jsdelivr.com/package/npm/asyncro
+
 ANE:
 https://github.com/benkuper/AIR-NativeExtensions/tree/master/AIRVirtualMIDI/ane_src
 
@@ -134,10 +148,15 @@ Environment: https://help.adobe.com/en_US/air/html/dev/WSb2ba3b1aad8a27b0-67c001
 https://github.com/microsoft/TypeScript/pull/45771#issuecomment-919273950
 https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules
 
-### DB
+### DB (Prisma Custom Generator)
 https://gist.github.com/deckchairlabs/8a11c33311c01273deec7e739417dbc9
 
 ## Polyfills
 https://github.com/rousan/es6-harmony
 https://github.com/rousan/symbol-es6
 https://github.com/seanmonstar/symbol
+
+https://vaadin.com/docs/latest/components#form_inputs
+https://www.npmjs.com/package/@daipeng7/rollup-plugin-iconfont
+
+https://www.npmjs.com/package/zet

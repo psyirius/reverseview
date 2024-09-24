@@ -2,6 +2,7 @@
   "name": "@rvw/parcel-config",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "scripts": {
   },
   "dependencies": {
@@ -14,6 +15,5 @@
     "@parcel/resolver-default": "^2.12.0",
     "@parcel/bundler-default": "^2.12.0",
     "@parcel/namer-default": "^2.12.0"
-  },
-  "private": true
+  }
 }

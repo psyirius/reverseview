@@ -1,5 +1,24 @@
-import {getVerseFromArray} from "./manager"; // probable circular dependency
 import {Toast} from "@app/toast";
+import {$RvW} from "@/rvw";
+
+function getVerseFromArray(d, p, f) {
+    var h = 0;
+    var n = d;
+    var l = p;
+    var o = f;
+    for (let g = 1; g < n; g++) {
+        let m = $RvW.numofch[g][0];
+        for (let e = 1; e <= m; e++) {
+            h += $RvW.numofch[g][e];
+        }
+    }
+    let m = $RvW.numofch[n][0];
+    for (let a = 1; a < l; a++) {
+        h += $RvW.numofch[n][a];
+    }
+    h += o;
+    return h;
+}
 
 export class BibleDB {
     constructor() {

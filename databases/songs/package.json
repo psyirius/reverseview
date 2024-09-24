@@ -10,7 +10,7 @@
     "prisma:init": "prisma migrate dev --name init"
   },
   "devDependencies": {
-    "prisma": "^5.18.0",
+    "prisma": "^5.19.1",
     "sqlite3": "^5.1.7"
   }
 }

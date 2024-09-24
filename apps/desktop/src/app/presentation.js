@@ -1,5 +1,19 @@
-import {IsNumeric, withinRange} from "@app/common";
 import {$RvW} from "@/rvw";
+
+function withinRange(b, c, a) {
+    return a >= b && a <= c;
+}
+
+function IsNumeric(v) {
+    const charSet = "0123456789";
+    for (let i = 0; i < v.length; i++) {
+        const char = v.charAt(i);
+        if (charSet.indexOf(char) === -1) {
+            return false;
+        }
+    }
+    return true;
+}
 
 export function savePresentationMargin() {
     let k = true;

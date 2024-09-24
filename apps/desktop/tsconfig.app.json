@@ -11,7 +11,7 @@
     "module": "UMD", // our loader is AMD
     "rootDir": "./src",
     "baseUrl": "./src",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "paths": {
       "@/*": ["./*"],
       "@lib/*": ["lib/*"],

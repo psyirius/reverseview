@@ -1,0 +1,1 @@
+// refer https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts

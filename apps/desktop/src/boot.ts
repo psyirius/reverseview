@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /*
 * Note: Never make it a module.
 * This script setups the AMD loader and execs the OEP
@@ -5,7 +7,7 @@
 !(function () {
     const dojoConfig = {
         has: {
-            "dojo-firebug": true,
+            'dojo-firebug': true,
             'csp-restrictions': true,
         },
         isDebug: true,

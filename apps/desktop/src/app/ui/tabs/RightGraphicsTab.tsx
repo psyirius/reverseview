@@ -127,22 +127,27 @@ export default function RightGraphicsTab() {
                     </div>
 
                     <div id="still_bkgnddiv" class="ui grid">
-                        <div class="id horizontal segments">
-                            <div class="ui segment">
-                                <div class="generalheading2">Background</div>
-                                <img id="selected_still_id" width={150} height={100} alt=""/>
-
-                                <label class="generalheading2">Logo</label>
-                                <img id="selected_logostill_id" width={150} height={100} alt=""/>
+                        <div class="ui compact segment">
+                            <div class="ui vertical form">
+                                <div class="field">
+                                    <img id="selectedx_still_id" width={150} height={100} alt=""/>
+                                    <div class="ui left pointing label">Preview</div>
+                                </div>
+                                <div class="ui divider"></div>
+                                <div class="field vertical">
+                                    <img id="selected_still_id" width={150} height={100} alt=""/>
+                                    <div class="ui left pointing label">Background</div>
+                                </div>
+                                <div class="field">
+                                    <img id="selected_logostill_id" width={150} height={100} alt=""/>
+                                    <div class="ui left pointing label">Logo</div>
+                                </div>
                             </div>
+                        </div>
 
-                            <div class="ui segment">
-                                <label class="generalheading2">Preview</label>
-                                <img id="selectedx_still_id" width="150" height="100" alt=""/>
-                            </div>
-
-                            <div class="ui segment">
-                                <div class="ui icon buttons">
+                        <div class="ui vertical">
+                            <div class="ui clearing segment">
+                                <div class="ui icon left floated buttons">
                                     <button
                                         class="ui button"
                                         id="addStillBkgndButtonID"
@@ -163,9 +168,7 @@ export default function RightGraphicsTab() {
                                     </button>
                                 </div>
 
-                                <div class="ui divider"></div>
-
-                                <div class="ui icon buttons">
+                                <div class="ui icon right floated buttons">
                                     <button
                                         class="ui button"
                                         id="setAsBackgroundButtonID"
@@ -185,9 +188,9 @@ export default function RightGraphicsTab() {
                                         <i class="icon his his-sparkles"></i>
                                     </button>
                                 </div>
+                            </div>
 
-                                <div class="ui divider"></div>
-
+                            <div class="ui segment">
                                 <div class="ui form">
                                     <div class="grouped fields">
                                         <div class="field">
@@ -198,20 +201,24 @@ export default function RightGraphicsTab() {
                                         </div>
                                         <div class="field">
                                             <div class="ui checkbox">
-                                                <input type="checkbox" name="bg-still-options" id="randomBackgroundID"/>
+                                                <input type="checkbox" name="bg-still-options"
+                                                       id="randomBackgroundID"/>
                                                 <label htmlFor="randomBackgroundID">Random Background</label>
                                             </div>
                                         </div>
                                         <div class="field">
                                             <div class="ui checkbox">
-                                                <input type="checkbox" name="bg-still-options" id="shadedBackgroundID"/>
+                                                <input type="checkbox" name="bg-still-options"
+                                                       id="shadedBackgroundID"/>
                                                 <label htmlFor="shadedBackgroundID">Shaded Background</label>
                                             </div>
                                         </div>
                                         <div class="field">
                                             <div class="ui checkbox">
-                                                <input type="checkbox" name="bg-still-options" id="transparentBackgroundID"/>
-                                                <label htmlFor="transparentBackgroundID">Transparent Background</label>
+                                                <input type="checkbox" name="bg-still-options"
+                                                       id="transparentBackgroundID"/>
+                                                <label htmlFor="transparentBackgroundID">Transparent
+                                                    Background</label>
                                             </div>
                                         </div>
                                     </div>
@@ -219,7 +226,9 @@ export default function RightGraphicsTab() {
                             </div>
                         </div>
 
-                        <div id="still_bkgnd_grid"></div>
+                        <div class="ui compact segment" style={{overflow: 'auto'}}>
+                            <div id="still_bkgnd_grid"></div>
+                        </div>
                     </div>
 
                     <div id="motion_bkgnddiv">

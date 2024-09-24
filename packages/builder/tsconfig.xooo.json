@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
     "target": "ES5",
     "importHelpers": true,
     "noEmitHelpers": true,
-//    "downlevelIteration": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "preact",
+    "module": "ES6",
+    "moduleResolution": "Node",
+    "allowJs": true
   },
+  "include": [
+    "input/xyz.tsx",
+  ],
 }

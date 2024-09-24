@@ -1,6 +1,9 @@
 import {save2file} from "@app/common";
 import {$RvW} from "@/rvw";
 
+// import $ from "jquery";
+import * as $ from "jquery";
+
 export class StillBackground {
     constructor() {
         this.init = init;

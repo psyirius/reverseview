@@ -1,7 +1,7 @@
 import {BibleDB} from "./db";
+import {$RvW} from "@/rvw";
 import {Toast} from "@app/toast";
 import {presentationCtx} from "@app/presentation";
-import {$RvW} from "@/rvw";
 
 $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;

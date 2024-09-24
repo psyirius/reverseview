@@ -1,4 +1,4 @@
-import {Toast} from "@app/toast";
+import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
 
 function getNumofVerses() {

@@ -131,6 +131,38 @@
     src: url("/assets/fonts/DM Sans/DMSans-Thin.ttf") format('truetype');
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* https://cdn.jsdelivr.net/npm/progress-spinner@1.1.0/style.css */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+progress-spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 1px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    animation: rotate 800ms linear infinite;
+}
+progress-spinner[dark] {
+    border-top-color: rgba(255, 255, 255, 0.6);
+}
+progress-spinner[dotted] {
+    border-width: 0;
+    border-style: dotted;
+    border-top-width: 2px;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 .dm-sans {
     user-select: none;
     font-family: "DM Sans", sans-serif;

@@ -18,9 +18,9 @@
     "clean": "rimraf -g \"./dist/*\""
   },
   "dependencies": {
-    "@prisma/generator-helper": "^5.18.0"
+    "@prisma/generator-helper": "^5.19.1"
   },
   "devDependencies": {
-    "tsup": "^8.2.4"
+    "tsup": "^8.3.0"
   }
 }

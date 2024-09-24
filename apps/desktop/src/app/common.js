@@ -3,6 +3,7 @@ import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
+// import $ from "jquery";
 import * as $ from "jquery";
 
 export let apple = false;
@@ -99,10 +100,6 @@ export function extractFileName(d) {
     }
     const a = b.length;
     return b[a - 1];
-}
-
-export function withinRange(b, c, a) {
-    return a >= b && a <= c;
 }
 
 export function IsNumeric(v) {
@@ -519,13 +516,6 @@ export function pluckapple() {
         apple = true;
         $("#nav_bibleRefID").val("");
     }
-}
-
-export function presentationContentString(d, b, f, c, a) {
-    if (c === "" && a === "") {
-        return "";
-    }
-    return `${d}<newelement>${b}<newelement>${f}<newelement>${c}<newelement>${a}`;
 }
 
 export function fixHTTPS_Link(a) {

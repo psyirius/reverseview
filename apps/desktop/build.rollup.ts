@@ -17,7 +17,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import esbuild from 'rollup-plugin-esbuild';
 import amd from 'rollup-plugin-amd';
 
-import consts from 'rollup-plugin-consts';
+// import consts from 'rollup-plugin-consts';
 import million from 'million/compiler';
 
 // experimental compilation

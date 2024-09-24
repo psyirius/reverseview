@@ -1,3 +1,4 @@
+// import $ from 'jquery';
 import * as $ from 'jquery';
 
 import { WebEngine } from "@/remote/webengine";
@@ -55,6 +56,7 @@ import {presentationCtx} from "@app/presentation";
 import {selectedBookRef, selectedTab} from "@stores/global";
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
+import fetch from "@/utils/http/fetch";
 
 // import * as dojoDom from 'dojo/dom';
 // console.log("dojo/dom", dojoDom);
@@ -88,6 +90,17 @@ DEV: {
 
     // Make sure the remote is up-to-date
     copyFile2AppStorage("webroot", "webroot");
+
+    {
+        fetch('https://rvw.psyirius.workers.dev/query/songs')
+            .then(response => response.json())
+            .then(data => {
+                air.trace("Response:", data);
+            })
+            .catch(error => {
+                air.trace("Error:", error);
+            });
+    }
 }
 
 const { HTMLUncaughtScriptExceptionEvent } = runtime.flash.events;

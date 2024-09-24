@@ -15,6 +15,9 @@ import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
+// import $ from "jquery";
+import * as $ from "jquery";
+
 export class SongNav {
     constructor() {
         this.setFormats = setFormats;
