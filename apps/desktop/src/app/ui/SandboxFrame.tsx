@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useRef } from "@lib/zrx/hooks";
+import { useRef } from "preact/hooks";
 
 interface Props {
     src: string;

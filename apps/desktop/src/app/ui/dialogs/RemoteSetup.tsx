@@ -1,5 +1,5 @@
-import { Component } from '@lib/zrx/preact';
-import {useState, useEffect, useId, useRef} from '@lib/zrx/hooks';
+import { Component } from 'preact';
+import {useState, useEffect, useId, useRef} from 'preact/hooks';
 import {showRemotePanel, localIpList, remoteEnabled, remoteCustomHostname, remoteListenPort} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";

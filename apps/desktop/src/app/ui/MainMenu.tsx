@@ -1,4 +1,4 @@
-// import {useEffect} from "@lib/zrx/hooks";
+// import {useEffect} from "preact/hooks";
 //
 // interface MenuGroup {
 //     label: string;

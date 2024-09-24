@@ -4,9 +4,10 @@
     "importHelpers": true,
     "noEmitHelpers": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "@lib/zrx",
-    "module": "ES6",
-    "moduleResolution": "Bundler",
+    "jsxImportSource": "preact",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "sourceMap": false,
     "allowJs": true,
     "rootDir": "./src",
     "baseUrl": "./src",
@@ -17,7 +18,7 @@
       "@core/*": ["core/*"],
       "@stores/*": ["stores/*"],
       "@components/*": ["ui/components/*"]
-    },
+    }
   },
   "include": [
     "./src/**/*.ts",

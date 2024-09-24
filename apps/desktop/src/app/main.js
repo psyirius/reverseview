@@ -1,5 +1,4 @@
-// import $ from 'jquery';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 import { WebEngine } from "@/remote/webengine";
 import { WebServer } from "@/remote/webserver";

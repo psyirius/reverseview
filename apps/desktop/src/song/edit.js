@@ -7,8 +7,7 @@ import {apple, clearSelectList, isBlank, specialCategory} from "@app/common";
 import {$RvW} from "@/rvw";
 import {showSongEditPanel, showLyricEditPanel} from "@stores/global";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 export class SongEdit {
     constructor() {

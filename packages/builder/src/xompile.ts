@@ -101,6 +101,9 @@ import {
                 // import { fetch } from 'web-shims';
                 fetch: [ 'web-shims', 'fetch' ],
 
+                // import console from 'console';
+                console: 'console',
+
                 // import Array$of from 'es6-array-of';
                 'Array.of': 'es6-array-of',
 

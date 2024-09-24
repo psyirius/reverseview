@@ -7,7 +7,7 @@ import {
 } from "@stores/global";
 import {$RvW} from "@/rvw";
 import {loadSQLBible} from "@/bible/manager";
-import {useEffect, useRef, useState} from "@lib/zrx/hooks";
+import {useEffect, useRef, useState} from "preact/hooks";
 import {saveVersionSelection} from "@/bible/version";
 
 export default function BibleSelectorDialog() {

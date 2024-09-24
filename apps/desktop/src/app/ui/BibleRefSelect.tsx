@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {useEffect} from "@lib/zrx/hooks";
+import {useEffect} from "preact/hooks";
 
 export default function BibleRefSelect() {
     useEffect(() => {

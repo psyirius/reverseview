@@ -1,4 +1,4 @@
-import { render } from '@lib/zrx/preact';
+import { render } from 'preact';
 
 import App from "./App";
 

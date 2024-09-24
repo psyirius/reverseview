@@ -1,6 +1,6 @@
 // Song Lyric Navigation
 import {selectedSongCategory, selectedSongTag, songCategories, songTags} from "@stores/global";
-import {useEffect, useId, useRef, useState} from "@lib/zrx/hooks";
+import {useEffect, useId, useRef, useState} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {SongSearchType} from "@/const";
 import debounce from '@/utils/debounce';

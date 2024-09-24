@@ -1,4 +1,4 @@
-import {useEffect} from "@lib/zrx/hooks";
+import {useEffect} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, closePresentWindowMain} from "@/p_window";

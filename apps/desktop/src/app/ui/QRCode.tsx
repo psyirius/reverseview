@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "@lib/zrx/hooks";
+import {useEffect, useRef} from "preact/hooks";
 
 export interface Props {
     text: string

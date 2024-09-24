@@ -7,8 +7,7 @@ import {FontSizeSlider, save2file} from "@app/common";
 import {savePresentationMargin} from "@app/presentation";
 import {$RvW} from "@/rvw";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 export class Config {
     constructor() {

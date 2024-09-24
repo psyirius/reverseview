@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "@lib/zrx/hooks";
+import {useEffect, useRef, useState} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {showLyricEditPanel} from "@stores/global";
 import {$RvW} from "@/rvw";

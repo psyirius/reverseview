@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef, useState} from "@lib/zrx/hooks";
+import {useEffect, useId, useRef, useState} from "preact/hooks";
 import {$RvW} from "@/rvw";
 import {selectedTab} from "@stores/global";
 

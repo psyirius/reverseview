@@ -4,8 +4,7 @@ import {clearSelectList, filesave2vvexport} from "@/app/common";
 import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 export class BibleSearch {
     constructor(O) {

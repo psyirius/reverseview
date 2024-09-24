@@ -61,7 +61,7 @@ export class BibleRecentRefManager {
             b--;
         }
         el.selectedIndex = 0;
-        el.addEventListener("click", () => this.selectRecent(), false);
+        el.addEventListener("click", (e) => this.selectRecent(e), false);
     }
 
     selectRecent(e) {

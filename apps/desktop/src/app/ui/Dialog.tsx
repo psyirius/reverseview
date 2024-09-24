@@ -1,4 +1,4 @@
-import {Component, ComponentChild, RenderableProps} from "@lib/zrx/preact";
+import {Component, ComponentChild, RenderableProps} from "preact";
 
 interface Props {
 

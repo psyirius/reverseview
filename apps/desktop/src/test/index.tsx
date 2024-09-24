@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+import * as $ from "jquery";
 
 $(() => {
     // alert('jQuery ready');
@@ -6,8 +6,8 @@ $(() => {
 })
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-import { Component, render } from '@lib/zrx/preact';
-import { useState, useEffect } from '@lib/zrx/hooks';
+import { Component, render } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 
 const Counter = () => {
     const [count, setCount] = useState(0);

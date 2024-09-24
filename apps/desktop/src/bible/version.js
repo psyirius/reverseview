@@ -7,8 +7,7 @@ import {clearSelectList, extractFileName, save2file} from "@app/common";
 import {$RvW} from "@/rvw";
 import {showBibleManagePanel} from "@stores/global";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 $RvW.bibleVersionArray = ["", ""];
 

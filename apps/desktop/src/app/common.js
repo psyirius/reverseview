@@ -3,8 +3,7 @@ import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 export let apple = false;
 

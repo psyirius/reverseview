@@ -2,8 +2,7 @@ import {getVerseFromArray} from "./manager";
 import {$RvW} from "@/rvw";
 import {selectedTab, showVerseEditPanel} from "@stores/global";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 export function setupVerseEditObject() {
     var b = $RvW.getBookValue();

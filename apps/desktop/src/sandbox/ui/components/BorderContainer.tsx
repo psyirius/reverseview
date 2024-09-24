@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "@lib/zrx/hooks";
+import {useEffect, useRef, useState} from "preact/hooks";
 import * as _BorderContainer from "dijit/layout/BorderContainer";
 
 interface Props {

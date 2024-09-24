@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "@lib/zrx/hooks";
+import {useEffect, useRef, useState} from "preact/hooks";
 
 export default function Toaster() {
     const id = 'toast-container';

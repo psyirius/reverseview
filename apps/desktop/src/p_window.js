@@ -1,8 +1,7 @@
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 
-// import $ from "jquery";
-import * as $ from "jquery";
+import $ from "jquery";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';

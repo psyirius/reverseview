@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef} from "@lib/zrx/hooks";
+import {useEffect, useId, useRef} from "preact/hooks";
 import {$RvW} from "@/rvw";
 
 import LeftBibleTab from "@app/ui/tabs/LeftBibleTab";

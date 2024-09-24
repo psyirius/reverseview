@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "@lib/zrx/hooks";
+import {useEffect, useRef} from "preact/hooks";
 import * as gfx from "dojox/gfx";
 import * as socket from 'dojox/socket';
 

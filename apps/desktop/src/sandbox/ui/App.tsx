@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "@lib/zrx/hooks";
+import {useEffect, useRef} from "preact/hooks";
 
 import * as BorderContainer from "dijit/layout/BorderContainer";
 import * as TabContainer from "dijit/layout/TabContainer";
