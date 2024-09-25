@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 !(function(exports) {
     const _$ = {
         p_text1_arr: [],

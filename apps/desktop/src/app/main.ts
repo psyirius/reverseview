@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import $ from 'jquery';
 
 import { WebEngine } from "@/remote/webengine";
@@ -55,10 +57,11 @@ import {presentationCtx} from "@app/presentation";
 import {selectedBookRef, selectedTab} from "@stores/global";
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
-import fetch from "@/utils/http/fetch";
+import fetch from '@/utils/http/fetch';
+// import AppState from "@/stores/state";
 
 // import * as dojoDom from 'dojo/dom';
-// console.log("dojo/dom", dojoDom);
+// air.trace("dojo/dom", dojoDom);
 
 DEV: {
     // break DEV;
@@ -91,6 +94,7 @@ DEV: {
     copyFile2AppStorage("webroot", "webroot");
 
     {
+        // global.Promise = $Y.Promise;
         fetch('https://rvw.psyirius.workers.dev/query/songs')
             .then(response => response.json())
             .then(data => {

@@ -5,7 +5,6 @@ import $ from "jquery";
 
 export class StillBackground {
     constructor() {
-        this.init = init;
         this.setNumOfPicsInRow = setNumOfPicsInRow;
         this.getBkgndFilename = getBkgndFilename;
         this.getLogoFilename = getLogoFilename;
@@ -28,10 +27,9 @@ export class StillBackground {
         var g = false;
         var y = false;
 
-        function init() {
-            H();
-            i();
-        }
+        H();
+        i();
+
         function H() {
             B("Setting values...");
             G = $RvW.vvConfigObj.get_bkgndIndex();

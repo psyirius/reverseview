@@ -102,7 +102,7 @@ export default function LeftBibleTab() {
                         <input
                             id="searchID"
                             type="text"
-                            size={32}
+                            size={20}
                             placeholder="Search words..."
                         />
                         <button id="searchButtonID" class="ui icon button">

@@ -1,24 +1,36 @@
-import {useEffect, useRef} from "preact/hooks";
+import {useEffect, useRef, useState} from "preact/hooks";
+import {
+    QRCodeRender,
+    renderToCanvas
+} from "qrcode-generator-es";
 
 export interface Props {
     text: string
 }
 
 export default function QRCode({ text }: Props) {
-    const qrRef = useRef<HTMLDivElement>(null);
+    const qrCanvasRef = useRef<HTMLCanvasElement>(null);
+
+    const [qrcode, setQRCode] = useState<QRCodeRender>(null);
 
     useEffect(() => {
-        // air.trace('QRCode', text);
+        if (!qrcode) {
+            const qrcode = new QRCodeRender({
+                renderFn: renderToCanvas,
+                text: text,
+                el: qrCanvasRef.current!,
+                size: 280,
+            });
 
-        // prevent appending multiple QR codes
-        qrRef.current!.innerHTML = '';
+            qrcode.render();
 
-        // global: QRCode
-        // @ts-ignore
-        new window.QRCode(qrRef.current!, text);
+            setQRCode(qrcode);
+        } else {
+            qrcode.resetData(text);
+        }
     }, [text]);
 
     return (
-        <div ref={qrRef}></div>
+        <canvas ref={qrCanvasRef}></canvas>
     );
 }

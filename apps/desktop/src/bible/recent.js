@@ -66,7 +66,7 @@ export class BibleRecentRefManager {
 
     selectRecent(e) {
         /** @type {HTMLSelectElement} */
-        const el = e.target;
+        const el = document.getElementById("recentSel");
 
         if (el.selectedIndex !== -1) {
             const b = el.options[el.selectedIndex].value;

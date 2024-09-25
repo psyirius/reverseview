@@ -3,10 +3,12 @@ import {$RvW} from "@/rvw";
 
 export class SolidBackgroundColor {
     constructor() {
-        this.init = k;
         this.assignSolidColor = j;
         var e;
         var a = false;
+
+        k();
+
         function k() {
             c();
             g();

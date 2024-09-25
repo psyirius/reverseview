@@ -2,23 +2,29 @@ import { Command, Option } from 'commander'
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { rollup, Plugin } from 'rollup'
+import { rollup, Plugin, RollupCache } from 'rollup'
 
-import nodeResolve from '@rollup/plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
+import alias from '@rollup/plugin-alias'
 import swc from '@rollup/plugin-swc'
-import alias from "@rollup/plugin-alias";
+import inject from '@rollup/plugin-inject'
+import terser from '@rollup/plugin-terser'
+import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
 
 import esbuild from 'rollup-plugin-esbuild'
 import tsConfigPaths from 'rollup-plugin-tsconfig-paths'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { rollupPluginHTML } from '@web/rollup-plugin-html'
 
 import externalize from './rollup/utils/externalize'
 import * as defineUtils from './rollup/utils/define'
 import PluginWatcher from './rollup/utils/plugin-watcher'
 
 import typescript from './rollup/plugins/typescript'
+import svelte from 'rollup-plugin-svelte';
 import * as swc_ from '@swc/core'
-import inject from "@rollup/plugin-inject";
+import * as esbuild_ from 'esbuild'
 
 const prog = new Command()
     .name('build.src')
@@ -99,19 +105,25 @@ const pw = new PluginWatcher();
 const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
 
 !(async () => {
+    let cache;
+
     const bundle = await rollup({
+        cache,
         input: {
             // __preload__: path.resolve(WORKING_DIR, 'src/__preload__.ts'),
             // boot: path.resolve(WORKING_DIR, 'src/boot.ts'), // loads the main app (index)
 
             // app
-            'app/main': path.resolve(WORKING_DIR, 'src/app/main.js'),
+            'app/main': path.resolve(WORKING_DIR, 'src/app/main.ts'),
 
             // presentation
-            'presentation/main': path.resolve(WORKING_DIR, 'src/presentation/main.js'),
+            'presentation/main': path.resolve(WORKING_DIR, 'src/presentation/main.ts'),
 
             // stageview
-            'stageview/main': path.resolve(WORKING_DIR, 'src/stageview/main.js'),
+            'stageview/main': path.resolve(WORKING_DIR, 'src/stageview/main.ts'),
+
+            // test/svelte
+            // 'test/svelte/main': path.resolve(WORKING_DIR, 'src/test/svelte/main.ts'),
 
             // sandbox
             // 'sandbox/boot': path.resolve(WORKING_DIR, 'src/sandbox/boot.ts'),
@@ -119,21 +131,71 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
         plugins: pw.wrap([
             [
                 MxPlugin(),
+                // rollupPluginHTML({
+                //     input: path.resolve(WORKING_DIR, 'src/index.html'),
+                //     publicPath: 'static',
+                // }),
+                svelte({
+                    compilerOptions: {
+                        // legacy: true,
+                        // generate: 'client',
+                        // runes: true,
+                        css: 'injected',
+                        // discloseVersion: false,
+                        // preserveWhitespace: false,
+                    },
+                    emitCss: false,
+                }),
                 tsConfigPaths({
                     tsConfigPath: path.resolve(WORKING_DIR, 'tsconfig.x.json'),
                     respectCoreModule: true,
                 }),
-                nodeResolve(),
+                inject({
+                    // __spreadArray: [ 'tslib', '__spreadArray' ],
+
+                    // // import { Promise } from 'es6-promise';
+                    // Promise: ['@shims/es6-promise', 'Promise'],
+
+                    // import { Map, Set } from 'es6-collections';
+                    // Map: [ '@shims/es6-collections', 'Map' ],
+                    // Set: [ '@shims/es6-collections', 'Set' ],
+
+                    // // import { Symbol } from 'es6-symbol';
+                    // Symbol: [ '@shims/es6-symbol', 'Symbol' ],
+                    //
+                    // // import { WeakMap } from 'es6-weak-map';
+                    // WeakMap: [ '@shims/es6-weak-map', 'WeakMap' ],
+
+                    // import WeakMap from 'es6-weak-map';
+                    // WeakMap: 'es6-weak-map',
+
+                    // import { queueMicrotask } from 'web-shims';
+                    queueMicrotask: [ '@shims/web', 'queueMicrotask' ],
+
+                    // import { MutationObserver } from 'web-shims';
+                    MutationObserver: [ '@shims/web', 'MutationObserver' ],
+
+                    // import { globalThis } from 'web-shims';
+                    // globalThis: [ '@shims/web', 'globalThis' ],
+
+                    // import { fetch } from 'web-shims';
+                    fetch: [ '@shims/web', 'fetch' ],
+
+                    // import { console } from 'web-shims';
+                    // console: [ '@shims/web', 'console' ],
+                }),
+                commonjs({
+
+                }),
                 alias({
                     entries: [
                         // { find: '@lib/zrx/preact', replacement: 'preact' },
-                        // { find: '@lib/zrx/hooks', replacement: 'preact/hooks' },
-                        // { find: '@lib/zrx/jsx-runtime', replacement: 'preact/jsx-runtime' },
                     ]
                 }),
-                inject({
-                    // __spreadArray: [ 'tslib', '__spreadArray' ],
+                resolve({
+
                 }),
+                json(),
                 typescript({
                     tsconfig: path.resolve(WORKING_DIR, 'tsconfig.x.json'),
                 }),
@@ -148,9 +210,15 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
                         'TRACE',
                     ],
                     define: defineUtils.prepare({
-
+                        'import.meta.env': {
+                            // ENV: 'production',
+                            // DEV: false,
+                            // TEST: false,
+                            // TRACE: false,
+                        }
                     }),
-                    loaders: {},
+                    loaders: {
+                    },
                     supported: {
                         // 'bigint': false,
                         // 'arrow': false,
@@ -179,21 +247,15 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
                     swc: {
                         jsc: {
                             target: 'es5',
+                            // target: 'es3',
                             externalHelpers: true,
                         }
                     }
                 }),
             ],
-            [
-                swc({
-                    swc: {
-                        jsc: {
-                            target: 'es3',
-                            externalHelpers: true,
-                        }
-                    }
-                }),
-            ],
+            // terser({
+            //     ecma: 5,
+            // }),
             visualizer({
                 emitFile: true,
                 filename: "stats.html",
@@ -201,7 +263,7 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
             }),
         ]),
         external: externalize([
-            'jquery',
+            'jquery', // global jQuery is still needed cuz we have global plugins
 
             // 'tslib',
             // '@swc/helpers/_/*',
@@ -209,21 +271,43 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
         // treeshake: false,
     });
 
+    cache = bundle.cache;
+
     const ro = await bundle.write({
         format: 'esm',
         dir: DIST_DIR,
-        generatedCode: 'es5',
+        generatedCode: {
+            preset: 'es5',
+            arrowFunctions: false,
+            constBindings: true,
+            objectShorthand: false,
+            reservedNamesAsProps: true,
+            symbols: false,
+        },
+        compact: false,
     });
 
     // The final es3 adjustments needed
     for (const op of ro.output) {
+        // console.log(op);
         if (op.type === 'chunk' && op.preliminaryFileName.endsWith('.js')) {
             const file = path.resolve(DIST_DIR, op.preliminaryFileName);
 
-            let output = swc_.transformSync(op.code, {
+            const isApp = op.preliminaryFileName.endsWith('app/main.js')
+
+            let code = op.code;
+
+            // const res = esbuild_.transformSync(code, {
+            //     target: 'es5',
+            //     format: 'esm',
+            // });
+            //
+            // code = res.code;
+
+            code = swc_.transformSync(code, {
                 jsc: {
                     target: 'es3',
-                    // externalHelpers: true,
+                    externalHelpers: false,
                 },
                 module: {
                     type: 'amd',
@@ -231,18 +315,18 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
                 },
                 minify: false,
                 isModule: 'unknown',
-            });
+            }).code;
 
-            output = swc_.transformSync(output.code, {
-                jsc: {
-                    target: 'es3',
-                    // externalHelpers: true,
-                },
-                minify: false,
-                isModule: false,
-            });
+            // code = swc_.transformSync(code, {
+            //     jsc: {
+            //         target: 'es3',
+            //         // externalHelpers: true,
+            //     },
+            //     minify: false,
+            //     isModule: false,
+            // }).code;
 
-            fs.writeFileSync(file, output.code);
+            fs.writeFileSync(file, code);
         }
     }
 

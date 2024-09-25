@@ -3,11 +3,13 @@ import {$RvW} from "@/rvw";
 
 export class TextColor {
     constructor() {
-        this.init = l;
         this.assignTextColor = e;
         this.assignTextColor2 = k;
         var i;
         var f;
+
+        l();
+
         function l() {
             b();
             d();

@@ -5,7 +5,7 @@
     "ignoreDeprecations": "5.0",
     "target": "ES3",
     "jsx": "react-jsx",
-    "jsxImportSource": "@lib/zrx",
+    "jsxImportSource": "preact",
 
     /* Modules */
     "module": "UMD", // our loader is AMD

@@ -3,13 +3,15 @@ import {$RvW} from "@/rvw";
 
 export class GradiantBackgroundColor {
     constructor() {
-        this.init = q;
         this.assignGradColor1 = l;
         this.assignGradColor2 = j;
         var p;
         var n;
         var f;
         var c = false;
+
+        q();
+
         function q() {
             e();
             m();

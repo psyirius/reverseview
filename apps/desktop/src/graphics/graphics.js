@@ -1,162 +1,65 @@
 import { GradiantBackgroundColor } from "./gradbkgnd";
 import { SolidBackgroundColor } from "./solidbkgnd";
 import { TextColor } from "./textcolor";
-import {ColorPickerPanel} from "./colorpicker";
 import {StillBackground} from "./stillbkgnd";
-import {$RvW} from "@/rvw";
 
 export class GraphicsMgr {
     constructor() {
-        this.assignColor = l;
-        this.setNumOfPicsInRow = c;
-        this.getBkgndFilename = j;
-        this.getLogoFilename = a;
-        this.getMotionFlag = m;
-        this.getShadeFlag = h;
-        this.getTransparentFlag = w;
-        var n = null;
-        var p = null;
-        var e = null;
-        var f = null;
-        var u;
-        var t;
-        var q;
-        var i;
-        var o;
-        var g;
+        this.assignColor = assignColor;
+        this.setNumOfPicsInRow = setNumOfPicsInRow;
+        this.getBkgndFilename = getBkgndFilename;
+        this.getLogoFilename = getLogoFilename;
+        this.getMotionFlag = getMotionFlag;
+        this.getShadeFlag = getShadeFlag;
+        this.getTransparentFlag = getTransparentFlag;
 
-        init();
+        const text = new TextColor();
+        const solid = new SolidBackgroundColor();
+        const gradiant = new GradiantBackgroundColor();
+        const still = new StillBackground();
 
-        function init() {
-            n = new TextColor();
-            n.init();
-            p = new SolidBackgroundColor();
-            p.init();
-            e = new GradiantBackgroundColor();
-            e.init();
-            f = new StillBackground();
-            f.init();
-            d();
-            k();
-            s();
-        }
-        function d() {
-            var x = $RvW.vvConfigObj.get_p_bkgnd_type();
-            document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
-            document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
-            document.getElementById("still_bkgnddiv").style.visibility = "hidden";
-            document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
+        function assignColor(y, x) {
             switch (x) {
-                case "1":
-                    document.getElementById("solid_bkgnddiv").style.visibility = "visible";
-                    document.getElementById("bkgnd_solid").checked = true;
+                case 0:
+                    text.assignTextColor(y);
                     break;
-                case "2":
-                    document.getElementById("graident_bkgnddiv").style.visibility =
-                        "visible";
-                    document.getElementById("bkgnd_gradient").checked = true;
+                case 1:
+                    solid.assignSolidColor(y);
                     break;
-                case "3":
-                    document.getElementById("still_bkgnddiv").style.visibility = "visible";
-                    document.getElementById("bkgnd_still").checked = true;
+                case 2:
+                    gradiant.assignGradColor1(y);
                     break;
-                case "4":
-                    document.getElementById("motion_bkgnddiv").style.visibility = "visible";
-                    document.getElementById("bkgnd_motion").checked = true;
+                case 3:
+                    gradiant.assignGradColor2(y);
                     break;
-                default:
-                    document.getElementById("still_bkgnddiv").style.visibility = "visible";
-                    document.getElementById("bkgnd_still").checked = true;
+                case 4:
+                    text.assignTextColor2(y);
                     break;
             }
         }
-        function k() { }
-        function s() {
-            document.getElementById("bkgnd_solid").addEventListener("change", v, false);
-            document
-                .getElementById("bkgnd_gradient")
-                .addEventListener("change", v, false);
-            document.getElementById("bkgnd_still").addEventListener("change", v, false);
-            document
-                .getElementById("bkgnd_motion")
-                .addEventListener("change", v, false);
+
+        function setNumOfPicsInRow(x) {
+            still.setNumOfPicsInRow(x);
         }
-        function v() {
-            var y = document.getElementById("bkgnd_solid").checked;
-            var A = document.getElementById("bkgnd_gradient").checked;
-            var x = document.getElementById("bkgnd_still").checked;
-            var z = document.getElementById("bkgnd_motion").checked;
-            if (y) {
-                document.getElementById("solid_bkgnddiv").style.visibility = "visible";
-                document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("still_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
-                $RvW.vvConfigObj.set_p_bkgnd_type(1);
-                $RvW.vvConfigObj.save();
-            }
-            if (A) {
-                document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("graident_bkgnddiv").style.visibility = "visible";
-                document.getElementById("still_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
-                $RvW.vvConfigObj.set_p_bkgnd_type(2);
-                $RvW.vvConfigObj.save();
-            }
-            if (x) {
-                document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("still_bkgnddiv").style.visibility = "visible";
-                document.getElementById("motion_bkgnddiv").style.visibility = "hidden";
-                $RvW.vvConfigObj.set_p_bkgnd_type(3);
-                $RvW.vvConfigObj.save();
-            }
-            if (z) {
-                document.getElementById("solid_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("graident_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("still_bkgnddiv").style.visibility = "hidden";
-                document.getElementById("motion_bkgnddiv").style.visibility = "visible";
-                $RvW.vvConfigObj.set_p_bkgnd_type(4);
-                $RvW.vvConfigObj.save();
-            }
+
+        function getBkgndFilename() {
+            return still.getBkgndFilename();
         }
-        function l(y, x) {
-            if (x == 0) {
-                n.assignTextColor(y);
-            }
-            if (x == 4) {
-                n.assignTextColor2(y);
-            }
-            if (x == 1) {
-                p.assignSolidColor(y);
-            }
-            if (x == 2) {
-                air.trace("Assign color 1 for gradient");
-                e.assignGradColor1(y);
-            }
-            if (x == 3) {
-                e.assignGradColor2(y);
-            }
+
+        function getLogoFilename() {
+            return still.getLogoFilename();
         }
-        function b() {
-            var x = new ColorPickerPanel(textColor, 0);
+
+        function getMotionFlag() {
+            return still.getMotionFlag();
         }
-        function c(x) {
-            f.setNumOfPicsInRow(x);
+
+        function getTransparentFlag() {
+            return still.getTransparentFlag();
         }
-        function j() {
-            return f.getBkgndFilename();
-        }
-        function a() {
-            return f.getLogoFilename();
-        }
-        function m() {
-            return f.getMotionFlag();
-        }
-        function w() {
-            return f.getTransparentFlag();
-        }
-        function h() {
-            return f.getShadeFlag();
+
+        function getShadeFlag() {
+            return still.getShadeFlag();
         }
     }
 }
