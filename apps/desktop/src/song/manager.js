@@ -494,7 +494,7 @@ export class SongManager {
                 "Error opening Song Database : " + aN.error.message
             );
         }
-        function aI(aO, aQ) {
+        function alterSongTable(aO, aQ) {
             __debug("Updating the Song database TABLE: " + aO + " " + aQ);
             var aS = new air.SQLStatement();
             aS.sqlConnection = m_sqlConnection;
@@ -516,8 +516,7 @@ export class SongManager {
             __debug("Creating song table...");
             aA = new air.SQLStatement();
             aA.sqlConnection = m_sqlConnection;
-            var aN = "CREATE TABLE IF NOT EXISTS sm (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, cat TEXT, font TEXT, font2 TEXT, timestamp TEXT, yvideo TEXT, bkgndfname TEXT, key TEXT, copy TEXT, notes TEXT, lyrics TEXT lyrics2 TEXT title2 TEXT tags TEXT slideseq TEXT rating INTEGER chordsavailable Boolean usagecount INTEGER subcat TEXT )";
-            aA.text = aN;
+            aA.text = "CREATE TABLE IF NOT EXISTS sm (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, cat TEXT, font TEXT, font2 TEXT, timestamp TEXT, yvideo TEXT, bkgndfname TEXT, key TEXT, copy TEXT, notes TEXT, lyrics TEXT lyrics2 TEXT title2 TEXT tags TEXT slideseq TEXT rating INTEGER chordsavailable Boolean usagecount INTEGER subcat TEXT )";
             aA.addEventListener(air.SQLEvent.RESULT, r);
             aA.addEventListener(air.SQLErrorEvent.ERROR, M);
             aA.execute();
@@ -526,18 +525,17 @@ export class SongManager {
             aA.removeEventListener(air.SQLEvent.RESULT, r);
             aA.removeEventListener(air.SQLErrorEvent.ERROR, M);
             __debug("Notes Table created.....");
-            var songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
+            let songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
             __debug("Song DB version " + songDBVersion);
             if (songDBVersion < 2) {
-                aI("title2", "TEXT");
-                aI("tags", "TEXT");
-                aI("slideseq", "TEXT");
-                aI("rating", "INTEGER");
-                aI("chordsavailable", "Boolean");
-                aI("usagecount", "INTEGER");
-                aI("subcat", "TEXT");
+                alterSongTable("title2", "TEXT");
+                alterSongTable("tags", "TEXT");
+                alterSongTable("slideseq", "TEXT");
+                alterSongTable("rating", "INTEGER");
+                alterSongTable("chordsavailable", "Boolean");
+                alterSongTable("usagecount", "INTEGER");
+                alterSongTable("subcat", "TEXT");
                 $RvW.vvConfigObj.set_songDBVersion(2);
-                songDBVersion = $RvW.vvConfigObj.get_songDBVersion();
                 $RvW.vvConfigObj.save();
             }
             if (!isUpToDate() && task1Status() === false) {
@@ -558,21 +556,23 @@ export class SongManager {
             ax = false;
         }
         function s(aN, aR) {
-            if (T == 0) {
+            if (T === 0) {
                 _importProgressPanel.show();
             }
-            var aP = new air.SQLStatement();
+            const aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
-            var aS = "";
-            aS += "INSERT INTO sm (name, cat, font, font2, timestamp, yvideo, bkgndfname, key, copy, notes, lyrics, lyrics2, title2, tags, slideseq, rating, chordsavailable, usagecount,subcat)";
-            aS += " SELECT :n, :cat, :fon, :fon2, :ts, :yv, :bkg, :key, :cop, :not, :lyr, :lyr2, :n2, :tag, :seq, :rate, :chords, :count, :subcat";
+            let aS = `
+INSERT INTO sm (
+        name, cat, font, font2, timestamp, yvideo, bkgndfname, key, copy,
+        notes, lyrics, lyrics2, title2, tags, slideseq, rating, chordsavailable, usagecount, subcat
+)  SELECT
+       :n, :cat, :fon, :fon2, :ts, :yv, :bkg, :key, :cop, :not, :lyr, :lyr2, :n2, :tag, :seq,
+       :rate, :chords, :count, :subcat
+`;
             if (!aN) {
-                aS +=
-                    " WHERE NOT EXISTS (SELECT 1 FROM sm WHERE name = :n AND cat = :cat)";
+                aS += " WHERE NOT EXISTS (SELECT 1 FROM sm WHERE name = :n AND cat = :cat)";
             }
             aP.text = aS;
-            aP.addEventListener(air.SQLEvent.RESULT, aO);
-            aP.addEventListener(air.SQLErrorEvent.ERROR, aQ);
             aP.parameters[":n"] = m;
             aP.parameters[":cat"] = K;
             aP.parameters[":fon"] = x;
@@ -592,17 +592,19 @@ export class SongManager {
             aP.parameters[":chords"] = aM;
             aP.parameters[":count"] = af;
             aP.parameters[":subcat"] = ao;
+            aP.addEventListener(air.SQLEvent.RESULT, aO);
+            aP.addEventListener(air.SQLErrorEvent.ERROR, aQ);
             T++;
             aP.execute();
-            function aO(aV) {
+            function aO() {
                 T--;
-                if (T % 10 == 0) {
+                if (T % 10 === 0) {
                     document.getElementById("total").innerHTML = T;
                 }
                 aP.removeEventListener(air.SQLEvent.RESULT, aO);
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
                 if (aR) {
-                    if (T == 0) {
+                    if (T === 0) {
                         _importProgressPanel.hide();
                         Toast.show(
                             "Song Database",
@@ -620,8 +622,8 @@ export class SongManager {
                 }
                 if (aN) {
                     __debug("UPDATE UI Flag....");
-                    var aU = aP.getResult();
-                    var aT = aU.lastInsertRowID;
+                    const aU = aP.getResult();
+                    const aT = aU.lastInsertRowID;
                     $RvW.songEditObj.setEditPrimaryKey(aT);
                     C();
                     F();
@@ -638,7 +640,7 @@ export class SongManager {
                         );
                     }
                 }
-                if (T == 0) {
+                if (T === 0) {
                     __debug("Record count done.. ");
                     _importProgressPanel.hide();
                 }
@@ -651,9 +653,9 @@ export class SongManager {
                     "ADD EDIT Song",
                     "Failed to update song database.  Error message:" + aU.error.message
                 );
-                if (!isUpToDate() && T == 0) {
-                    var aT = $RvW.vvConfigObj.get_songDBVersion();
-                    if (aT == 2) {
+                if (!isUpToDate() && T === 0) {
+                    const aT = $RvW.vvConfigObj.get_songDBVersion();
+                    if (aT === 2) {
                         $RvW.vvConfigObj.set_songDBVersion(1);
                         $RvW.vvConfigObj.save();
                         Toast.show(
@@ -666,14 +668,15 @@ export class SongManager {
             }
         }
         function Q(aN) {
-            var aO = new air.SQLStatement();
+            const aO = new air.SQLStatement();
             aO.sqlConnection = m_sqlConnection;
-            var aR = "";
-            aR +=
-                "UPDATE sm SET name=:n,cat=:cat,font=:fon,font2=:fon2,timestamp=:ts,yvideo=:yv,bkgndfname=:bkg,key=:key,copy=:cop,notes=:not,lyrics=:lyr,lyrics2=:lyr2, title2=:n2, tags=:tag, slideseq=:seq, rating=:rate, chordsavailable=:chords, usagecount=:count,subcat=:subcat WHERE id=:id;";
-            aO.text = aR;
-            aO.addEventListener(air.SQLEvent.RESULT, aP);
-            aO.addEventListener(air.SQLErrorEvent.ERROR, aQ);
+            aO.text = `
+UPDATE sm 
+SET name=:n,cat=:cat,font=:fon,font2=:fon2,timestamp=:ts,yvideo=:yv,bkgndfname=:bkg,key=:key,
+    copy=:cop,notes=:not,lyrics=:lyr,lyrics2=:lyr2, title2=:n2, tags=:tag, slideseq=:seq,
+    rating=:rate, chordsavailable=:chords, usagecount=:count,subcat=:subcat 
+WHERE id=:id;
+`;
             aO.parameters[":id"] = aN;
             aO.parameters[":n"] = m;
             aO.parameters[":cat"] = K;
@@ -694,23 +697,19 @@ export class SongManager {
             aO.parameters[":chords"] = aM;
             aO.parameters[":count"] = af;
             aO.parameters[":subcat"] = ao;
-            aO.execute();
-            function aP(aS) {
-                aO.removeEventListener(air.SQLEvent.RESULT, aP);
-                aO.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
+            aO.addEventListener(air.SQLEvent.RESULT, function(aS) {
                 $RvW.songNavObj.sn_backupGlobalID();
                 C();
                 F();
                 at();
                 Toast.show("Song Database", 'Song "' + m + '" updated.');
-            }
-            function aQ(aS) {
-                aO.removeEventListener(air.SQLEvent.RESULT, aP);
-                aO.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-                __debug("UPDATE error:" + aS.error);
-                __debug("event.error.code:" + aS.error.code);
-                __debug("event.error.message:" + aS.error.message);
-            }
+            });
+            aO.addEventListener(air.SQLErrorEvent.ERROR, function aQ(e) {
+                __debug("UPDATE error:" + e.error);
+                __debug("event.error.code:" + e.error.code);
+                __debug("event.error.message:" + e.error.message);
+            });
+            aO.execute();
         }
         function at() {
             __debug("Getting ALL Data from Song DB");
@@ -933,7 +932,7 @@ export class SongManager {
         }
         function aF() {
             __debug("Getting ALL Data from Original Song DB");
-            var aP = new air.SQLStatement();
+            const aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
             aP.text = "INSERT INTO sm SELECT NULL,name,cat,font,font2,timestamp,yvideo,bkgndfname,key,copy,notes,lyrics,lyrics2,title2,tags,slideseq,rating,chordsavailable,usagecount,subcat FROM newstuff.sm WHERE cat = :cat1 OR cat = :cat2 OR cat = :cat3";
             aP.addEventListener(air.SQLEvent.RESULT, aO);

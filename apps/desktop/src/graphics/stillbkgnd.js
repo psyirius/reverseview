@@ -31,7 +31,7 @@ export class StillBackground {
         i();
 
         function H() {
-            B("Setting values...");
+            __debug("Setting values...");
             G = $RvW.vvConfigObj.get_bkgndIndex();
             z = -1;
             o = new Array();
@@ -49,7 +49,7 @@ export class StillBackground {
             w = "./background/thumbnail/" + E[T];
         }
         function i() {
-            B("Set events...");
+            __debug("Set events...");
             document
                 .getElementById("setAsLogoButtonID")
                 .addEventListener("click", M, false);
@@ -77,7 +77,7 @@ export class StillBackground {
             A.addEventListener(air.Event.SELECT, t);
         }
         function t() {
-            B("Process adding background");
+            __debug("Process adding background");
             var ab = A.nativePath;
             var Z = ab.split("\\");
             var V = Z[Z.length - 1];
@@ -92,13 +92,13 @@ export class StillBackground {
                 E.push(V);
                 o.push(V);
                 var Y = e();
-                B("Setting up storage file system");
+                __debug("Setting up storage file system");
                 var aa = air.File.applicationStorageDirectory;
-                B("Resolving path");
+                __debug("Resolving path");
                 aa = aa.resolvePath("background/" + V);
-                B("About to copy to");
+                __debug("About to copy to");
                 A.copyTo(aa, true);
-                B("Copy to complete");
+                __debug("Copy to complete");
                 var U = air.File.applicationStorageDirectory;
                 U = U.resolvePath("background/thumbnail/" + V);
                 A.copyTo(U, true);
@@ -112,16 +112,16 @@ export class StillBackground {
         function setNumOfPicsInRow(U) {
             var T = parseInt((U - 100) / 100);
             J = T;
-            B("Available width... " + U);
-            B("Number of pics in a row... " + J);
-            B("Setting still_bkgnd_grid width to " + U);
+            __debug("Available width... " + U);
+            __debug("Number of pics in a row... " + J);
+            __debug("Setting still_bkgnd_grid width to " + U);
             $("#still_bkgnd_grid").width(U - 100);
         }
         function D() {
             return J;
         }
         function b() {
-            B("Load background list...");
+            __debug("Load background list...");
             var V = null;
             var U = null;
             var T = "./xml/backgroundlist.xml";
@@ -142,13 +142,14 @@ export class StillBackground {
             U.send(null);
         }
         function l() {
-            B("Show browser window...");
-            var T = E.length;
-            B("Number of backgrounds: " + T);
+            __debug("Show browser window...");
+            const T = E.length;
+            __debug("Number of backgrounds: " + T);
             if (T < 50) {
-                var U = new window.runtime.Array();
-                U.push(new air.FileFilter("VerseVIEW Background", "*.jpg"));
-                A.browseForOpen("Select Background", U);
+                const filters = new window.runtime.Array();
+                filters.push(new air.FileFilter("JPEG", "*.jpg"));
+                filters.push(new air.FileFilter("PNG", "*.png"));
+                A.browseForOpen("Select Background", filters);
             } else {
                 alert(
                     "VerseVIEW supports a maximum of 50 backgrounds. Please delete backgrounds to add new ones."
@@ -156,7 +157,7 @@ export class StillBackground {
             }
         }
         function K() {
-            B("Process deleting background...");
+            __debug("Process deleting background...");
             var U = confirm("Are you sure you want to delete the selected Background?");
             if (U == true) {
                 var W = v;
@@ -191,7 +192,7 @@ export class StillBackground {
             }
         }
         function s() {
-            B("Process deleting background...");
+            __debug("Process deleting background...");
             var V = confirm("Are you sure you want to delete the selected Background?");
             if (V == true) {
                 var X = G;
@@ -231,7 +232,7 @@ export class StillBackground {
             return g;
         }
         function m() {
-            B("Fill the bkgnd table...");
+            __debug("Fill the bkgnd table...");
             var W = air.File.applicationStorageDirectory;
             var X = "./background/thumbnail/" + E[G];
             X = W.resolvePath(X);
@@ -255,10 +256,10 @@ export class StillBackground {
             var Z = "";
             var V = document.getElementById("list_still_bkgnd");
             V.innerHTML = "";
-            B("Rows: " + U + " Columns: " + aa);
-            for (r = 0; r <= U; r++) {
+            __debug("Rows: " + U + " Columns: " + aa);
+            for (let r = 0; r <= U; r++) {
                 V.insertRow(r);
-                for (c = 0; c < aa; c++) {
+                for (let c = 0; c < aa; c++) {
                     Y = r * aa + c;
                     V.rows[r].insertCell(c);
                     if (Y < ab) {
@@ -277,15 +278,15 @@ export class StillBackground {
                         V.rows[r].cells[c].addEventListener("mouseout", function () {
                             Q(this);
                         });
-                        document.getElementById(Z).addEventListener("click", function () {
-                            n(event);
+                        document.getElementById(Z).addEventListener("click", function (e) {
+                            n(e);
                         });
                     }
                 }
             }
         }
         function q() {
-            B("Fill the bkgnd table...");
+            __debug("Fill the bkgnd table...");
             var V = air.File.applicationStorageDirectory;
             var W = "./background/thumbnail/" + E[G];
             W = V.resolvePath(W);
@@ -314,12 +315,12 @@ export class StillBackground {
                 ac.appendTo(X);
                 af = "./background/thumbnail/" + E[aa];
                 af = V.resolvePath(af);
-                B(af.url);
+                __debug(af.url);
                 var ab = "<img src=" + af.url + " width=150 height=100>";
                 ac.html(ab);
                 ac.data("index", aa);
                 ac.click(function () {
-                    B("Handler for .click() called.");
+                    __debug("Handler for .click() called.");
                     var ah = document.getElementById("selectedx_still_id");
                     var ag = $(this).data("index");
                     var ai = "./background/thumbnail/" + E[ag];
@@ -330,7 +331,7 @@ export class StillBackground {
                     v = $(this).data("index");
                 });
                 ac.dblclick(function () {
-                    B("Handler for .dblclick() called." + $(this).data("index"));
+                    __debug("Handler for .dblclick() called." + $(this).data("index"));
                     v = $(this).data("index");
                     F();
                 });
@@ -343,9 +344,9 @@ export class StillBackground {
             T.style.background = "#edf5ff";
         }
         function n(U) {
-            B("clicked on an image....");
+            __debug("clicked on an image....");
             var W = U.currentTarget.id;
-            B("ID:...", W);
+            __debug("ID:...", W);
             document.getElementById(W).style.background = "gray";
             var V = W.split("img");
             var T = V[1];
@@ -425,7 +426,7 @@ export class StillBackground {
             U = T.resolvePath(U);
             return U.exists;
         }
-        function B(T) {
+        function __debug(T) {
             if (y) {
                 air.trace("[Background]: " + T);
             }

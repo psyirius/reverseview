@@ -20,8 +20,9 @@ import { rollupPluginHTML } from '@web/rollup-plugin-html'
 import externalize from './rollup/utils/externalize'
 import * as defineUtils from './rollup/utils/define'
 import PluginWatcher from './rollup/utils/plugin-watcher'
-
 import typescript from './rollup/plugins/typescript'
+import amd from './rollup/plugins/amd'
+
 import svelte from 'rollup-plugin-svelte';
 import * as swc_ from '@swc/core'
 import * as esbuild_ from 'esbuild'
@@ -117,16 +118,16 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
             'app/main': path.resolve(WORKING_DIR, 'src/app/main.ts'),
 
             // presentation
-            'presentation/main': path.resolve(WORKING_DIR, 'src/presentation/main.ts'),
+            // 'presentation/main': path.resolve(WORKING_DIR, 'src/presentation/main.ts'),
 
             // stageview
-            'stageview/main': path.resolve(WORKING_DIR, 'src/stageview/main.ts'),
+            // 'stageview/main': path.resolve(WORKING_DIR, 'src/stageview/main.ts'),
 
             // test/svelte
             // 'test/svelte/main': path.resolve(WORKING_DIR, 'src/test/svelte/main.ts'),
 
             // sandbox
-            // 'sandbox/boot': path.resolve(WORKING_DIR, 'src/sandbox/boot.ts'),
+            // 'sandbox/main': path.resolve(WORKING_DIR, 'src/sandbox/main.ts'),
         },
         plugins: pw.wrap([
             [
@@ -135,17 +136,17 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
                 //     input: path.resolve(WORKING_DIR, 'src/index.html'),
                 //     publicPath: 'static',
                 // }),
-                svelte({
-                    compilerOptions: {
-                        // legacy: true,
-                        // generate: 'client',
-                        // runes: true,
-                        css: 'injected',
-                        // discloseVersion: false,
-                        // preserveWhitespace: false,
-                    },
-                    emitCss: false,
-                }),
+                // svelte({
+                //     compilerOptions: {
+                //         // legacy: true,
+                //         // generate: 'client',
+                //         // runes: true,
+                //         css: 'injected',
+                //         // discloseVersion: false,
+                //         // preserveWhitespace: false,
+                //     },
+                //     emitCss: false,
+                // }),
                 tsConfigPaths({
                     tsConfigPath: path.resolve(WORKING_DIR, 'tsconfig.x.json'),
                     respectCoreModule: true,
@@ -183,6 +184,9 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
 
                     // import { console } from 'web-shims';
                     // console: [ '@shims/web', 'console' ],
+                }),
+                amd({
+
                 }),
                 commonjs({
 
@@ -264,6 +268,10 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
         ]),
         external: externalize([
             'jquery', // global jQuery is still needed cuz we have global plugins
+
+            'dojo/*',
+            'dojox/*',
+            'dijit/*',
 
             // 'tslib',
             // '@swc/helpers/_/*',

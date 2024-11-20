@@ -1,11 +1,12 @@
 import {addTagList, fillTagsToUI} from "@/song/tags";
+import {fixHTTPS_Link, specialCategory} from "@app/common";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
-import {fixHTTPS_Link, specialCategory} from "@app/common";
+import * as XmlUtils from "@/utils/xml";
 
 export class SongPortXML {
-    constructor(song, category, s, exk) {
+    constructor(song, category, s, exportKind) {
         this.exportAll = exportAll;
         this.exportByCat = exportByCat;
         this.exportSingle = exportSingle;
@@ -13,8 +14,7 @@ export class SongPortXML {
 
         const m_song = song;
         const m_category = category;
-        const j = s;
-        let m_exportKind = exk;
+        let m_exportKind = exportKind;
 
         function exportAll() {
             const r = new Song();
@@ -46,7 +46,7 @@ export class SongPortXML {
                     r.slides = m_song[t].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
                     const x = m_song[t].lyrics2;
                     r.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
-                    u += q(r);
+                    u += serializeSongXml(r);
                 }
             }
 
@@ -67,50 +67,53 @@ export class SongPortXML {
                 return false;
             }
 
-            const z = new Song();
+            const filename = generateExportXmlFilename();
 
-            const t = generateExportXmlFilename();
-
-            let v = '<?xml version="1.0" encoding="UTF-8"?>\n';
-            v += "<songDB>\n";
-            v += "<type>XMLsong</type>\n";
-            v += "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
+            let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n';
+            xmlContent += "<songDB>\n";
+            xmlContent += "<type>XMLsong</type>\n";
+            xmlContent += "<disclaimer>The copyrights to these songs belongs to person mentioned in the copyright tag of each song. This database has been designed and compiled for VerseVIEW only.</disclaimer>\n";
 
             let errored = true;
-            for (let u = 0; u < m_song.length; u++) {
-                if (m_song[u].cat === m_category) {
+            for (const item of m_song) {
+                if (item.cat === m_category) {
                     errored = false;
-                    let w = m_song[u].name;
+                    let w = item.name;
                     w = w.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
                     w = w.replace(/(\x26)/g, "and");
-                    z.name = w;
-                    z.catIndex = m_song[u].cat;
-                    z.font = m_song[u].font;
-                    z.font2 = m_song[u].font2;
-                    z.timestamp = m_song[u].timestamp;
-                    z.yvideo = m_song[u].yvideo;
-                    z.bkgnd_fname = m_song[u].bkgndfname;
-                    z.key = m_song[u].key;
-                    z.copyright = m_song[u].copy;
-                    z.notes = m_song[u].notes;
-                    z.name2 = m_song[u].title2;
-                    z.tags = m_song[u].tags != null ? m_song[u].tags : "";
-                    z.slideseq = m_song[u].slideseq;
-                    z.subcat = m_song[u].subcat;
-                    z.slides = m_song[u].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
-                    const x = m_song[u].lyrics2;
-                    z.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
-                    v += q(z);
+
+                    const so = new Song();
+                    so.name = w;
+                    so.catIndex = item.cat;
+                    so.font = item.font;
+                    so.font2 = item.font2;
+                    so.timestamp = item.timestamp;
+                    so.yvideo = item.yvideo;
+                    so.bkgnd_fname = item.bkgndfname;
+                    so.key = item.key;
+                    so.copyright = item.copy;
+                    so.notes = item.notes;
+                    so.name2 = item.title2;
+                    so.tags = item.tags != null ? item.tags : "";
+                    so.slideseq = item.slideseq;
+                    so.subcat = item.subcat;
+                    so.slides = item.lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
+                    const x = item.lyrics2;
+                    so.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
+
+                    xmlContent += serializeSongXml(so);
                 }
             }
-            v += "</songDB>\n";
+
+            xmlContent += "</songDB>\n";
+
             if (errored) {
                 Toast.show(
                     "Song Database",
                     "Database contains invalid Category. Contact VerseVIEW"
                 );
             } else {
-                saveToFile(v, t);
+                saveToFile(xmlContent, filename);
             }
         }
 
@@ -122,32 +125,37 @@ export class SongPortXML {
         }
 
         function importXML() {
-            const d = air.File.desktopDirectory;
-            const s = new runtime.Array();
-            s.push(new air.FileFilter("VerseVIEW Song DB", "*.xml"));
-            d.browseForOpen("Select Song DB in XML format.", s);
-            d.addEventListener(air.Event.SELECT, r);
-            function r(w) {
-                var v = d.url;
-                var u;
-                u = new XMLHttpRequest();
-                u.onreadystatechange = function () {
-                    if (u.readyState < 4) {
-                    }
-                    if (u.readyState === 4) {
-                        const x = u.responseXML;
-                        t(x);
-                    }
-                };
-                u.open("GET", v, false);
-                u.send(null);
+            const file = air.File.desktopDirectory;
+            const fileFilters = new runtime.Array();
+            fileFilters.push(new air.FileFilter("VerseVIEW Song DB", "*.xml"));
+            file.browseForOpen("Select Song DB in XML format.", fileFilters);
+            file.addEventListener(air.Event.SELECT, onSelectFile);
+
+            function onSelectFile(e) {
+                const { FileStream, FileMode, File } = air;
+
+                /** @type {File} */
+                const selectedFile = e.target;
+
+                const fileStream = new FileStream();
+                fileStream.open(selectedFile, FileMode.READ);
+                const fileContents = fileStream.readMultiByte(fileStream.bytesAvailable, 'utf-8');
+                fileStream.close();
+
+                const songsDoc = XmlUtils.parse(fileContents);
+
+                air.trace('Song DB File:', fileContents.length, songsDoc);
+
+                parseSongDB(songsDoc);
             }
-            function t(v) {
-                if (v != null) {
-                    if (v.getElementsByTagName("type")[0] != null) {
-                        var u = v.getElementsByTagName("type")[0].textContent;
-                        if (u == "XMLsong") {
-                            o(v);
+
+            function parseSongDB(root) {
+                if (root != null) {
+                    if (root.getElementsByTagName("type")[0] != null) {
+                        const rootTagName = root.getElementsByTagName("type")[0].textContent;
+
+                        if (rootTagName === "XMLsong") {
+                            loadSongs(root);
                         } else {
                             Toast.show(
                                 "Song Database",
@@ -170,60 +178,41 @@ export class SongPortXML {
         }
 
         function generateExportXmlFilename() {
-            const s = new Date().toDateString();
+            const suffix = new Date().toDateString();
+
             switch (m_exportKind) {
                 case 1:
-                    return `vvsongs_${s}.xml`;
+                    return `vvsongs_${suffix}.xml`;
                 case 2:
-                    return `${m_category}_songs_${s}.xml`;
+                    return `${m_category}_songs_${suffix}.xml`;
                 case 3:
-                    return `vvsongs_${s}.xml`;
+                    return `vvsongs_${suffix}.xml`;
                 default:
                     return null;
             }
         }
-        function i(r) {
-            let s = "";
-            s += "<song>\n";
-            s += "  <category>" + r.catIndex + "</category>\n";
-            s += "  <name>" + r.name + "</name>\n";
-            s += "  <font>" + r.font + "</font>\n";
-            s += "  <font2>" + r.font2 + "</font2>\n";
-            s += "  <timestamp>" + r.timestamp + "</timestamp>\n";
-            s += "  <yvideo>" + test_get_songlink(r.name) + "</yvideo>\n";
-            s += "  <bkgnd>" + r.bkgnd_fname + "</bkgnd>\n";
-            s += "  <key>" + r.key + "</key>\n";
-            s += "  <copyright>" + r.copyright + "</copyright>\n";
-            s += "  <notes>" + r.notes + "</notes>\n";
-            s += "  <slide><![CDATA[" + r.slides + "]]></slide>\n";
-            s += "  <slide2><![CDATA[" + r.slides2 + "]]></slide2>\n";
-            s += "  <name2><![CDATA[" + r.name2 + "]]></name2>\n";
-            s += "  <tags><![CDATA[" + r.tags + "]]></tags>\n";
-            s += "  <slideseq><![CDATA[" + r.slideseq + "]]></slideseq>\n";
-            s += "</song>\n";
-            return s;
-        }
-        function q(r) {
-            let s = "";
-            s += "<song>\n";
-            s += "  <category>" + r.catIndex + "</category>\n";
-            s += "  <name>" + r.name + "</name>\n";
-            s += "  <font>" + r.font + "</font>\n";
-            s += "  <font2>" + r.font2 + "</font2>\n";
-            s += "  <timestamp>" + r.timestamp + "</timestamp>\n";
-            s += r.yvideo === "null" ? `  <yvideo></yvideo>\n` : `  <yvideo>${r.yvideo}</yvideo>\n`;
-            s += "  <bkgnd>" + r.bkgnd_fname + "</bkgnd>\n";
-            s += "  <key>" + r.key + "</key>\n";
-            s += "  <copyright>" + r.copyright + "</copyright>\n";
-            s += "  <notes>" + r.notes + "</notes>\n";
-            s += "  <slide><![CDATA[" + r.slides + "]]></slide>\n";
-            s += "  <slide2><![CDATA[" + r.slides2 + "]]></slide2>\n";
-            s += "  <name2><![CDATA[" + r.name2 + "]]></name2>\n";
-            s += "  <tags><![CDATA[" + r.tags + "]]></tags>\n";
-            s += "  <slideseq><![CDATA[" + r.slideseq + "]]></slideseq>\n";
-            s += "  <subcat><![CDATA[" + r.subcat + "]]></subcat>\n";
-            s += "</song>\n";
-            return s;
+
+        function serializeSongXml(song) {
+            let sx = "";
+            sx += "<song>\n";
+            sx += "  <category>" + song.catIndex + "</category>\n";
+            sx += "  <name>" + song.name + "</name>\n";
+            sx += "  <font>" + song.font + "</font>\n";
+            sx += "  <font2>" + song.font2 + "</font2>\n";
+            sx += "  <timestamp>" + song.timestamp + "</timestamp>\n";
+            sx += song.yvideo === "null" ? `  <yvideo></yvideo>\n` : `  <yvideo>${song.yvideo}</yvideo>\n`;
+            sx += "  <bkgnd>" + song.bkgnd_fname + "</bkgnd>\n";
+            sx += "  <key>" + song.key + "</key>\n";
+            sx += "  <copyright>" + song.copyright + "</copyright>\n";
+            sx += "  <notes>" + song.notes + "</notes>\n";
+            sx += "  <slide><![CDATA[" + song.slides + "]]></slide>\n";
+            sx += "  <slide2><![CDATA[" + song.slides2 + "]]></slide2>\n";
+            sx += "  <name2><![CDATA[" + song.name2 + "]]></name2>\n";
+            sx += "  <tags><![CDATA[" + song.tags + "]]></tags>\n";
+            sx += "  <slideseq><![CDATA[" + song.slideseq + "]]></slideseq>\n";
+            sx += "  <subcat><![CDATA[" + song.subcat + "]]></subcat>\n";
+            sx += "</song>\n";
+            return sx;
         }
 
         function saveToFile(content, filename) {
@@ -255,119 +244,54 @@ export class SongPortXML {
             });
         }
 
-        function o(t) {
-            var u = new Song();
-            var C = t.getElementsByTagName("song").length;
-            var x = true;
-            for (var y = 0; y < C; y++) {
-                var A = t
-                    .getElementsByTagName("song")[y].getElementsByTagName("category")[0].textContent;
-                if (!specialCategory(A)) {
-                    u.name = t
-                        .getElementsByTagName("song")[y].getElementsByTagName("name")[0].textContent;
-                    u.catIndex = t
-                        .getElementsByTagName("song")[y].getElementsByTagName("category")[0].textContent;
-                    var z = false;
-                    if (!z) {
-                        x = false;
-                        u.font = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("font")[0].textContent;
-                        var s = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("font2")[0];
-                        if (s != null) {
-                            u.font2 = s.textContent;
-                        } else {
-                            u.font2 = "";
-                        }
-                        var B = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("timestamp")[0];
-                        if (B != null) {
-                            u.timestamp = B.textContent;
-                        } else {
-                            u.timestamp = "";
-                        }
-                        var r = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("yvideo")[0];
-                        if (r != null) {
-                            u.yvideo = fixHTTPS_Link(r.textContent);
-                        } else {
-                            u.yvideo = "";
-                        }
-                        u.bkgnd_fname = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("bkgnd")[0].textContent;
-                        u.key = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("key")[0].textContent;
-                        u.copyright = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("copyright")[0].textContent;
-                        u.notes = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("notes")[0].textContent;
-                        u.slides = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("slide")[0].textContent;
-                        var v = t
-                            .getElementsByTagName("song")[y].getElementsByTagName("slide2")[0];
-                        if (v != null) {
-                            u.slides2 = v.textContent;
-                        } else {
-                            u.slides2 = "";
-                        }
-                        u.name2 = w(
-                            t.getElementsByTagName("song")[y].getElementsByTagName("name2")[0]
-                        );
-                        u.tags = w(
-                            t.getElementsByTagName("song")[y].getElementsByTagName("tags")[0]
-                        );
-                        u.tags = u.tags.toUpperCase();
-                        addTagList(u.tags);
-                        u.slideseq = w(
-                            t
-                                .getElementsByTagName("song")[y].getElementsByTagName("slideseq")[0]
-                        );
-                        u.subcat = w(
-                            t.getElementsByTagName("song")[y].getElementsByTagName("subcat")[0]
-                        );
-                        $RvW.songManagerObj.addSong(u, false, true);
-                    }
+        function loadSongs(doc) {
+            let addedSongs = 0;
+
+            const songItems = doc.getElementsByTagName("song");
+
+            air.trace('Total Songs:', songItems.length);
+
+            for (let i = 0; i < songItems.length; ++i) {
+                const item = songItems[i];
+
+                const category = item.getElementsByTagName("category")[0].textContent;
+
+                if (!specialCategory(category)) {
+                    const so = new Song();
+                    so.name = item.getElementsByTagName("name")[0].textContent;
+                    so.catIndex = item.getElementsByTagName("category")[0].textContent;
+                    so.font = item.getElementsByTagName("font")[0].textContent;
+                    so.font2 = w(item.getElementsByTagName("font2")[0]);
+                    so.timestamp = w(item.getElementsByTagName("timestamp")[0]);
+                    const r = item.getElementsByTagName("yvideo")[0];
+                    so.yvideo = r != null ? fixHTTPS_Link(r.textContent) : "";
+                    so.bkgnd_fname = item.getElementsByTagName("bkgnd")[0].textContent;
+                    so.key = item.getElementsByTagName("key")[0].textContent;
+                    so.copyright = item.getElementsByTagName("copyright")[0].textContent;
+                    so.notes = item.getElementsByTagName("notes")[0].textContent;
+                    so.slides = item.getElementsByTagName("slide")[0].textContent;
+                    so.slides2 = w(item.getElementsByTagName("slide2")[0]);
+                    so.name2 = w(item.getElementsByTagName("name2")[0]);
+                    so.tags = w(item.getElementsByTagName("tags")[0]).toUpperCase();
+                    so.slideseq = w(item.getElementsByTagName("slideseq")[0]);
+                    so.subcat = w(item.getElementsByTagName("subcat")[0]);
+
+                    $RvW.songManagerObj.addSong(so, false, true);
+                    addTagList(so.tags);
+
+                    addedSongs++;
                 }
             }
-            if (x) {
-                Toast.show("No New Songs to add.");
-            } else {
+
+            if (addedSongs > 0) {
                 fillTagsToUI();
+            } else {
+                Toast.show("No New Songs to add.");
             }
+
             function w(D) {
-                if (D != null) {
-                    return D.textContent;
-                } else {
-                    return "";
-                }
+                return D != null ? D.textContent : "";
             }
-        }
-        function a(t, r) {
-            if (t == null) {
-                return true;
-            }
-            var u = t.length;
-            var v = true;
-            for (var s = 0; s < u; s++) {
-                if (t[s] == r) {
-                    v = false;
-                    break;
-                }
-            }
-            return v;
-        }
-        function n(r) {
-            var v = r.getElementsByTagName("song").length;
-            var t = -1;
-            for (var u = 0; u < v; u++) {
-                var s = r
-                    .getElementsByTagName("song")[u].getElementsByTagName("name")[0].textContent;
-                var w = $RvW.songManagerObj.checkSongExists(s);
-                if (!w) {
-                    t = u;
-                }
-            }
-            return t;
         }
     }
 }

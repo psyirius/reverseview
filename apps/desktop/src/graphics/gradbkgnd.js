@@ -3,40 +3,45 @@ import {$RvW} from "@/rvw";
 
 export class GradiantBackgroundColor {
     constructor() {
-        this.assignGradColor1 = l;
-        this.assignGradColor2 = j;
+        this.assignGradColor1 = assignGradColor1;
+        this.assignGradColor2 = assignGradColor2;
+
         var p;
         var n;
         var f;
-        var c = false;
 
-        q();
+        const IS_DEBUG = false;
 
-        function q() {
-            e();
-            m();
-        }
+        e();
+        m();
+
         function e() {
-            var r = $RvW.vvConfigObj.get_p_bkgnd_color1();
-            d("Color 1 from config file... " + r);
-            if (r != null) {
-                p = r;
-            } else {
-                p = "#000000";
+            {
+                const r = $RvW.vvConfigObj.get_p_bkgnd_color1();
+                __debug("Color 1 from config file... " + r);
+                if (r != null) {
+                    p = r;
+                } else {
+                    p = "#000000";
+                }
             }
-            var r = $RvW.vvConfigObj.get_p_bkgnd_color2();
-            d("Color 2 from config file... " + r);
-            if (r != null) {
-                n = r;
-            } else {
-                n = "#FFFFFF";
+            {
+                const r = $RvW.vvConfigObj.get_p_bkgnd_color2();
+                __debug("Color 2 from config file... " + r);
+                if (r != null) {
+                    n = r;
+                } else {
+                    n = "#FFFFFF";
+                }
             }
-            var s = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
-            d("Orientation of gradient... " + s);
-            if (s != null) {
-                f = s;
-            } else {
-                f = 0;
+            {
+                const s = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
+                __debug("Orientation of gradient... " + s);
+                if (s != null) {
+                    f = s;
+                } else {
+                    f = 0;
+                }
             }
             o(f);
             k();
@@ -66,13 +71,13 @@ export class GradiantBackgroundColor {
             k();
             b();
         }
-        function l(r) {
-            d("assigning color 1 for gradient: " + r);
+        function assignGradColor1(r) {
+            __debug("assigning color 1 for gradient: " + r);
             p = r;
             k();
             b();
         }
-        function j(r) {
+        function assignGradColor2(r) {
             n = r;
             k();
             b();
@@ -89,9 +94,9 @@ export class GradiantBackgroundColor {
             document.getElementById("orientGradListID").selectedIndex = r;
         }
         function k() {
-            d("change box color 1: " + p);
-            d("change box color 2: " + n);
-            d("change box Orientation: " + f);
+            __debug("change box color 1: " + p);
+            __debug("change box color 2: " + n);
+            __debug("change box Orientation: " + f);
             var r = "";
             switch (f * 1) {
                 case 3:
@@ -120,8 +125,8 @@ export class GradiantBackgroundColor {
             $RvW.vvConfigObj.set_p_bkgnd_grad_orient(f);
             $RvW.vvConfigObj.save();
         }
-        function d(r) {
-            if (c) {
+        function __debug(r) {
+            if (IS_DEBUG) {
                 air.trace("[Graphics Gradient Bkgnd]: " + r);
             }
         }

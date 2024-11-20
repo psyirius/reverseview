@@ -119,6 +119,7 @@
     "yaml": "^2.5.1",
     "qrcode-generator-es": "^1.0.3",
     "yui": "^3.18.1",
+    "pure-utilities": "^1.4.3",
     "unfetch": "^5.0.0"
   }
 }

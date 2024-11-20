@@ -41,28 +41,33 @@ export const BgContext = {
         d = d.resolvePath(a);
         b = new XMLHttpRequest();
         b.onreadystatechange = function () {
-            if (b.readyState == 4) {
-                var f = b.responseXML.documentElement.getElementsByTagName("bkg");
-                for (var e = 0; e < f.length; e++) {}
+            if (b.readyState === 4) {
+                const f = b.responseXML.documentElement.getElementsByTagName("bkg");
+                for (let e = 0; e < f.length; e++) {}
             }
         };
         b.open("GET", d.url, true);
         b.send(null);
     },
     fill: function () {
-        var d = air.File.applicationStorageDirectory;
-        var e = "./background/thumbnail/" + BgContext.filename[BgContext.selectedIndex];
-        e = d.resolvePath(e);
+        const d = air.File.applicationStorageDirectory;
+        const e = d.resolvePath(
+            "./background/thumbnail/" + BgContext.filename[BgContext.selectedIndex]
+        );
+
         document.getElementById("bkgndSelected").rows[0].cells[0].innerHTML =
-            '<div align="left"> <img src=' + e.url + " width=200 height=150> </div>";
+            `<div align="left"> <img src=${e.url} width=200 height=150> </div>`;
+
         var i = BgContext.filename.length;
         var h = BgContext.numofPicsInRow;
         var a = parseInt(i / h);
         var f = 0;
         var j = "";
         var g = "";
+
         var b = document.getElementById("bkgndList");
         b.innerHTML = "";
+
         for (let r = 0; r <= a; r++) {
             b.insertRow(r);
             for (let c = 0; c < h; c++) {
@@ -84,8 +89,8 @@ export const BgContext = {
                     b.rows[r].cells[c].addEventListener("mouseout", function () {
                         BgContext.processMouseOut(this);
                     });
-                    document.getElementById(g).addEventListener("click", function () {
-                        BgContext.processClick(event);
+                    document.getElementById(g).addEventListener("click", function (e) {
+                        BgContext.processClick(e);
                     });
                 }
             }
@@ -105,9 +110,9 @@ export const BgContext = {
         var g = "./background/thumbnail/" + BgContext.filename[d];
         g = a.resolvePath(g);
         document.getElementById("bkgndSelected").rows[0].cells[0].innerHTML =
-            '<div align="left"> <img src=' + g.url + " width=200 height=150> </div>";
+            `<div align="left"> <img src=${g.url} width=200 height=150> </div>`;
         BgContext.newSelectedIndex = d;
-        if (BgContext.newSelectedIndex != -1) {
+        if (BgContext.newSelectedIndex !== -1) {
             BgContext.selectedIndex = BgContext.newSelectedIndex;
             $RvW.vvConfigObj.set_bkgndIndex(BgContext.selectedIndex);
             $RvW.vvConfigObj.save();
@@ -117,11 +122,12 @@ export const BgContext = {
         }
     },
     showBrowse: function () {
-        var a = BgContext.filename.length;
+        const a = BgContext.filename.length;
         if (a < 50) {
-            var b = new window.runtime.Array();
-            b.push(new air.FileFilter("VerseVIEW Background", "*.jpg"));
-            BgContext.newBkgndFile.browseForOpen("Select Background", b);
+            const filters = new window.runtime.Array();
+            filters.push(new air.FileFilter("JPEG", "*.jpg"));
+            filters.push(new air.FileFilter("PNG", "*.png"));
+            BgContext.newBkgndFile.browseForOpen("Select Background", filters);
         } else {
             Toast.show(
                 "Background Graphics",

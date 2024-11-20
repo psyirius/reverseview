@@ -1,5 +1,9 @@
 // @ts-nocheck
 
+// define('ddd', [], () => {
+//
+// });
+
 import $ from 'jquery';
 
 import { WebEngine } from "@/remote/webengine";
@@ -63,6 +67,18 @@ import fetch from '@/utils/http/fetch';
 // import * as dojoDom from 'dojo/dom';
 // air.trace("dojo/dom", dojoDom);
 
+const { HTMLUncaughtScriptExceptionEvent } = runtime.flash.events;
+
+window.htmlLoader.addEventListener(HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCRIPT_EXCEPTION, function(event) {
+    event.preventDefault();
+
+    air.trace(`>>>Uncaught Script Exception<<<: ${event.exceptionValue}`);
+
+    for (const trace of event.stackTrace) {
+        air.trace(`${trace.sourceURL}:${trace.line} - ${trace.functionName}`);
+    }
+});
+
 DEV: {
     // break DEV;
 
@@ -87,7 +103,7 @@ DEV: {
 
         // const obj = new as3Val();
     } catch (e) {
-        alert(">>>Error in As3 Object Resolver<<<: " + e);
+        throw new Error(">>>Error in As3 Object Resolver<<<: " + e);
     }
 
     // Make sure the remote is up-to-date
@@ -105,17 +121,6 @@ DEV: {
             });
     }
 }
-
-const { HTMLUncaughtScriptExceptionEvent } = runtime.flash.events;
-
-window.htmlLoader.addEventListener(HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCRIPT_EXCEPTION, function(event) {
-    event.preventDefault();
-
-    air.trace(`>>>Uncaught Script Exception<<<: ${event.exceptionValue}`);
-    for (const trace of event.stackTrace) {
-        air.trace(`${trace.sourceURL}:${trace.line} - ${trace.functionName}`);
-    }
-});
 
 $RvW.bookIndex = 0;
 $RvW.chapterIndex = 0;
@@ -643,9 +648,7 @@ function loadPreferences(callback) {
 
     const _cb = (e, store) => {
         if (e) {
-            alert("[!] LoadPreferences: " + e);
-            air.trace(e);
-            return;
+            throw new Error("[!] LoadPreferences: " + e);
         }
 
         $RvW.rvwPreferences = store;
@@ -1217,10 +1220,7 @@ $RvW.booknames = [];
 $RvW.english_booknames = [];
 
 // FIXME: fix the callback hell
-/**
- * @param {YUI} Y
- */
-export function start(Y) {
+export function start(Y: YUI) {
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     SplashScreen.show();
@@ -1272,7 +1272,7 @@ export function start(Y) {
 
         loadBibleInfo('en-US', function (e, data) {
             if (e) {
-                alert("[!] LoadBibleInfo: " + e);
+                throw new Error("[!] LoadBibleInfo: " + e);
                 return;
             }
 
@@ -1290,8 +1290,7 @@ export function start(Y) {
 
                 loadBibleBookNames(bibleId, function (e, data) {
                     if (e) {
-                        alert("[!] LoadBibleBookNames: " + e);
-                        return;
+                        throw new Error("[!] LoadBibleBookNames: " + e);
                     }
 
                     const { booknames } = data;

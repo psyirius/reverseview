@@ -7,7 +7,7 @@ interface Options {
     body?: any;
 }
 
-export default function (url: string, options?: Options) {
+export default function (url: string, options?: Options): Promise<any> {
     options = options || {};
 
     const Promise = $Y.Promise;
