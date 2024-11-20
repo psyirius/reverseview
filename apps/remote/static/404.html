@@ -8,26 +8,88 @@
     <title>ReVerseVIEW Remote</title>
 
     <style>
-      * {
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-size: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         min-height: 100vh;
-        color: #fff;
-        background-color: #000;
-        display: grid;
-        place-content: center;
+      }
+      .container {
+        text-align: center;
+        padding: 2rem;
+      }
+      .icon {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto 2rem;
+      }
+      h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+      p {
+        font-size: 1.25rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+      }
+      .button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      .primary {
+        background-color: #3b82f6;
+        color: white;
+      }
+      .primary:hover {
+        background-color: #2563eb;
+      }
+      .secondary {
+        background-color: white;
+        color: #4b5563;
+        border: 1px solid #d1d5db;
+      }
+      .secondary:hover {
+        background-color: #f3f4f6;
+      }
+      @media (min-width: 640px) {
+        h1 {
+          font-size: 3rem;
+        }
+        .buttons {
+          flex-direction: row;
+        }
       }
     </style>
   </head>
 
   <body>
-    <h1>ReVerseVIEW Remote Server</h1>
-    Please check the link provided for the remote access.
+    <div class="container">
+      <svg class="icon" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        ></path>
+      </svg>
+      <h1>Not Found</h1>
+      <p>Oops! It looks like remote link you're visiting is not valid.</p>
+    </div>
   </body>
 </html>
-

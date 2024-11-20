@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { fileURLToPath } from 'url'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-import sc from './svelte.config'
+import svConfig from './svelte.config'
 
 const projectPath = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
@@ -24,6 +24,7 @@ export default defineConfig({
             input: {
                 index: projectPath('src/index.html'),
                 control: projectPath('src/control.html'),
+                lowerthird: projectPath('src/lowerthird/index.html'),
             },
             output: {
                 assetFileNames: 'assets/[name]-[hash][extname]',
@@ -45,7 +46,7 @@ export default defineConfig({
         transformer: 'postcss',
     },
     plugins: [
-        svelte(sc),
+        svelte(svConfig),
         tsconfigPaths(),
     ],
 });

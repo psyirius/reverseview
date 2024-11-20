@@ -21,14 +21,13 @@
         (_, i) => `${i + 1}. In the beginning...`
     );
 
-    let title = 'Nothing';
-    let description = 'Selected';
+    let title = $state('Nothing');
+    let description = $state('Selected');
 
-    let gridMode = true;
+    let gridMode = $state(true);
+    let selectedBibleRef = $state([0, 0, 0]);
 
-    let selectedBibleRef = [0, 0, 0];
-
-    $: {
+    $effect(() => {
         console.log(selectedBibleRef);
 
         {
@@ -42,7 +41,7 @@
                 description = `${chapter}:${verse}`;
             }
         }
-    }
+    });
 </script>
 
 <div class="container">

@@ -189,24 +189,9 @@
 </script>
 
 <script lang="ts">
-    import * as Card from "$lib/components/ui/card";
-    import * as Tooltip from "$lib/components/ui/tooltip";
-    import * as Resizable from "$lib/components/ui/resizable";
-    import { Label } from "$lib/components/ui/label";
-    import { Input } from "$lib/components/ui/input";
-    import { Button } from "$lib/components/ui/button";
-    import { Separator } from "$lib/components/ui/separator";
-    import { Checkbox } from "$lib/components/ui/checkbox";
-    import { Skeleton } from "$lib/components/ui/skeleton";
     import { ScrollArea } from "$lib/components/ui/scroll-area";
 
-    import { Grid, Row, Column } from "carbon-components-svelte";
     import type { PaneAPI } from "paneforge";
-    import { } from 'lucide-svelte';
-
-    import { flyAndScale } from "$lib/utils";
-    import { flip } from 'svelte/animate'
-    import { fade, fly, scale, slide } from "svelte/transition";
 
     import { toast } from "svelte-sonner";
     import {writable} from "svelte/store";
