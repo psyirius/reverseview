@@ -11,17 +11,17 @@
     "prepare": "turbo telemetry disable"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.2",
-    "@dotenvx/dotenvx": "^1.14.1",
-    "@types/node": "^20.16.5",
+    "@biomejs/biome": "^1.9.4",
+    "@dotenvx/dotenvx": "^1.24.2",
+    "@types/node": "^20.17.6",
     "prettier": "^3.3.3",
     "haxe": "^5.2.1",
     "rimraf": "^6.0.1",
     "swc-node": "^1.0.0",
     "ts-node": "^10.9.2",
-    "tsx": "^4.19.1",
-    "turbo": "^2.1.2",
-    "zx": "^8.1.8"
+    "tsx": "^4.19.2",
+    "turbo": "^2.3.0",
+    "zx": "^8.2.2"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

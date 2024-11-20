@@ -1,8 +1,9 @@
 import './global.scss'
+import { mount } from 'svelte'
 import Control from './Control.svelte'
 import { initWebSocket } from './etc/control';
 
-const app = new Control({
+const app = mount(Control, {
   target: document.getElementById('app')!,
 })
 
