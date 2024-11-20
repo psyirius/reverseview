@@ -20,23 +20,23 @@
 
 <div class="flex flex-row justify-center">
     <div class="flex flex-row justify-center gap-2 border rounded-xl p-2 shadow" role="group" aria-label="Control">
-        <Button.Root on:click={blankPresentWindow} variant="secondary" >
+        <Button.Root onclick={blankPresentWindow} variant="secondary" >
             <TvMinimalIcon />
         </Button.Root>
 
-        <Button.Root on:click={logoPresentWindow} variant="secondary" >
+        <Button.Root onclick={logoPresentWindow} variant="secondary" >
             <WallpaperIcon />
         </Button.Root>
 
-        <Button.Root on:click={closePresentWindow} variant="destructive" >
+        <Button.Root onclick={closePresentWindow} variant="destructive" >
             <CircleXIcon />
         </Button.Root>
 
-        <Button.Root on:click={goPrevious} variant="secondary" >
+        <Button.Root onclick={goPrevious} variant="secondary" >
             <ArrowBigLeftIcon />
         </Button.Root>
 
-        <Button.Root on:click={goNext} variant="secondary" >
+        <Button.Root onclick={goNext} variant="secondary" >
             <ArrowBigRightIcon />
         </Button.Root>
     </div>

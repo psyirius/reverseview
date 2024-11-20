@@ -88,7 +88,7 @@
                             variant="default"
                             size="sm"
                             class="aspect-square p-1 h-full"
-                            on:click={() => gridMode = !gridMode}
+                            onclick={() => gridMode = !gridMode}
                         >
                             {#if gridMode}
                                 <Rows4Icon />

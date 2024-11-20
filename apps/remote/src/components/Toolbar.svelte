@@ -41,7 +41,7 @@
                         builders={[builder]}
                         variant={variant}
                         class="px-4"
-                        on:click={onClick}
+                        onclick={onClick}
                     >
                         <svelte:component this={icon} />
                     </Button>

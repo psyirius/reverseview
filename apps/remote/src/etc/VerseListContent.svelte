@@ -26,8 +26,8 @@
                     style:font-family={font}
                 >
                     <div
-                        on:click={cb}
-                        on:keyup={cb}
+                        onclick={cb}
+                        onkeyup={cb}
                         role="button"
                         tabindex="0"
                         class=""

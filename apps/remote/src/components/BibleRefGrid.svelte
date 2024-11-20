@@ -380,8 +380,8 @@
                                 class:border-black={$selectedBook === book.id}
                                 style:background-color={book.color[0]}
                                 style:color={book.color[1] || 'white'}
-                                on:click={() => setBook(book.id)}
-                                on:keyup={(e) => (e.key === 'Enter') && setBook(book.id)}
+                                onclick={() => setBook(book.id)}
+                                onkeyup={(e) => (e.key === 'Enter') && setBook(book.id)}
                                 tabindex="0"
                                 role="button"
                             >
@@ -412,8 +412,8 @@
                                             class:border-black={$selectedBook === chapter.book && $selectedChapter === chapter.id}
                                             style:background-color={getAlphaColor(chapter.color[0], 1)}
                                             style:color={chapter.color[1] || 'white'}
-                                            on:click={() => setChapter(chapter.id)}
-                                            on:keyup={(e) => (e.key === 'Enter') && setChapter(chapter.id)}
+                                            onclick={() => setChapter(chapter.id)}
+                                            onkeyup={(e) => (e.key === 'Enter') && setChapter(chapter.id)}
                                             tabindex="0"
                                             role="button"
                                         >
@@ -439,8 +439,8 @@
                                                 class:border-black={$selectedBook === verse.book && $selectedChapter === verse.chapter && $selectedVerse === verse.id}
                                                 style:background-color={getAlphaColor(verse.color[0], 0.80)}
                                                 style:color={verse.color[1] || 'white'}
-                                                on:click={() => setVerse(verse.id)}
-                                                on:keyup={(e) => (e.key === 'Enter') && setVerse(verse.id)}
+                                                onclick={() => setVerse(verse.id)}
+                                                onkeyup={(e) => (e.key === 'Enter') && setVerse(verse.id)}
                                                 tabindex="0"
                                                 role="button"
                                             >

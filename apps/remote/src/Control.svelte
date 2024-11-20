@@ -83,17 +83,17 @@
                             type="text"
                             class="w-full border rounded-md"
                             bind:value={$bibleSearchQuery}
-                            on:keyup={onBibleSearchKeyUp}
+                            onkeyup={onBibleSearchKeyUp}
                             placeholder=""
                         />
                     </div>
 
                     <div class="flex flex-row gap-2">
-                        <Button.Root on:click={getVerses}>
+                        <Button.Root onclick={getVerses}>
                             <SearchIcon />
                         </Button.Root>
 
-                        <Button.Root on:click={getBibleRef}>
+                        <Button.Root onclick={getBibleRef}>
                             <MonitorUpIcon />
                         </Button.Root>
                     </div>
@@ -120,11 +120,11 @@
                     </div>
 
                     <div class="flex flex-row gap-2">
-                        <Button.Root on:click={getSch}>
+                        <Button.Root onclick={getSch}>
                             <RefreshCcwIcon />
                         </Button.Root>
 
-                        <Button.Root on:click={getSchContent}>
+                        <Button.Root onclick={getSchContent}>
                             <ArrowDownToLineIcon />
                         </Button.Root>
                     </div>
@@ -147,7 +147,7 @@
                             type="text"
                             class="w-full border rounded-md"
                             bind:value={$songsSearchQuery}
-                            on:keyup={onSongSearchKeyUp}
+                            onkeyup={onSongSearchKeyUp}
                             placeholder=""
                         />
 
@@ -161,15 +161,15 @@
                     </div>
 
                     <div class="flex flex-row gap-2">
-                        <Button.Root on:click={getSongList} >
+                        <Button.Root onclick={getSongList} >
                             <SearchIcon />
                         </Button.Root>
 
-                        <Button.Root on:click={getSongContent}>
+                        <Button.Root onclick={getSongContent}>
                             <ArrowDownToLineIcon />
                         </Button.Root>
 
-                        <Button.Root on:click={setSongBookmark}>
+                        <Button.Root onclick={setSongBookmark}>
                             <BookmarkPlusIcon />
                         </Button.Root>
                     </div>

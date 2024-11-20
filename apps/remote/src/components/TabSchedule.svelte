@@ -122,7 +122,7 @@
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            on:click={() => {
+                                            onclick={() => {
                                                 toast.success('Item removed from schedule');
                                             }}
                                         >
@@ -132,7 +132,7 @@
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            on:click={() => {
+                                            onclick={() => {
                                                 toast.loading('Opening item...');
                                             }}
                                         >

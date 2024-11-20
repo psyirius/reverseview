@@ -67,11 +67,11 @@
 <!--            </Button>-->
 <!--        </DropdownMenu.Trigger>-->
 <!--        <DropdownMenu.Content align="end">-->
-<!--            <DropdownMenu.Item on:click={() => setMode("light")}-->
+<!--            <DropdownMenu.Item onclick={() => setMode("light")}-->
 <!--            >Light</DropdownMenu.Item-->
 <!--            >-->
-<!--            <DropdownMenu.Item on:click={() => setMode("dark")}>Dark</DropdownMenu.Item>-->
-<!--            <DropdownMenu.Item on:click={() => resetMode()}>System</DropdownMenu.Item>-->
+<!--            <DropdownMenu.Item onclick={() => setMode("dark")}>Dark</DropdownMenu.Item>-->
+<!--            <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>-->
 <!--        </DropdownMenu.Content>-->
 <!--    </DropdownMenu.Root>-->
 

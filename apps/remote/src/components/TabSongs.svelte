@@ -140,8 +140,8 @@
                                         >
                                             <div
                                                 class="cursor-pointer"
-                                                on:click={openSlidePanel}
-                                                on:keyup={openSlidePanel}
+                                                onclick={openSlidePanel}
+                                                onkeyup={openSlidePanel}
                                                 role="button"
                                                 tabindex="0"
                                             >
@@ -153,7 +153,7 @@
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    on:click={() => {
+                                                    onclick={() => {
                                                         if (song.bookmarked) {
                                                             toast.success('Song removed from bookmarks');
                                                         } else {
@@ -212,7 +212,7 @@
                                             variant="ghost"
                                             size="icon"
                                             class="size-6"
-                                            on:click={() => {
+                                            onclick={() => {
                                             slidesPaneCollapsed = !slidesPaneCollapsed;
                                         }}
                                         >
@@ -257,10 +257,10 @@
                                                     class="text-sm bg-opacity-50 cursor-pointer overflow-ellipsis"
                                                     tabindex="0"
                                                     role="button"
-                                                    on:click={() => {
+                                                    onclick={() => {
                                                         toast.success('Clicked on slide');
                                                     }}
-                                                    on:keyup={() => {
+                                                    onkeyup={() => {
                                                         toast.success('Clicked on slide');
                                                     }}
                                                 >
