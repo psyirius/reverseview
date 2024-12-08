@@ -11,7 +11,7 @@
   "include": [
     "vite.config.ts",
     "tailwind.config.ts",
-    "svelte.config.ts",
-    "postcss.config.js",
+    "svelte.config.mts",
+    "postcss.config.mjs"
   ]
 }

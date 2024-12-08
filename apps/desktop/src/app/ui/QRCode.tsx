@@ -9,7 +9,7 @@ export interface Props {
 }
 
 export default function QRCode({ text }: Props) {
-    const qrCanvasRef = useRef<HTMLCanvasElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const [qrcode, setQRCode] = useState<QRCodeRender>(null);
 
@@ -18,7 +18,7 @@ export default function QRCode({ text }: Props) {
             const qrcode = new QRCodeRender({
                 renderFn: renderToCanvas,
                 text: text,
-                el: qrCanvasRef.current!,
+                el: canvasRef.current!,
                 size: 280,
             });
 
@@ -31,6 +31,6 @@ export default function QRCode({ text }: Props) {
     }, [text]);
 
     return (
-        <canvas ref={qrCanvasRef}></canvas>
+        <canvas ref={canvasRef}></canvas>
     );
 }

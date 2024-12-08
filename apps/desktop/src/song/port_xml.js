@@ -132,7 +132,7 @@ export class SongPortXML {
             file.addEventListener(air.Event.SELECT, onSelectFile);
 
             function onSelectFile(e) {
-                const { FileStream, FileMode, File } = air;
+                const { FileStream, FileMode } = air;
 
                 /** @type {File} */
                 const selectedFile = e.target;

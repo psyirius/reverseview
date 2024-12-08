@@ -10,12 +10,12 @@ const compilers = {
         return pug.renderFile(filename, context);
     },
     ['.hbs'](filename, context) {
-        const template = fs.readFileSync(filename, 'utf-8');
+        const template = fs.readFileSync(filename, { encoding: 'utf8' });
 
         return hbs.compile(template)(context);
     },
     ['.ejs'](filename, context) {
-        const template = fs.readFileSync(filename, 'utf-8');
+        const template = fs.readFileSync(filename, { encoding: 'utf8' });
 
         return ejs.compile(template)(context);
     },

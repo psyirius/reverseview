@@ -11,18 +11,127 @@
   <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
 
   <!-- dojo toolkit v1.17.3 -->
-  <script type="text/javascript" src="lib/dojo/dojo.js"></script>
+<!--  <script type="text/javascript" src="lib/dojo/dojo.js"></script>-->
+  <script type="text/javascript" src="lib/dojo/dojo.js.uncompressed.js"></script>
   <link rel="stylesheet" type="text/css" href="lib/dijit/themes/claro/claro.css" />
 
   <link rel="stylesheet" type="text/css" href="css/sandbox/app.css" />
 
   <!-- app entrypoint (loaded with dojo) -->
   <script type="text/javascript" src="js/sandbox/boot.js"></script>
+
+  <style type="text/css">
+    * {
+      outline: none !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 2em;
+      font-family: Lucida Sans,Lucida Grande,Arial !important;
+      font-size: 13px !important;
+      background: white;
+      color: #333;
+    }
+
+    button {
+      -webkit-transition: background-color 0.2s linear;
+      border-radius:4px;
+      -moz-border-radius: 4px 4px 4px 4px;
+      -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+      background-color: #E4F2FF;
+      background-image: url("lib/dijit/themes/claro/form/images/button.png");
+      background-position: center top;
+      background-repeat: repeat-x;
+      border: 1px solid #769DC0;
+      padding: 2px 8px 4px;
+      font-size:1em;
+    }
+
+    button:hover {
+      background-color: #AFD9FF;
+      color: #000000;
+    }
+
+    h1 {
+      font-size:1.5em;
+    }
+
+    .break
+    {
+      float:none;
+      clear:both;
+    }
+  </style>
+
+  <style type="text/css">
+    /* Any demo specific styling needed for this tutorial only */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    #appLayout {
+      height: 100%;
+    }
+
+    #navTabs {
+      width: 18em;
+    }
+
+    .claro .demoLayout .edgePanel {
+      background-color: #d0e9fc;
+    }
+
+    .user-select-none {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .dijitSplitterV {
+      cursor: pointer;
+    }
+  </style>
+
+  <style type="text/css">
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .pageOverlay {
+      top: 0;
+      left: 0;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 1001;
+      display: block;
+    }
+
+    #loadingOverlay {
+      background:  #fff url('lib/dijit/themes/claro/images/loadingAnimation.gif') no-repeat 10px 23px;
+    }
+
+    .loadingMessage {
+      padding: 25px 40px;
+      color: #999;
+    }
+
+  </style>
 </head>
 
-<body class="claro">
+<body class="claro user-select-none">
   <!-- app root -->
   <div id="app"></div>
+
+  <div id="appLayout" class="demoLayout"></div>
 </body>
 
 </html>

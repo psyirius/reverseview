@@ -12,7 +12,7 @@ import terser from '@rollup/plugin-terser'
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 
-import esbuild from 'rollup-plugin-esbuild'
+import __esbuild__ from 'rollup-plugin-esbuild'
 import tsConfigPaths from 'rollup-plugin-tsconfig-paths'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { rollupPluginHTML } from '@web/rollup-plugin-html'
@@ -25,7 +25,13 @@ import amd from './rollup/plugins/amd'
 
 import svelte from 'rollup-plugin-svelte';
 import * as swc_ from '@swc/core'
-import * as esbuild_ from 'esbuild'
+// import * as esbuild_ from 'esbuild'
+
+// little hack to make esbuild work (esm shim code is messed up for modules where the default export is function)
+const esbuild: typeof __esbuild__ =
+    (typeof __esbuild__ === 'function')
+        ? __esbuild__
+        : __esbuild__['default'];
 
 const prog = new Command()
     .name('build.src')
@@ -127,7 +133,7 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
             // 'test/svelte/main': path.resolve(WORKING_DIR, 'src/test/svelte/main.ts'),
 
             // sandbox
-            // 'sandbox/main': path.resolve(WORKING_DIR, 'src/sandbox/main.ts'),
+            'sandbox/main': path.resolve(WORKING_DIR, 'src/sandbox/main.ts'),
         },
         plugins: pw.wrap([
             [

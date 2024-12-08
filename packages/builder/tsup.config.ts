@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
     entry: [
-        'src/index.ts',
+        'src/index.js',
         'src/cli.ts',
     ],
     format: ['cjs', 'esm'],

@@ -47,6 +47,7 @@ export default function RightGraphicsTab() {
                         </div>
                     </div>
                 </div>
+
                 <div class="fluid column">
                     <div class="">
                         <div class="ui form">

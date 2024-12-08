@@ -1,0 +1,50 @@
+@unocss;
+
+:root {
+  --bg: #f0f0f0;
+  --fg: #333;
+  --accent: #ffcc00;
+  --accent-dark: #ff9900;
+  --accent-light: #ffdd22;
+  --accent-lighter: #ffdd44;
+  --accent-lightest: #ffdd66;
+}
+
+* {
+  @apply m-0 p-0;
+  /* @apply box-border; */
+  -webkit-box-sizing: border-box;
+}
+
+
+
+#__bg__ {
+  @apply fixed;
+  @apply h-full w-full;
+  @apply top-0 left-0 -z-[9999];
+  /*@apply bg-amber;*/
+  @apply bg-white;
+}
+
+#__reload__ {
+  @apply absolute;
+  @apply right-[2px] top-[2px] p-1;
+
+  &> button {
+    @apply bg-black text-white;
+    @apply rounded-md border-solid border-2 border-red-400;
+    @apply px-2 py-1;
+    @apply z-[9999] opacity-100;
+
+    &:hover {
+      @apply bg-[#0a36e9]
+    }
+
+    &:active {
+      @apply bg-[#0f6674]
+    }
+  }
+}
+
+.app {
+}

@@ -12,17 +12,13 @@ ReVerseVIEW is a reborn open-source version of the popular legacy (Adobe AIR) Ve
 
 ## 🚀 Technologies Used
 - **Frontend**: Vanilla JS + Preact (minimal)
-- **Backend**: Node.js, Express
-- **Database**: PostgreSQL
-- **Search Engine**: Elasticsearch
-- **Authentication**: Firebase
+- **Backend**: Some ActionScript 3 libraries
 
 ## 🔧 Installation
 
 ### Prerequisites
 - Node.js (v16+)
 - npm or Yarn
-- PostgreSQL
 
 ### Setup
 ```bash
@@ -48,15 +44,15 @@ Interested in contributing? Awesome!
 
 ## 📸 Screenshots
 ### Main Screen
-![Main Screen](docs/_media/App-Thumbnail.png)
+![Main Screen](assets/images/App-Thumbnail.png)
 
 ### Remote Control
-![Remote Control](docs/_media/Remote-Thumbnail.png)
+![Remote Control](assets/images/Remote-Thumbnail.png)
 
 ## 📊 Project Status
-![Build Status](https://img.shields.io/github/workflow/status/yourusername/scripture-harmony/CI)
-![Version](https://img.shields.io/github/v/release/yourusername/scripture-harmony)
-![Downloads](https://img.shields.io/github/downloads/yourusername/scripture-harmony/total)
+![Build Status](https://img.shields.io/github/workflow/status/psyirius/reverseview/CI)
+![Version](https://img.shields.io/github/v/release/psyirius/reverseview)
+![Downloads](https://img.shields.io/github/downloads/psyirius/reverseview/total)
 
 ## 📜 License
 Distributed under the MIT License. See `LICENSE` for more information.

@@ -27,7 +27,7 @@ postcssrc(ctx).then(({ plugins, options }) => {
     const processor = postcss(plugins);
 
     for (const [from, to] of Object.entries(toBuild)) {
-        const css = fs.readFileSync(from, 'utf-8');
+        const css = fs.readFileSync(from, { encoding: 'utf8' });
 
         processor.process(css, { from, to }).then(result => {
             fs.mkdirSync(path.dirname(to), { recursive: true });

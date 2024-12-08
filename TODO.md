@@ -7,6 +7,7 @@
 - [ ] REMOTE
   - [ ] highlight currently presenting
   - [ ] UI/UX FIX
+  - [ ] OBS Support
   - [ ] adapter to connect to the backend
     - [ ] air bridge (integrated web environment)
     - [ ] electron bridge (integrated web environment)
@@ -36,6 +37,10 @@
 - [ ] Run remote HTTP and WEBSOCKET ON SAME PORT
 - [ ] Remove included images and keep 1 or two images for basic usage
 - [ ] Add motion backgrounds
+- [ ] Vite plugin to
+  - [ ] build sources to es3
+  - [ ] compile and import swf files
+  - [ ] bundle files to swf
 - [ ] Checkout flash.media.StageWebView
 - [ ] A Http server in actionscript
 - [ ] A Websocket server in actionscript

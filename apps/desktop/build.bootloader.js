@@ -1,6 +1,6 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 
 const SWF_LIB_ROOT = '.air/swf';
 const DEP_PACKAGE = '@rvw/flash-bootloader';
@@ -8,7 +8,7 @@ const DEP_PACKAGE = '@rvw/flash-bootloader';
 const flashSupportPkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.json'));
 
 const flashSupportPkgRoot = path.dirname(flashSupportPkgPath);
-const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgPath, 'utf8'));
+const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgPath, { encoding: 'utf8' }));
 
 /** @type {Record<string, string>} */
 const pathMap = {};

@@ -8,7 +8,7 @@ const DEP_PACKAGE = '@rvw/remote';
 const remotePkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.json'));
 
 const remotePkgRoot = path.dirname(remotePkgPath);
-const remotePkg = JSON.parse(fs.readFileSync(remotePkgPath, 'utf8'));
+const remotePkg = JSON.parse(fs.readFileSync(remotePkgPath, { encoding: 'utf8' }));
 
 /** @type {Record<string, string>} */
 const pathMap = {};

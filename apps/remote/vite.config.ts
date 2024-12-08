@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { fileURLToPath } from 'url'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-import svConfig from './svelte.config'
+import svConfig from './svelte.config.mjs'
 
 const projectPath = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 

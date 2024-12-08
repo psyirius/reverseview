@@ -8,7 +8,7 @@ const DEP_PACKAGE = '@rvw/flash-support';
 const flashSupportPkgPath = fileURLToPath(import.meta.resolve(DEP_PACKAGE + '/package.json'));
 
 const flashSupportPkgRoot = path.dirname(flashSupportPkgPath);
-const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgPath, 'utf8'));
+const flashSupportPkg = JSON.parse(fs.readFileSync(flashSupportPkgPath, { encoding: 'utf8' }));
 
 /** @type {Record<string, string>} */
 const pathMap = {};

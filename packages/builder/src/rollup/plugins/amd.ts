@@ -44,11 +44,11 @@ export default function amd(options?: Options): Plugin {
 
             const t = amd2es6(code);
 
-            console.log('AMD', {id, code, ast});
-            console.log(t);
+            // console.log('AMD', {id, code, ast});
+            // console.log(t);
 
             for (const node of ast.body) {
-                console.log(node);
+                // console.log(node);
                 if (node.type === 'ExpressionStatement') {
                     const { expression } = node;
                     if (expression.type === 'CallExpression') {
@@ -172,7 +172,7 @@ export default function amd(options?: Options): Plugin {
                             }
 
                             const [config, deps, callback] = args;
-                            console.log('AMD Module', {config, deps, callback});
+                            // console.log('AMD Module', {config, deps, callback});
                         }
                     }
                 }

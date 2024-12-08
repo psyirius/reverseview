@@ -2,18 +2,20 @@ import {$RvW} from "@/rvw";
 
 export class WordLearner {
     constructor() {
-        this.addWord = a;
-        this.finishLearning = h;
-        this.printWordList = g;
-        this.cancelLearning = e;
-        var i = null;
-        var c = 25;
-        var b = null;
+        this.addWord = addWord;
+        this.finishLearning = finishLearning;
+        this.printWordList = printWordList;
+        this.cancelLearning = cancelLearning;
+
+        let i = null;
+        let c = 25;
+        let b = null;
+
         function d() {
             i = [];
             c = 25;
         }
-        function a(j) {
+        function addWord(j) {
             if (i == null) {
                 d();
             }
@@ -22,27 +24,27 @@ export class WordLearner {
                 clearTimeout(b);
                 b = null;
             }
-            b = setTimeout(e, c * 1000);
+            b = setTimeout(cancelLearning, c * 1000);
         }
-        function e() {
+        function cancelLearning() {
             i = null;
         }
-        function h() {
+        function finishLearning() {
             if (i != null) {
                 f();
                 i = null;
             }
         }
         function f() {
-            var l = i.pop();
-            var k = i.length;
-            var q = [];
-            for (var n = 0; n < k; n++) {
-                var o = true;
-                var p = q.length;
+            const l = i.pop();
+            const k = i.length;
+            const q = [];
+            for (let n = 0; n < k; n++) {
+                let o = true;
+                const p = q.length;
                 if (i[n].length > 1) {
-                    for (var m = 0; m < p; m++) {
-                        if (i[n] == q[m]) {
+                    for (let m = 0; m < p; m++) {
+                        if (i[n] === q[m]) {
                             o = false;
                             break;
                         }
@@ -56,10 +58,10 @@ export class WordLearner {
                 }
             }
         }
-        function g() {
-            var j = i.length;
+        function printWordList() {
+            const j = i.length;
             air.trace("**** WORD LIST FOR LEARNING ****");
-            for (var k = 0; k < j; k++) {
+            for (let k = 0; k < j; k++) {
                 air.trace(i[k]);
             }
         }

@@ -738,7 +738,11 @@ function setupConsole() {
 }
 
 function vvinit_continue() {
-    setupUI();
+    let dev = false;
+
+    DEV: { dev = true; }
+
+    setupUI(dev);
     setupMenu();
     setupConsole();
 
@@ -1216,11 +1220,24 @@ function setupVConfig() {
     return a;
 }
 
+function onExiting() {
+    air.trace("Exiting...");
+}
+
+function onClosing() {
+    air.trace("Closing...");
+}
+
 $RvW.booknames = [];
 $RvW.english_booknames = [];
 
 // FIXME: fix the callback hell
 export function start(Y: YUI) {
+    const NativeApplication = air.NativeApplication;
+
+    NativeApplication.nativeApplication.addEventListener(air.Event.CLOSING, onClosing);
+    NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, onExiting);
+
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 
     SplashScreen.show();

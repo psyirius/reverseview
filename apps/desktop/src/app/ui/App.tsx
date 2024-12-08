@@ -3,8 +3,8 @@ import Toaster from "./Toaster";
 import Dialogs from "./dialogs/index";
 import ContentPane from "./ContentPane";
 
-// import SandboxFrame from "./SandboxFrame";
-// import RenderCanvas from "@app/ui/RenderCanvas";
+import SandboxFrame from "./SandboxFrame";
+import RenderCanvas from "@app/ui/RenderCanvas";
 
 interface Props {
     dev?: boolean;
@@ -13,13 +13,13 @@ interface Props {
 const App = ({dev}: Props) => {
     return (
         <>
-            {/*{dev && (*/}
-            {/*    <div className="" style={{position: 'absolute', right: '2px', top: '4px'}}>*/}
-            {/*        <div class="ui button" tabIndex={0} onClick={() => window.location.reload()}>*/}
-            {/*            Reload<i class="right arrow icon"></i>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {dev && (
+                <div className="" style={{position: 'absolute', right: '2px', top: '4px'}}>
+                    <div class="ui button" tabIndex={0} onClick={() => window.location.reload()}>
+                        Reload<i class="right arrow icon"></i>
+                    </div>
+                </div>
+            )}
 
             {/*<RenderCanvas />*/}
 

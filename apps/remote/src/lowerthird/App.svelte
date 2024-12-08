@@ -1,38 +1,111 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import {parent_style, fit} from "./text-fit.svelte";
+    import { fade, slide, blur, fly } from 'svelte/transition';
+    import { quadInOut } from 'svelte/easing';
+    import Crypto from 'crypto-js';
+    import { textfit } from 'svelte-textfit';
+    import FontFaceObserver from 'fontfaceobserver';
 
-    const POLL_INTERVAL = 200;
+    interface SlideContent {
+        html: string;
+        fontFamily?: string;
+        ref?: HTMLElement;
+    }
 
-    let p_title = $state();
-    let p_font1 = $state();
-    let p_font2 = $state();
-    let p_text1 = $state();
-    let p_text2 = $state();
+    enum SlideKind {
+        Verse = 'verse',
+        Lyric = 'lyric',
+    }
+
+    interface SlideState {
+        kind: SlideKind;
+        title: string;
+        contents: SlideContent[];
+        __hash__: string;
+    }
+
+    const POLL_INTERVAL = 100;
+
+    let p_slide = $state<SlideState | undefined>();
+    let p_hash = $state<string | undefined>();
+
+    const isOBS = typeof window.obsstudio !== "undefined";
+
+    // TODO: use BroadcastChannel
+
+    function hashOf(d: any) {
+        return Crypto.SHA1(JSON.stringify(d)).toString(Crypto.enc.Hex);
+    }
 
     /* SETUP THE AJAX PARAMETERS */
     function getStageViewContent() {
-        // Command to get the content of the presentation
-        apiCall({ cmd: 9 }, ({ ok, error, data }: any) => {
-            if (!ok) {
-                // when no data, it will just blank
+        return new Promise<void>((resolve, reject) => {
+            // Command to get the content of the presentation
+            apiCall({ cmd: 9 }, async ({ ok, error, data }: any) => {
+                if (!ok) {
+                    // when no data, it will just blank
+                    p_slide = p_hash = undefined;
 
-                // $("#mainContainer").hide();
+                    return;
+                }
 
-                return;
-            }
+                const hash = hashOf(data);
+                if (p_hash !== hash) {
+                    p_hash = hash;
+                    await parseLower3rdResponse(data, hash);
+                }
 
-            parseLower3rdResponse(data);
+                resolve();
+            });
         });
     }
 
     /* PROCESS THE RESPONSE AND ASSIGN THE RIGHT STRINGS */
-    function parseLower3rdResponse(t: any) {
-        p_title = t.title;
-        p_font1 = t.font1;
-        p_font2 = t.font2;
-        p_text1 = t.content1;
-        p_text2 = t.content2;
+    async function parseLower3rdResponse(t: any, hash: string) {
+        const title: string = t.title;
+        const contents: SlideContent[] = [];
+
+        if (t.content1) {
+            contents.push({
+                html: t.content1,
+                fontFamily: t.font1 || undefined,
+            });
+        }
+
+        if (t.content2) {
+            contents.push({
+                html: t.content2,
+                fontFamily: t.font2 || undefined,
+            });
+        }
+
+        if (!title && contents.length === 0) {
+            // when no data, it will just blank
+            p_slide = undefined;
+
+            return;
+        }
+
+        // fetch the font if not available
+        const fonts = new Set(contents.map((c) => c.fontFamily).filter((f) => f) as string[]);
+
+        // console.log(fonts);
+        // for (const font of fonts) {
+        //     try {
+        //         const observer = new FontFaceObserver(font);
+        //         await observer.load(null, 100);
+        //     } catch (e) {
+        //         console.error(`Font ${font} not available`, e);
+        //     }
+        // }
+
+        // activate the slide
+        p_slide = {
+            kind: !title ? SlideKind.Lyric : SlideKind.Verse,
+            title,
+            contents,
+            __hash__: hash,
+        };
     }
 
     function apiCall(params: any, callback: any = null) {
@@ -52,51 +125,84 @@
             });
     }
 
+    $effect(() => {
+    });
+
     onMount(() => {
-        const interval = setInterval(() => {
-            getStageViewContent();
-        }, POLL_INTERVAL);
+        let interval: ReturnType<typeof setInterval>;
+
+        (function polling() {
+            getStageViewContent().then(() => {
+                interval = setTimeout(polling, POLL_INTERVAL);
+            });
+        }())
 
         return () => clearInterval(interval);
     });
 </script>
 
-<main>
-    <!-- Must be in a container -->
-    <div class="container just-for-demo">
-        <!-- Parent Wrapping Div -->
-        <div style={parent_style}>
-            <h2 use:fit>{@html p_title}</h2>
-        </div>
-    </div>
+<main class="box">
+    {#if p_slide}
+        <div class="slide"
+            style:border-color={isOBS ? 'black' : 'red'}
+            in:fade={{ duration: 300, easing: quadInOut }}
+            out:fade={{ duration: 300, easing: quadInOut }}
+        >
+            {#if p_slide.title}
+                <div class="title">
+                    <h1>{@html p_slide.title}</h1>
+                </div>
+            {/if}
 
-    <!-- Must be in a container -->
-    <div class="container just-for-demo">
-        <!-- Parent Wrapping Div -->
-        <div style={parent_style}>
-            <h1 use:fit style="font-family: {p_font1}">{@html p_text1}</h1>
+            <div class="contents">
+                {#each p_slide.contents as content, i (i)}
+                    <div class="content">
+                        <div bind:this={content.ref} style="font-family: {content.fontFamily || ''}">
+                            {#key content}
+                            <p
+                                use:textfit={{
+                                    parent: content.ref,
+                                    mode:"multi",
+                                    autoResize: true,
+                                    forceSingleModeWidth: true,
+                                }}
+                                transition:slide={{ duration: 300, easing: quadInOut }}
+                            >{@html content.html}</p>
+                            {/key}
+                        </div>
+                    </div>
+                {/each}
+            </div>
         </div>
-    </div>
-
-    <div class="container just-for-demo">
-        <!-- Parent Wrapping Div -->
-        <div style={parent_style}>
-            <h1 use:fit={{min_size: 3, max_size: 200}} style="font-family: {p_font2}">{@html p_text2}</h1>
-        </div>
-    </div>
+    {/if}
 </main>
 
-<style>
-    .container {
-        background: lightblue;
-        padding: 20px;
-        height: 300px;
-        width: 300px;
-    }
+<style lang="scss">
+    .box {
+        @apply w-screen h-screen;
+        @apply bg-transparent p-10 overflow-hidden;
+        //@apply bg-black;
 
-    .just-for-demo {
-        resize: both;
-        overflow: hidden;
-        margin-bottom: 1rem;
+        .slide {
+            @apply w-full h-full;
+            @apply flex flex-col justify-center items-center gap-y-4;
+            @apply border border-red-500;
+
+            .title {
+                @apply p-2 bg-white rounded-sm font-bold;
+            }
+
+            .contents {
+                @apply w-full h-full;
+                @apply flex flex-row justify-center items-center gap-x-8;
+
+                .content {
+                  //@apply bg-white;
+                  @apply flex justify-center items-center text-center;
+                  @apply w-full h-full overflow-hidden;
+                  @apply border border-red-500;
+                }
+            }
+        }
     }
 </style>

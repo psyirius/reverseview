@@ -8,17 +8,17 @@ export class WordBrain {
         this.findRecordBy_wordin = findRecordBy_wordin;
         this.getSuggestions = getSuggestions;
 
-        var m_sqlConn = null;
-        var a = false;
-        var k = null;
-        var m_sqlQuery = null;
-        var q = "./song/words.db";
-        var z = [];
-        var c = "";
-        var e;
-        var C;
-        var s;
-        var m = null;
+        let m_sqlConn = null;
+        let a = false;
+        let k = null;
+        let m_sqlQuery = null;
+        const q = "./song/words.db";
+        let z = [];
+        let c = "";
+        let e;
+        let C;
+        let s;
+        const m = null;
         const _isDebug = false;
 
         d();
@@ -27,7 +27,7 @@ export class WordBrain {
             m_sqlConn = new air.SQLConnection();
             m_sqlConn.addEventListener(air.SQLEvent.OPEN, p);
             m_sqlConn.addEventListener(air.SQLErrorEvent.ERROR, t);
-            var D = air.File.applicationStorageDirectory.resolvePath(q);
+            const D = air.File.applicationStorageDirectory.resolvePath(q);
             m_sqlConn.openAsync(D);
         }
         function p(D) {
@@ -44,8 +44,7 @@ export class WordBrain {
             __debug_log(" Creating song table...");
             k = new air.SQLStatement();
             k.sqlConnection = m_sqlConn;
-            var D = "CREATE TABLE IF NOT EXISTS wordbrain (id INTEGER PRIMARY KEY AUTOINCREMENT, wordin TEXT, wordout TEXT, count INTEGER )";
-            k.text = D;
+            k.text = "CREATE TABLE IF NOT EXISTS wordbrain (id INTEGER PRIMARY KEY AUTOINCREMENT, wordin TEXT, wordout TEXT, count INTEGER)";
             k.addEventListener(air.SQLEvent.RESULT, b);
             k.addEventListener(air.SQLErrorEvent.ERROR, l);
             k.execute();
@@ -65,11 +64,9 @@ export class WordBrain {
             a = false;
         }
         function addRecord(G, I) {
-            var E = new air.SQLStatement();
+            const E = new air.SQLStatement();
             E.sqlConnection = m_sqlConn;
-            var H = "";
-            H += "INSERT INTO wordbrain (wordin, wordout, count) VALUES (:w_in, :w_out, :w_count);";
-            E.text = H;
+            E.text = "INSERT INTO wordbrain (wordin, wordout, count) VALUES (:w_in, :w_out, :w_count);";
             E.addEventListener(air.SQLEvent.RESULT, D);
             E.addEventListener(air.SQLErrorEvent.ERROR, F);
             E.parameters[":w_in"] = G;
@@ -90,13 +87,12 @@ export class WordBrain {
             }
         }
         function h(H) {
-            var F = new air.SQLStatement();
+            const F = new air.SQLStatement();
             F.sqlConnection = m_sqlConn;
             F.addEventListener(air.SQLEvent.RESULT, D);
             F.addEventListener(air.SQLErrorEvent.ERROR, E);
-            var G = "UPDATE wordbrain SET count = count + 1 WHERE id = :param1";
+            F.text = "UPDATE wordbrain SET count = count + 1 WHERE id = :param1";
             F.parameters[":param1"] = H;
-            F.text = G;
             F.execute();
             function D(I) {
                 F.removeEventListener(air.SQLEvent.RESULT, D);
@@ -114,21 +110,20 @@ export class WordBrain {
         function n(D) { }
         function addRecordBy_wordin_wordout(G, I) {
             __debug_log("Adding Record by looking at word in and word out....");
-            var F = new air.SQLStatement();
+            const F = new air.SQLStatement();
             F.sqlConnection = m_sqlConn;
             F.addEventListener(air.SQLEvent.RESULT, D);
             F.addEventListener(air.SQLErrorEvent.ERROR, E);
-            var H = "SELECT * FROM wordbrain WHERE wordin == :param1 AND wordout == :param2";
             F.parameters[":param1"] = G;
             F.parameters[":param2"] = I;
-            F.text = H;
+            F.text = "SELECT * FROM wordbrain WHERE wordin == :param1 AND wordout == :param2";
             F.execute();
             function D(K) {
                 F.removeEventListener(air.SQLEvent.RESULT, D);
                 F.removeEventListener(air.SQLErrorEvent.ERROR, E);
-                var L = F.getResult();
+                const L = F.getResult();
                 if (L.data != null) {
-                    var J = L.data[0].id;
+                    const J = L.data[0].id;
                     __debug_log("About to update count of word with ID: " + J);
                     h(J);
                 } else {
@@ -154,14 +149,14 @@ export class WordBrain {
             m_sqlQuery.execute();
         }
         function _onSqlResult(G) {
-            var H = m_sqlQuery.getResult();
+            const H = m_sqlQuery.getResult();
             if (H.data != null) {
-                var D = H.data.length;
+                const D = H.data.length;
                 __debug_log(D);
-                z = new Array();
+                z = [];
                 c = "";
-                for (var F = 0; F < D; F++) {
-                    var E = H.data[F].wordout;
+                for (let F = 0; F < D; F++) {
+                    const E = H.data[F].wordout;
                     if (z.indexOf(E) === -1) {
                         z.push(E);
                     }
