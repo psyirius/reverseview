@@ -1,111 +1,121 @@
 import {processNavBibleRef, processNavBibleRefFind} from "@/bible/navigation";
 
 export default function LeftBibleTab() {
+    const numItems = 26;
 
+    const columnSizes = [125, 60, 60];
 
     return (
-        <div id="navTab">
-            <div class="style2xxx">
-                <div class="ui grid" style={{marginTop: '8px'}}>
-                    <div class="ui action small input">
-                        <input
-                            type="text"
-                            size={26}
-                            placeholder="Psa 23 1"
-                            id="nav_bibleRefID"
-                        />
-
-                        <button
-                            class="ui icon button"
-                            id="bible-ref-find"
-                            data-tooltip="Find"
-                            onClick={processNavBibleRefFind}
-                        >
-                            <i class="search icon"></i>
-                        </button>
-
-                        <button
-                            class="ui icon button"
-                            id="bible-quick-present"
-                            data-tooltip="Quick Present"
-                            onClick={processNavBibleRef}
-                        >
-                            <i class="rocket icon"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <br/>
-
-                <table
-                    width="250"
-                    cellSpacing="0"
-                    cellPadding="0"
-                    style={{border: 0}}
+        /* Bible Nav */
+        <div class="ui left fluid vertical segment">
+            {/* Bible Search */}
+            <div class="ui action input">
+                <input
+                    type="text"
+                    placeholder="Psa 23 1"
+                    id="nav_bibleRefID"
+                />
+                <button
+                    class="ui icon button"
+                    id="bible-ref-find"
+                    data-tooltip="Find"
+                    onClick={processNavBibleRefFind}
                 >
-                    <tbody>
-                    <tr>
-                        <td width="40">&nbsp;</td>
-                        <td>
-                            <div class="tempList">| BOOK</div>
-                        </td>
-                        <td>
-                            <div class="tempList">| CHAPTER</div>
-                        </td>
-                        <td>
-                            <div class="tempList">| VERSE</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40">&nbsp;</td>
-                        <td height="53">
-                            <div class="tempList">
-                                <select name="book" size={26} id="bookList" class="custom-select navListStyleNew"
-                                        style="width:160px">
+                    <i class="search icon"></i>
+                </button>
+                <button
+                    class="ui icon button"
+                    id="bible-quick-present"
+                    data-tooltip="Quick Present"
+                    onClick={processNavBibleRef}
+                >
+                    <i class="rocket icon"></i>
+                </button>
+            </div>
 
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tempList">
-                                <select name="chapter" size={26} id="chapterList" class="custom-select navListStyleNew"
-                                        style="width:65px">
+            {/*<div class="ui divider"></div>*/}
 
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tempList">
-                                <select name="verse" size={26} id="verseList" class="custom-select navListStyleNew"
-                                        style="width:55px">
+            {/* Book, Chapter, Verse: Selector */}
+            <table
+                class="ui very compact striped celled table"
+                width="100%"
+                cellSpacing="0"
+                cellPadding="0"
+            >
+                {/*<thead>*/}
+                {/*<tr>*/}
+                {/*    <th>Book</th>*/}
+                {/*    <th>Chapter</th>*/}
+                {/*    <th>Verse</th>*/}
+                {/*</tr>*/}
+                {/*</thead>*/}
+                <tbody>
+                <tr>
+                    <td height={64}>
+                        <div class="tempList">
+                            <select
+                                id="bookList"
+                                name="book"
+                                size={numItems}
+                                class="navListStyleNew"
+                                style={{width: columnSizes[0]}}
+                            >
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="tempList">
+                            <select
+                                id="chapterList"
+                                name="chapter"
+                                size={numItems}
+                                class="navListStyleNew"
+                                style={{width: columnSizes[1]}}
+                            >
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="tempList">
+                            <select
+                                id="verseList"
+                                name="verse"
+                                size={numItems}
+                                class="navListStyleNew"
+                                style={{width: columnSizes[2]}}
+                            >
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan={3}>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            {/*<div class="ui divider"></div>*/}
 
-                <br/>
-
-                <p class="style2">
-                    Recent: <select id="recentSel" size={2}
-                                    class="custom-select navListStyleNew recentListStyle"></select>
-                </p>
-
-                <div class="ui grid">
-                    <div class="ui action input" style={{width: '100%', marginTop: '16px'}}>
+            <div class="ui form">
+                {/* Recent Verses */}
+                <div class="field">
+                    <label>Recent Verses</label>
+                    <select
+                        id="recentSel"
+                        size={2}
+                        class="navListStyleNew recentListStyle"
+                    ></select>
+                </div>
+                {/* Word Search */}
+                <div class="field">
+                    <div class="ui action input">
                         <input
                             id="searchID"
                             type="text"
-                            size={20}
                             placeholder="Search words..."
                         />
-                        <button id="searchButtonID" class="ui icon button">
+                        <button
+                            id="searchButtonID"
+                            class="ui icon button"
+                            data-tooltip="Search words"
+                        >
                             <i class="search icon"></i>
                         </button>
                     </div>

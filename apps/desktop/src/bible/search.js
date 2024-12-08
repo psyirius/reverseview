@@ -39,7 +39,7 @@ export class BibleSearch {
         }
 
         function init() {
-            $("#searchID").css("font-family", getVersion1Font());
+            // $("#searchID").css("font-family", getVersion1Font());
             $("#adSearch").css("font-family", getVersion1Font());
             D();
             v();

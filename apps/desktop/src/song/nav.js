@@ -5,7 +5,7 @@
 // - YAHOO.widget.DataTable
 
 import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
-import {menuYtLink, selectedSongCategory, selectedTab, songCategories} from "@stores/global";
+import {menuYtLink, selectedSongCategory, selectedTab, songCategories, songSearchError} from "@stores/global";
 import {SongSearchType} from "@/const";
 import {Deferred} from "@/utils/async";
 import {SongPresenter} from "@/song/present";
@@ -49,7 +49,7 @@ export class SongNav {
         let n = -1;
         let _itemID = 0;
         let _itemTitle = "";
-        let v = 20;
+        let rowsPerPage = 20;
         let m_keywords = [];
         let m_suggestion_defer = null;
         let aa = 30;
@@ -74,9 +74,9 @@ export class SongNav {
                     __debug(`Query: ${query}`);
 
                     m_suggestion_defer = new Deferred();
-                    m_suggestion_defer.then((data) => {
-                        callback(data)
-                    });
+                    // m_suggestion_defer.then((data) => {
+                    //     callback(data)
+                    // });
                 },
             });
 
@@ -120,7 +120,7 @@ export class SongNav {
         }
 
         function setFormats() {
-            v = (($RvW.tabHeight - 300) / 22);
+            rowsPerPage = (($RvW.tabHeight - 300) / 22);
             if (!s) {
                 if (m_songTitle != null) {
                     U();
@@ -504,7 +504,7 @@ export class SongNav {
 
             if (res.data != null) {
                 ag = true;
-                $("#search_error_notification").html("");
+                songSearchError.set(undefined);
                 showLyricsElements();
 
                 _loadSuggestions(res, cat, al);
@@ -513,7 +513,7 @@ export class SongNav {
                 m_keywords = [];
                 hideLyricsElements();
                 $("#ly_name").html("No matching song found.");
-                $("#search_error_notification").html("No match");
+                songSearchError.set("No match");
                 update_songList(res, cat, ag);
             }
         }
@@ -587,9 +587,9 @@ export class SongNav {
                 source.responseSchema = { fields: [{ key: "ID" }, { key: "Title" }] };
 
                 const paginator = new YAHOO.widget.Paginator({
-                    rowsPerPage: v,
+                    rowsPerPage,
+                    containers : [ "songnav_paginator" ],
                     template: YAHOO.widget.Paginator.TEMPLATE_DEFAULT,
-                    rowsPerPageOptions: [20],
                     pageLinks: 3,
                 });
                 const options = {

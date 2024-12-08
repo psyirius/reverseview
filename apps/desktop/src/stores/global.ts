@@ -55,6 +55,7 @@ export const showColorPickerPanel: Writable<boolean> = writable(false);
 export const showBibleManagePanel: Writable<boolean> = writable(false);
 export const showBibleSelectPanel: Writable<boolean> = writable(false);
 export const showVerseEditPanel: Writable<boolean> = writable(false);
+export const songSearchError: Writable<string | undefined> = writable(undefined);
 export const remoteEnabled: Writable<boolean> = writable(false);
 export const localIpList: Writable<NetworkInterfaceInfo[]> = writable([]);
 export const remoteCustomHostname: Writable<string> = writable('');

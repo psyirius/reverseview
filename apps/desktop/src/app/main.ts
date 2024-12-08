@@ -811,9 +811,9 @@ function setupNavWindow() {
         var g = 250;
         var e = 200;
         document.getElementById("wrapper").style.height = $RvW.tabHeight;
-        $("#container").height($RvW.tabHeight);
-        $("#navTab").height($RvW.tabHeight);
-        $("#songNavTab").height($RvW.tabHeight);
+        // $("#container").height($RvW.tabHeight);
+        // $("#bibleNav").height($RvW.tabHeight);
+        // $("#songNavTab").height($RvW.tabHeight);
         $("#bookList").height($RvW.tabHeight - c);
         $("#chapterList").height($RvW.tabHeight - c);
         $("#verseList").height($RvW.tabHeight - c);
@@ -860,7 +860,7 @@ function setupTabContent() {
     /* setupTabView("settings", "screenTab"); */ setupSettingsTab();
 
     // Left Tab
-    /* setupTabView("nav", "navTab"); */ fillNav();
+    /* setupTabView("nav", "bibleNav"); */ fillNav();
     /* setupTabView("song_nav", "songNavTab"); */
 
     $RvW.scheduleObj = new Scheduler();

@@ -1,5 +1,5 @@
 // Song Lyric Navigation
-import {selectedSongCategory, selectedSongTag, songCategories, songTags} from "@stores/global";
+import {selectedSongCategory, selectedSongTag, songCategories, songSearchError, songTags} from "@stores/global";
 import {useEffect, useId, useRef, useState} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {SongSearchType} from "@/const";
@@ -11,7 +11,7 @@ const searchSong = debounce((q: string) => {
 }, 200);
 
 export default function LeftSongsTab() {
-    const categoryId = useId();
+    const catId = useId();
     const tagId = useId();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -19,13 +19,17 @@ export default function LeftSongsTab() {
     const categories = useStoreState(songCategories);
     const selectedCategory = useStoreState(selectedSongCategory);
 
+    const searchError = useStoreState(songSearchError);
+
     const tags = useStoreState(songTags);
     const selectedTag = useStoreState(selectedSongTag);
 
-    const categorySelect = useRef(null);
+    const catSelect = useRef(null);
     const tagSelect = useRef(null);
 
     useEffect(() => {
+        // @ts-ignore
+        // $(`#${catId}, #${tagId}`).dropdown();
     }, []);
 
     function onCategoryChange(e: Event) {
@@ -58,6 +62,7 @@ export default function LeftSongsTab() {
 
     function clearFilters() {
         $RvW.songNavObj.songnav_clear();
+        songSearchError.set(undefined);
     }
 
     function onSearchInput(e: Event) {
@@ -67,103 +72,159 @@ export default function LeftSongsTab() {
     }
 
     return (
-        <div id="songNavTab">
+        <div class="ui left fluid vertical segment">
             {/* CATEGORY TAGS */}
-            <div class="ui grid" style={{marginRight: '10px'}}>
-                <div class="eight wide column">
-                    <label htmlFor={categoryId} class="col-form-label form-control-sm">Category</label>
-                    <div class="ui action input">
+            <div class="ui form">
+                <div class="fields two">
+                    <div class="field">
+                        <label>Category</label>
                         <select
-                            class="ui dropdown"
-                            ref={categorySelect}
-                            id={categoryId}
+                            class="ui search dropdown"
+                            ref={catSelect}
+                            id={catId}
                             onChange={onCategoryChange}
                             value={selectedCategory === -1 ? null : selectedCategory}
                         >
-                            <option default value="">All</option>
+                            <option value="">All</option>
                             {categories.map((category, i) => (
                                 <option value={category} key={i}>{category}</option>
                             ))}
                         </select>
-                        {/*<button class="ui icon button mini" onClick={() => selectedSongCategory.set(null)}>*/}
-                        {/*    <i class="times circle icon"></i>*/}
-                        {/*</button>*/}
                     </div>
-                </div>
-
-                <div class="eight wide column">
-                    <label htmlFor={tagId} class="col-form-label form-control-sm">Tags</label>
-                    <div class="ui action input">
+                    <div class="field">
+                        <label>Tag</label>
                         <select
-                            class="ui dropdown"
+                            class="ui search dropdown"
                             ref={tagSelect}
                             id={tagId}
                             onChange={onTagChange}
                             value={selectedTag === -1 ? null : selectedTag}
                         >
-                            <option default value="">All</option>
+                            <option value="">All</option>
                             {tags.map((tag, i) => (
                                 <option value={tag} key={i}>{tag}</option>
                             ))}
                         </select>
-                        {/*<button class="ui icon button mini" onClick={() => selectedSongTag.set(null)}>*/}
-                        {/*    <i class="times circle icon"></i>*/}
-                        {/*</button>*/}
                     </div>
                 </div>
             </div>
 
-            {/* TITLE SEQUENCE */}
-            <div class="ui grid">
-                <div class="ui action small input">
-                    <input
-                        type="text"
-                        size={20}
-                        id="songnav_editbox"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onSearch={onSearchInput}
-                        onKeyUp={onSearchInput}
-                    />
+            {/*<div class="ui divider"></div>*/}
 
-                    <button
-                        class="ui icon button"
-                        id="song-search-lyrics"
-                        data-tooltip="Search by Lyrics"
-                        onClick={filterByLyrics}
-                    >
-                        <i class="file alternate icon"></i>
-                    </button>
+            {/* Search Input */}
+            <div class="ui action input">
+                <input
+                    type="text"
+                    size={20}
+                    id="songnav_editbox"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onSearch={onSearchInput}
+                    onKeyUp={onSearchInput}
+                />
 
-                    <button
-                        class="ui icon button"
-                        id="song-search-author"
-                        data-tooltip="Search by Author"
-                        onClick={filterByAuthor}
-                    >
-                        <i class="user icon"></i>
-                    </button>
+                <button
+                    class="ui icon button"
+                    id="song-search-lyrics"
+                    data-tooltip="Search by Lyrics"
+                    onClick={filterByLyrics}
+                >
+                    <i class="file alternate icon"></i>
+                </button>
 
-                    <button
-                        class="ui icon button"
-                        id="song-search-clear"
-                        data-tooltip="Clear Filters"
-                        onClick={clearFilters}
-                    >
-                        <i class="times circle icon"></i>
-                    </button>
-                </div>
+                <button
+                    class="ui icon button"
+                    id="song-search-author"
+                    data-tooltip="Search by Author"
+                    onClick={filterByAuthor}
+                >
+                    <i class="user icon"></i>
+                </button>
+
+                <button
+                    class="ui icon button"
+                    id="song-search-clear"
+                    data-tooltip="Clear Filters"
+                    onClick={clearFilters}
+                >
+                    <i class="times circle icon"></i>
+                </button>
             </div>
 
             {/* ERROR Notification and word suggestions */}
-            <div class="ui grid vvrow40">
-                <div class="ten wide column">
-                    <div class="col-form-label form-control-sm" id="search_error_notification"></div>
-                </div>
-            </div>
+            {searchError && (
+                <div class="ui red mini message">{searchError}</div>
+            )}
 
-            <div class="style2">
+            {/*<div class="ui divider"></div>*/}
+
+            {/*<table class="ui fixed single line very compact striped celled table">*/}
+            {/*    /!*<thead>*!/*/}
+            {/*    /!*<tr>*!/*/}
+            {/*    /!*    <th>Number</th>*!/*/}
+            {/*    /!*    <th>Title</th>*!/*/}
+            {/*    /!*</tr>*!/*/}
+            {/*    /!*</thead>*!/*/}
+            {/*    <tbody>*/}
+            {/*    <tr>*/}
+            {/*        <td width={48}>John</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>Jamie</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>John</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>Jamie</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>John</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>Jamie</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>John</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    <tr>*/}
+            {/*        <td>Jamie</td>*/}
+            {/*        <td>Approved</td>*/}
+            {/*    </tr>*/}
+            {/*    </tbody>*/}
+
+            {/*    <tfoot>*/}
+            {/*    <tr>*/}
+            {/*        <th colspan={2}>*/}
+            {/*            <div class="ui right floated pagination menu">*/}
+            {/*                <a class="icon item">*/}
+            {/*                    <i class="left chevron icon"></i>*/}
+            {/*                </a>*/}
+            {/*                <a class="item">1</a>*/}
+            {/*                <a class="item">2</a>*/}
+            {/*                <a class="item">3</a>*/}
+            {/*                <a class="item">4</a>*/}
+            {/*                <a class="icon item">*/}
+            {/*                    <i class="right chevron icon"></i>*/}
+            {/*                </a>*/}
+            {/*            </div>*/}
+            {/*        </th>*/}
+            {/*    </tr>*/}
+            {/*    </tfoot>*/}
+            {/*</table>*/}
+
+            <div class="ui fluid vertical segment">
                 <div id="songnav_songlistnew" class="yui-skin-sam"></div>
+                <div class="ui center aligned basic segment">
+                    <div id="songnav_paginator" class="yui-skin-sam"></div>
+                </div>
             </div>
         </div>
     );

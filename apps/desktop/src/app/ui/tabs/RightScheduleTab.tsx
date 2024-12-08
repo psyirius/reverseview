@@ -36,7 +36,7 @@ export default function RightScheduleTab() {
                         </div>
                     </div>
                     <div class="middle aligned content">
-                        <select class="custom-select navListStyleNew" size={8} style="width: 100%" id="sch_selectID">
+                        <select class="navListStyleNew" size={8} style="width: 100%" id="sch_selectID">
                         </select>
                     </div>
                 </div>
