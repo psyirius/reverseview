@@ -15,6 +15,7 @@ ReVerseVIEW is a reborn open-source version of the popular legacy (Adobe AIR) Ve
 - **Backend**: Some ActionScript 3 libraries
 
 ## 🔧 Installation
+Releases are at [reverseview-releases](https://github.com/psyirius/reverseview-releases/releases)
 
 ### Prerequisites
 - Node.js (v16+)
