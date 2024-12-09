@@ -824,7 +824,7 @@ function setupNavWindow() {
         document.getElementById("notesTab").style.height = $RvW.tabHeight;
         document.getElementById("scheduleTab").style.height = $RvW.tabHeight;
         document.getElementById("searchTab").style.height = $RvW.tabHeight;
-        document.getElementById("graphicsTab").style.height = $RvW.tabHeight;
+        // document.getElementById("graphicsTab").style.height = $RvW.tabHeight;
         document.getElementById("screenTab").style.height = $RvW.tabHeight;
         document.getElementById("still_bkgnd_grid").style.height = f - 450;
         $RvW.graphicsObj.setNumOfPicsInRow(l);

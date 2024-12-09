@@ -11,7 +11,7 @@
     "build": "dotenvx run -- pnpm -F=. run --parallel \"/^build:.*/\"",
     "build:heroicons": "tsx scripts/build-heroicons.ts",
     "build:feather-icons": "tsx scripts/build-feather-icons.ts",
-    "build:phosphor-icons": "tsx scripts/build-phosphor-icons.ts",
+    "buildx:phosphor-icons": "tsx scripts/build-phosphor-icons.ts",
     "build:tabler-icons": "tsx scripts/build-tabler-icons.ts",
     "build:ant-design-icons": "tsx scripts/build-ant-design-icons.ts",
     "build:lucide-icons": "tsx scripts/build-lucide-icons.ts",
