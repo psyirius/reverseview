@@ -1,4 +1,4 @@
-import { GradiantBackgroundColor } from "./gradbkgnd";
+import {GradientBackgroundColor} from "./gradbkgnd";
 import { SolidBackgroundColor } from "./solidbkgnd";
 import { TextColor } from "./textcolor";
 import {StillBackground} from "./stillbkgnd";
@@ -15,7 +15,7 @@ export class GraphicsMgr {
 
         const text = new TextColor();
         const solid = new SolidBackgroundColor();
-        const gradiant = new GradiantBackgroundColor();
+        const gradient = new GradientBackgroundColor();
         const still = new StillBackground();
 
         function assignColor(y, x) {
@@ -27,10 +27,10 @@ export class GraphicsMgr {
                     solid.assignSolidColor(y);
                     break;
                 case 2:
-                    gradiant.assignGradColor1(y);
+                    gradient.assignGradColor1(y);
                     break;
                 case 3:
-                    gradiant.assignGradColor2(y);
+                    gradient.assignGradColor2(y);
                     break;
                 case 4:
                     text.assignTextColor2(y);

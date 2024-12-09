@@ -3,68 +3,77 @@ import {$RvW} from "@/rvw";
 
 export class TextColor {
     constructor() {
-        this.assignTextColor = e;
-        this.assignTextColor2 = k;
-        var i;
-        var f;
+        this.el = {
+            primaryPreview: "graphics_text_color_1",
+            secondaryPreview: "graphics_text_color_2",
+            editButton: "changeTextColorButton",
+            resetButton: "resetTextColorButton",
+        }
 
-        l();
+        this._primary = "#FFFFFF";
+        this._secondary = "#FFFFFF";
 
-        function l() {
-            b();
-            d();
-            g();
-            h();
+        this.loadPrimary();
+        this.loadSecondary();
+
+        this.updatePreviews();
+        this.attachButtonClickHandlers();
+    }
+
+    loadPrimary() {
+        const m = $RvW.vvConfigObj.get_p_textColor();
+        if (m != null) {
+            this._primary = m;
         }
-        function b() {
-            var m = $RvW.vvConfigObj.get_p_textColor();
-            if (m != null) {
-                i = m;
-            } else {
-                i = "#FFFFFF";
-            }
+    }
+
+    loadSecondary() {
+        const m = $RvW.vvConfigObj.get_p_textColor2();
+        if (m != null) {
+            this._secondary = m;
         }
-        function d() {
-            var m = $RvW.vvConfigObj.get_p_textColor2();
-            if (m != null) {
-                f = m;
-            } else {
-                f = "#FFFFFF";
-            }
-        }
-        function h() {
-            document
-                .getElementById("changeTextColorButton")
-                .addEventListener("click", a, false);
-            document
-                .getElementById("resetTextColorButton")
-                .addEventListener("click", j, false);
-        }
-        function a() {
-            var m = new ColorPickerPanel(i, 0);
-        }
-        function e(m) {
-            i = m;
-            g();
-            c();
-        }
-        function k(m) {
-            f = m;
-            c();
-        }
-        function j() {
-            i = "#FFFFFF";
-            f = "#FFFFFF";
-            g();
-            c();
-        }
-        function g() {
-            document.getElementById("graphics_text_color_id").style.background = i;
-        }
-        function c() {
-            $RvW.vvConfigObj.set_p_textColor(i);
-            $RvW.vvConfigObj.set_p_textColor2(f);
-            $RvW.vvConfigObj.save();
-        }
+    }
+
+    attachButtonClickHandlers() {
+        document
+            .getElementById(this.el.editButton)
+            .addEventListener("click", () => this.onClickEdit(), false);
+        document
+            .getElementById(this.el.resetButton)
+            .addEventListener("click", () => this.onClickReset(), false);
+    }
+
+    onClickEdit() {
+        new ColorPickerPanel(this._primary, 0);
+    }
+
+    assignTextColor(value) {
+        this._primary = value;
+        this.updatePreviews();
+        this.updateConfig();
+    }
+
+    assignTextColor2(value) {
+        this._secondary = value;
+        this.updatePreviews();
+        this.updateConfig();
+    }
+
+    onClickReset() {
+        this._primary = "#FFFFFF";
+        this._secondary = "#FFFFFF";
+        this.updatePreviews();
+        this.updateConfig();
+    }
+
+    updatePreviews() {
+        document.getElementById(this.el.primaryPreview).style.background = this._primary;
+        document.getElementById(this.el.secondaryPreview).style.background = this._secondary;
+    }
+
+    updateConfig() {
+        $RvW.vvConfigObj.set_p_textColor(this._primary);
+        $RvW.vvConfigObj.set_p_textColor2(this._secondary);
+        $RvW.vvConfigObj.save();
     }
 }

@@ -115,7 +115,7 @@ export class StillBackground {
             __debug("Available width... " + U);
             __debug("Number of pics in a row... " + J);
             __debug("Setting still_bkgnd_grid width to " + U);
-            $("#still_bkgnd_grid").width(U - 100);
+            // $("#still_bkgnd_grid").width(U - 100);
         }
         function D() {
             return J;
@@ -309,6 +309,7 @@ export class StillBackground {
             var af = "";
             var Z = "";
             var X = document.getElementById("still_bkgnd_grid");
+            // if (!X) return;
             X.innerHTML = "";
             for (var aa = 0; aa < ae; aa++) {
                 var ac = $("<div class='unit'></div>");
