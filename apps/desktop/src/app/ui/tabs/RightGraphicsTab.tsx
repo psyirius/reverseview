@@ -1,5 +1,7 @@
 import {useEffect, useState} from "preact/hooks";
 import {$RvW} from "@/rvw";
+import {useStoreState} from "@/utils/hooks";
+import {bgGradientAngle} from "@stores/global";
 
 enum BgType {
     SOLID = 1,
@@ -11,6 +13,8 @@ enum BgType {
 export default function RightGraphicsTab() {
     const [selectedTab, setSelectedTab] = useState(parseInt($RvW.vvConfigObj.get_p_bkgnd_type()) || BgType.STILL);
 
+    const gradientAngle = useStoreState(bgGradientAngle)
+
     useEffect(() => {
         $RvW.vvConfigObj.set_p_bkgnd_type(selectedTab);
         $RvW.vvConfigObj.save();
@@ -20,7 +24,21 @@ export default function RightGraphicsTab() {
         $('#bg-tabs [data-tab=background-color]').addClass('active');
         // @ts-ignore
         $('#bg-tabs .item').tab();
+        // @ts-ignore
+        $('#bg-gradient-orient-angle').range({
+            min: 0,
+            max: 360,
+            start: gradientAngle,
+            onChange: function (value, meta) {
+                meta.triggeredByUser && bgGradientAngle.set(value);
+            }
+        });
     }, []);
+
+    useEffect(() => {
+        // @ts-ignore
+        $('#bg-gradient-orient-angle').range('set value', gradientAngle);
+    }, [gradientAngle]);
 
     const tabs = [
         {name: 'text-color', title: 'Text'},
@@ -142,29 +160,25 @@ export default function RightGraphicsTab() {
                                     <div class="field">
                                         <label>Solid Color</label>
 
-                                        <div id="graphics_solid_color_id" class="graphics_selColor"></div>
+                                        <div class="ui action input">
+                                            <input id="gfx-solid-color-input" type="text" value=""/>
+                                            <button
+                                                id="gfx-solid-color"
+                                                class="ui right icon button"
+                                                style={{
+                                                    borderStyle: 'solid',
+                                                    borderWidth: '1px',
+                                                    borderColor: 'rgba(34, 36, 38, 0.148438)'
+                                                }}
+                                            >
+                                                <i class="icon"></i>
+                                            </button>
+                                            <button class="ui icon button" id="resetBkgndColorButton"
+                                                    data-tooltip="Reset">
+                                                <i class="undo icon"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="ui icon buttons">
-                                    <button
-                                        class="ui button"
-                                        id="changeBkgndColorButton"
-                                        data-tooltip="Change"
-                                        data-position="bottom center"
-                                        data-inverted=""
-                                    >
-                                        <i class="eye dropper icon"></i>
-                                    </button>
-                                    <button
-                                        class="ui button"
-                                        id="resetBkgndColorButton"
-                                        data-tooltip="Reset"
-                                        data-position="bottom center"
-                                        data-inverted=""
-                                    >
-                                        <i class="undo icon"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -177,51 +191,96 @@ export default function RightGraphicsTab() {
                             <div class="ui form">
                                 <div class="fields">
                                     <div class="field">
-                                        <label>Gradient Color</label>
+                                        <label>Gradient</label>
 
-                                        <div id="graphics_grad_color_id" class="graphics_selColor"></div>
+                                        {/*<div id="gfx-gradient-color" class="graphics_selColor"></div>*/}
+
+                                        <div class="ui card" >
+                                        </div>
+
+                                        <div class="ui card">
+                                            <div class="image" id="gfx-gradient-color" style={{height: '160px'}}>
+                                            </div>
+                                            <div class="content">
+                                                <div class="ui form">
+                                                    <div class="field">
+                                                        <label>Start</label>
+
+                                                        <div class="ui action input">
+                                                            <input id="gfx-gradient-color-1-input" type="text" value=""/>
+                                                            <button
+                                                                id="gfx-gradient-color-1"
+                                                                class="ui right icon button"
+                                                                style={{
+                                                                    borderStyle: 'solid',
+                                                                    borderWidth: '1px',
+                                                                    borderColor: 'rgba(34, 36, 38, 0.148438)'
+                                                                }}
+                                                            >
+                                                                <i class="icon"></i>
+                                                            </button>
+                                                            <button class="ui icon button" id="resetGradColor1Button"
+                                                                data-tooltip="Reset"
+                                                            >
+                                                                <i class="undo icon"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <label>End</label>
+
+                                                        <div class="ui action input">
+                                                            <input id="gfx-gradient-color-2-input" type="text" value=""/>
+                                                            <button
+                                                                id="gfx-gradient-color-2"
+                                                                class="ui right icon button"
+                                                                style={{
+                                                                    borderStyle: 'solid',
+                                                                    borderWidth: '1px',
+                                                                    borderColor: 'rgba(34, 36, 38, 0.148438)'
+                                                                }}
+                                                            >
+                                                                <i class="icon"></i>
+                                                            </button>
+                                                            <button class="ui icon button" id="resetGradColor2Button"
+                                                                data-tooltip="Reset"
+                                                            >
+                                                                <i class="undo icon"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="extra content">
+                                                <div class="field">
+                                                    <label>Angle</label>
+
+                                                    {/*<div class="ui input fluid">*/}
+                                                    {/*    <input*/}
+                                                    {/*        id="bg-gradient-angle-input"*/}
+                                                    {/*        type="number"*/}
+                                                    {/*        placeholder="Angle"*/}
+                                                    {/*        value={0}*/}
+                                                    {/*    />*/}
+                                                    {/*</div>*/}
+                                                    <div class="ui input fluid">
+                                                        <div class="ui blue range"
+                                                             id="bg-gradient-orient-angle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ui bottom attached buttons">
+                                            <button class="ui button fluid" id="randomizeGradColorButton">
+                                                    <i class="sync icon"></i>
+                                                    Randomize
+                                                </button>
+                                                <button class="ui button fluid" id="resetGradColorButton">
+                                                    <i class="undo icon"></i>
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="fields">
-                                    <div class="field">
-                                        <select id="orientGradListID" class="ui dropdown">
-                                            <option value="0">Left</option>
-                                            <option value="1">Right</option>
-                                            <option value="2">Top</option>
-                                            <option value="3">Bottom</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="ui icon buttons">
-                                    <button
-                                        class="ui button"
-                                        id="changeGradColor1Button"
-                                        data-tooltip="Change Color (start)"
-                                        data-position="bottom center"
-                                        data-inverted=""
-                                    >
-                                        <i class="eye dropper icon"></i>
-                                    </button>
-                                    <button
-                                        class="ui button"
-                                        id="changeGradColor2Button"
-                                        data-tooltip="Change Color (end)"
-                                        data-position="bottom center"
-                                        data-inverted=""
-                                    >
-                                        <i class="eye dropper icon"></i>
-                                    </button>
-                                    <button
-                                        class="ui button"
-                                        id="resetGradColorButton"
-                                        data-tooltip="Reset"
-                                        data-position="bottom center"
-                                        data-inverted=""
-                                    >
-                                        <i class="undo icon"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>

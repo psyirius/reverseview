@@ -29,7 +29,7 @@
         p_bkgnd_color: "000000",
         p_bkgnd_color1: "00ffa0",
         p_bkgnd_color2: "FacFFF",
-        p_bkgnd_grad_orient: 1,
+        p_bkgnd_grad_orient: 0, // grad angle
         p_motion_bkgnd_index: 0,
         p_bkgnd_type: 3,
         p_text_orientation: '0',
@@ -144,6 +144,29 @@
         window.close();
     }
 
+    function angleToCartesianCoords(angle) {
+        // Normalize angle to be between 0 and 360
+        angle = angle % 360;
+        if (angle < 0) {
+            angle += 360;
+        }
+
+        // Convert angle to a coordinate space where
+        // 0,0 is top-left and 100,100 is bottom-right
+        const radian = (angle * Math.PI) / 180;
+        const x = Math.cos(radian);
+        const y = Math.sin(radian);
+
+        // Calculate start and end points
+        const startX = (50 * (1 - x)).toFixed(2) + '%';
+        const startY = (50 * (1 + y)).toFixed(2) + '%';
+        const endX = (50 * (1 + x)).toFixed(2) + '%';
+        const endY = (50 * (1 - y)).toFixed(2) + '%';
+
+        // Return formatted gradient string
+        return `${startX} ${startY}, ${endX} ${endY}`;
+    }
+
     function setupBackground() {
         const bgl = document.getElementById("backgroundLayer");
 
@@ -171,25 +194,19 @@
 
                 bgl.style.opacity = _$.p_transparentBackground ? "0" : "1";
 
-                let gex = "";
-                switch (_$.p_bkgnd_grad_orient) {
-                    case 3:
-                        gex += "-webkit-gradient(linear, 0% 0%, 0% 100%, from(";
-                        break;
-                    case 1:
-                        gex += "-webkit-gradient(linear, 0% 0%, 100% 0%, from(";
-                        break;
-                    case 2:
-                        gex += "-webkit-gradient(linear, 0% 100%, 0% 0%, from(";
-                        break;
-                    case 0:
-                        gex += "-webkit-gradient(linear, 100% 0%, 0% 0%, from(";
-                        break;
-                    default:
-                        gex += "-webkit-gradient(linear, 0% 0%, 0% 100%, from(";
-                }
+                // TODO: multi color stops
+                const type = 'linear'; // linear
 
-                document.body.style.backgroundImage = `${gex + _$.p_bkgnd_color1}), to(${_$.p_bkgnd_color2}))`;
+                let gradient = `-webkit-gradient(${type}, `;
+
+                gradient += angleToCartesianCoords(parseInt(_$.p_bkgnd_grad_orient));
+
+                gradient += `, from(${_$.p_bkgnd_color1}), to(${_$.p_bkgnd_color2}))`;
+
+                const el = document.body;
+
+                el.style.backgroundImage = 'url()'; // reset first (hack for the air webkit bug)
+                el.style.backgroundImage = gradient;
 
                 break;
             }

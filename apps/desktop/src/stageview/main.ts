@@ -29,7 +29,7 @@
         p_bkgnd_color: "000000",
         p_bkgnd_color1: "00ffa0",
         p_bkgnd_color2: "FacFFF",
-        p_bkgnd_grad_orient: 1,
+        p_bkgnd_grad_orient: 0,
         p_motion_bkgnd_index: 0,
         p_bkgnd_type: 3,
         p_text_orientation: '0',

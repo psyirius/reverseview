@@ -2,6 +2,8 @@ import postcss_import from "postcss-import";
 import autoprefixer from "autoprefixer";
 import postcss_nested from "postcss-nested";
 import postcss_alias from "postcss-alias";
+import UnoCSS from "@unocss/postcss";
+import variables from 'postcss-css-variables'
 import postcss_preset_env from "postcss-preset-env";
 import stylelint from "stylelint";
 import styleLintConfig from "./.stylelintrc.js";
@@ -11,8 +13,10 @@ import cssnano from "cssnano";
 const config = {
     map: false,
     plugins: [
+        UnoCSS(),
+        variables(),
         postcss_import,
-        autoprefixer,
+        autoprefixer(),
         postcss_nested,
         postcss_alias,
         postcss_preset_env({

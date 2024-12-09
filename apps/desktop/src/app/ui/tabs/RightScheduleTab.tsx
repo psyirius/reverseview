@@ -38,13 +38,13 @@ export default function RightScheduleTab() {
                     <div class="middle aligned content">
                         <select class="navListStyleNew" size={8} style="width: 100%" id="sch_selectID">
                         </select>
+                        <button class="ui compact button" id="sch_show_in_lyrics"></button>
                     </div>
                 </div>
             </div>
 
             <div id="sch_verseTextID"></div>
             <div class="ui divider"></div>
-            <button class="ui compact button" id="sch_show_in_lyrics">Show in Lyrics Tab</button>
         </div>
     )
 }

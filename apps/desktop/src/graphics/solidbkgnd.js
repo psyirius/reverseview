@@ -3,59 +3,83 @@ import {$RvW} from "@/rvw";
 
 export class SolidBackgroundColor {
     constructor() {
-        this.assignSolidColor = j;
-        var e;
-        var a = false;
+        this._color = null;
+        this.DEBUG = false;
 
-        k();
+        this.loadFromConfig();
+        this.addEventsHandlers();
+    }
 
-        function k() {
-            c();
-            g();
+    loadFromConfig() {
+        const colorFromConfig = $RvW.vvConfigObj.get_p_solidBkgndColor();
+        this.__debug("Color from config file... " + colorFromConfig);
+        this._color = colorFromConfig || "#000000";
+        this.updateInputField();
+        this.updateColorPreview();
+    }
+
+    addEventsHandlers() {
+        document.getElementById("gfx-solid-color")
+            .addEventListener("click", () => this.onClickChange(), false);
+        document.getElementById("gfx-solid-color-input")
+            .addEventListener("input", (e) => this.onColorInput(e), false);
+        document.getElementById("gfx-solid-color-input")
+            .addEventListener("blur", (e) => this.onColorInputBlur(e), false);
+        document.getElementById("gfx-solid-color-input")
+            .addEventListener("keyup", (e) => this.onColorInputKeyUp(e), false);
+        document.getElementById("resetBkgndColorButton")
+            .addEventListener("click", () => this.onClickReset(), false);
+    }
+
+    onColorInput(e) {
+        this.assignSolidColor(e.target.value, true);
+    }
+
+    onColorInputBlur(e) {
+        this.updateInputField();
+    }
+
+    onColorInputKeyUp(e) {
+        if (e.keyCode === 13 /* Enter */) {
+            this.updateInputField();
         }
-        function c() {
-            var l = $RvW.vvConfigObj.get_p_solidBkgndColor();
-            b("Color from config file... " + l);
-            if (l != null) {
-                e = l;
-            } else {
-                e = "#000000";
-            }
-            f();
-        }
-        function g() {
-            document
-                .getElementById("changeBkgndColorButton")
-                .addEventListener("click", h, false);
-            document
-                .getElementById("resetBkgndColorButton")
-                .addEventListener("click", i, false);
-        }
-        function h() {
-            var l = new ColorPickerPanel(e, 1);
-        }
-        function j(l) {
-            e = l;
-            f();
-            d();
-        }
-        function i() {
-            e = "#000000";
-            f();
-            d();
-        }
-        function f() {
-            b("change box color: " + e);
-            document.getElementById("graphics_solid_color_id").style.background = e;
-        }
-        function d() {
-            $RvW.vvConfigObj.set_p_solidBkgndColor(e);
-            $RvW.vvConfigObj.save();
-        }
-        function b(l) {
-            if (a) {
-                air.trace("[Graphics Solid Bkgnd]: " + l);
-            }
+    }
+
+    onClickChange() {
+        new ColorPickerPanel(this._color, 1);
+    }
+
+    assignSolidColor(color, input=false) {
+        this._color = $Y.Color.toHex(color);
+        input || this.updateInputField();
+        this.updateColorPreview();
+        this.saveConfig();
+    }
+
+    onClickReset() {
+        this._color = "#000000";
+        this.updateInputField();
+        this.updateColorPreview();
+        this.saveConfig();
+    }
+
+    updateInputField() {
+        document.getElementById("gfx-solid-color-input").value = this._color;
+    }
+
+    updateColorPreview() {
+        this.__debug("change box color: " + this._color);
+        document.getElementById("gfx-solid-color").style.backgroundColor = this._color;
+    }
+
+    saveConfig() {
+        $RvW.vvConfigObj.set_p_solidBkgndColor(this._color);
+        $RvW.vvConfigObj.save();
+    }
+
+    __debug(...messages) {
+        if (this.DEBUG) {
+            air.trace("[Graphics Solid BG]: ", ...messages);
         }
     }
 }
