@@ -1,6 +1,6 @@
 import {ColorPickerPanel} from "./colorpicker";
 import {$RvW} from "@/rvw";
-import {bgGradientAngle} from "@stores/global";
+import {bgGradientAngle, bgGradientColor1, bgGradientColor2} from "@stores/global";
 
 export class GradientBackgroundColor {
     constructor() {
@@ -13,7 +13,9 @@ export class GradientBackgroundColor {
         this.loadConfig();
         this.attachButtonClickHandlers();
 
-        bgGradientAngle.subscribe((value) => this.assignOrientation(value, true));
+        bgGradientAngle.subscribe((value) => {
+            (value !== this._orientation) && this.assignOrientation(value, true);
+        });
     }
 
     loadConfig() {
@@ -111,14 +113,15 @@ export class GradientBackgroundColor {
 
     assignOrientation(value, input = false) {
         this._orientation = value;
-        input || this._updateOrientationPreview();
+        input || this._updateColorInputFields();
+        this._updateOrientationPreview();
         this._updateGradientColorPreview();
         this.saveToConfig();
     }
 
     assignGradColor1(color, input= false) {
         this._debug("Assigning color 1 for gradient:", color);
-        this._color_start = $Y.Color.toHex(color);
+        this._color_start = $Y.Color.toRGB(color);
         this._debug(this._color_start);
         input || this._updateColorInputFields();
         this._updateGradientColorPreview();
@@ -127,7 +130,7 @@ export class GradientBackgroundColor {
 
     assignGradColor2(color, input=false) {
         this._debug("Assigning color 2 for gradient:", color);
-        this._color_end = $Y.Color.toHex(color);
+        this._color_end = $Y.Color.toRGB(color);
         this._debug(this._color_end);
         input || this._updateColorInputFields();
         this._updateGradientColorPreview();
@@ -152,15 +155,15 @@ export class GradientBackgroundColor {
         this._color_start = "#000000";
         this._color_end = "#FFFFFF";
         this._orientation = 0;
-        this._updateOrientationPreview(this._orientation);
+        this._updateOrientationPreview();
         this._updateColorInputFields();
         this._updateGradientColorPreview();
         this.saveToConfig();
     }
 
     _updateColorInputFields() {
-        document.getElementById("gfx-gradient-color-1-input").value = this._color_start;
-        document.getElementById("gfx-gradient-color-2-input").value = this._color_end;
+        bgGradientColor1.set($Y.Color.toHex(this._color_start));
+        bgGradientColor2.set($Y.Color.toHex(this._color_end));
     }
 
     _updateOrientationPreview() {

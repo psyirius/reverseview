@@ -1,5 +1,6 @@
 import {ColorPickerPanel} from "./colorpicker";
 import {$RvW} from "@/rvw";
+import {bgSolidColor} from "@stores/global";
 
 export class SolidBackgroundColor {
     constructor() {
@@ -50,7 +51,7 @@ export class SolidBackgroundColor {
     }
 
     assignSolidColor(color, input=false) {
-        this._color = $Y.Color.toHex(color);
+        this._color = $Y.Color.toRGB(color);
         input || this.updateInputField();
         this.updateColorPreview();
         this.saveConfig();
@@ -64,7 +65,7 @@ export class SolidBackgroundColor {
     }
 
     updateInputField() {
-        document.getElementById("gfx-solid-color-input").value = this._color;
+        bgSolidColor.set($Y.Color.toHex(this._color));
     }
 
     updateColorPreview() {

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "preact/hooks";
 import {$RvW} from "@/rvw";
 import {useStoreState} from "@/utils/hooks";
-import {bgGradientAngle} from "@stores/global";
+import {bgGradientAngle, bgGradientColor1, bgGradientColor2, bgSolidColor} from "@stores/global";
 
 enum BgType {
     SOLID = 1,
@@ -13,6 +13,9 @@ enum BgType {
 export default function RightGraphicsTab() {
     const [selectedTab, setSelectedTab] = useState(parseInt($RvW.vvConfigObj.get_p_bkgnd_type()) || BgType.STILL);
 
+    const solidColor = useStoreState(bgSolidColor)
+    const gradientColor1 = useStoreState(bgGradientColor1)
+    const gradientColor2 = useStoreState(bgGradientColor2)
     const gradientAngle = useStoreState(bgGradientAngle)
 
     useEffect(() => {
@@ -161,7 +164,7 @@ export default function RightGraphicsTab() {
                                         <label>Solid Color</label>
 
                                         <div class="ui action input">
-                                            <input id="gfx-solid-color-input" type="text" value=""/>
+                                            <input id="gfx-solid-color-input" type="text" value={solidColor} />
                                             <button
                                                 id="gfx-solid-color"
                                                 class="ui right icon button"
@@ -207,7 +210,7 @@ export default function RightGraphicsTab() {
                                                         <label>Start</label>
 
                                                         <div class="ui action input">
-                                                            <input id="gfx-gradient-color-1-input" type="text" value=""/>
+                                                            <input id="gfx-gradient-color-1-input" type="text" value={gradientColor1} />
                                                             <button
                                                                 id="gfx-gradient-color-1"
                                                                 class="ui right icon button"
@@ -230,7 +233,7 @@ export default function RightGraphicsTab() {
                                                         <label>End</label>
 
                                                         <div class="ui action input">
-                                                            <input id="gfx-gradient-color-2-input" type="text" value=""/>
+                                                            <input id="gfx-gradient-color-2-input" type="text" value={gradientColor2} />
                                                             <button
                                                                 id="gfx-gradient-color-2"
                                                                 class="ui right icon button"
