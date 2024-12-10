@@ -2,6 +2,7 @@ import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 
 import $ from "jquery";
+import {presentationMainEnabled, presentationStageEnabled} from "@stores/global";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
@@ -151,16 +152,8 @@ function getCurrentScreen() {
     return a.length > 0 ? a[0] : air.Screen.mainScreen;
 }
 
-function getScreenList() {
-    return air.Screen.screens;
-}
-
-export function fillScreenList(elId, savedIndex) {
-    const screens = getScreenList();
-
-    /** @type {HTMLSelectElement} */
-    const el = document.getElementById(elId);
-    el.innerHTML = '';
+export function getAvailableScreens() {
+    const result = []
 
     {
         function isSameRect(rect1, rect2) {
@@ -180,49 +173,16 @@ export function fillScreenList(elId, savedIndex) {
         for (let i = 0; i < screens.length; i++) {
             const { bounds } = screens[i];
             const { height, width, x, y } = bounds;
-            const isMain = isSameScreen(screens[i], mainScreen) ? " (main)" : "";
+            const isPrimary = isSameScreen(screens[i], mainScreen);
+            const main = isPrimary ? " (main)" : "";
 
-            let c = `Screen ${i + 1}${isMain}: ${width}x${height} @ ${x},${y}`;
+            const name = `Screen ${i + 1}${main}: ${width}x${height} @ ${x},${y}`;
 
-            el.options[i] = new Option(c, i);
+            result.push({ name, value: i + 1, height, width, x, y, primary: isPrimary });
         }
     }
 
-    setScreenIndex(elId, savedIndex, screens.length);
-}
-
-function saveSelectedScreenIndex() {
-    const a = document.getElementById("selectScreenID").selectedIndex;
-    $RvW.rvwPreferences.set("app.settings.screen.main.index", a);
-}
-
-function saveSelectedStageScreenIndex() {
-    const a = document.getElementById("selectStageScreenID").selectedIndex;
-    $RvW.rvwPreferences.set("app.settings.screen.stage.index", a);
-}
-
-function setScreenIndex(sel, a, b) {
-    if (a < b) {
-        document.getElementById(sel).selectedIndex = a;
-    } else {
-        document.getElementById(sel).selectedIndex = 0;
-    }
-}
-
-export function addScreenSelectionEvent() {
-    document
-        .getElementById("selectScreenID")
-        .addEventListener("change", function processScreenSelChange() {
-            saveSelectedScreenIndex();
-            $RvW.vvConfigObj.save();
-        }, false);
-
-    document
-        .getElementById("selectStageScreenID")
-        .addEventListener("change", function processStageScreenSelChange() {
-            saveSelectedStageScreenIndex();
-            $RvW.vvConfigObj.save();
-        }, false);
+    return result;
 }
 
 /**
@@ -234,7 +194,7 @@ export function addScreenSelectionEvent() {
  * @returns {void}
  * */
 export function presentation() {
-    $RvW.stageView = $("#stageConfigEnable").is(":checked");
+    $RvW.stageView = presentationStageEnabled.get();
 
     const windowInitOptions = new air.NativeWindowInitOptions();
     windowInitOptions.systemChrome = "none";
@@ -270,7 +230,7 @@ export function presentation() {
 
     if (!$RvW.presentWindowOpen) {
         $RvW.presentationWindow = air.HTMLLoader.createRootWindow(true, windowInitOptions, true, presentScreenBounds);
-        $RvW.presentationWindow.visible = $("#mainConfigEnable").is(":checked");
+        $RvW.presentationWindow.visible = presentationMainEnabled.get();
         $RvW.presentationWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
 
         $RvW.presentationWindow.window.nativeWindow.addEventListener(

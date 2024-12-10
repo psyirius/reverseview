@@ -1,32 +1,237 @@
+import {useEffect, useRef} from "preact/hooks";
+import {getAvailableScreens} from "@/p_window";
+import {$RvW} from "@/rvw";
+import {
+    availableScreens as availableScreensStore,
+    presentationMainEnabled,
+    presentationMainScreen,
+    presentationStageEnabled,
+    presentationStageScreen
+} from "@stores/global";
+import {useStoreState} from "@/utils/hooks";
+
+
 export default function RightSettingsTab() {
+    const screenSelectMain = useRef<HTMLDivElement>(null);
+    const screenSelectStage = useRef<HTMLDivElement>(null);
+
+    const availableScreens = useStoreState(availableScreensStore);
+
+    const mainScreen = useStoreState(presentationMainScreen);
+    const stageScreen = useStoreState(presentationStageScreen);
+
+    const mainEnabled = useStoreState(presentationMainEnabled);
+    const stageEnabled = useStoreState(presentationStageEnabled);
+
+    useEffect(() => {
+        air.trace('[INIT]');
+
+        presentationMainEnabled.set(!!$RvW.vvConfigObj.get_mainConfigEnable());
+        presentationStageEnabled.set(!!$RvW.vvConfigObj.get_stageConfigEnable());
+
+        presentationMainScreen.set($RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
+        presentationStageScreen.set($RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
+
+        availableScreensStore.set(getAvailableScreens());
+    }, []);
+
+    useEffect(() => {
+        // always add this after the select list is populated
+        air.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, availableScreens]));
+
+        // @ts-ignore
+        $(screenSelectMain.current).dropdown({
+            onChange: function(value: number, text: string, $selected: any) {
+                // Is triggered by user interaction
+                // @ts-ignore
+                if (!$selected || !$(screenSelectMain.current).dropdown('is visible')) return;
+                
+                air.trace('Changed Main Screen:', value, text, $selected);
+                updateMainScreenSelection(value - 1);
+            }
+        });
+
+        // @ts-ignore
+        $(screenSelectStage.current).dropdown({
+            onChange: function(value: number, text: string, $selected: any) {
+                // Is triggered by user interaction
+                // @ts-ignore
+                if (!$selected || !$(screenSelectStage.current).dropdown('is visible')) return;
+
+                air.trace('Changed Stage Screen:', value, text, $selected);
+                updateStageScreenSelection(value - 1);
+            }
+        });
+
+        // setTimeout(() => {
+        //     air.trace('TRIG....')
+        //
+        //     // @ts-ignore
+        //     // $(screenSelectMain.current).dropdown('set value', '1');
+        //     // @ts-ignore
+        //     // $(screenSelectMain.current).dropdown('set selected', 1);
+        //     // @ts-ignore
+        //     // $(screenSelectStage.current).dropdown('set value', '2');
+        // }, 3000);
+    }, []);
+
+    useEffect(() => {
+        air.trace('Screens.Update:', JSON.stringify(availableScreens));
+
+        // @ts-ignore
+        $(screenSelectMain.current).dropdown('refresh'); refreshMainScreen();
+        // @ts-ignore
+        $(screenSelectStage.current).dropdown('refresh'); refreshStageScreen();
+    }, [availableScreens]);
+
+    useEffect(() => {
+        air.trace('Screen.Main:', JSON.stringify(mainScreen));
+
+        // @ts-ignore
+        $(screenSelectMain.current).dropdown('set selected', mainScreen + 1);
+    }, [mainScreen]);
+
+    useEffect(() => {
+        air.trace('Screen.Stage:', JSON.stringify(stageScreen));
+
+        // @ts-ignore
+        $(screenSelectStage.current).dropdown('set selected', stageScreen + 1);
+    }, [stageScreen]);
+
+    function getSelectedScreenIndex(current: number, size: number) {
+        return current < size ? current : 0;
+    }
+
+    function updateMainScreenSelection(value: number) {
+        presentationMainScreen.set(value);
+        $RvW.rvwPreferences.set("app.settings.screen.main.index", value);
+        $RvW.vvConfigObj.save();
+    }
+
+    function updateStageScreenSelection(value: number) {
+        presentationStageScreen.set(value);
+        $RvW.rvwPreferences.set("app.settings.screen.stage.index", value);
+        $RvW.vvConfigObj.save();
+    }
+
+    function onRefreshScreensMain() {
+        const _screens = getAvailableScreens();
+        availableScreensStore.set(_screens);
+        // next step is invoked by hook
+    }
+
+    function onRefreshScreensStage() {
+        const _screens = getAvailableScreens();
+        availableScreensStore.set(_screens);
+        // next step is invoked by hook
+    }
+
+    function refreshMainScreen() {
+        const savedIndex = $RvW.rvwPreferences.set("app.settings.screen.main.index", mainScreen);
+        presentationMainScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
+    }
+
+    function refreshStageScreen() {
+        const savedIndex = $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageScreen);
+        presentationStageScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
+    }
+
+    function onChangeMainEnable(e: Event) {
+        const { checked } = (e.target as HTMLInputElement);
+        presentationMainEnabled.set(checked);
+        $RvW.vvConfigObj.set_mainConfigEnable(checked);
+        $RvW.vvConfigObj.save();
+    }
+
+    function onChangeStageEnable(e: Event) {
+        const { checked } = (e.target as HTMLInputElement);
+        presentationStageEnabled.set(checked);
+        $RvW.vvConfigObj.set_stageConfigEnable(checked);
+        $RvW.vvConfigObj.save();
+    }
+
     return (
         <div id="screenTab">
             <div class="generalPanelDIV">
-                <div class="generalheading2">Screen Setup</div>
-                <br/>
-                <div class="style2">
-                    <div class="ui grid">
-                        <div class="four wide column">
-                            <input type="checkbox" id="mainConfigEnable" checked/> Enable Main Presentation<br/>
-                            <b>Main Presentation Screen</b><br/>
-                            <select id="selectScreenID" class="selectboxStyle"></select>
-                            <button id="refresh-screens-main" class="ui icon button mini">
-                                {/*<i class="sync icon"></i>*/}Refresh
-                            </button>
+                <div class="ui form">
+                    <h4 class="ui dividing header">Presentation Setup</h4>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Main</label>
+                            <div class="inline field">
+                                <div class="ui toggle checkbox">
+                                    <input type="checkbox" name="main"
+                                       checked={mainEnabled}
+                                       onChange={onChangeMainEnable}
+                                    />
+                                    <label>Enable</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="four wide column">
-                            <input type="checkbox" id="stageConfigEnable"/> Enable Stage Presentation<br/>
-                            <b>Stage Presentation Screen</b><br/>
-                            <select id="selectStageScreenID" class="selectboxStyle"></select>
-                            <button id="refresh-screens-stage" class="ui icon button mini">
-                                {/*<i class="sync icon"></i>*/}Refresh
-                            </button>
+                        <div class="field">
+                            <label>Stage</label>
+                            <div class="inline field">
+                                <div class="ui toggle checkbox">
+                                    <input type="checkbox" name="stage"
+                                       checked={stageEnabled}
+                                       onChange={onChangeStageEnable}
+                                    />
+                                    <label>Enable</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <br/>
-                    <hr/>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Screen</label>
+                            <div class="ui action input mini" style={{width: '100%'}}>
+                                <div class="ui selection dropdown" ref={screenSelectMain} style={{width: '100%'}}>
+                                    <input type="hidden" name="main-screen" />
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Screen</div>
+                                    <div class="menu" style={{width: '100%'}}>
+                                        {availableScreens.map(({name, value}, i) => (
+                                            <div key={i} class="item" data-value={value} data-text={name}>
+                                                <i class="af flag"></i>
+                                                {name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div class="ui button mini" onClick={() => onRefreshScreensMain()}>
+                                    <i class="sync icon"></i>
+                                    Refresh
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Screen</label>
+                            <div class="ui action input mini">
+                                <div class="ui selection dropdown" ref={screenSelectStage} style={{width: '100%'}}>
+                                    <input type="hidden" name="main-screen"/>
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Screen</div>
+                                    <div class="menu" style={{width: '100%'}}>
+                                        {availableScreens.map(({name, value}, i) => (
+                                            <div key={i} class="item" data-value={value} data-text={name}>
+                                                <i class="af flag"></i>
+                                                {name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div class="ui button mini" onClick={() => onRefreshScreensStage()}>
+                                    <i class="sync icon"></i>
+                                    Refresh
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="style2">
                     <div class="generalheading2">Presentation Screen Setup</div>
                     <div id="presentationScreenSetupID" class="padded">
                         <b>Margins</b>

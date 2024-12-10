@@ -1,0 +1,20 @@
+{
+  "name": "@rvw/renderer",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@antv/g-canvaskit": "^1.0.31",
+    "@napi-rs/canvas": "^0.1.65",
+    "canvas": "^2.11.2",
+    "canvaskit-wasm": "^0.39.1",
+    "skia-canvas": "^2.0.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  }
+}

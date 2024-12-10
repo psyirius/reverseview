@@ -29,7 +29,9 @@ export default function LeftSongsTab() {
 
     useEffect(() => {
         // @ts-ignore
-        // $(`#${catId}, #${tagId}`).dropdown();
+        // $(`#${catId}`).dropdown();
+        // @ts-ignore
+        // $(`#${tagId}`).dropdown();
     }, []);
 
     function onCategoryChange(e: Event) {
@@ -75,36 +77,40 @@ export default function LeftSongsTab() {
         <div class="ui left fluid vertical segment">
             {/* CATEGORY TAGS */}
             <div class="ui form">
-                <div class="fields two">
+                <div class="two fields">
                     <div class="field">
                         <label>Category</label>
-                        <select
-                            class="ui search dropdown"
-                            ref={catSelect}
-                            id={catId}
-                            onChange={onCategoryChange}
-                            value={selectedCategory === -1 ? null : selectedCategory}
-                        >
-                            <option value="">All</option>
-                            {categories.map((category, i) => (
-                                <option value={category} key={i}>{category}</option>
-                            ))}
-                        </select>
+                        <div class="ui input">
+                            <select
+                                class="ui search dropdown"
+                                ref={catSelect}
+                                id={catId}
+                                onChange={onCategoryChange}
+                                value={selectedCategory === -1 ? null : selectedCategory}
+                            >
+                                <option value="">All</option>
+                                {categories.map((category, i) => (
+                                    <option value={category} key={i}>{category}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                     <div class="field">
                         <label>Tag</label>
-                        <select
-                            class="ui search dropdown"
-                            ref={tagSelect}
-                            id={tagId}
-                            onChange={onTagChange}
-                            value={selectedTag === -1 ? null : selectedTag}
-                        >
-                            <option value="">All</option>
-                            {tags.map((tag, i) => (
-                                <option value={tag} key={i}>{tag}</option>
-                            ))}
-                        </select>
+                        <div class="ui input">
+                            <select
+                                class="ui search dropdown"
+                                ref={tagSelect}
+                                id={tagId}
+                                onChange={onTagChange}
+                                value={selectedTag === -1 ? null : selectedTag}
+                            >
+                                <option value="">All</option>
+                                {tags.map((tag, i) => (
+                                    <option value={tag} key={i}>{tag}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

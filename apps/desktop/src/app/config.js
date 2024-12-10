@@ -2,11 +2,9 @@ import {BibleUpdater} from "@/bible/setup";
 import {fillTagsToUI, loadTagsFromConfig} from "@/song/tags";
 import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";
-import {addScreenSelectionEvent, fillScreenList} from "@/p_window";
 import {FontSizeSlider, save2file} from "@app/common";
 import {savePresentationMargin} from "@app/presentation";
 import {$RvW} from "@/rvw";
-
 import $ from "jquery";
 
 export class Config {
@@ -1176,16 +1174,6 @@ function showLogoChangeEvent() {
         document.getElementById("presentConfigShowVVLogo").checked = false;
     }
 }
-function stageEnableChangeEvent() {
-    const a = $("#stageConfigEnable").is(":checked");
-    $RvW.vvConfigObj.set_stageConfigEnable(a);
-    $RvW.vvConfigObj.save();
-}
-function mainEnableChangeEvent() {
-    const a = $("#mainConfigEnable").is(":checked");
-    $RvW.vvConfigObj.set_mainConfigEnable(a);
-    $RvW.vvConfigObj.save();
-}
 export function svParameterSaveEvent() {
     var e = $("#thirdview_opacity").val();
     var g = $("#thirdview_height").val();
@@ -1289,8 +1277,6 @@ export function configInit() {
     document
         .getElementById("presentConfigShowCustomLogo")
         .addEventListener("change", showLogoChangeEvent);
-    $("#mainConfigEnable").change(mainEnableChangeEvent);
-    $("#stageConfigEnable").change(stageEnableChangeEvent);
     $("#selectStageStyle").change(stageStyleChangeEvent);
     $("#stageSettingShowTime").change(stageShowTimeChangeEvent);
     document.getElementById("presentConfigMarginTop").value =
@@ -1303,8 +1289,6 @@ export function configInit() {
         $RvW.vvConfigObj.get_p_rightMargin();
     document.getElementById("presentConfigMaxFontSize").value =
         $RvW.vvConfigObj.get_p_maxFontSize();
-    document.getElementById("stageConfigEnable").checked = !!$RvW.vvConfigObj.get_stageConfigEnable();
-    document.getElementById("mainConfigEnable").checked = !!$RvW.vvConfigObj.get_mainConfigEnable();
     if ($RvW.vvConfigObj.get_stageStyleVal() != null) {
         $("#selectStageStyle").val($RvW.vvConfigObj.get_stageStyleVal());
     } else {
@@ -1365,22 +1349,6 @@ export function configInit() {
     document.getElementById("presentConfigShowDateTime").checked = k === true;
     document.getElementById("presentConfigShowVVLogo").checked = !!g;
     document.getElementById("presentConfigShowCustomLogo").checked = !!b;
-
-    {
-        fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
-        fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
-        addScreenSelectionEvent();
-    }
-
-    // Refreshes the screens list on clicking the select menus
-    {
-        document.getElementById("refresh-screens-main").addEventListener('click', function () {
-            fillScreenList('selectScreenID', $RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
-        });
-        document.getElementById("refresh-screens-stage").addEventListener('click', function () {
-            fillScreenList('selectStageScreenID', $RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
-        });
-    }
 
     new FontSizeSlider();
     new BibleUpdater();

@@ -8,7 +8,7 @@ export class GradientBackgroundColor {
         this._color_end = null;
         this._orientation = null;
 
-        this.IS_DEBUG = true;
+        this.IS_DEBUG = false;
 
         this.loadConfig();
         this.attachButtonClickHandlers();

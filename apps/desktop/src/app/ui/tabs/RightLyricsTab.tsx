@@ -69,13 +69,13 @@ export default function RightLyricsTab() {
                 <div class="three wide column">
                     <div class="form-group row">
                         <label for="ly_cat" class="col-sm col-form-label font-weight-bold">Category</label>
-                        <label id="ly_cat" type="text" class="col-sm col-form-label"></label>
+                        <label id="ly_cat" class="col-sm col-form-label"></label>
                     </div>
                 </div>
                 <div class="two wide column">
                     <div class="form-group row">
                         <label for="ly_key" class="col-sm col-form-label font-weight-bold">Key</label>
-                        <label id="ly_key" type="text" class="col-sm col-form-label"></label>
+                        <label id="ly_key" class="col-sm col-form-label"></label>
                     </div>
                 </div>
                 <div class="three wide column">
@@ -87,7 +87,7 @@ export default function RightLyricsTab() {
                 <div class="eight wide column">
                     <div class="form-group row">
                         <label for="ly_notes" class="col-sm col-form-label font-weight-bold">Notes</label>
-                        <div id="ly_notes" type="text" class="col-sm col-form-label"></div>
+                        <div id="ly_notes" class="col-sm col-form-label"></div>
                     </div>
                 </div>
             </div>
