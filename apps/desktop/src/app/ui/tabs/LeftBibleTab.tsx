@@ -37,7 +37,7 @@ export default function LeftBibleTab() {
 
             {/* Book, Chapter, Verse: Selector */}
             <table
-                class="ui very compact striped celled table"
+                class="ui very compact striped celled table font-medium text-xl"
                 width="100%"
                 cellSpacing="0"
                 cellPadding="0"

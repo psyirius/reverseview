@@ -24,20 +24,20 @@ export default function RightSettingsTab() {
     const stageEnabled = useStoreState(presentationStageEnabled);
 
     useEffect(() => {
-        air.trace('[INIT]');
+        // air.trace('[INIT]');
+
+        availableScreensStore.set(getAvailableScreens());
 
         presentationMainEnabled.set(!!$RvW.vvConfigObj.get_mainConfigEnable());
         presentationStageEnabled.set(!!$RvW.vvConfigObj.get_stageConfigEnable());
 
         presentationMainScreen.set($RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
         presentationStageScreen.set($RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
-
-        availableScreensStore.set(getAvailableScreens());
     }, []);
 
     useEffect(() => {
         // always add this after the select list is populated
-        air.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, availableScreens]));
+        // air.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, availableScreens]));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown({
@@ -46,7 +46,7 @@ export default function RightSettingsTab() {
                 // @ts-ignore
                 if (!$selected || !$(screenSelectMain.current).dropdown('is visible')) return;
                 
-                air.trace('Changed Main Screen:', value, text, $selected);
+                // air.trace('Changed Main Screen:', value, text, $selected);
                 updateMainScreenSelection(value - 1);
             }
         });
@@ -58,7 +58,7 @@ export default function RightSettingsTab() {
                 // @ts-ignore
                 if (!$selected || !$(screenSelectStage.current).dropdown('is visible')) return;
 
-                air.trace('Changed Stage Screen:', value, text, $selected);
+                // air.trace('Changed Stage Screen:', value, text, $selected);
                 updateStageScreenSelection(value - 1);
             }
         });
@@ -76,7 +76,7 @@ export default function RightSettingsTab() {
     }, []);
 
     useEffect(() => {
-        air.trace('Screens.Update:', JSON.stringify(availableScreens));
+        // air.trace('Screens.Update:', JSON.stringify(availableScreens));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown('refresh'); refreshMainScreen();
@@ -85,14 +85,14 @@ export default function RightSettingsTab() {
     }, [availableScreens]);
 
     useEffect(() => {
-        air.trace('Screen.Main:', JSON.stringify(mainScreen));
+        // air.trace('Screen.Main:', JSON.stringify(mainScreen));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown('set selected', mainScreen + 1);
     }, [mainScreen]);
 
     useEffect(() => {
-        air.trace('Screen.Stage:', JSON.stringify(stageScreen));
+        // air.trace('Screen.Stage:', JSON.stringify(stageScreen));
 
         // @ts-ignore
         $(screenSelectStage.current).dropdown('set selected', stageScreen + 1);
@@ -127,12 +127,14 @@ export default function RightSettingsTab() {
     }
 
     function refreshMainScreen() {
-        const savedIndex = $RvW.rvwPreferences.set("app.settings.screen.main.index", mainScreen);
+        const savedIndex = $RvW.rvwPreferences.get("app.settings.screen.main.index", mainScreen);
+        // air.trace('SAVED:', savedIndex)
         presentationMainScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
     }
 
     function refreshStageScreen() {
-        const savedIndex = $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageScreen);
+        const savedIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", stageScreen);
+        // air.trace('SAVED:', savedIndex)
         presentationStageScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
     }
 
@@ -153,17 +155,18 @@ export default function RightSettingsTab() {
     return (
         <div id="screenTab">
             <div class="generalPanelDIV">
-                <div class="ui form">
+                <div class="ui form small">
                     <h4 class="ui dividing header">Presentation Setup</h4>
 
+                    {/* Toggle */}
                     <div class="two fields">
                         <div class="field">
                             <label>Main</label>
                             <div class="inline field">
                                 <div class="ui toggle checkbox">
                                     <input type="checkbox" name="main"
-                                       checked={mainEnabled}
-                                       onChange={onChangeMainEnable}
+                                           checked={mainEnabled}
+                                           onChange={onChangeMainEnable}
                                     />
                                     <label>Enable</label>
                                 </div>
@@ -174,8 +177,8 @@ export default function RightSettingsTab() {
                             <div class="inline field">
                                 <div class="ui toggle checkbox">
                                     <input type="checkbox" name="stage"
-                                       checked={stageEnabled}
-                                       onChange={onChangeStageEnable}
+                                           checked={stageEnabled}
+                                           onChange={onChangeStageEnable}
                                     />
                                     <label>Enable</label>
                                 </div>
@@ -183,137 +186,290 @@ export default function RightSettingsTab() {
                         </div>
                     </div>
 
+                    {/* Screens */}
                     <div class="two fields">
                         <div class="field">
                             <label>Screen</label>
-                            <div class="ui action input mini" style={{width: '100%'}}>
+                            <div class="ui action input" style={{width: '100%'}}>
                                 <div class="ui selection dropdown" ref={screenSelectMain} style={{width: '100%'}}>
-                                    <input type="hidden" name="main-screen" />
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Screen</div>
-                                    <div class="menu" style={{width: '100%'}}>
-                                        {availableScreens.map(({name, value}, i) => (
-                                            <div key={i} class="item" data-value={value} data-text={name}>
-                                                <i class="af flag"></i>
-                                                {name}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div class="ui button mini" onClick={() => onRefreshScreensMain()}>
-                                    <i class="sync icon"></i>
-                                    Refresh
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>Screen</label>
-                            <div class="ui action input mini">
-                                <div class="ui selection dropdown" ref={screenSelectStage} style={{width: '100%'}}>
                                     <input type="hidden" name="main-screen"/>
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Screen</div>
                                     <div class="menu" style={{width: '100%'}}>
                                         {availableScreens.map(({name, value}, i) => (
                                             <div key={i} class="item" data-value={value} data-text={name}>
-                                                <i class="af flag"></i>
+                                                <i class="icon desktop"></i>
                                                 {name}
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-                                <div class="ui button mini" onClick={() => onRefreshScreensStage()}>
+                                <div class="ui button small" onClick={() => onRefreshScreensMain()}>
+                                    <i class="sync icon"></i>
+                                    Refresh
+                                </div>
+
+                                {/*<div class="ui equal width grid" style={{width: '100%'}}>*/}
+                                {/*    <div class="column" style={{padding: 0}}>*/}
+                                {/*        <div class="ui selection dropdown fluid" ref={screenSelectMain}>*/}
+                                {/*            <input type="hidden" name="main-screen"/>*/}
+                                {/*            <i class="dropdown icon"></i>*/}
+                                {/*            <div class="default text">Screen</div>*/}
+                                {/*            <div class="menu" style={{width: '100%'}}>*/}
+                                {/*                {availableScreens.map(({name, value}, i) => (*/}
+                                {/*                    <div key={i} class="item" data-value={value} data-text={name}>*/}
+                                {/*                        <i class="icon desktop"></i>*/}
+                                {/*                        {name}*/}
+                                {/*                    </div>*/}
+                                {/*                ))}*/}
+                                {/*            </div>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*    <div class="five wide column" style={{padding: 0}}>*/}
+                                {/*        <div class="ui button mini" onClick={() => onRefreshScreensMain()}>*/}
+                                {/*            <i class="sync icon"></i>*/}
+                                {/*            Refresh*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Screen</label>
+                            <div class="ui action input">
+                                <div class="ui selection dropdown" ref={screenSelectStage} style={{width: '100%'}}>
+                                    <input type="hidden" name="stage-screen"/>
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Screen</div>
+                                    <div class="menu" style={{width: '100%'}}>
+                                        {availableScreens.map(({name, value}, i) => (
+                                            <div key={i} class="item" data-value={value} data-text={name}>
+                                                <i class="icon desktop"></i>
+                                                {name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div class="ui button small" onClick={() => onRefreshScreensStage()}>
                                     <i class="sync icon"></i>
                                     Refresh
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="style2">
-                    <div class="generalheading2">Presentation Screen Setup</div>
-                    <div id="presentationScreenSetupID" class="padded">
-                        <b>Margins</b>
-                        <div class="row">
-                            <div class="column" style="background-color:#bbb; width: 15%;">
-                                TOP <input name="presentConfigMarginTop" type="text" id="presentConfigMarginTop"
-                                           value="50" size={4}/>
+                    <h4 class="ui dividing header">Presentation: Main</h4>
+
+                    {/* Margins */}
+                    <div class="field">
+                        <label>Margins</label>
+
+                        <div class="fields">
+                            <div class="four wide field">
+                                <label>Top</label>
+                                <input
+                                    name="presentConfigMarginTop"
+                                    type="text"
+                                    id="presentConfigMarginTop"
+                                />
                             </div>
-                            <div class="column" style="background-color:#bbb; width: 15%;">
-                                LEFT <input name="presentConfigMarginLeft" type="text" id="presentConfigMarginLeft"
-                                            value="50" size={4}/>
+                            <div class="four wide field">
+                                <label>Left</label>
+                                <input
+                                    name="presentConfigMarginLeft"
+                                    type="text"
+                                    id="presentConfigMarginLeft"
+                                />
                             </div>
-                            <div class="column" style="background-color:#bbb; width: 15%;">
-                                BOTTOM <input name="presentConfigMarginBottom" type="text"
-                                              id="presentConfigMarginBottom" value="50" size={4}/>
+                            <div class="four wide field">
+                                <label>Bottom</label>
+                                <input
+                                    name="presentConfigMarginBottom"
+                                    type="text"
+                                    id="presentConfigMarginBottom"
+                                />
                             </div>
-                            <div class="column" style="background-color:#bbb; width: 15%;">
-                                RIGHT <input name="presentConfigMarginRight" type="text" id="presentConfigMarginRight"
-                                             value="50" size={4}/>
+                            <div class="four wide field">
+                                <label>Right</label>
+                                <input
+                                    name="presentConfigMarginRight"
+                                    type="text"
+                                    id="presentConfigMarginRight"
+                                />
                             </div>
-                        </div>
-
-                        <br/>
-
-                        <div class="ui grid">
-                            <div class="six wide column">
-                                <b>Maximum Font Size</b> <input type="text" id="presentConfigMaxFontSize" value="150"
-                                                                size={6}/> px (30px to 200px)<br/>
-                                <br/>
-                                <b>Justification </b>
-                                <input type="radio" name="justify" id="justify_left" value="Left"/> Left
-                                <input type="radio" name="justify" id="justify_center" value="Center" checked/> Center
-                                <input type="radio" name="justify" id="justify_right" value="Right"/> Right
-                                <br/><br/>
-
-
-                                <input type="checkbox" id="presentConfigOntop"/> Keep Presentation Window on Top<br/>
-                                <input type="checkbox" id="presentConfigEnableTransition"/> Enable Transition<br/>
-                                <input type="checkbox" id="presentConfigEnableShadow"/> Enable Outline<br/><br/><br/>
-
-                                <input type="checkbox" id="presentConfigShowDateTime"/> Show Date and Time<br/>
-                                <input type="checkbox" id="presentConfigShowVVLogo"/> Show ReVerseVIEW Logo<br/>
-                                <input type="checkbox" id="presentConfigShowCustomLogo"/> Show Custom Logo<br/>
-                                <input name="customLogoText1" type="text" id="customLogoText1" size={40}/><br/>
-                                <input name="customLogoText2" type="text" id="customLogoText2" size={40}/><br/><br/>
-                            </div>
-
-                            <div class="six wide column">
-                                <b>VERSE</b><br/>
-                                <b>Verse Presentation Style </b>
-                                <input type="radio" name="p_orient" id="porient_hori" value="Horizontal"/> Horizontal
-                                <input type="radio" name="p_orient" id="porient_vert" value="Vertical"
-                                       checked/> Vertical
-                                <br/><br/>
-
-                                <b>SONG LYRICS</b> <br/>
-                                <input type="checkbox" id="presentConfigEnableSongTitle"/> Show Song Title<br/>
-                                <input type="checkbox" id="showPrimaryFont"/> Show lyrics in primary language<br/>
-                                <input type="checkbox" id="show2LinesSlides"/> Two (2) lines per slide<br/>
-                                <input type="checkbox" id="hideStanzaNumber"/> Hide stanza number<br/>
-                                <input type="checkbox" id="fitLineSetup" checked/> Enable Line Wrap<br/>
-                                <b>Lyrics Presentation Style </b>
-                                <input type="radio" name="p_orient_song" id="porient_song_hori"
-                                       value="Horizontal"/> Horizontal
-                                <input type="radio" name="p_orient_song" id="porient_song_vert" value="Vertical"
-                                       checked/> Vertical
-                                <br/>
-                            </div>
-
                         </div>
                     </div>
 
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Font</label>
 
+                            <div class="inline fields">
+                                <div class="field">
+                                    <label>Maximum Font Size</label>
+                                    <input
+                                        type="text"
+                                        id="presentConfigMaxFontSize"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Text</label>
+
+                            <div class="inline fields">
+                                <label>Justification</label>
+
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="justify_left" type="radio" name="text-justification"/>
+                                        <label>Left</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="justify_center" type="radio" name="text-justification"/>
+                                        <label>Center</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="justify_right" type="radio" name="text-justification"/>
+                                        <label>Right</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Styling</label>
+
+                            <div class="fields">
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="presentConfigEnableTransition"/>
+                                        <label>Transitions</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui checkbox disabled">
+                                        <input type="checkbox" name="example" id="presentConfigEnableOutline" disabled/>
+                                        <label>Outline</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="presentConfigEnableShadow"/>
+                                        <label>Shadow</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Settings</label>
+
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="presentConfigOntop"/>
+                                        <label>Keep Presentation Window on Top</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Orientation</label>
+
+                            <div class="inline fields">
+                                <label>Verse</label>
+
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="porient_hori" type="radio" name="verse-orientation"/>
+                                        <label>Horizontal</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="porient_vert" type="radio" name="verse-orientation"/>
+                                        <label>Vertical</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline fields">
+                                <label>Lyric</label>
+
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="porient_song_hori" type="radio" name="lyric-orientation"/>
+                                        <label>Horizontal</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="porient_song_vert" type="radio" name="lyric-orientation"/>
+                                        <label>Vertical</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/*<div class="field">*/}
+                        {/*    <label>Settings</label>*/}
+
+                        {/*    <div class="inline fields">*/}
+                        {/*        <div class="field">*/}
+                        {/*            <div class="ui checkbox">*/}
+                        {/*                <input type="checkbox" name="example" id="presentConfigOntop"/>*/}
+                        {/*                <label>Keep Presentation Window on Top</label>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                    </div>
+
+                    {/* TODO: style proper */}
                     <div class="ui grid">
                         <div class="six wide column">
-                            <button type="button" class="btn btn-secondary btn-sm" id="presentConfigSaveButton">SAVE
-                            </button>
+                            <input type="checkbox" id="presentConfigShowDateTime"/> Show Date and Time<br/>
+                            <input type="checkbox" id="presentConfigShowVVLogo"/> Show ReVerseVIEW Logo<br/>
+                            <input type="checkbox" id="presentConfigShowCustomLogo"/> Show Custom Logo<br/>
+                            <input name="customLogoText1" type="text" id="customLogoText1" size={40}/><br/>
+                            <input name="customLogoText2" type="text" id="customLogoText2" size={40}/><br/><br/>
+                        </div>
+
+                        <div class="six wide column">
+                            <b>SONG LYRICS</b> <br/>
+                            <input type="checkbox" id="presentConfigEnableSongTitle"/> Show Song Title<br/>
+                            <input type="checkbox" id="showPrimaryFont"/> Show lyrics in primary language<br/>
+                            <input type="checkbox" id="show2LinesSlides"/> Two (2) lines per slide<br/>
+                            <input type="checkbox" id="hideStanzaNumber"/> Hide stanza number<br/>
+                            <input type="checkbox" id="fitLineSetup" checked/> Enable Line Wrap<br/>
                         </div>
                     </div>
 
-                    <hr/>
+                    {/* Save */}
+                    <button
+                        id="presentConfigSaveButton"
+                        class="ui button"
+                        type="button"
+                    >
+                        Save
+                    </button>
 
+                    <h4 class="ui dividing header">Presentation: Stage</h4>
+                </div>
+
+                {/* TODO: style proper */}
+                <div class="style2">
                     <div class="generalheading2">Stage Screen Setup</div>
                     <div id="stageScreenSetupID" class="padded">
                         <b>Stage Screen Style </b>
@@ -339,7 +495,7 @@ export default function RightSettingsTab() {
                                     <input type="checkbox" id="stageviewMiniWindow"/> Small Window
                                 </div>
                                 <div class="two wide column">
-                                    <input type="checkbox" id="stageviewGreenWindow"/> Green Screen
+                                <input type="checkbox" id="stageviewGreenWindow"/> Green Screen
                                 </div>
                             </div>
                         </div>

@@ -264,7 +264,7 @@ export class SongNav {
 
         function update_CategoryList(categories) {
             const catz = categories?.map((c) => String(c.cat).trim()).filter(e => !!e) || [];
-            air.trace("Update Category List: ", catz);
+            // air.trace("Update Category List: ", catz);
             songCategories.set(catz);
             selectedSongCategory.set(null);
         }

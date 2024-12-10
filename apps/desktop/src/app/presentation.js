@@ -1,4 +1,5 @@
 import {$RvW} from "@/rvw";
+import {Toast} from "@app/toast.js";
 
 function withinRange(b, c, a) {
     return a >= b && a <= c;
@@ -16,7 +17,7 @@ function IsNumeric(v) {
 }
 
 export function savePresentationMargin() {
-    let k = true;
+    let canSave = true;
 
     const e = document.getElementById("presentConfigMarginTop").value;
     const c = document.getElementById("presentConfigMarginBottom").value;
@@ -29,8 +30,8 @@ export function savePresentationMargin() {
         $RvW.vvConfigObj.set_p_leftMargin(f);
         $RvW.vvConfigObj.set_p_rightMargin(n);
     } else {
-        k = false;
-        alert("Invalid entry for margin");
+        canSave = false;
+        Toast.show("Error", "Invalid entry for margin");
         document.getElementById("presentConfigMarginTop").value =
             $RvW.vvConfigObj.get_p_topMargin();
         document.getElementById("presentConfigMarginBottom").value =
@@ -40,21 +41,19 @@ export function savePresentationMargin() {
         document.getElementById("presentConfigMarginRight").value =
             $RvW.vvConfigObj.get_p_rightMargin();
     }
-    var v = document.getElementById("presentConfigMaxFontSize").value;
+    const v = document.getElementById("presentConfigMaxFontSize").value;
     if (IsNumeric(v)) {
         if (withinRange(30, 200, v)) {
             $RvW.vvConfigObj.set_p_maxFontSize(v);
         } else {
-            k = false;
-            alert("Maximum font size value out of Range");
-            document.getElementById("presentConfigMaxFontSize").value =
-                $RvW.vvConfigObj.get_p_maxFontSize();
+            canSave = false;
+            Toast.show("Error", "Maximum font size value out of Range");
+            document.getElementById("presentConfigMaxFontSize").value = $RvW.vvConfigObj.get_p_maxFontSize();
         }
     } else {
-        k = false;
-        alert("Invalid maximum font size value.");
-        document.getElementById("presentConfigMaxFontSize").value =
-            $RvW.vvConfigObj.get_p_maxFontSize();
+        canSave = false;
+        Toast.show("Error", "Invalid maximum font size value.");
+        document.getElementById("presentConfigMaxFontSize").value = $RvW.vvConfigObj.get_p_maxFontSize();
     }
     var l = document.getElementById("presentConfigEnableTransition").checked;
     $RvW.vvConfigObj.set_p_enableTransition(l);
@@ -112,7 +111,8 @@ export function savePresentationMargin() {
     $RvW.vvConfigObj.set_hideStanzaNumber(o);
     var b = document.getElementById("fitLineSetup").checked;
     $RvW.vvConfigObj.set_pformat_multiplelines(b);
-    if (k) {
+
+    if (canSave) {
         $RvW.vvConfigObj.save();
     }
 }

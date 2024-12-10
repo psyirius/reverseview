@@ -43,7 +43,6 @@ export default function BibleVerseEditDialog() {
             <div class="yui3-widget-bd">
                 <div class="ui form container segment">
                     <div id="generalPanelDIV_delete" class="ui grid bibleEditDIV">
-
                         <div class="column">
                             <div class="form-group row field">
                                 <label>Reference</label>
@@ -52,7 +51,7 @@ export default function BibleVerseEditDialog() {
 
                             <div class="form-group row field">
                                 <label>Current Verse Text</label>
-                                <div rows={3} id="currentVerseTextDiv"></div>
+                                <div id="currentVerseTextDiv"></div>
                             </div>
 
                             <div class="form-group row field">
@@ -64,11 +63,8 @@ export default function BibleVerseEditDialog() {
                                 <button class="ui primary button" id="updateVerseTextButton">UPDATE</button>
                                 <button class="ui primary button" id="cancelVerseTextButton">CANCEL</button>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

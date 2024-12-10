@@ -803,21 +803,28 @@ function setupNavWindow() {
     var k = window.nativeWindow.bounds.width;
     if (navWindowHeight != d || navWindowWidth != k) {
         document.body.style.overflow = "hidden";
+
         var j = window.nativeWindow.bounds.width - 16;
         var f = window.innerHeight;
         var b = parseInt((j * 3) / 100);
         var a = parseInt((f * 4) / 100);
+
         $RvW.tabHeight = f - 120;
+
         var g = 250;
         var e = 200;
         document.getElementById("wrapper").style.height = $RvW.tabHeight;
+
         // $("#container").height($RvW.tabHeight);
         // $("#bibleNav").height($RvW.tabHeight);
         // $("#songNavTab").height($RvW.tabHeight);
+
+        // TODO: make this in css
         $("#bookList").height($RvW.tabHeight - c);
         $("#chapterList").height($RvW.tabHeight - c);
         $("#verseList").height($RvW.tabHeight - c);
-        var l = j - g - e - 3 * b;
+
+        const l = j - g - e - 3 * b;
         document.getElementById("container2").style.height = $RvW.tabHeight;
         document.getElementById("bibleverseTab").style.height = $RvW.tabHeight;
         document.getElementById("lyricsTab").style.height = $RvW.tabHeight;
