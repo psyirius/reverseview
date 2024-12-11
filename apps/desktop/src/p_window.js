@@ -2,7 +2,13 @@ import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 
 import $ from "jquery";
-import {presentationMainEnabled, presentationStageEnabled} from "@stores/global";
+import {
+    presentationPrimaryFontOverride,
+    presentationMainEnabled,
+    presentationStageEnabled,
+    presentationSecondaryFontOverride
+} from "@stores/global";
+import {loadInstalledFonts} from "@app/main";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
@@ -47,8 +53,8 @@ function passVariable(isStageView, _ = undefined) {
     index_for_presentationContent = presentationCtx.p_current_index;
     _.p_text1_arr = presentationCtx.p_text1_arr;
     _.p_text2_arr = presentationCtx.p_text2_arr;
-    _.p_text1_font = presentationCtx.p_text1_font;
-    _.p_text2_font = presentationCtx.p_text2_font;
+    _.p_text1_font = presentationPrimaryFontOverride.get() || presentationCtx.p_text1_font;
+    _.p_text2_font = presentationSecondaryFontOverride.get() || presentationCtx.p_text2_font;
     _.p_title = presentationCtx.p_title;
     _.p_footnote = presentationCtx.p_footer;
     _.p_current_index = presentationCtx.p_current_index;
@@ -150,6 +156,16 @@ function passVariable(isStageView, _ = undefined) {
 function getCurrentScreen() {
     const a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
     return a.length > 0 ? a[0] : air.Screen.mainScreen;
+}
+
+
+export function getAvailableFonts() {
+    return $RvW.systemFontList.concat([
+        ...loadInstalledFonts().map((font) => font.fontName),
+    ]).map((fontName) => ({
+        name: fontName,
+        value: fontName,
+    }));
 }
 
 export function getAvailableScreens() {

@@ -1,21 +1,26 @@
 import {useEffect, useRef} from "preact/hooks";
-import {getAvailableScreens} from "@/p_window";
+import {getAvailableScreens, getAvailableFonts} from "@/p_window";
 import {$RvW} from "@/rvw";
 import {
+    availableFonts as availableFontsStore,
     availableScreens as availableScreensStore,
+    presentationPrimaryFontOverride,
+    presentationSecondaryFontOverride,
     presentationMainEnabled,
     presentationMainScreen,
     presentationStageEnabled,
-    presentationStageScreen
+    presentationStageScreen,
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
-
 
 export default function RightSettingsTab() {
     const screenSelectMain = useRef<HTMLDivElement>(null);
     const screenSelectStage = useRef<HTMLDivElement>(null);
+    const fontSelectOverridePrimary = useRef<HTMLDivElement>(null);
+    const fontSelectOverrideSecondary = useRef<HTMLDivElement>(null);
 
     const availableScreens = useStoreState(availableScreensStore);
+    const availableFonts = useStoreState(availableFontsStore);
 
     const mainScreen = useStoreState(presentationMainScreen);
     const stageScreen = useStoreState(presentationStageScreen);
@@ -23,21 +28,28 @@ export default function RightSettingsTab() {
     const mainEnabled = useStoreState(presentationMainEnabled);
     const stageEnabled = useStoreState(presentationStageEnabled);
 
+    const fontOverridePrimary = useStoreState(presentationPrimaryFontOverride);
+    const fontOverrideSecondary = useStoreState(presentationSecondaryFontOverride);
+
     useEffect(() => {
-        // air.trace('[INIT]');
+        air.trace('[INIT]');
 
         availableScreensStore.set(getAvailableScreens());
+        availableFontsStore.set(getAvailableFonts());
 
         presentationMainEnabled.set(!!$RvW.vvConfigObj.get_mainConfigEnable());
         presentationStageEnabled.set(!!$RvW.vvConfigObj.get_stageConfigEnable());
 
         presentationMainScreen.set($RvW.rvwPreferences.get("app.settings.screen.main.index", 1));
         presentationStageScreen.set($RvW.rvwPreferences.get("app.settings.screen.stage.index", 0));
+
+        presentationPrimaryFontOverride.set($RvW.rvwPreferences.get("app.settings.font.primary.override", null));
+        presentationSecondaryFontOverride.set($RvW.rvwPreferences.get("app.settings.font.secondary.override", null));
     }, []);
 
     useEffect(() => {
         // always add this after the select list is populated
-        // air.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, availableScreens]));
+        // air.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, [fontOverridePrimary, fontOverrideSecondary], availableScreens, {length: availableFonts.length}]));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown({
@@ -63,6 +75,32 @@ export default function RightSettingsTab() {
             }
         });
 
+        // @ts-ignore
+        $(fontSelectOverridePrimary.current).dropdown({
+            on: 'click',
+            onChange: function(value: string, text: string, $selected: any) {
+                // Is triggered by user interaction
+                // @ts-ignore
+                if (!$selected || !$(fontSelectOverridePrimary.current).dropdown('is visible')) return;
+
+                air.trace('Changed Primary Font Override:', value, text, $selected);
+                updatePrimaryFontOverride(value || null);
+            },
+        });
+
+        // @ts-ignore
+        $(fontSelectOverrideSecondary.current).dropdown({
+            on: 'click',
+            onChange: function(value: string, text: string, $selected: any) {
+                // Is triggered by user interaction
+                // @ts-ignore
+                if (!$selected || !$(fontSelectOverrideSecondary.current).dropdown('is visible')) return;
+
+                air.trace('Changed Font Override:', value, text, $selected);
+                updateSecondaryFontOverride(value || null);
+            },
+        });
+
         // setTimeout(() => {
         //     air.trace('TRIG....')
         //
@@ -85,6 +123,15 @@ export default function RightSettingsTab() {
     }, [availableScreens]);
 
     useEffect(() => {
+        air.trace('Fonts.Update:', JSON.stringify({length: availableFonts.length}));
+
+        // @ts-ignore
+        $(fontSelectOverridePrimary.current).dropdown('refresh'); refreshPrimaryFontOverride();
+        // @ts-ignore
+        $(fontSelectOverrideSecondary.current).dropdown('refresh'); refreshSecondaryFontOverride();
+    }, [availableFonts]);
+
+    useEffect(() => {
         // air.trace('Screen.Main:', JSON.stringify(mainScreen));
 
         // @ts-ignore
@@ -97,6 +144,20 @@ export default function RightSettingsTab() {
         // @ts-ignore
         $(screenSelectStage.current).dropdown('set selected', stageScreen + 1);
     }, [stageScreen]);
+
+    useEffect(() => {
+        // air.trace('Font.Override.Primary:', fontOverridePrimary);
+
+        // @ts-ignore
+        $(fontSelectOverridePrimary.current).dropdown('set selected', fontOverridePrimary || '');
+    }, [fontOverridePrimary]);
+
+    useEffect(() => {
+        // air.trace('Font.Override.Secondary:', fontOverrideSecondary);
+
+        // @ts-ignore
+        $(fontSelectOverrideSecondary.current).dropdown('set selected', fontOverrideSecondary || '');
+    }, [fontOverrideSecondary]);
 
     function getSelectedScreenIndex(current: number, size: number) {
         return current < size ? current : 0;
@@ -114,15 +175,27 @@ export default function RightSettingsTab() {
         $RvW.vvConfigObj.save();
     }
 
-    function onRefreshScreensMain() {
+    function updatePrimaryFontOverride(value: string | null) {
+        presentationPrimaryFontOverride.set(value);
+        $RvW.rvwPreferences.set("app.settings.font.primary.override", value || null);
+        $RvW.vvConfigObj.save();
+    }
+
+    function updateSecondaryFontOverride(value: string | null) {
+        presentationSecondaryFontOverride.set(value);
+        $RvW.rvwPreferences.set("app.settings.font.secondary.override", value || null);
+        $RvW.vvConfigObj.save();
+    }
+
+    function onRefreshScreens() {
         const _screens = getAvailableScreens();
         availableScreensStore.set(_screens);
         // next step is invoked by hook
     }
 
-    function onRefreshScreensStage() {
-        const _screens = getAvailableScreens();
-        availableScreensStore.set(_screens);
+    function onRefreshFonts() {
+        const _fonts = getAvailableFonts();
+        availableFontsStore.set(_fonts);
         // next step is invoked by hook
     }
 
@@ -136,6 +209,32 @@ export default function RightSettingsTab() {
         const savedIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", stageScreen);
         // air.trace('SAVED:', savedIndex)
         presentationStageScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
+    }
+
+    function refreshPrimaryFontOverride() {
+        const savedValue = $RvW.rvwPreferences.get("app.settings.font.primary.override", fontOverridePrimary);
+        air.trace('SAVED:', savedValue)
+        let value = null;
+        for (const f of availableFonts) {
+            if (f.value === savedValue) {
+                value = savedValue;
+                break
+            }
+        }
+        presentationPrimaryFontOverride.set(value);
+    }
+
+    function refreshSecondaryFontOverride() {
+        const savedValue = $RvW.rvwPreferences.get("app.settings.font.secondary.override", fontOverrideSecondary);
+        air.trace('SAVED:', savedValue)
+        let value = null;
+        for (const f of availableFonts) {
+            if (f.value === savedValue) {
+                value = savedValue;
+                break
+            }
+        }
+        presentationSecondaryFontOverride.set(value);
     }
 
     function onChangeMainEnable(e: Event) {
@@ -165,8 +264,8 @@ export default function RightSettingsTab() {
                             <div class="inline field">
                                 <div class="ui toggle checkbox">
                                     <input type="checkbox" name="main"
-                                           checked={mainEnabled}
-                                           onChange={onChangeMainEnable}
+                                       checked={mainEnabled}
+                                       onChange={onChangeMainEnable}
                                     />
                                     <label>Enable</label>
                                 </div>
@@ -177,8 +276,8 @@ export default function RightSettingsTab() {
                             <div class="inline field">
                                 <div class="ui toggle checkbox">
                                     <input type="checkbox" name="stage"
-                                           checked={stageEnabled}
-                                           onChange={onChangeStageEnable}
+                                       checked={stageEnabled}
+                                       onChange={onChangeStageEnable}
                                     />
                                     <label>Enable</label>
                                 </div>
@@ -204,7 +303,7 @@ export default function RightSettingsTab() {
                                         ))}
                                     </div>
                                 </div>
-                                <div class="ui button small" onClick={() => onRefreshScreensMain()}>
+                                <div class="ui button small" onClick={() => onRefreshScreens()}>
                                     <i class="sync icon"></i>
                                     Refresh
                                 </div>
@@ -250,7 +349,7 @@ export default function RightSettingsTab() {
                                         ))}
                                     </div>
                                 </div>
-                                <div class="ui button small" onClick={() => onRefreshScreensStage()}>
+                                <div class="ui button small" onClick={() => onRefreshScreens()}>
                                     <i class="sync icon"></i>
                                     Refresh
                                 </div>
@@ -303,10 +402,9 @@ export default function RightSettingsTab() {
                     <div class="two fields">
                         <div class="field">
                             <label>Font</label>
-
                             <div class="inline fields">
                                 <div class="field">
-                                    <label>Maximum Font Size</label>
+                                    <label>Max Font Size</label>
                                     <input
                                         type="text"
                                         id="presentConfigMaxFontSize"
@@ -343,6 +441,84 @@ export default function RightSettingsTab() {
                         </div>
                     </div>
 
+                    {/* Font Override */}
+                    <div class="two fields">
+                        <div class="field">
+                            <div class="inline fields">
+                                <div class="field">
+                                    {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
+                                    <label>Font Override: Primary</label>
+                                    <div class="ui action input" style={{width: '100%'}}>
+                                        <div class="ui selection dropdown" ref={fontSelectOverridePrimary}
+                                             style={{width: '100%'}}>
+                                            <input type="hidden" name="font-override"/>
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Font</div>
+                                            <div class="menu" style={{width: '100%'}}>
+                                                <div class="item" data-value={''} data-text={'Disabled'}>
+                                                    {'Disabled'}
+                                                </div>
+                                                {availableFonts.map(({name, value}, i) => (
+                                                    <div
+                                                        key={i}
+                                                        class="item"
+                                                        data-value={value}
+                                                        data-text={name}
+                                                        style={{fontFamily: value}}
+                                                    >
+                                                        {name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div class="ui button small" onClick={() => onRefreshFonts()}>
+                                            <i class="sync icon"></i>
+                                            Refresh
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="inline fields">
+                                <div class="field">
+                                    {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
+                                    <label>Font Override: Secondary</label>
+                                    <div class="ui action input" style={{width: '100%'}}>
+                                        <div class="ui selection dropdown" ref={fontSelectOverrideSecondary}
+                                             style={{width: '100%'}}>
+                                            <input type="hidden" name="font-override"/>
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Font</div>
+                                            <div class="menu" style={{width: '100%'}}>
+                                                <div class="item" data-value={''} data-text={'Disabled'}>
+                                                    {'Disabled'}
+                                                </div>
+                                                {availableFonts.map(({name, value}, i) => (
+                                                    <div
+                                                        key={i}
+                                                        class="item"
+                                                        data-value={value}
+                                                        data-text={name}
+                                                        style={{fontFamily: value}}
+                                                    >
+                                                        {name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div class="ui button small" onClick={() => onRefreshFonts()}>
+                                            <i class="sync icon"></i>
+                                            Refresh
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Styling & Window */}
                     <div class="two fields">
                         <div class="field">
                             <label>Styling</label>
@@ -370,19 +546,20 @@ export default function RightSettingsTab() {
                         </div>
 
                         <div class="field">
-                            <label>Settings</label>
+                            <label>Window</label>
 
                             <div class="inline fields">
                                 <div class="field">
                                     <div class="ui checkbox">
                                         <input type="checkbox" name="example" id="presentConfigOntop"/>
-                                        <label>Keep Presentation Window on Top</label>
+                                        <label>Stay on Top</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* Orientation */}
                     <div class="two fields">
                         <div class="field">
                             <label>Orientation</label>
@@ -436,23 +613,94 @@ export default function RightSettingsTab() {
                         {/*</div>*/}
                     </div>
 
-                    {/* TODO: style proper */}
-                    <div class="ui grid">
-                        <div class="six wide column">
-                            <input type="checkbox" id="presentConfigShowDateTime"/> Show Date and Time<br/>
-                            <input type="checkbox" id="presentConfigShowVVLogo"/> Show ReVerseVIEW Logo<br/>
-                            <input type="checkbox" id="presentConfigShowCustomLogo"/> Show Custom Logo<br/>
-                            <input name="customLogoText1" type="text" id="customLogoText1" size={40}/><br/>
-                            <input name="customLogoText2" type="text" id="customLogoText2" size={40}/><br/><br/>
+                    {/* Widgets & Lyric Config */}
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Widgets</label>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="presentConfigShowDateTime"/>
+                                    <label>Show Date and Time</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="presentConfigShowVVLogo"/>
+                                    <label>Show ReVerseVIEW Logo</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        name="example"
+                                        id="presentConfigShowCustomLogo"
+                                    />
+                                    <label>Show Custom Logo</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <input
+                                    name="customLogoText1"
+                                    class="ui input fluid"
+                                    type="text"
+                                    id="customLogoText1"
+                                    size={40}
+                                />
+                            </div>
+
+                            <div class="field">
+                                <input
+                                    name="customLogoText2"
+                                    class="ui input fluid"
+                                    type="text"
+                                    id="customLogoText2"
+                                    size={40}
+                                />
+                            </div>
                         </div>
 
-                        <div class="six wide column">
-                            <b>SONG LYRICS</b> <br/>
-                            <input type="checkbox" id="presentConfigEnableSongTitle"/> Show Song Title<br/>
-                            <input type="checkbox" id="showPrimaryFont"/> Show lyrics in primary language<br/>
-                            <input type="checkbox" id="show2LinesSlides"/> Two (2) lines per slide<br/>
-                            <input type="checkbox" id="hideStanzaNumber"/> Hide stanza number<br/>
-                            <input type="checkbox" id="fitLineSetup" checked/> Enable Line Wrap<br/>
+                        <div class="field">
+                            <label>Lyric Config</label>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="presentConfigEnableSongTitle"/>
+                                    <label>Show Song Title</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="showPrimaryFont"/>
+                                    <label>Show lyrics in primary language</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="show2LinesSlides"/>
+                                    <label>Two (2) lines per slide</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="hideStanzaNumber"/>
+                                    <label>Hide stanza number</label>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="example" id="fitLineSetup"/>
+                                    <label>Enable Line Wrap</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -470,7 +718,6 @@ export default function RightSettingsTab() {
 
                 {/* TODO: style proper */}
                 <div class="style2">
-                    <div class="generalheading2">Stage Screen Setup</div>
                     <div id="stageScreenSetupID" class="padded">
                         <b>Stage Screen Style </b>
 
@@ -587,8 +834,6 @@ export default function RightSettingsTab() {
                             <input name="stageMessageHide" type="button" id="stageMessageHide" value=" CLEAR "/>
                         </div>
                     </div>
-
-                    <hr/>
                     <br/>
                 </div>
             </div>

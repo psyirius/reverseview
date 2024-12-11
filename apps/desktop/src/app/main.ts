@@ -58,7 +58,7 @@ import {
     pluckapple,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
-import {selectedBookRef, selectedTab} from "@stores/global";
+import {availableFonts, selectedBookRef, selectedTab} from "@stores/global";
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
@@ -707,7 +707,7 @@ function activateMainWindow() {
     nativeWindow.activate();
 }
 
-function loadInstalledFonts() {
+export function loadInstalledFonts() {
     const { Array } = window.runtime;
     const { Font } = window.runtime.flash.text;
 
