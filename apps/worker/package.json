@@ -1,5 +1,5 @@
 {
-  "name": "@rvw/renderer",
+  "name": "@rvw/worker",
   "version": "0.0.1",
   "description": "",
   "type": "module",
@@ -12,6 +12,9 @@
     "@napi-rs/canvas": "^0.1.65",
     "canvas": "^2.11.2",
     "canvaskit-wasm": "^0.39.1",
+    "socket.io": "^4.8.1",
+    "websocket": "^1.0.35",
+    "fastify": "^5.1.0",
     "skia-canvas": "^2.0.1"
   },
   "devDependencies": {
