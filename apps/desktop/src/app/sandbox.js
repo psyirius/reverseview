@@ -21,4 +21,5 @@ function sandboxLoaded() {
     air.trace('UA: ' + window.htmlLoader.userAgent);
 
     childSandboxBridge.sayHello("Hello from parent");
+    childSandboxBridge.trace = air.trace;
 }

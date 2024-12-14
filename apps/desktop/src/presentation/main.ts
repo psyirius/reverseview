@@ -953,7 +953,7 @@
 
     function debug(msg) {
         if (DEBUG_ENABLED) {
-            air.trace("[presentation.js]: " + msg);
+            // console.trace("[presentation.js]: " + msg);
         }
     }
 

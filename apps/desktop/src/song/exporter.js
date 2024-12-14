@@ -3,9 +3,10 @@ import {fixHTTPS_Link, specialCategory} from "@app/common";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 import * as XmlUtils from "@/utils/xml";
 
-export class SongPortXML {
+export class SongExporter {
     constructor(song, category, s, exportKind) {
         this.exportAll = exportAll;
         this.exportByCat = exportByCat;
@@ -125,9 +126,11 @@ export class SongPortXML {
         }
 
         function importXML() {
+            // TODO: save last open dir
             const file = air.File.desktopDirectory;
-            const fileFilters = new runtime.Array();
-            fileFilters.push(new air.FileFilter("VerseVIEW Song DB", "*.xml"));
+            const fileFilters = [
+                new air.FileFilter("VerseVIEW Song DB", "*.xml"),
+            ];
             file.browseForOpen("Select Song DB in XML format.", fileFilters);
             file.addEventListener(air.Event.SELECT, onSelectFile);
 
@@ -144,7 +147,7 @@ export class SongPortXML {
 
                 const songsDoc = XmlUtils.parse(fileContents);
 
-                air.trace('Song DB File:', fileContents.length, songsDoc);
+                console.trace('Song DB File:', fileContents.length, songsDoc);
 
                 parseSongDB(songsDoc);
             }
@@ -195,22 +198,26 @@ export class SongPortXML {
         function serializeSongXml(song) {
             let sx = "";
             sx += "<song>\n";
-            sx += "  <category>" + song.catIndex + "</category>\n";
-            sx += "  <name>" + song.name + "</name>\n";
-            sx += "  <font>" + song.font + "</font>\n";
-            sx += "  <font2>" + song.font2 + "</font2>\n";
-            sx += "  <timestamp>" + song.timestamp + "</timestamp>\n";
-            sx += song.yvideo === "null" ? `  <yvideo></yvideo>\n` : `  <yvideo>${song.yvideo}</yvideo>\n`;
-            sx += "  <bkgnd>" + song.bkgnd_fname + "</bkgnd>\n";
-            sx += "  <key>" + song.key + "</key>\n";
-            sx += "  <copyright>" + song.copyright + "</copyright>\n";
-            sx += "  <notes>" + song.notes + "</notes>\n";
-            sx += "  <slide><![CDATA[" + song.slides + "]]></slide>\n";
-            sx += "  <slide2><![CDATA[" + song.slides2 + "]]></slide2>\n";
-            sx += "  <name2><![CDATA[" + song.name2 + "]]></name2>\n";
-            sx += "  <tags><![CDATA[" + song.tags + "]]></tags>\n";
-            sx += "  <slideseq><![CDATA[" + song.slideseq + "]]></slideseq>\n";
-            sx += "  <subcat><![CDATA[" + song.subcat + "]]></subcat>\n";
+            sx += "\t<category>" + song.catIndex + "</category>\n";
+            sx += "\t<name>" + song.name + "</name>\n";
+            sx += "\t<font>" + song.font + "</font>\n";
+            sx += "\t<font2>" + song.font2 + "</font2>\n";
+            sx += "\t<timestamp>" + song.timestamp + "</timestamp>\n";
+            if (song.yvideo === "null" || !song.yvideo) {
+                sx += `\t<yvideo></yvideo>\n`;
+            } else {
+                sx += `\t<yvideo>${song.yvideo}</yvideo>\n`;
+            }
+            sx += "\t<bkgnd>" + song.bkgnd_fname + "</bkgnd>\n";
+            sx += "\t<key>" + song.key + "</key>\n";
+            sx += "\t<copyright>" + song.copyright + "</copyright>\n";
+            sx += "\t<notes>" + song.notes + "</notes>\n";
+            sx += "\t<slide><![CDATA[" + song.slides + "]]></slide>\n";
+            sx += "\t<slide2><![CDATA[" + song.slides2 + "]]></slide2>\n";
+            sx += "\t<name2><![CDATA[" + song.name2 + "]]></name2>\n";
+            sx += "\t<tags><![CDATA[" + song.tags + "]]></tags>\n";
+            sx += "\t<slideseq><![CDATA[" + song.slideseq + "]]></slideseq>\n";
+            sx += "\t<subcat><![CDATA[" + song.subcat + "]]></subcat>\n";
             sx += "</song>\n";
             return sx;
         }
@@ -249,7 +256,7 @@ export class SongPortXML {
 
             const songItems = doc.getElementsByTagName("song");
 
-            air.trace('Total Songs:', songItems.length);
+            console.trace('Total Songs:', songItems.length);
 
             for (let i = 0; i < songItems.length; ++i) {
                 const item = songItems[i];

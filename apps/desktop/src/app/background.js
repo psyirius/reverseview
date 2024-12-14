@@ -3,8 +3,9 @@
 // - YAHOO.util.Event
 
 import {Toast} from "@/app/toast";
-import {save2file} from "@/app/common";
+import {saveFileInAppStorage} from "@/app/common";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 export const BgContext = {
     selectedIndex: 0,
@@ -34,11 +35,10 @@ export const BgContext = {
         return b;
     },
     loadList: function getBkgListFromFile() {
-        var d = null;
+        let d;
         var b = null;
         var a = "./xml/backgroundlist.xml";
-        d = air.File.applicationStorageDirectory;
-        d = d.resolvePath(a);
+        d = air.File.applicationStorageDirectory.resolvePath(a);
         b = new XMLHttpRequest();
         b.onreadystatechange = function () {
             if (b.readyState === 4) {
@@ -116,17 +116,17 @@ export const BgContext = {
             BgContext.selectedIndex = BgContext.newSelectedIndex;
             $RvW.vvConfigObj.set_bkgndIndex(BgContext.selectedIndex);
             $RvW.vvConfigObj.save();
-            var b =
-                "Background " + BgContext.name[BgContext.newSelectedIndex] + " selected.....";
+            var b = `Background ${BgContext.name[BgContext.newSelectedIndex]} selected.....`;
         } else {
         }
     },
     showBrowse: function () {
         const a = BgContext.filename.length;
         if (a < 50) {
-            const filters = new window.runtime.Array();
-            filters.push(new air.FileFilter("JPEG", "*.jpg"));
-            filters.push(new air.FileFilter("PNG", "*.png"));
+            const filters = [
+                new air.FileFilter("JPEG", "*.jpg"),
+                new air.FileFilter("PNG", "*.png"),
+            ];
             BgContext.newBkgndFile.browseForOpen("Select Background", filters);
         } else {
             Toast.show(
@@ -142,7 +142,7 @@ export const BgContext = {
         var f = true;
         var a = BgContext.filename.length;
         for (var e = 0; e < a; e++) {
-            if (BgContext.filename[e] == d) {
+            if (BgContext.filename[e] === d) {
                 f = false;
             }
         }
@@ -157,7 +157,7 @@ export const BgContext = {
             b = b.resolvePath("background/thumbnail/" + d);
             BgContext.newBkgndFile.copyTo(b, true);
             var l = "./xml/backgroundlist.xml";
-            save2file(g, l, false);
+            saveFileInAppStorage(g, l);
             BgContext.fill();
         } else {
             Toast.show("Background Graphics", "Background already exists.");
@@ -179,18 +179,16 @@ export const BgContext = {
         BgContext.fill();
     },
     delBkgnd: function () {
-        var d = confirm("Are you sure you want to delete the selected Background?");
-        if (d == true) {
-            var f = BgContext.selectedIndex;
-            var a = BgContext.filename.length;
-            if (f == a - 1) {
+        const d = confirm("Are you sure you want to delete the selected Background?");
+        if (!!d) {
+            const f = BgContext.selectedIndex;
+            const a = BgContext.filename.length;
+            if (f === a - 1) {
                 BgContext.selectedIndex = 0;
             }
             BgContext.filename.splice(f, 1);
             BgContext.name.splice(f, 1);
-            var b = BgContext.generateBkgndXML();
-            var e = "./xml/backgroundlist.xml";
-            save2file(b, e, false);
+            saveFileInAppStorage(BgContext.generateBkgndXML(), "./xml/backgroundlist.xml");
             $RvW.vvConfigObj.set_bkgndIndex(BgContext.selectedIndex);
             $RvW.vvConfigObj.save();
             BgContext.fill();
@@ -202,7 +200,7 @@ class ColorPicker {
     constructor() {
         this.init = init;
         this.cp_reset = cp_reset;
-        var d = null;
+        let d = null;
 
         function init() {
             d = new YAHOO.widget.ColorPicker("colorPickerID", {
@@ -231,7 +229,7 @@ class ColorPicker {
         }
 
         function f() {
-            air.trace("Save as default");
+            console.trace("Save as default");
         }
     }
 }

@@ -9,9 +9,10 @@ import {
     presentationMainEnabled,
     presentationMainScreen,
     presentationStageEnabled,
-    presentationStageScreen,
+    presentationStageScreen, restoreRemoteStandby,
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
+import {console} from "@/platform/adapters/air";
 
 export default function RightSettingsTab() {
     const screenSelectMain = useRef<HTMLDivElement>(null);
@@ -32,7 +33,7 @@ export default function RightSettingsTab() {
     const fontOverrideSecondary = useStoreState(presentationSecondaryFontOverride);
 
     useEffect(() => {
-        air.trace('[INIT]');
+        console.trace('[INIT]');
 
         availableScreensStore.set(getAvailableScreens());
         availableFontsStore.set(getAvailableFonts());
@@ -49,7 +50,7 @@ export default function RightSettingsTab() {
 
     useEffect(() => {
         // always add this after the select list is populated
-        // air.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, [fontOverridePrimary, fontOverrideSecondary], availableScreens, {length: availableFonts.length}]));
+        // console.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, [fontOverridePrimary, fontOverrideSecondary], availableScreens, {length: availableFonts.length}]));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown({
@@ -58,7 +59,7 @@ export default function RightSettingsTab() {
                 // @ts-ignore
                 if (!$selected || !$(screenSelectMain.current).dropdown('is visible')) return;
                 
-                // air.trace('Changed Main Screen:', value, text, $selected);
+                // console.trace('Changed Main Screen:', value, text, $selected);
                 updateMainScreenSelection(value - 1);
             }
         });
@@ -70,7 +71,7 @@ export default function RightSettingsTab() {
                 // @ts-ignore
                 if (!$selected || !$(screenSelectStage.current).dropdown('is visible')) return;
 
-                // air.trace('Changed Stage Screen:', value, text, $selected);
+                // console.trace('Changed Stage Screen:', value, text, $selected);
                 updateStageScreenSelection(value - 1);
             }
         });
@@ -83,7 +84,7 @@ export default function RightSettingsTab() {
                 // @ts-ignore
                 if (!$selected || !$(fontSelectOverridePrimary.current).dropdown('is visible')) return;
 
-                air.trace('Changed Primary Font Override:', value, text, $selected);
+                console.trace('Changed Primary Font Override:', value, text, $selected);
                 updatePrimaryFontOverride(value || null);
             },
         });
@@ -96,13 +97,13 @@ export default function RightSettingsTab() {
                 // @ts-ignore
                 if (!$selected || !$(fontSelectOverrideSecondary.current).dropdown('is visible')) return;
 
-                air.trace('Changed Font Override:', value, text, $selected);
+                console.trace('Changed Font Override:', value, text, $selected);
                 updateSecondaryFontOverride(value || null);
             },
         });
 
         // setTimeout(() => {
-        //     air.trace('TRIG....')
+        //     console.trace('TRIG....')
         //
         //     // @ts-ignore
         //     // $(screenSelectMain.current).dropdown('set value', '1');
@@ -114,7 +115,7 @@ export default function RightSettingsTab() {
     }, []);
 
     useEffect(() => {
-        // air.trace('Screens.Update:', JSON.stringify(availableScreens));
+        // console.trace('Screens.Update:', JSON.stringify(availableScreens));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown('refresh'); refreshMainScreen();
@@ -123,7 +124,7 @@ export default function RightSettingsTab() {
     }, [availableScreens]);
 
     useEffect(() => {
-        air.trace('Fonts.Update:', JSON.stringify({length: availableFonts.length}));
+        console.trace('Fonts.Update:', JSON.stringify({length: availableFonts.length}));
 
         // @ts-ignore
         $(fontSelectOverridePrimary.current).dropdown('refresh'); refreshPrimaryFontOverride();
@@ -132,28 +133,28 @@ export default function RightSettingsTab() {
     }, [availableFonts]);
 
     useEffect(() => {
-        // air.trace('Screen.Main:', JSON.stringify(mainScreen));
+        // console.trace('Screen.Main:', JSON.stringify(mainScreen));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown('set selected', mainScreen + 1);
     }, [mainScreen]);
 
     useEffect(() => {
-        // air.trace('Screen.Stage:', JSON.stringify(stageScreen));
+        // console.trace('Screen.Stage:', JSON.stringify(stageScreen));
 
         // @ts-ignore
         $(screenSelectStage.current).dropdown('set selected', stageScreen + 1);
     }, [stageScreen]);
 
     useEffect(() => {
-        // air.trace('Font.Override.Primary:', fontOverridePrimary);
+        // console.trace('Font.Override.Primary:', fontOverridePrimary);
 
         // @ts-ignore
         $(fontSelectOverridePrimary.current).dropdown('set selected', fontOverridePrimary || '');
     }, [fontOverridePrimary]);
 
     useEffect(() => {
-        // air.trace('Font.Override.Secondary:', fontOverrideSecondary);
+        // console.trace('Font.Override.Secondary:', fontOverrideSecondary);
 
         // @ts-ignore
         $(fontSelectOverrideSecondary.current).dropdown('set selected', fontOverrideSecondary || '');
@@ -201,19 +202,19 @@ export default function RightSettingsTab() {
 
     function refreshMainScreen() {
         const savedIndex = $RvW.rvwPreferences.get("app.settings.screen.main.index", mainScreen);
-        // air.trace('SAVED:', savedIndex)
+        // console.trace('SAVED:', savedIndex)
         presentationMainScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
     }
 
     function refreshStageScreen() {
         const savedIndex = $RvW.rvwPreferences.get("app.settings.screen.stage.index", stageScreen);
-        // air.trace('SAVED:', savedIndex)
+        // console.trace('SAVED:', savedIndex)
         presentationStageScreen.set(getSelectedScreenIndex(savedIndex, availableScreens.length));
     }
 
     function refreshPrimaryFontOverride() {
         const savedValue = $RvW.rvwPreferences.get("app.settings.font.primary.override", fontOverridePrimary);
-        air.trace('SAVED:', savedValue)
+        console.trace('SAVED:', savedValue)
         let value = null;
         for (const f of availableFonts) {
             if (f.value === savedValue) {
@@ -226,7 +227,7 @@ export default function RightSettingsTab() {
 
     function refreshSecondaryFontOverride() {
         const savedValue = $RvW.rvwPreferences.get("app.settings.font.secondary.override", fontOverrideSecondary);
-        air.trace('SAVED:', savedValue)
+        console.trace('SAVED:', savedValue)
         let value = null;
         for (const f of availableFonts) {
             if (f.value === savedValue) {
@@ -559,6 +560,35 @@ export default function RightSettingsTab() {
                         </div>
                     </div>
 
+                    {/* Remote & Misc */}
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Remote</label>
+
+                            <div class="fields">
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="remoteRestoreToggle"/>
+                                        <label>Restore Standby on Startup</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/*<div class="field">*/}
+                        {/*    <label>Misc</label>*/}
+
+                        {/*    <div class="inline fields">*/}
+                        {/*        <div class="field">*/}
+                        {/*            <div class="ui checkbox">*/}
+                        {/*                <input type="checkbox" name="example" id="presentConfigOntop"/>*/}
+                        {/*                <label>Stay on Top</label>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                    </div>
+
                     {/* Orientation */}
                     <div class="two fields">
                         <div class="field">
@@ -580,6 +610,10 @@ export default function RightSettingsTab() {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Orientation</label>
 
                             <div class="inline fields">
                                 <label>Lyric</label>
@@ -598,19 +632,6 @@ export default function RightSettingsTab() {
                                 </div>
                             </div>
                         </div>
-
-                        {/*<div class="field">*/}
-                        {/*    <label>Settings</label>*/}
-
-                        {/*    <div class="inline fields">*/}
-                        {/*        <div class="field">*/}
-                        {/*            <div class="ui checkbox">*/}
-                        {/*                <input type="checkbox" name="example" id="presentConfigOntop"/>*/}
-                        {/*                <label>Keep Presentation Window on Top</label>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
                     </div>
 
                     {/* Widgets & Lyric Config */}

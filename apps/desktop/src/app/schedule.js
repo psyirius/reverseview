@@ -4,6 +4,7 @@ import {Prompt} from "@app/prompt";
 import {processNavBibleRefFind} from "@/bible/navigation";
 import {clearSelectList} from "@app/common";
 import {Toast} from "@app/toast";
+import {console} from "@/platform/adapters/air";
 import {$RvW} from "@/rvw";
 
 import $ from "jquery";
@@ -61,11 +62,13 @@ export class Scheduler {
         }
 
         function processAddVerse(Z, Y, aa) {
+            $RvW.webServerObj.broadcastWS({event: 'schedule:added', type: 'verse'});
             var X = f();
             H(false, Z, Y, aa, 0, X);
         }
 
         function processAddSong(Y) {
+            $RvW.webServerObj.broadcastWS({event: 'schedule:added', type: 'lyric'});
             var X = f();
             if (d(Y)) {
                 H(true, 0, 0, 0, Y, X);
@@ -90,6 +93,7 @@ export class Scheduler {
         }
 
         function processUp() {
+            $RvW.webServerObj.broadcastWS({event: 'schedule:update'});
             var aa = document.getElementById("sch_selectID");
             var Z = aa.selectedIndex;
             _debug_log("Selected Index: " + Z);
@@ -107,6 +111,7 @@ export class Scheduler {
         }
 
         function processDown() {
+            $RvW.webServerObj.broadcastWS({event: 'schedule:update'});
             var ab = document.getElementById("sch_selectID");
             var Z = ab.selectedIndex;
             var aa = 0;
@@ -130,6 +135,7 @@ export class Scheduler {
         function processDelete() {
             _debug_log("About to delete Selected");
             W(getSelectedSchedule());
+            $RvW.webServerObj.broadcastWS({event: 'schedule:delete-one'});
         }
 
         function processDeleteAll() {
@@ -471,7 +477,7 @@ export class Scheduler {
 
         function _debug_log(X) {
             if (_is_debug) {
-                air.trace("[SCHEDULE]..." + X);
+                console.trace("[SCHEDULE]..." + X);
             }
         }
 
@@ -566,12 +572,12 @@ export class Scheduler {
                 a();
             }
             function X(ah) {
-                air.trace("Adding record failed...");
+                console.trace("Adding record failed...");
                 ab.removeEventListener(air.SQLEvent.RESULT, af);
                 ab.removeEventListener(air.SQLErrorEvent.ERROR, X);
-                air.trace("INSERT error:" + ah.error);
-                air.trace("event.error.code:" + ah.error.code);
-                air.trace("event.error.message:" + ah.error.message);
+                console.trace("INSERT error:" + ah.error);
+                console.trace("event.error.code:" + ah.error.code);
+                console.trace("event.error.message:" + ah.error.message);
             }
         }
 
@@ -606,6 +612,7 @@ export class Scheduler {
 
         function n() {
             _debug_log("Deleting ALL schedule record with keyValue as primary key...");
+            $RvW.webServerObj.broadcastWS({event: 'schedule:delete-all'});
             var X = new air.SQLStatement();
             X.sqlConnection = _dbConnection;
             X.text = "DELETE FROM sch;";

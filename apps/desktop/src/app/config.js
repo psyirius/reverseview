@@ -2,10 +2,12 @@ import {BibleUpdater} from "@/bible/setup";
 import {fillTagsToUI, loadTagsFromConfig} from "@/song/tags";
 import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";
-import {FontSizeSlider, save2file} from "@app/common";
+import {FontSizeSlider, saveFileInAppStorage} from "@app/common";
 import {savePresentationMargin} from "@app/presentation";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 import $ from "jquery";
+import {remoteEnabled, restoreRemoteStandby} from "@stores/global";
 
 export class Config {
     constructor() {
@@ -607,7 +609,7 @@ export class Config {
         }
 
         function _dumpXML() {
-            save2file(_toXML(), "./xml/config.xml", false);
+            saveFileInAppStorage(_toXML(), "./xml/config.xml");
             m_saveCtr--;
         }
 
@@ -1224,7 +1226,7 @@ function svClearMessage() {
     }
 }
 function stageStyleChangeEvent() {
-    air.trace("stage Style change.. ");
+    console.trace("stage Style change.. ");
     var a = $("#selectStageStyle").val();
     setupStageViewOptions();
     $RvW.vvConfigObj.set_stageStyleVal(a);
@@ -1297,6 +1299,15 @@ export function configInit() {
     setupStageViewOptions();
     document.getElementById("presentConfigEnableTransition").checked = !!$RvW.vvConfigObj.get_p_enableTransition();
     document.getElementById("presentConfigOntop").checked = !!$RvW.vvConfigObj.get_presentationOnTop();
+
+    const zzz = $RvW.rvwPreferences.get("app.settings.remote.enabled", false);
+    remoteEnabled.set(zzz);
+    remoteEnabled.subscribe((v) => $RvW.rvwPreferences.set("app.settings.remote.enabled", v));
+
+    const xxx = $RvW.rvwPreferences.get("app.settings.remote.restore.standby", false);
+    restoreRemoteStandby.set(xxx);
+    document.getElementById("remoteRestoreToggle").checked = xxx;
+
     document.getElementById("presentConfigEnableSongTitle").checked = !!$RvW.vvConfigObj.get_p_showTitle();
     document.getElementById("presentConfigEnableShadow").checked = !!$RvW.vvConfigObj.get_p_enableShadow();
     if ($RvW.vvConfigObj.get_singleVersion()) {

@@ -46,6 +46,7 @@ const MAIN_MENU = [
                 ]
             },
             { label: 'Import Lyrics', onSelect: songDB_Import_xml },
+            { label: 'Import Song DB', onSelect: songDB_Import_db },
         ]
     },
     {

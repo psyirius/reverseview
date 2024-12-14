@@ -1,6 +1,7 @@
 import {ColorPickerPanel} from "./colorpicker";
 import {$RvW} from "@/rvw";
 import {bgSolidColor} from "@stores/global";
+import {console} from "@/platform/adapters/air";
 
 export class SolidBackgroundColor {
     constructor() {
@@ -80,7 +81,7 @@ export class SolidBackgroundColor {
 
     __debug(...messages) {
         if (this.DEBUG) {
-            air.trace("[Graphics Solid BG]: ", ...messages);
+            console.trace("[Graphics Solid BG]: ", ...messages);
         }
     }
 }

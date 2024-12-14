@@ -14,6 +14,7 @@ import {Song} from '@/song/obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
 
@@ -264,7 +265,7 @@ export class SongNav {
 
         function update_CategoryList(categories) {
             const catz = categories?.map((c) => String(c.cat).trim()).filter(e => !!e) || [];
-            // air.trace("Update Category List: ", catz);
+            // console.trace("Update Category List: ", catz);
             songCategories.set(catz);
             selectedSongCategory.set(null);
         }
@@ -460,7 +461,7 @@ export class SongNav {
                 let aA = document.getElementById("songnav_editbox").value;
                 aA = String(aA).trim();
                 if (aA.length > 2) {
-                    // air.trace("Marking lyrics with search text: " + aA);
+                    // console.trace("Marking lyrics with search text: " + aA);
                     // TODO: add highlighting feature
                     // $(".context").mark(aA.toLowerCase());
                 }
@@ -487,9 +488,9 @@ export class SongNav {
             n = _itemTitle;
         }
         function sn_showLyricsByID(al) {
-            air.trace("show lyrics by ID called.. ");
+            console.trace("show lyrics by ID called.. ");
             _currentSongObj = $RvW.songManagerObj.getSongObjWithID(al);
-            air.trace(`show lyrics by ID called.. ${_currentSongObj.name}  ${_itemID}   ${_itemTitle}`);
+            console.trace(`show lyrics by ID called.. ${_currentSongObj.name}  ${_itemID}   ${_itemTitle}`);
             render_lyrics(_currentSongObj);
         }
         function filterByTag(tag) {
@@ -572,7 +573,7 @@ export class SongNav {
         }
         function __debug(...al) {
             if (m_isDebug) {
-                air.trace("[SongNav]....", ...al);
+                console.trace("[SongNav]....", ...al);
             }
         }
         function U() {

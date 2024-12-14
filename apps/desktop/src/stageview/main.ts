@@ -719,7 +719,7 @@
                 $("#footer").prop("scrollHeight") > $("#footer").prop("clientHeight")
                 ) {
                 $("#footer").css("font-size", b + "px");
-                air.trace(b);
+                // console.trace(b);
                 b = b - 5;
             }
             var b = 40;
@@ -751,7 +751,7 @@
     }
     function _debug_log(msg) {
         if (IS_DEBUG) {
-            air.trace('StageView:....' + msg);
+            // console.trace('StageView:....' + msg);
         }
     }
 

@@ -2,6 +2,7 @@ import {BibleDB} from "./db";
 import {$RvW} from "@/rvw";
 import {Toast} from "@app/toast";
 import {presentationCtx} from "@app/presentation";
+import {console} from "@/platform/adapters/air";
 
 $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;
@@ -87,7 +88,7 @@ export function getAllVersesFromChapter(d, k) {
 function getdata_sql() {
     var b = [];
     var a = [];
-    air.trace(
+    console.trace(
         "getdata_sql: Index in getdata  " +
         $RvW.bookIndex +
         " " +
@@ -168,10 +169,10 @@ export class verseClass {
             getdata(true);
         }
         function f() {
-            air.trace("Mouse Over");
+            console.trace("Mouse Over");
         }
         function g() {
-            air.trace("Mouse Out");
+            console.trace("Mouse Out");
         }
     }
 }

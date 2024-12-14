@@ -1,8 +1,8 @@
 import {useEffect} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
-import {call_nextSlide, call_prevSlide, closePresentWindowMain} from "@/p_window";
-import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab} from "@stores/global";
+import {call_nextSlide, call_prevSlide, call_showTheme, call_closePresentation} from "@/p_window";
+import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab, showRemotePanel} from "@stores/global";
 import {$RvW} from "@/rvw";
 
 import BibleRefSelect from "@app/ui/BibleRefSelect";
@@ -19,15 +19,13 @@ const handlers = {
         blankSlide();
     },
     theme: () => {
-        if ($RvW.presentationWindow != null) {
-            $RvW.presentationWindow.window.showThemeProcess();
-        }
+        call_showTheme();
     },
     logo: () => {
         showLogoSlide();
     },
     close: () => {
-        closePresentWindowMain();
+        call_closePresentation();
     },
     prev: () => {
         call_prevSlide();
@@ -88,7 +86,7 @@ export default function MenuBar() {
 
     return (
         <div style={{width: '100%'}}>
-            <div class="ui icon compact menu fluid">
+            <div class="ui icon compact menu fluid hidden">
                 {/* Menu Items */}
                 <div class="item">
                     <div class="ui buttons">
@@ -163,6 +161,18 @@ export default function MenuBar() {
                         {notification}
                     </a>
                 </div>}
+
+                <div class="right item">
+                    <button
+                        class="ui icon button"
+                        data-tooltip="Remote"
+                        data-position="bottom center"
+                        data-inverted=""
+                        onClick={() => showRemotePanel.set(true)}
+                    >
+                        <i class="wifi icon"></i>
+                    </button>
+                </div>
             </div>
         </div>
     );

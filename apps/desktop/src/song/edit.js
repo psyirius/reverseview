@@ -5,6 +5,7 @@ import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {apple, clearSelectList, isBlank, specialCategory} from "@app/common";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 import {showSongEditPanel, showLyricEditPanel} from "@stores/global";
 
 import $ from "jquery";
@@ -870,7 +871,7 @@ export class SongEdit {
 
         function _debug(ac) {
             if (_isDebug) {
-                air.trace("[SongEdit]...." + ac);
+                console.trace("[SongEdit]...." + ac);
             }
         }
 

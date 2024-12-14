@@ -1,5 +1,6 @@
 import {$RvW} from "@/rvw";
-import {Toast} from "@app/toast.js";
+import {Toast} from "@app/toast";
+import {restoreRemoteStandby} from "@stores/global";
 
 function withinRange(b, c, a) {
     return a >= b && a <= c;
@@ -105,6 +106,9 @@ export function savePresentationMargin() {
     $RvW.vvConfigObj.set_showCustomLogo(s);
     var j = document.getElementById("presentConfigOntop").checked;
     $RvW.vvConfigObj.set_presentationOnTop(j);
+    var jx = document.getElementById("remoteRestoreToggle").checked;
+    restoreRemoteStandby.set(!!jx);
+    $RvW.rvwPreferences.set("app.settings.remote.restore.standby", !!jx);
     var u = document.getElementById("show2LinesSlides").checked;
     $RvW.vvConfigObj.set_show2lines(u);
     var o = document.getElementById("hideStanzaNumber").checked;

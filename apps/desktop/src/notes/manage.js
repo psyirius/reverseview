@@ -3,6 +3,7 @@ import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName} from "@app/common";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 function notesInfo(db) {
     let conn = new air.SQLConnection();
@@ -24,8 +25,8 @@ function notesInfo(db) {
         statement.execute();
     });
     conn.addEventListener(air.SQLErrorEvent.ERROR, function(j) {
-        air.trace("[N Info] Error message:", j.error.message);
-        air.trace("Details (open Conn DB):", j.error.details);
+        console.trace("[N Info] Error message:", j.error.message);
+        console.trace("Details (open Conn DB):", j.error.details);
     });
     conn.openAsync(
         air.File.applicationStorageDirectory.resolvePath(`./notes/${db}`)
@@ -129,27 +130,27 @@ export class NotesManager {
             }
         }
         function H() {
-            var Y = air.File.desktopDirectory;
-            var W = new air.FileFilter("VerseVIEW DB", "*.db");
-            Y.browseForOpen("Open", new window.runtime.Array(W));
-            Y.addEventListener(air.Event.SELECT, X);
-            function X() {
-                var Z = air.File.applicationStorageDirectory;
-                var ac = extractFileName(Y.nativePath);
-                var aa = "./notes/" + ac;
+            let Y = air.File.desktopDirectory;
+            const W = [
+                new air.FileFilter("VerseVIEW DB", "*.db")
+            ];
+            Y.browseForOpen("Open", W);
+            Y.addEventListener(air.Event.SELECT, function() {
+                let Z = air.File.applicationStorageDirectory;
+                const ac = extractFileName(Y.nativePath);
+                const aa = "./notes/" + ac;
                 Z = Z.resolvePath(aa);
                 Y.copyTo(Z, true);
-                Y = null;
                 Toast.show("Bible Notes", "Notes Database Added to VerseVIEW");
                 notesInfo(ac);
-            }
+            });
         }
         function O() {
             var ae = document.getElementById("nm_selectID");
             var ad = ae.options[ae.selectedIndex].value;
             var ac = w.data.length;
             for (var ag = 0; ag < ac; ag++) {
-                if (ad == w.data[ag].nmId) {
+                if (ad === w.data[ag].nmId) {
                     ad = ag;
                     break;
                 }
@@ -335,19 +336,19 @@ export class NotesManager {
             return W;
         }
         function t() {
-            air.trace("");
+            console.trace("");
             if (w.data != null) {
                 var X = w.data.length;
                 for (var Y = 0; Y < X; Y++) {
                     var W = w.data[Y];
-                    air.trace(
+                    console.trace(
                         W.nmId + " | " + W.name + " | " + W.filename + " | " + W.selected
                     );
                 }
             } else {
-                air.trace("[NM] No Records!!!");
+                console.trace("[NM] No Records!!!");
             }
-            air.trace("");
+            console.trace("");
         }
         function o() {
             p = new air.SQLConnection();
@@ -380,11 +381,8 @@ export class NotesManager {
         function z(W) {
             createStmt.removeEventListener(air.SQLEvent.RESULT, s);
             createStmt.removeEventListener(air.SQLErrorEvent.ERROR, z);
-            air.trace("Error message:", W.error.message);
-            air.trace("Details in creating table :", W.error.details);
-        }
-        function I() {
-            f = false;
+            console.trace("Error message:", W.error.message);
+            console.trace("Details in creating table :", W.error.details);
         }
         function x() {
             var X = new air.SQLStatement();
@@ -408,9 +406,9 @@ export class NotesManager {
             function Y(aa) {
                 X.removeEventListener(air.SQLEvent.RESULT, insertResult);
                 X.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
-                air.trace("INSERT error:", aa.error);
-                air.trace("event.error.code:", aa.error.code);
-                air.trace("event.error.message:", aa.error.message);
+                console.trace("INSERT error:", aa.error);
+                console.trace("event.error.code:", aa.error.code);
+                console.trace("event.error.message:", aa.error.message);
             }
         }
         function a() {
@@ -432,7 +430,7 @@ export class NotesManager {
                 }
             }
             function W(aa) {
-                air.trace("Notes Manager data error...");
+                console.trace("Notes Manager data error...");
             }
         }
         function V(Z) {
@@ -453,9 +451,9 @@ export class NotesManager {
             function X(ab) {
                 Y.removeEventListener(air.SQLEvent.RESULT, insertResult);
                 Y.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
-                air.trace("Error deleting notes DB");
-                air.trace("event.error.code:", ab.error.code);
-                air.trace("event.error.message:", ab.error.message);
+                console.trace("Error deleting notes DB");
+                console.trace("event.error.code:", ab.error.code);
+                console.trace("event.error.message:", ab.error.message);
             }
         }
         function R(X, Z) {
@@ -478,8 +476,8 @@ export class NotesManager {
                 Y.removeEventListener(air.SQLEvent.RESULT, W);
                 Y.removeEventListener(air.SQLErrorEvent.ERROR, aa);
                 Toast.show("Bible Notes", "Error Updating Selected");
-                air.trace("event.error.code:", ac.error.code);
-                air.trace("event.error.message:", ac.error.message);
+                console.trace("event.error.code:", ac.error.code);
+                console.trace("event.error.message:", ac.error.message);
             }
         }
     }

@@ -16,6 +16,8 @@ export class SongPresenter {
             return f === "";
         }
         function present(g) {
+            $RvW.webServerObj.broadcastWS({event: 'cc:present', type: 'lyric'});
+
             presentationCtx.p_text1_arr = d.slides;
             presentationCtx.p_text2_arr = d.slides2;
             presentationCtx.p_text1_font = d.font;

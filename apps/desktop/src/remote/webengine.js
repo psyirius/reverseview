@@ -1,4 +1,4 @@
-import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
+import {call_closePresentation, call_nextSlide, call_prevSlide, call_showTheme} from "@/p_window";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {$RvW} from "@/rvw";
 
@@ -27,9 +27,7 @@ export class WebEngine {
         }
 
         function themePresentation() {
-            if ($RvW.presentationWindow != null) {
-                $RvW.presentationWindow.window.showThemeProcess();
-            }
+            call_showTheme();
         }
 
         function logoPresentation() {

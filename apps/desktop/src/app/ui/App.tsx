@@ -4,7 +4,8 @@ import Dialogs from "./dialogs/index";
 import ContentPane from "./ContentPane";
 
 import SandboxFrame from "./SandboxFrame";
-import RenderCanvas from "@app/ui/RenderCanvas";
+import RenderCanvas from "./RenderCanvas";
+import RemoteCanvas from "./RemoteCanvas";
 
 interface Props {
     dev?: boolean;
@@ -22,6 +23,7 @@ const App = ({dev}: Props) => {
             )}
 
             {/*<RenderCanvas />*/}
+            {/*<RemoteCanvas url="http://localhost:8088" />*/}
 
             {/*<SandboxFrame*/}
             {/*    id="UI"*/}

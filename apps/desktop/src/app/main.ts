@@ -43,7 +43,7 @@ import {
     call_nextSlide,
     call_prevSlide,
     call_showTheme,
-    closePresentWindowMain,
+    call_closePresentation,
     presentation,
     presentWindowClosed
 } from "@/p_window";
@@ -63,19 +63,20 @@ import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 // import AppState from "@/stores/state";
+import {console} from "@/platform/adapters/air";
 
 // import * as dojoDom from 'dojo/dom';
-// air.trace("dojo/dom", dojoDom);
+// console.trace("dojo/dom", dojoDom);
 
 const { HTMLUncaughtScriptExceptionEvent } = runtime.flash.events;
 
 window.htmlLoader.addEventListener(HTMLUncaughtScriptExceptionEvent.UNCAUGHT_SCRIPT_EXCEPTION, function(event) {
     event.preventDefault();
 
-    air.trace(`>>>Uncaught Script Exception<<<: ${event.exceptionValue}`);
+    console.trace(`>>>Uncaught Script Exception<<<: ${event.exceptionValue}`);
 
     for (const trace of event.stackTrace) {
-        air.trace(`${trace.sourceURL}:${trace.line} - ${trace.functionName}`);
+        console.trace(`${trace.sourceURL}:${trace.line} - ${trace.functionName}`);
     }
 });
 
@@ -99,7 +100,7 @@ DEV: {
             asx = asx[splits.shift()];
         }
 
-        air.trace('[[[.....As3.....]]]: ' + String(asx));
+        console.trace('[[[.....As3.....]]]: ' + String(asx));
 
         // const obj = new as3Val();
     } catch (e) {
@@ -114,10 +115,10 @@ DEV: {
         fetch('https://rvw.psyirius.workers.dev/query/songs')
             .then(response => response.json())
             .then(data => {
-                air.trace("Response:", data);
+                console.trace("Response:", data);
             })
             .catch(error => {
-                air.trace("Error:", error);
+                console.trace("Error:", error);
             });
     }
 }
@@ -322,6 +323,7 @@ $RvW.getVerseValue = function() {
     return document.getElementById("verseList").selectedIndex;
 }
 $RvW.launch = function(g) {
+    $RvW.webServerObj.broadcastWS({event: 'cc:present', type: 'verse'});
     var j;
     var c = document.getElementById("multipleVerseID").checked;
     var e = 1;
@@ -402,7 +404,7 @@ $RvW.present = function() {
     $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
     $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
     $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
-    air.trace("Called in $RvW.present()");
+    console.trace("Called in $RvW.present()");
     getdata();
     presentationCtx.p_footer = $RvW.getFooter();
     presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
@@ -722,7 +724,7 @@ export function loadInstalledFonts() {
     // embeddedFonts.sortOn("fontName", Array.CASEINSENSITIVE);
 
     // allFonts.forEach((font) => {
-    //     air.trace(font.fontName);
+    //     console.trace(font.fontName);
     // });
 
     return allFonts;
@@ -888,7 +890,7 @@ function setupTabContent() {
     versionFill(true); configInit();
 
     if (!isUpToDate() && !task2Status()) {
-        air.trace("About to copy webroot files...");
+        console.trace("About to copy webroot files...");
 
         if (backupWebroot()) {
             copyFile2AppStorage("webroot", "webroot");
@@ -917,7 +919,7 @@ function setupTabContent() {
 // function setupTabView(name, mountPoint) {
 //     const html = VIEWS[name];
 //     if (!html) {
-//         air.trace(`[!] View template not found: ${name}`);
+//         console.trace(`[!] View template not found: ${name}`);
 //     }
 //     document.getElementById(mountPoint).innerHTML = html;
 //     fillTabs(mountPoint);
@@ -1034,12 +1036,12 @@ function updateBookNameVar() {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState < 4) {
-            air.trace("BOOK NAME: Loading...");
+            console.trace("BOOK NAME: Loading...");
         }
 
         if (xhr.readyState === 4) {
             const e = xhr.responseXML.documentElement;
-            air.trace("********Processing bookname");
+            console.trace("********Processing bookname");
             const d = e.getElementsByTagName("b").length;
             for (let c = 0; c < d; c++) {
                 $RvW.booknames[c] = e.getElementsByTagName("b")[c].textContent;
@@ -1098,7 +1100,7 @@ function beforeExit() {
 }
 
 $RvW.processExit = function processExit() {
-    air.trace('Exit process');
+    console.trace('Exit process');
 
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.nativeWindow.removeEventListener(
@@ -1132,7 +1134,7 @@ function firstTimeCheck() {
     if (!a && !d && !c) {
         firstTimeFlag = true;
     }
-    air.trace("First time check: " + b);
+    console.trace("First time check: " + b);
     return b;
 }
 function setupVVersion() {
@@ -1187,7 +1189,7 @@ function onMainWindowKeyUp(evt) {
             }
             break;
         case 27: /* Escape */
-            closePresentWindowMain();
+            call_closePresentation();
             break;
         case 33: /* PageUp */
             call_prevSlide();
@@ -1228,11 +1230,11 @@ function setupVConfig() {
 }
 
 function onExiting() {
-    air.trace("Exiting...");
+    console.trace("Exiting...");
 }
 
 function onClosing() {
-    air.trace("Closing...");
+    console.trace("Closing...");
 }
 
 $RvW.booknames = [];
@@ -1272,7 +1274,7 @@ export function start(Y: YUI) {
 
             console.log('Stage:', stage);
         } catch (e) {
-            air.trace(e);
+            console.trace(e);
         }
 
         break TEST;

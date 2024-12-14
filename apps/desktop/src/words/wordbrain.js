@@ -1,5 +1,6 @@
 import {insertError, insertResult} from "@/song/indexing";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 export class WordBrain {
     constructor() {
@@ -174,7 +175,7 @@ export class WordBrain {
         }
         function __debug_log(D) {
             if (_isDebug) {
-                air.trace("[VV Brain]...." + D);
+                console.trace("[VV Brain]...." + D);
             }
         }
     }

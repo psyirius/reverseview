@@ -3,6 +3,7 @@
 import {SongPresenter} from "@/song/present";
 import {getAllVersesFromChapter} from "@/bible/manager";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 const mimeTypeMap = {
     '.txt'  : 'text/plain',
@@ -151,9 +152,9 @@ class HttpRequest {
 }
 
 class WebRequestHandler {
-    constructor(connection, staticDir, ws) {
+    constructor(clientSocket, staticDir, ws) {
         this._ws = ws;
-        this.m_clientSocket = connection.socket;
+        this.m_clientSocket = clientSocket;
         this.m_staticDir = staticDir;
 
         this.m_clientSocket.addEventListener(air.ProgressEvent.SOCKET_DATA, () => this._onIncoming());
@@ -311,7 +312,7 @@ class WebRequestHandler {
             // Menu: Blank
             case 15: {
                 $RvW.webEngineObj.blankPresentation();
-                this._ws.sendALL(JSON.stringify({msg: 'Blank activated'}));
+                // this._ws.sendALL(JSON.stringify({msg: 'Blank activated'}));
                 this._sendJSON({
                     ok: true,
                     data: 'Blank activated',
@@ -321,7 +322,7 @@ class WebRequestHandler {
             // Menu: Logo
             case 14: {
                 $RvW.webEngineObj.logoPresentation();
-                this._ws.sendALL(JSON.stringify({msg: 'Logo Activated'}));
+                // this._ws.sendALL(JSON.stringify({msg: 'Logo Activated'}));
                 this._sendJSON({
                     ok: true,
                     data: "Logo Activated",
@@ -331,7 +332,7 @@ class WebRequestHandler {
             // Menu: Close
             case 4: {
                 $RvW.webEngineObj.closePresentation();
-                this._ws.sendALL(JSON.stringify({msg: 'Close Activated'}));
+                // this._ws.sendALL(JSON.stringify({msg: 'Close Activated'}));
                 this._sendJSON({
                     ok: true,
                     data: "Close Activated",
@@ -341,7 +342,7 @@ class WebRequestHandler {
             // Menu: Previous Verse/Slide
             case 3: {
                 $RvW.webEngineObj.prevSlide();
-                this._ws.sendALL(JSON.stringify({msg: 'Previous Slide'}));
+                // this._ws.sendALL(JSON.stringify({msg: 'Previous Slide'}));
                 this._sendJSON({
                     ok: true,
                     data: "Previous Slide OK..",
@@ -351,7 +352,7 @@ class WebRequestHandler {
             // Menu: Next Verse/Slide
             case 2: {
                 $RvW.webEngineObj.nextSlide();
-                this._ws.sendALL(JSON.stringify({msg: 'Next Slide'}));
+                // this._ws.sendALL(JSON.stringify({msg: 'Next Slide'}));
                 this._sendJSON({
                     ok: true,
                     data: "Next slide OK..",
@@ -409,7 +410,7 @@ class WebRequestHandler {
                             error: err,
                         });
                     } else {
-                        air.trace(JSON.stringify(res));
+                        console.trace(JSON.stringify(res));
 
                         this._sendJSON({
                             ok: true,
@@ -451,7 +452,7 @@ class WebRequestHandler {
             // Songs: Present Slide
             case 17: { // Present Song Slide
                 const song = $RvW.songManagerObj.getSongObjWithID(args.id);
-                air.trace('Song: ' + JSON.stringify(song));
+                console.trace('Song: ' + JSON.stringify(song));
                 const spo = new SongPresenter(song);
                 spo.present(args.index);
 
@@ -495,7 +496,7 @@ class WebRequestHandler {
             case 9: {
                 const res = $RvW.webEngineObj.stageViewContent() || "";
 
-                air.trace('Stage View: ' + JSON.stringify(res));
+                console.trace('Stage View: ' + JSON.stringify(res));
 
                 const [
                     title,
@@ -557,7 +558,7 @@ class WebRequestHandler {
 
     _debug_log(msg) {
         if (this.m_debug) {
-            air.trace(`[WebRequestHandler]: ${msg}`);
+            console.trace(`[WebRequestHandler]: ${msg}`);
         }
     }
 }
@@ -583,7 +584,7 @@ class WebSocketHandler {
 
     _debug_log(...msg) {
         if (this._debug) {
-            air.trace(`[WebSocketHandler]: `, ...msg);
+            console.trace(`[WebSocketHandler]: `, ...msg);
         }
     }
 
@@ -614,6 +615,19 @@ export class WebServer {
         this.m_serverWebSocket = null;
         this.m_listening = false;
         this.m_staticDir = staticDir;
+        this.m_wsPingTimer = null;
+    }
+
+    broadcastWS(data) {
+        if (!this.m_serverWebSocket || !this.m_serverWebSocket.listening) return;
+
+        air.trace('Broadcasting: ' + JSON.stringify(data));
+
+        this.m_serverWebSocket.sendALL(JSON.stringify(data));
+    }
+
+    _broadcastPing() {
+        this.broadcastWS({event: 'ping'});
     }
 
     init(port, hostname) {
@@ -626,6 +640,7 @@ export class WebServer {
             this._startListening();
             if (this.m_serverSocket.listening && this.m_serverWebSocket.listening) {
                 this.m_listening = true;
+                this.m_wsPingTimer = setInterval(() => this._broadcastPing(), 1000); // 1s
                 return true;
             } else {
                 this.m_serverSocket.close();
@@ -657,9 +672,15 @@ export class WebServer {
                 // FIXME: websocket server is not stopping when clients are connected
                 // ERROR: #2002: Operation attempted on invalid socket.
                 // NOTE: It's stopping the server though, but cannot re-bind to another interface
-                air.trace(e);
+                console.trace(e);
             }
+
             this.m_listening = false;
+
+            if (this.m_wsPingTimer) {
+                clearInterval(this.m_wsPingTimer);
+                this.m_wsPingTimer = null;
+            }
         }
     }
 
@@ -680,8 +701,8 @@ export class WebServer {
 
         {
             this.m_serverSocket = new air.ServerSocket();
-            this.m_serverSocket.addEventListener(air.Event.CONNECT, (connection) => {
-                new WebRequestHandler(connection, this.m_staticDir, this.m_serverWebSocket);
+            this.m_serverSocket.addEventListener(air.Event.CONNECT, (connectEvent) => {
+                new WebRequestHandler(connectEvent.socket, this.m_staticDir, this.m_serverWebSocket);
             });
             this.m_serverSocket.bind(this.m_port, this.m_hostname);
             this.m_serverSocket.listen();

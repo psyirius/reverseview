@@ -1,6 +1,89 @@
 import {loadVersion} from "@/bible/version";
-import {clearSelectList, UnZip} from "@app/common";
+import {clearSelectList} from "@app/common";
+import {console, fs} from "@/platform/adapters/air";
 
+// TODO: just kept here for the impl courtesy
+export class UnZip {
+    constructor(u, d) {
+        this.close = close;
+        this.get_nPath = get_nPath;
+
+        const ba = new air.ByteArray();
+
+        var v = '';
+        var s;
+        var p;
+        var e;
+        var a;
+        var j;
+        var c;
+        var n;
+        var k = "";
+        var r = u + d;
+        console.trace(r);
+        var b = air.File.applicationStorageDirectory.resolvePath(r);
+        var fz = new air.FileStream();
+        var o = null;
+
+        fz.open(b, air.FileMode.READ);
+        ba.endian = air.Endian.LITTLE_ENDIAN;
+        console.trace("unzip init function*****");
+        console.trace("zstream....." + fz + "   " + fz.position);
+        while (fz.position < b.size) {
+            console.trace("unzip init function in while loop *****");
+            fz.readBytes(ba, 0, 30);
+            console.trace("Byte positon...." + ba.position);
+            ba.position = 0;
+            n = ba.readInt();
+            if (n !== 67324752) {
+                break;
+            }
+            ba.position = 8;
+            c = ba.readByte();
+            e = 0;
+            ba.position = 26;
+            s = ba.readShort();
+            e += s;
+            ba.position = 28;
+            p = ba.readShort();
+            e += p;
+            fz.readBytes(ba, 30, e);
+            ba.position = 30;
+            v = ba.readUTFBytes(s);
+            k += v + "\n";
+            ba.position = 18;
+            a = ba.readUnsignedInt();
+            k += "\tCompressed size is: " + a + "\n";
+            ba.position = 22;
+            j = ba.readUnsignedInt();
+            k += "\tUncompressed size is: " + j + "\n";
+            fz.readBytes(ba, 0, a);
+            console.trace("Byte positon...." + ba.position);
+            if (c == 8) {
+                console.trace("Byte positon...." + ba.position);
+                ba.uncompress(air.CompressionAlgorithm.DEFLATE);
+            }
+            console.trace("Byte positon...." + ba.position);
+            t(v, ba);
+        }
+
+        function t(y, x) {
+            const f = fs.resolveUrlInAppStorageDir(y);
+            o = fs.resolveUrlInAppStorageDir(y, true);
+            fs.writeFileBytesSync(f, x)
+        }
+
+        function close() {
+            fz.close();
+        }
+
+        function get_nPath() {
+            return o;
+        }
+    }
+}
+
+// TODO: just kept here for the impl courtesy
 export class BibleUpdater {
     constructor() {
         let bibleVersionList = null;
@@ -17,7 +100,7 @@ export class BibleUpdater {
         loadSelectedBut.setAttribute('data-tooltip', 'Load selected');
 
         function onCheckUpdate() {
-            air.trace("Update Check......");
+            console.trace("Update Check......");
             document.getElementById("checkUpdateBut").disabled = true;
             download_bible();
         }
@@ -47,7 +130,7 @@ export class BibleUpdater {
             function n(r) {
                 m.removeEventListener(air.Event.COMPLETE, o);
                 m.removeEventListener(air.IOErrorEvent.IO_ERROR, n);
-                air.trace("Error getting file..");
+                console.trace("Error getting file..");
                 var q = "Failed contacting the server. Contact verseview@yahoo.com";
                 document.getElementById("updateStatusID").innerHTML = q;
                 document.getElementById("checkUpdateBut").disabled = false;
@@ -80,10 +163,10 @@ export class BibleUpdater {
         //     loadVersion(m);
         // }
         function onLoadSelected() {
-            air.trace("Load selected.....");
+            console.trace("Load selected.....");
             document.getElementById("loadSelectedBut").disabled = true;
             const q = "https://www.verseview.info/download/bible/" + filename;
-            air.trace("url path: " + q);
+            console.trace("url path: " + q);
             var r = new air.URLRequest(q);
             var n = new air.URLLoader();
             n.dataFormat = air.URLLoaderDataFormat.BINARY;
@@ -95,19 +178,16 @@ export class BibleUpdater {
                 n.removeEventListener(air.Event.COMPLETE, p);
                 n.removeEventListener(air.IOErrorEvent.IO_ERROR, o);
                 n.removeEventListener(air.ProgressEvent.PROGRESS, m);
-                var t = v.target.data;
-                var w = air.ByteArray(t);
-                var u = air.File.applicationStorageDirectory.resolvePath("test.zip");
-                var x = new air.FileStream();
-                x.open(u, air.FileMode.WRITE);
-                x.writeBytes(w, 0, w.length);
-                x.close();
-                air.trace("Completed downloading the zip file to test.zip");
+                const t = v.target.data;
+                const w = air.ByteArray(t);
+                const zf = fs.resolveUrlInAppStorageDir("test.zip");
+                fs.writeFileBytesSync(zf, w);
+                console.trace("Completed downloading the zip file to test.zip");
                 const l = new UnZip("", "test.zip");
                 const s = new air.File();
-                air.trace("File....." + l.get_nPath());
+                console.trace("File....." + l.get_nPath());
                 s.nativePath = l.get_nPath();
-                air.trace("[UPDATE] .... Native Path: " + s.nativePath);
+                console.trace("[UPDATE] .... Native Path: " + s.nativePath);
                 loadVersion(s.nativePath);
                 l.close();
                 document.getElementById("loadSelectedBut").disabled = false;

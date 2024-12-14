@@ -1,5 +1,6 @@
 import {ColorPickerPanel} from "./colorpicker";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 import {bgGradientAngle, bgGradientColor1, bgGradientColor2} from "@stores/global";
 
 export class GradientBackgroundColor {
@@ -233,7 +234,7 @@ export class GradientBackgroundColor {
 
     _debug(...messages) {
         if (this.IS_DEBUG) {
-            air.trace("[Graphics Gradient BG]:", ...messages);
+            console.trace("[Graphics Gradient BG]:", ...messages);
         }
     }
 }

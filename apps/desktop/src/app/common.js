@@ -2,26 +2,37 @@ import {presentationCtx} from "@app/presentation";
 import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
 
 export let apple = false;
 
-export function save2file(c, d, a) {
+export function saveFileInAppStorage(content, filename) {
+    // fs.writeFileSync(
+    //     fs.resolveUrlInAppStorageDir(filename),
+    //     content,
+    //     "utf-8"
+    // );
     const {
         File,
         FileStream,
         FileMode,
     } = air;
 
-    const b = File.applicationStorageDirectory.resolvePath(d);
+    const b = File.applicationStorageDirectory.resolvePath(filename);
     const e = new FileStream();
     e.open(b, FileMode.WRITE);
-    e.writeMultiByte(c, "utf-8");
+    e.writeMultiByte(content, "utf-8");
     e.close();
 }
 
-export function filesave2vvexport(content, name) {
+export function saveVVExportInDesktop(content, name) {
+    // fs.writeFileSync(
+    //     fs.resolveUrlInDesktopDir(`./vvexport/${name}.html`),
+    //     content,
+    //     "utf-8"
+    // );
     const filename = `./vvexport/${name}.html`;
     const dtFilename = air.File.desktopDirectory.resolvePath(filename);
     const fz = new air.FileStream();
@@ -39,12 +50,12 @@ export function fileExist(b, a) {
 }
 
 export function createFolder(b) {
-    var a = air.File.applicationStorageDirectory.resolvePath(b);
+    const a = air.File.applicationStorageDirectory.resolvePath(b);
     if (!a.exists) {
         a.createDirectory();
-        air.trace("Directory Created..");
+        console.trace("Directory Created..");
     } else {
-        air.trace("directory already exists...");
+        console.trace("directory already exists...");
     }
 }
 
@@ -65,7 +76,7 @@ export function copyFile2AppStorage(d, c) {
 }
 
 export function backupWebroot() {
-    air.trace("Came to backup Webroot...");
+    console.trace("Came to backup Webroot...");
     const c = air.File.applicationStorageDirectory.resolvePath("webroot");
     if (c.exists) {
         const a = air.File.applicationStorageDirectory.resolvePath("webroot_backup6");
@@ -90,15 +101,8 @@ export function backupWebroot() {
 }
 
 export function extractFileName(d) {
-    let b;
-    const c = air.Capabilities.manufacturer;
-    if (c === "Adobe Windows") {
-        b = d.split("\\");
-    } else {
-        b = d.split("/");
-    }
-    const a = b.length;
-    return b[a - 1];
+    const segments = d.split(air.File.separator);
+    return segments[segments.length - 1];
 }
 
 export function IsNumeric(v) {
@@ -110,94 +114,6 @@ export function IsNumeric(v) {
         }
     }
     return true;
-}
-
-export class UnZip {
-    constructor(u, d) {
-        this.close = close;
-        this.get_nPath = get_nPath;
-
-        const ba = new air.ByteArray();
-
-        var v = '';
-        var s;
-        var p;
-        var e;
-        var a;
-        var j;
-        var c;
-        var n;
-        var k = "";
-        var r = u + d;
-        air.trace(r);
-        var b = air.File.applicationStorageDirectory.resolvePath(r);
-        var h = new air.FileStream();
-        var o = null;
-
-        init();
-
-        function init() {
-            h.open(b, air.FileMode.READ);
-            ba.endian = air.Endian.LITTLE_ENDIAN;
-            air.trace("unzip init function*****");
-            air.trace("zstream....." + h + "   " + h.position);
-            while (h.position < b.size) {
-                air.trace("unzip init function in while loop *****");
-                h.readBytes(ba, 0, 30);
-                air.trace("Byte positon...." + ba.position);
-                ba.position = 0;
-                n = ba.readInt();
-                if (n !== 67324752) {
-                    break;
-                }
-                ba.position = 8;
-                c = ba.readByte();
-                e = 0;
-                ba.position = 26;
-                s = ba.readShort();
-                e += s;
-                ba.position = 28;
-                p = ba.readShort();
-                e += p;
-                h.readBytes(ba, 30, e);
-                ba.position = 30;
-                v = ba.readUTFBytes(s);
-                k += v + "\n";
-                ba.position = 18;
-                a = ba.readUnsignedInt();
-                k += "\tCompressed size is: " + a + "\n";
-                ba.position = 22;
-                j = ba.readUnsignedInt();
-                k += "\tUncompressed size is: " + j + "\n";
-                h.readBytes(ba, 0, a);
-                air.trace("Byte positon...." + ba.position);
-                if (c == 8) {
-                    air.trace("Byte positon...." + ba.position);
-                    ba.uncompress(air.CompressionAlgorithm.DEFLATE);
-                }
-                air.trace("Byte positon...." + ba.position);
-                t(v, ba);
-            }
-        }
-
-        function t(y, x) {
-            var f = air.File.applicationStorageDirectory;
-            f = f.resolvePath(y);
-            o = f.nativePath;
-            var w = new air.FileStream();
-            w.open(f, air.FileMode.WRITE);
-            w.writeBytes(x, 0, x.length);
-            w.close();
-        }
-
-        function close() {
-            h.close();
-        }
-
-        function get_nPath() {
-            return o;
-        }
-    }
 }
 
 function stopWatch() {
@@ -228,7 +144,7 @@ function stopWatch() {
     function g(j) {
         d();
         a = b - e;
-        air.trace(j + " " + a);
+        console.trace(j + " " + a);
         return a;
     }
 }
@@ -244,6 +160,7 @@ export class FontSizeSlider {
             after : {
                 valueChange: function() {
                     const fz = Math.round(_slider.get('value')) / 10 + 8;
+
                     $RvW.vvConfigObj.set_navFontSize(fz);
 
                     // Update the font size
@@ -251,7 +168,7 @@ export class FontSizeSlider {
                     $RvW.searchObj.setFontSize(fz);
                     $RvW.scheduleObj.changeFontsizeScheduleTab();
 
-                    // air.trace("Slider value changed:", fz);
+                    // console.trace("Slider value changed:", fz);
                 }
             }
         });
@@ -344,7 +261,7 @@ export class BibleReference {
                     break;
                 }
             }
-            if (s == -1) {
+            if (s === -1) {
                 d(
                     "Failed finding in version 1 language, so finding in default language..."
                 );
@@ -368,17 +285,17 @@ export class BibleReference {
                     k = "Invalid verse number.";
                     D = false;
                 } else {
-                    if (s == -1) {
+                    if (s === -1) {
                         k = "Did not find matching book name to " + m;
                         D = false;
                     } else {
-                        var v = $RvW.numofch[s + 1][0];
+                        const v = $RvW.numofch[s + 1][0];
                         d("Last Chapter number: " + v);
                         if (p < 1 || p > v) {
                             k = "Invalid chapter number for the book " + c;
                             D = false;
                         } else {
-                            var u = $RvW.numofch[s + 1][p];
+                            const u = $RvW.numofch[s + 1][p];
                             d("Last Verse number: " + u);
                             if (e < 1 || e > u) {
                                 k = "Invalid verse number for " + c + " " + p;
@@ -397,19 +314,19 @@ export class BibleReference {
             var u = e - 1;
             $RvW.present_external(t, w, u);
             return true;
-            $RvW.bookIndex = s;
-            $RvW.chapterIndex = p - 1;
-            $RvW.verseIndex = e - 1;
-            $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
-            presentationCtx.p_footer = $RvW.getFooter();
-            presentationCtx.p_title = c + " " + ($RvW.chapterIndex + 1);
-            $RvW.launch($RvW.verseIndex);
+
+            // $RvW.bookIndex = s;
+            // $RvW.chapterIndex = p - 1;
+            // $RvW.verseIndex = e - 1;
+            // $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
+            // presentationCtx.p_footer = $RvW.getFooter();
+            // presentationCtx.p_title = c + " " + ($RvW.chapterIndex + 1);
+            // $RvW.launch($RvW.verseIndex);
         }
 
         function getVerseText() {
-            var t = $RvW.bible[$RvW.vvConfigObj.get_version1()]
+            return $RvW.bible[$RvW.vvConfigObj.get_version1()]
                 .getElementsByTagName("b")[s].getElementsByTagName("c")[p - 1].getElementsByTagName("v");
-            return t;
         }
 
         function getVerseFont() {
@@ -435,7 +352,7 @@ export class BibleReference {
 
         function d(t) {
             if (j) {
-                air.trace("[BIBLE REF]: " + t);
+                console.trace("[BIBLE REF]: " + t);
             }
         }
     }
@@ -461,6 +378,8 @@ export function promoteVV(a) {
 }
 
 export function showLogoSlide() {
+    $RvW.webServerObj.broadcastWS({event: 'cc:show-logo'});
+
     presentationCtx.p_text1_arr = [];
     presentationCtx.p_text2_arr = [];
     presentationCtx.p_text1_arr[0] = "";
@@ -479,6 +398,7 @@ export function showLogoSlide() {
 }
 
 export function blankSlide() {
+    $RvW.webServerObj.broadcastWS({event: 'cc:blank-screen'});
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.showBlankProcess();
         if ($RvW.stageView && $RvW.stageWindow != null) {

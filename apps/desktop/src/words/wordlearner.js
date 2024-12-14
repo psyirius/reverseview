@@ -1,4 +1,5 @@
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 export class WordLearner {
     constructor() {
@@ -60,9 +61,9 @@ export class WordLearner {
         }
         function printWordList() {
             const j = i.length;
-            air.trace("**** WORD LIST FOR LEARNING ****");
+            console.trace("**** WORD LIST FOR LEARNING ****");
             for (let k = 0; k < j; k++) {
-                air.trace(i[k]);
+                console.trace(i[k]);
             }
         }
     }

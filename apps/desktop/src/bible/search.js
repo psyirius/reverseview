@@ -1,8 +1,9 @@
 import { PostIt } from "@/notes/notes";
 import {getVerseFromArray, verseClass} from "@/bible/manager";
-import {clearSelectList, filesave2vvexport} from "@/app/common";
+import {clearSelectList, saveVVExportInDesktop} from "@/app/common";
 import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
 
@@ -341,7 +342,7 @@ export class BibleSearch {
                     aj = aj + "<tr><td><br></td> <td><br></td> <td><br></td></tr>\n";
                 }
                 aj = aj + "</TABLE>\n</BODY>";
-                filesave2vvexport(aj, ad);
+                saveVVExportInDesktop(aj, ad);
                 alert(
                     'Search Result File "' +
                     ad +
@@ -367,8 +368,8 @@ export class BibleSearch {
             k();
         }
         function b(Y) {
-            air.trace("Error message:", Y.error.message);
-            air.trace("Details:", Y.error.details);
+            console.trace("Error message:", Y.error.message);
+            console.trace("Details:", Y.error.details);
             var X = "Error message:" +
                 Y.error.message +
                 " Details:" +

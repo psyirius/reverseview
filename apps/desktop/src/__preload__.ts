@@ -67,6 +67,7 @@
                 info: makePrint("info"),
                 debug: makePrint("debug"),
                 error: makePrint("error"),
+                trace: makePrint("trace"),
             };
 
             ((window as any).global as any).console ??= console;

@@ -1,10 +1,18 @@
 import { Component } from 'preact';
 import {useState, useEffect, useId, useRef} from 'preact/hooks';
-import {showRemotePanel, localIpList, remoteEnabled, remoteCustomHostname, remoteListenPort} from "@stores/global";
+import {
+    showRemotePanel,
+    localIpList,
+    remoteEnabled,
+    remoteCustomHostname,
+    remoteListenPort,
+    restoreRemoteStandby
+} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";
 import QRCode from "@app/ui/QRCode";
 import {Toast} from "@app/toast";
+import {console} from "@/platform/adapters/air";
 
 function getAvailableNwIfs() {
     function getNetworkInterfaceList() {
@@ -113,6 +121,7 @@ export default function RemoteSetupDialog({}: Props) {
     const open = useStoreState(showRemotePanel);
     const ipList = useStoreState(localIpList);
     const enabled = useStoreState(remoteEnabled);
+    const restoreStandby = useStoreState(restoreRemoteStandby);
     const customHostname = useStoreState(remoteCustomHostname);
     const port = useStoreState(remoteListenPort);
 
@@ -121,6 +130,22 @@ export default function RemoteSetupDialog({}: Props) {
     const [selectedIp, setSelectedIp] = useState(0);
     const [selectedView, setSelectedView] = useState(1);
     const [panel, setPanel] = useState(null);
+
+    // TODO: fix this later
+    useEffect(() => {
+        const restoreStandby = $RvW.rvwPreferences.get("app.settings.remote.restore.standby", false);
+        // restoreRemoteStandby.set(restoreStandby);
+
+        const enabled = $RvW.rvwPreferences.get("app.settings.remote.enabled", false);
+        // remoteEnabled.set(enabled);
+
+        console.log('Remote Restore Standby:', restoreStandby);
+        console.log('Remote Enabled:', enabled);
+
+        if (!restoreStandby && enabled) {
+            remoteEnabled.set(false);
+        }
+    }, []);
 
     // Init Dialog Panel
     useEffect(() => {
@@ -162,7 +187,7 @@ export default function RemoteSetupDialog({}: Props) {
         if (!$RvW.webServerObj) return;
 
         if (enabled) {
-            air.trace('Remote Enabled');
+            console.trace('Remote Enabled');
 
             // if ($RvW.webServerObj.isActive()) {
             //     Toast.show(
@@ -203,7 +228,7 @@ export default function RemoteSetupDialog({}: Props) {
                 return;
             }
         } else {
-            air.trace('Remote Disabled');
+            console.trace('Remote Disabled');
 
             // if (!$RvW.webServerObj.isActive()) {
             //     Toast.show(
@@ -316,7 +341,7 @@ export default function RemoteSetupDialog({}: Props) {
     function onRemoteViewChange(e: Event) {
         const viewId = parseInt((e.target as HTMLSelectElement).value);
 
-        air.trace('Selected View:', viewId);
+        console.trace('Selected View:', viewId);
 
         setSelectedView(viewId);
     }

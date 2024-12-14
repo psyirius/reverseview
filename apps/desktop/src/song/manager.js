@@ -1,16 +1,99 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-import {SongPortXML} from "./port_xml";
-import {SongImporter} from "./import";
+import {SongExporter} from "./exporter.js";
 import {removeTag} from "@/song/tags";
 import {SongSearchType} from "@/const";
 import {Song} from '@/song/obj';
 import {Toast} from "@app/toast";
 import {insertError, insertResult} from "@/song/indexing";
 import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
-import {isBlank, save2file} from "@app/common";
+import {isBlank, saveFileInAppStorage} from "@app/common";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
+
+function processImportSongDB() {
+    const IS_DEBUG = false;
+
+    let dbFile = null;
+    let sqlConn = null;
+
+    let startDir = air.File.desktopDirectory;
+    const fileFilters = [
+        new air.FileFilter("VerseVIEW Song DB", "*.db"),
+    ];
+    startDir.browseForOpen("Select Song DB", fileFilters);
+    startDir.addEventListener(air.Event.SELECT, function(e) {
+        dbFile = e.target;
+        __debug(dbFile.nativePath);
+        openDB();
+    });
+
+    function __debug(t) {
+        if (IS_DEBUG) {
+            console.trace("[SongImportManager]...." + t);
+        }
+    }
+
+    function openDB() {
+        sqlConn = new air.SQLConnection();
+        sqlConn.addEventListener(air.SQLEvent.OPEN, function(_) {
+            __debug("DB was created successfully");
+            dbInit();
+        });
+        sqlConn.addEventListener(air.SQLErrorEvent.ERROR, function(e) {
+            __debug("Error message:" + e.error.message);
+            __debug("Details (create DB):" + e.error.details);
+        });
+        sqlConn.openAsync(dbFile);
+    }
+
+    function dbInit() {
+        __debug(" Creating song import Manager table...");
+
+        const sqlStmt = new air.SQLStatement();
+        sqlStmt.sqlConnection = sqlConn;
+        sqlStmt.text = `CREATE TABLE IF NOT EXISTS sm (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, cat TEXT, font TEXT, bkgndfname TEXT, key TEXT, copy TEXT, notes TEXT, lyrics TEXT)`;
+        sqlStmt.addEventListener(air.SQLEvent.RESULT, onResult);
+        sqlStmt.addEventListener(air.SQLErrorEvent.ERROR, onError);
+        sqlStmt.execute();
+
+        function onResult() {
+            sqlStmt.removeEventListener(air.SQLEvent.RESULT, onResult);
+            sqlStmt.removeEventListener(air.SQLErrorEvent.ERROR, onError);
+            __debug("Song Import Table created.....");
+            getAllSongs();
+        }
+
+        function onError(e) {
+            sqlStmt.removeEventListener(air.SQLEvent.RESULT, onResult);
+            sqlStmt.removeEventListener(air.SQLErrorEvent.ERROR, onError);
+            __debug("Error message:" + e.error.message);
+            __debug("Details in creating table :" + e.error.details);
+        }
+    }
+
+    function getAllSongs() {
+        __debug("Getting ALL Data from Song Import DB");
+
+        const sqlStmt = new air.SQLStatement();
+        sqlStmt.sqlConnection = sqlConn;
+        sqlStmt.text = "SELECT * FROM sm ORDER BY name ASC";
+        sqlStmt.addEventListener(air.SQLEvent.RESULT, onResult);
+        sqlStmt.addEventListener(air.SQLErrorEvent.ERROR, onError);
+        sqlStmt.execute();
+
+        function onResult(_) {
+            __debug("Successfully got all data from Song Import DB");
+            const g = sqlStmt.getResult();
+            $RvW.songManagerObj.addImportSongs(g);
+        }
+
+        function onError(_) {
+            __debug("Song Import Manager data error...");
+        }
+    }
+}
 
 function splitIN2(j) {
     const a = [];
@@ -391,7 +474,7 @@ export class SongManager {
                 aO += songz[aP].name + "|" + songz[aP].cat + "\n";
             }
             var aQ = "./song/songlist.txt";
-            save2file(aO, aQ, false);
+            saveFileInAppStorage(aO, aQ);
         }
         function get_sm_cat_records() {
             return aq;
@@ -404,22 +487,19 @@ export class SongManager {
         function getFontList() {
             return ap;
         }
-        function processImportSongDB() {
-            new SongImporter();
-        }
 
         function processImportSongXML() {
-            const spx = new SongPortXML(songz, null, null, 1);
+            const spx = new SongExporter(songz, null, null, 1);
             spx.importXML();
         }
 
         function processExportSongXML() {
-            const spx = new SongPortXML(songz, null, null, 1);
+            const spx = new SongExporter(songz, null, null, 1);
             spx.exportAll();
         }
 
         function processExportCatXML() {
-            const spx = new SongPortXML(songz, ab, null, 2);
+            const spx = new SongExporter(songz, ab, null, 2);
             spx.exportByCat();
         }
 
@@ -470,7 +550,7 @@ export class SongManager {
         }
         function __debug(...aN) {
             if (m_isDebug) {
-                air.trace("[SongManager]....", ...aN);
+                console.trace("[SongManager]....", ...aN);
             }
         }
         function ah() {
@@ -1009,7 +1089,7 @@ WHERE id=:id;
                 aW.parameters[":id"] = aT;
                 var aV = $RvW.songNumberObj.assignSongNumber(aS);
                 aW.parameters[":songnumber"] = aV;
-                air.trace(aQ + " ID: " + aT + " Song Number: " + aV);
+                console.trace(aQ + " ID: " + aT + " Song Number: " + aV);
                 aW.execute();
                 function aZ(a0) {
                     aW.removeEventListener(air.SQLEvent.RESULT, aZ);
@@ -1094,7 +1174,7 @@ WHERE id=:id;
                     }
                 }
                 if (!aR) {
-                    air.trace("Song not found :" + aO);
+                    console.trace("Song not found :" + aO);
                 }
             }
         }

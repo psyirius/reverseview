@@ -1,6 +1,7 @@
 import {addTagList} from "@/song/tags";
 import {Song} from "@/song/obj";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 export class SongDbUpdater {
     constructor() {
@@ -33,7 +34,7 @@ export class SongDbUpdater {
         }
         function l() {
             a("Getting ALL Data from Original Song DB");
-            var p = new air.SQLStatement();
+            const p = new air.SQLStatement();
             p.sqlConnection = h;
             p.text = "SELECT * FROM sm WHERE cat = :cat1 OR cat = :cat2 OR cat = :cat3";
             p.addEventListener(air.SQLEvent.RESULT, o);
@@ -43,7 +44,7 @@ export class SongDbUpdater {
             p.parameters[":cat3"] = "VV Tamil 2021";
             p.execute();
             function o(r) {
-                a("Succesfuly got all data from Original Song DB");
+                a("Successfully got all data from Original Song DB");
                 g = p.getResult();
                 i();
             }
@@ -97,7 +98,7 @@ export class SongDbUpdater {
         }
         function a(n) {
             if (c) {
-                air.trace("[SongDB_Updater]...." + n);
+                console.trace("[SongDB_Updater]...." + n);
             }
         }
     }

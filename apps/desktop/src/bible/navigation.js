@@ -1,11 +1,12 @@
 import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 function getNumofVerses() {
     return $RvW.numofch[$RvW.bookIndex + 1][$RvW.chapterIndex + 1];
 }
 function processNextButton() {
-    air.trace("navigation.js: processNextButton()");
+    console.trace("navigation.js: processNextButton()");
     var a;
     var b = getNumofVerses();
     if ($RvW.verseIndex + 1 === b) {

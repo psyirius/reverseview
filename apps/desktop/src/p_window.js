@@ -1,5 +1,6 @@
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
 import {
@@ -118,7 +119,7 @@ function passVariable(isStageView, _ = undefined) {
     _.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
     _.p_align = $RvW.vvConfigObj.get_p_align();
 
-    air.trace(`p_enableTransition: ${_.p_enableTransition}`);
+    console.trace(`p_enableTransition: ${_.p_enableTransition}`);
 
     if ($RvW.vvConfigObj.get_showVVLogo()) {
         _.p_logo = ["ReVerseVIEW", "rvw.github.io"].join("<br>");
@@ -241,7 +242,7 @@ export function presentation() {
         presentScreenBounds = screens[0].bounds;
         pWindowX = screens[0].bounds.width;
         pWindowY = screens[0].bounds.height;
-        air.trace(`p window single ${pWindowX}x${pWindowY}`);
+        console.trace(`p window single ${pWindowX}x${pWindowY}`);
     }
 
     if (!$RvW.presentWindowOpen) {
@@ -313,7 +314,7 @@ export function presentation() {
                 true, windowInitOptions, true, svBounds,
             );
             sv.addEventListener("htmlDOMInitialize", DOMIntializeStageViewCallback);
-            sv.window.nativeWindow.addEventListener(Event.CLOSING, closePresentWindowMain);
+            sv.window.nativeWindow.addEventListener(Event.CLOSING, call_closePresentation);
             sv.window.nativeWindow.alwaysInFront = false;
             sv.window.nativeWindow.stage.frameRate = 30;
 
@@ -360,7 +361,7 @@ export function presentation() {
             $RvW.presentationWindow.window.updatePresentation();
             $RvW.presentationWindow.window.updateContent();
         } catch (d) {
-            air.trace("Possible double click... NewWindow is still getting ready..");
+            console.trace("Possible double click... NewWindow is still getting ready..");
         }
 
         // StageView
@@ -370,7 +371,7 @@ export function presentation() {
                 $RvW.stageWindow.window.updatePresentation();
                 $RvW.stageWindow.window.updateContent();
             } catch (d) {
-                air.trace(
+                console.trace(
                     "Possible double click... NewStageWindow is still getting ready.."
                 );
             }
@@ -378,8 +379,10 @@ export function presentation() {
     }
 }
 
-export function closePresentWindowMain() {
+export function call_closePresentation() {
+    $RvW.webServerObj.broadcastWS({event: 'cc:close-show'});
     if ($RvW.presentWindowOpen) {
+        $RvW.presentationWindow.window.clearPresenter();
         $RvW.presentationWindow.window.nativeWindow.close();
         $RvW.presentationWindow = null;
         if (!$RvW.vvConfigObj.get_mainConfigEnable()) {
@@ -398,14 +401,15 @@ export function presentWindowClosed() {
     $RvW.presentationWindow = null;
 }
 
+
 function DOMIntializeCallback(a) {
     $RvW.presentationWindow.window.passVariable = passVariable;
-    air.trace('>>> presentationWindow.htmlDOMInitialize')
+    console.trace('>>> presentationWindow.htmlDOMInitialize')
 }
 
 function DOMIntializeStageViewCallback(a) {
     $RvW.stageWindow.window.passVariable = passVariable;
-    air.trace('>>> stageWindow.htmlDOMInitialize')
+    console.trace('>>> stageWindow.htmlDOMInitialize')
 }
 
 function updatePresentationContent(b) {
@@ -433,6 +437,7 @@ function updatePresentationContent(b) {
 }
 
 export function call_nextSlide() {
+    $RvW.webServerObj.broadcastWS({event: 'cc:next-slide'});
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.nextSlide();
         if ($RvW.stageView) {
@@ -443,6 +448,7 @@ export function call_nextSlide() {
 }
 
 export function call_prevSlide() {
+    $RvW.webServerObj.broadcastWS({event: 'cc:prev-slide'});
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.prevSlide();
         if ($RvW.stageView) {
@@ -453,17 +459,8 @@ export function call_prevSlide() {
 }
 
 export function call_showTheme() {
+    $RvW.webServerObj.broadcastWS({event: 'cc:show-theme'});
     if ($RvW.presentationWindow != null) {
         $RvW.presentationWindow.window.showThemeProcess();
     }
-}
-
-export function call_closePresentation() {
-    if ($RvW.presentWindowOpen) {
-        $RvW.presentationWindow.window.clearPresenter();
-        if ($RvW.stageView) {
-            $RvW.stageWindow.window.nativeWindow.close();
-        }
-    }
-    $RvW.presentationContent = "";
 }

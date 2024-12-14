@@ -1,3 +1,5 @@
+import {console} from "@/platform/adapters/air";
+
 const Preferences = {
     __Store: class {
         constructor(root = {}, onCommit = null) {
@@ -77,7 +79,7 @@ const Preferences = {
     init(file, callback) {
         const store = this.__Store.fromJSON(this.defaults(), (store) => {
             this.save(file, store, (err) => {
-                if (err) air.trace('Prefs::init: ' + err);
+                if (err) console.trace('Prefs::init: ' + err);
             });
         });
 
@@ -100,7 +102,7 @@ const Preferences = {
 
             callback(null, this.__Store.fromJSON(JSON.parse(data), (store) => {
                 this.save(file, store, (err) => {
-                    if (err) air.trace('Prefs::load: ' + err);
+                    if (err) console.trace('Prefs::load: ' + err);
                 });
             }));
         } catch (e) {

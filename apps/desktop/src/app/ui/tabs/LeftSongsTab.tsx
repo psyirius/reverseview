@@ -5,6 +5,7 @@ import {useStoreState} from "@/utils/hooks";
 import {SongSearchType} from "@/const";
 import debounce from '@/utils/debounce';
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 const searchSong = debounce((q: string) => {
     $RvW.songNavObj.sn_searchSong(q);
@@ -37,7 +38,7 @@ export default function LeftSongsTab() {
     function onCategoryChange(e: Event) {
         const el = (e.target as HTMLSelectElement);
 
-        air.trace('onCategoryChange', el.value, el.selectedIndex);
+        console.trace('onCategoryChange', el.value, el.selectedIndex);
 
         $RvW.songNavObj.songnav_category_change(el.selectedIndex > 0 ? el.value : 'ALL');
         selectedSongCategory.set(el.selectedIndex > 0 ? el.selectedIndex - 1 : null);
@@ -46,7 +47,7 @@ export default function LeftSongsTab() {
     function onTagChange(e: Event) {
         const el = (e.target as HTMLSelectElement);
 
-        air.trace('onTagChange', el.value, el.selectedIndex);
+        console.trace('onTagChange', el.value, el.selectedIndex);
 
         $RvW.songNavObj.songnav_tags_change(el.selectedIndex > 0 ? el.value : 'ALL');
         selectedSongTag.set(el.selectedIndex > 0 ? el.selectedIndex - 1 : null);

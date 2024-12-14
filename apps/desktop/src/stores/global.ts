@@ -63,6 +63,7 @@ export const bgGradientColor2: Writable<string> = writable('#fff');
 export const remoteEnabled: Writable<boolean> = writable(false);
 export const presentationMainEnabled: Writable<boolean> = writable(false);
 export const presentationStageEnabled: Writable<boolean> = writable(false);
+export const restoreRemoteStandby: Writable<boolean> = writable(false);
 export const presentationPrimaryFontOverride: Writable<string | null> = writable(null);
 export const presentationSecondaryFontOverride: Writable<string | null> = writable(null);
 export const availableScreens: Writable<any[]> = writable([]);

@@ -1,5 +1,6 @@
 import {$RvW} from "@/rvw";
 import {showBibleNotesEditPanel} from "@stores/global";
+import {console} from "@/platform/adapters/air";
 
 // BibleNotes
 export class Notes {
@@ -107,8 +108,8 @@ export class Notes {
                 A();
             });
             g.addEventListener(air.SQLErrorEvent.ERROR, function(P) {
-                air.trace("Error message:", P.error.message);
-                air.trace("Details (create DB):", P.error.details);
+                console.trace("Error message:", P.error.message);
+                console.trace("Details (create DB):", P.error.details);
             });
             var Q = air.File.applicationStorageDirectory.resolvePath(P);
             g.openAsync(Q);
@@ -137,8 +138,8 @@ export class Notes {
             }
 
             function P(T) {
-                air.trace("Error message:", T.error.message);
-                air.trace("Details (create DB):", T.error.details);
+                console.trace("Error message:", T.error.message);
+                console.trace("Details (create DB):", T.error.details);
             }
         }
 
@@ -190,8 +191,8 @@ export class Notes {
         }
 
         function c(P) {
-            air.trace("Error message:", P.error.message);
-            air.trace("Details (create DB):", P.error.details);
+            console.trace("Error message:", P.error.message);
+            console.trace("Details (create DB):", P.error.details);
         }
 
         function u(S, Q) {
@@ -212,8 +213,8 @@ export class Notes {
             }
 
             function R(V) {
-                air.trace("Error message:", V.error.message);
-                air.trace("Details (create DB):", V.error.details);
+                console.trace("Error message:", V.error.message);
+                console.trace("Details (create DB):", V.error.details);
             }
         }
 
@@ -270,8 +271,8 @@ export class Notes {
         }
 
         function D(P) {
-            air.trace("Error message:", P.error.message);
-            air.trace("Details (displayNotes Error):", P.error.details);
+            console.trace("Error message:", P.error.message);
+            console.trace("Details (displayNotes Error):", P.error.details);
         }
 
         function notesSaveButton() {

@@ -1,5 +1,6 @@
 import {version_number} from "@/versionupdate";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 const INNER_HTML = `<div class="generalPanelDIV">
     <div class="generalheading2">Bible Update</div><br>
@@ -143,17 +144,17 @@ export class AppUpdater {
             var p = "Version " +
                 o +
                 " is now available for download from the VerseVIEW website.";
-            air.trace("New Version Available: " + p);
+            console.trace("New Version Available: " + p);
         }
 
         function i() {
             var p = "Please check VerseVIEW website for updates.";
-            air.trace("VerseVIEW Update: " + p);
+            console.trace("VerseVIEW Update: " + p);
         }
 
         function e() {
             var p = "No new updates are available. You have the latest version.";
-            air.trace("VerseVIEW Update: " + p);
+            console.trace("VerseVIEW Update: " + p);
         }
     }
 }

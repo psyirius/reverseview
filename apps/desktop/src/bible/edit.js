@@ -1,6 +1,7 @@
 import {getVerseFromArray} from "./manager";
 import {$RvW} from "@/rvw";
 import {selectedTab, showVerseEditPanel} from "@stores/global";
+import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
 
@@ -56,7 +57,7 @@ export class VerseEditUI {
         }
 
         function show() {
-            air.trace("showing edit UI");
+            console.trace("showing edit UI");
             selectedTab.set(0);
             showVerseEditPanel.set(true);
         }

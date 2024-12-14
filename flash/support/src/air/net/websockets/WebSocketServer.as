@@ -128,8 +128,12 @@ public class WebSocketServer extends EventDispatcher {
         closeAllClientSockets();
 
         // Close Server Socket
-        if (serverSocket) {
-            serverSocket.close();
+        if (serverSocket && serverSocket.listening) {
+            try {
+                serverSocket.close();
+            } catch (e:Error) {
+                trace("Error closing server socket: " + e.message);
+            }
         }
     }
 
@@ -137,8 +141,12 @@ public class WebSocketServer extends EventDispatcher {
         for each(var ce:ClientEntry in clientDict) {
             var clientSocket:Socket = ce.socket;
 
-            if (clientSocket) {
-                clientSocket.close();
+            if (clientSocket.connected) {
+                try {
+                    clientSocket.close();
+                } catch (e:Error) {
+                    trace("Error closing socket: " + e.message);
+                }
             }
         }
     }

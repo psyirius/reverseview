@@ -1,4 +1,5 @@
 import {useEffect, useRef} from "preact/hooks";
+import {console} from "@/platform/adapters/air";
 import * as gfx from "dojox/gfx";
 import * as socket from 'dojox/socket';
 
@@ -28,7 +29,7 @@ for (let i = 0; i < 150; i++) {
     );
 }
 
-air.trace(imageFrames[0]);
+console.trace(imageFrames[0]);
 
 export default function RenderCanvas() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -70,7 +71,7 @@ export default function RenderCanvas() {
         }, 0);
 
         // setInterval(() => {
-        //     air.trace(frameCount * 4);
+        //     console.trace(frameCount * 4);
         //     frameCount = 0;
         // }, 1000 / 4);
 
@@ -136,7 +137,7 @@ export default function RenderCanvas() {
 
         const [frameId] = imageFrames[currentFrame++ % imageFrames.length];
         const image = document.getElementById(frameId) as HTMLImageElement;
-        // air.trace(image);
+        // console.trace(image);
         ctx.drawImage(image, 0, 0);
 
         // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);

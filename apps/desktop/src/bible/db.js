@@ -1,5 +1,6 @@
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 
 function getVerseFromArray(d, p, f) {
     var h = 0;
@@ -77,7 +78,7 @@ export class BibleDB {
 
         function __debug(ai) {
             if (__is_debug) {
-                air.trace("[Bible Database]...." + ai);
+                console.trace("[Bible Database]...." + ai);
             }
         }
         function init(aj, ai) {
@@ -471,7 +472,7 @@ GROUP BY
             const rows = result.data;
 
             rows.forEach(({ bookNum, numChapters }) => {
-                // air.trace(bookNum, numChapters);
+                // console.trace(bookNum, numChapters);
                 numChMap[bookNum] = [numChapters];
             });
 
@@ -495,7 +496,7 @@ GROUP BY
                 const rows = result.data;
 
                 rows.forEach(({ bookNum, chNum, numVerses }) => {
-                    // air.trace(bookNum, chNum, numVerses);
+                    // console.trace(bookNum, chNum, numVerses);
                     numChMap[bookNum].push(numVerses);
                 });
 

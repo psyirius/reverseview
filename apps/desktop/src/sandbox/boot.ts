@@ -6,6 +6,11 @@ window.childSandboxBridge.sayHello = function (message) {
     window.parentSandboxBridge.sayHello("runtime: " + typeof window.runtime);
     window.parentSandboxBridge.sayHello("htmlLoader: " + typeof window.htmlLoader);
     window.parentSandboxBridge.sayHello("navigator: " + typeof window.navigator);
+
+    window.parentSandboxBridge.trace("Hello from child");
+    window.parentSandboxBridge.callMeBack((m) => {
+        window.parentSandboxBridge.trace("Callback from child:", m);
+    });
 }
 
 const dojoConfig = {

@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useRef } from "preact/hooks";
+import {console} from "@/platform/adapters/air";
 
 interface Props {
     src: string;
@@ -26,21 +27,26 @@ export default function SandboxFrame({ src, visible, ...rest }: Props) {
     };
 
     function onLoad() {
-        air.trace("sandboxLoaded");
+        console.trace("sandboxLoaded");
 
         const childWindow = frame.current!.contentWindow;
 
         // expose the parent sandbox bridge to the child
         childWindow.parentSandboxBridge = {
             sayHello: function(message) {
-                air.trace(message);
+                console.trace(message);
+            },
+            trace: console.trace,
+            callMeBack: function(callback) {
+                console.trace('Calling back...');
+                callback('Hello from child');
             }
         };
 
         // expose the child sandbox bridge to the parent
         const { childSandboxBridge } = childWindow;
 
-        air.trace('UA: ' + window.htmlLoader.userAgent);
+        console.trace('UA: ' + window.htmlLoader.userAgent);
 
         childSandboxBridge.sayHello("Hello from parent");
     }
