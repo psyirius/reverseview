@@ -615,7 +615,6 @@ export class WebServer {
         this.m_serverWebSocket = null;
         this.m_listening = false;
         this.m_staticDir = staticDir;
-        this.m_wsPingTimer = null;
     }
 
     broadcastWS(data) {
@@ -624,10 +623,6 @@ export class WebServer {
         air.trace('Broadcasting: ' + JSON.stringify(data));
 
         this.m_serverWebSocket.sendALL(JSON.stringify(data));
-    }
-
-    _broadcastPing() {
-        this.broadcastWS({event: 'ping'});
     }
 
     init(port, hostname) {
@@ -640,7 +635,6 @@ export class WebServer {
             this._startListening();
             if (this.m_serverSocket.listening && this.m_serverWebSocket.listening) {
                 this.m_listening = true;
-                this.m_wsPingTimer = setInterval(() => this._broadcastPing(), 1000); // 1s
                 return true;
             } else {
                 this.m_serverSocket.close();
@@ -676,11 +670,6 @@ export class WebServer {
             }
 
             this.m_listening = false;
-
-            if (this.m_wsPingTimer) {
-                clearInterval(this.m_wsPingTimer);
-                this.m_wsPingTimer = null;
-            }
         }
     }
 

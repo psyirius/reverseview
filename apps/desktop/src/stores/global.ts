@@ -36,6 +36,21 @@ export type SongSearchQuery = {
     value: string,
 }
 
+
+export enum ScheduleItemType {
+    LYRIC = 0,
+    VERSE = 1,
+}
+
+export type ScheduleItem = {
+    id: string, // schId
+    index: number, // sch_order
+    type: ScheduleItemType, // isSong === 1
+    title: string,
+    description: string,
+    meta: Record<string, any>,
+}
+
 // Right Tab
 export const selectedTab: Writable<number> = writable(0);
 export const selectedBookRef: Writable<string> = writable('');
@@ -71,6 +86,8 @@ export const availableFonts: Writable<any[]> = writable([]);
 export const presentationMainScreen: Writable<number> = writable(-1);
 export const presentationStageScreen: Writable<number> = writable(-1);
 export const localIpList: Writable<NetworkInterfaceInfo[]> = writable([]);
+export const scheduleList: Writable<ScheduleItem[]> = writable([]);
+export const navFontSize: Writable<number> = writable(0);
 export const remoteCustomHostname: Writable<string> = writable('');
 export const remoteListenPort: Writable<number> = writable(50000);
 

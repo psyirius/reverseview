@@ -151,7 +151,8 @@ export class SongManager {
         this.test2_updateRecords = test2_updateRecords;
         this.test2_getOrgsonglist = test2_getOrgsonglist;
 
-        var m_isDebug = false;
+        const IS_DEBUG = true;
+
         var ax = false;
         var ad = "./song/default.db";
         var m_sqlConnection = null;
@@ -328,42 +329,43 @@ export class SongManager {
         function deleteSongByCat(aN) {
             y(aN);
         }
-        function getSongObjWithID(aS) {
-            let aP = false;
-            const so = new Song();
-            so.slides = [];
-            for (let aQ = 0; aQ < songz.length; aQ++) {
-                if (songz[aQ].id === aS) {
-                    so.name = songz[aQ].name;
-                    so.catIndex = songz[aQ].cat;
-                    so.font = songz[aQ].font;
-                    so.font2 = songz[aQ].font2;
-                    so.timestamp = songz[aQ].timestamp;
-                    so.yvideo = songz[aQ].yvideo;
-                    so.bkgnd_fname = songz[aQ].bkgndfname;
-                    so.key = songz[aQ].key;
-                    so.copyright = songz[aQ].copy;
-                    so.notes = songz[aQ].notes;
-                    so.slides = D(songz[aQ].lyrics);
-                    const aO = songz[aQ].lyrics2;
+        /**
+         * @param {number} songId
+         */
+        function getSongObjWithID(songId) {
+            for (const item of songz) {
+                if (item.id === parseInt(songId)) {
+                    const so = new Song();
+
+                    so.name = item.name;
+                    so.catIndex = item.cat;
+                    so.font = item.font;
+                    so.font2 = item.font2;
+                    so.timestamp = item.timestamp;
+                    so.yvideo = item.yvideo;
+                    so.bkgnd_fname = item.bkgndfname;
+                    so.key = item.key;
+                    so.copyright = item.copy;
+                    so.notes = item.notes;
+                    so.slides = D(item.lyrics);
+                    const aO = item.lyrics2;
                     so.slides2 = aO != null ? D(aO) : [];
                     so.slides2 = j(so.slides, so.slides2);
-                    so.name2 = songz[aQ].title2;
-                    so.tags = songz[aQ].tags;
-                    so.slideseq = songz[aQ].slideseq;
-                    so.rating = songz[aQ].rating;
-                    so.chordsavailable = songz[aQ].chordsavailable;
-                    so.usagecount = songz[aQ].usagecount;
-                    so.subcat = songz[aQ].subcat;
-                    aP = true;
-                    break;
+                    so.name2 = item.title2;
+                    so.tags = item.tags;
+                    so.slideseq = item.slideseq;
+                    so.rating = item.rating;
+                    so.chordsavailable = item.chordsavailable;
+                    so.usagecount = item.usagecount;
+                    so.subcat = item.subcat;
+
+                    return so;
                 }
             }
-            if (aP) {
-                return so;
-            } else {
-                return null;
-            }
+
+            __debug("Song not found with ID: " + songId);
+
+            return null;
         }
         function getSongObjWithName(aQ) {
             var aP = false;
@@ -549,7 +551,7 @@ export class SongManager {
             return false;
         }
         function __debug(...aN) {
-            if (m_isDebug) {
+            if (IS_DEBUG) {
                 console.trace("[SongManager]....", ...aN);
             }
         }
@@ -623,7 +625,7 @@ export class SongManager {
             } else {
                 C();
                 F();
-                at();
+                _loadSongsFromDB();
             }
         }
         function M(aN) {
@@ -697,7 +699,7 @@ INSERT INTO sm (
                         }
                         C();
                         F();
-                        at();
+                        _loadSongsFromDB();
                     }
                 }
                 if (aN) {
@@ -707,7 +709,7 @@ INSERT INTO sm (
                     $RvW.songEditObj.setEditPrimaryKey(aT);
                     C();
                     F();
-                    at();
+                    _loadSongsFromDB();
                     if (aR) {
                         Toast.show(
                             "Song Database",
@@ -781,7 +783,7 @@ WHERE id=:id;
                 $RvW.songNavObj.sn_backupGlobalID();
                 C();
                 F();
-                at();
+                _loadSongsFromDB();
                 Toast.show("Song Database", 'Song "' + m + '" updated.');
             });
             aO.addEventListener(air.SQLErrorEvent.ERROR, function aQ(e) {
@@ -791,23 +793,30 @@ WHERE id=:id;
             });
             aO.execute();
         }
-        function at() {
+
+        function _loadSongsFromDB() {
             __debug("Getting ALL Data from Song DB");
-            var sqlStatement = new air.SQLStatement();
+
+            const sqlStatement = new air.SQLStatement();
             sqlStatement.sqlConnection = m_sqlConnection;
+
             sqlStatement.text = "SELECT * FROM sm ORDER BY name ASC";
-            sqlStatement.addEventListener(air.SQLEvent.RESULT, aO);
-            sqlStatement.addEventListener(air.SQLErrorEvent.ERROR, aN);
+
+            sqlStatement.addEventListener(air.SQLEvent.RESULT, onResult);
+            sqlStatement.addEventListener(air.SQLErrorEvent.ERROR, onError);
             sqlStatement.execute();
-            function aO(aR) {
+
+            function onResult(_) {
                 const { data } = sqlStatement.getResult();
                 songz = data ?? [];
                 __debug("Successfully got all data from Song DB");
                 a();
                 $RvW.songNavObj.update_songList({ data: songz }, "ALL");
             }
-            function aN(aR) {
+            function onError(e) {
                 __debug("Song Manager data error...");
+                __debug("Error message:" + e.error.message);
+                __debug("Error details :" + e.error.details);
             }
         }
         function getAllTitlesForWeb(query, callback) {
@@ -933,7 +942,7 @@ WHERE id=:id;
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, insertError);
                 C();
                 F();
-                at();
+                _loadSongsFromDB();
             }
             function onError(aS) {
                 aP.removeEventListener(air.SQLEvent.RESULT, insertResult);
@@ -958,7 +967,7 @@ WHERE id=:id;
                 m_sqlConnection.compact();
                 C();
                 F();
-                at();
+                _loadSongsFromDB();
             }
             function onError(aS) {
                 aQ.removeEventListener(air.SQLEvent.RESULT, onResult);
@@ -1030,7 +1039,7 @@ WHERE id=:id;
                 }
                 C();
                 F();
-                at();
+                _loadSongsFromDB();
             }
             function aN(aR) {
                 __debug("Song DB updater data error...");

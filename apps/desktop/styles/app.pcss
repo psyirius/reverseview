@@ -740,5 +740,63 @@ td.navtd {
 }
 
 /* ===================================================================================================================*/
+/* SEMANTIC UI EXTENSION */
+/* ===================================================================================================================*/
+
+
+/* ===================================================================================================================*/
 /* CUSTOM AREA */
 /* ===================================================================================================================*/
+.scrollable {
+    //min-width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    //left: 0;
+    //right: auto;
+    //margin: 0;
+    //padding: 0 0;
+    border: 1px solid rgba(34, 36, 38, .15);
+    border-radius: 0.28571429rem !important;
+}
+
+.xui {
+    &.scrolling {
+        min-width: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        left: 0;
+        right: auto;
+        margin: 0;
+        padding: 0 0;
+        border: 1px solid rgba(34, 36, 38, .15);
+        border-radius: .28571429rem;
+    }
+
+    .scrolling.list {
+        height: 200px;
+        min-width: 100%;
+        left: 0;
+        right: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-overflow-scrolling: touch;
+        cursor: auto;
+        display: block;
+        outline: 0;
+        top: 100%;
+        margin: 0;
+        padding: 0 0;
+        background: #fff;
+        font-size: 1em;
+        text-shadow: none;
+        text-align: left;
+        border: 1px solid rgba(34, 36, 38, .15);
+        border-radius: .28571429rem;
+        -webkit-transition: opacity .1s ease;
+        transition: opacity .1s ease;
+        z-index: 11;
+        will-change: transform, opacity;
+    }
+}

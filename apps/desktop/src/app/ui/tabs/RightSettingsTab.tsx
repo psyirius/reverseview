@@ -13,6 +13,7 @@ import {
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {console} from "@/platform/adapters/air";
+import Spacer from "@app/ui/widgets/Spacer";
 
 export default function RightSettingsTab() {
     const screenSelectMain = useRef<HTMLDivElement>(null);
@@ -256,606 +257,652 @@ export default function RightSettingsTab() {
         <div id="screenTab">
             <div class="generalPanelDIV">
                 <div class="ui form small">
-                    <h4 class="ui dividing header">Presentation Setup</h4>
+                    {/* Presentation Setup */}
+                    <div class="ui basic segment">
+                        <h4 class="ui dividing header">Presentation Setup</h4>
 
-                    {/* Toggle */}
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Main</label>
-                            <div class="inline field">
-                                <div class="ui toggle checkbox">
-                                    <input type="checkbox" name="main"
-                                       checked={mainEnabled}
-                                       onChange={onChangeMainEnable}
-                                    />
-                                    <label>Enable</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>Stage</label>
-                            <div class="inline field">
-                                <div class="ui toggle checkbox">
-                                    <input type="checkbox" name="stage"
-                                       checked={stageEnabled}
-                                       onChange={onChangeStageEnable}
-                                    />
-                                    <label>Enable</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Screens */}
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Screen</label>
-                            <div class="ui action input" style={{width: '100%'}}>
-                                <div class="ui selection dropdown" ref={screenSelectMain} style={{width: '100%'}}>
-                                    <input type="hidden" name="main-screen"/>
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Screen</div>
-                                    <div class="menu" style={{width: '100%'}}>
-                                        {availableScreens.map(({name, value}, i) => (
-                                            <div key={i} class="item" data-value={value} data-text={name}>
-                                                <i class="icon desktop"></i>
-                                                {name}
-                                            </div>
-                                        ))}
+                        {/* Toggle */}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Main</label>
+                                <div class="inline field">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" name="main"
+                                               checked={mainEnabled}
+                                               onChange={onChangeMainEnable}
+                                        />
+                                        <label>Enable</label>
                                     </div>
                                 </div>
-                                <div class="ui button small" onClick={() => onRefreshScreens()}>
-                                    <i class="sync icon"></i>
-                                    Refresh
-                                </div>
-
-                                {/*<div class="ui equal width grid" style={{width: '100%'}}>*/}
-                                {/*    <div class="column" style={{padding: 0}}>*/}
-                                {/*        <div class="ui selection dropdown fluid" ref={screenSelectMain}>*/}
-                                {/*            <input type="hidden" name="main-screen"/>*/}
-                                {/*            <i class="dropdown icon"></i>*/}
-                                {/*            <div class="default text">Screen</div>*/}
-                                {/*            <div class="menu" style={{width: '100%'}}>*/}
-                                {/*                {availableScreens.map(({name, value}, i) => (*/}
-                                {/*                    <div key={i} class="item" data-value={value} data-text={name}>*/}
-                                {/*                        <i class="icon desktop"></i>*/}
-                                {/*                        {name}*/}
-                                {/*                    </div>*/}
-                                {/*                ))}*/}
-                                {/*            </div>*/}
-                                {/*        </div>*/}
-                                {/*    </div>*/}
-                                {/*    <div class="five wide column" style={{padding: 0}}>*/}
-                                {/*        <div class="ui button mini" onClick={() => onRefreshScreensMain()}>*/}
-                                {/*            <i class="sync icon"></i>*/}
-                                {/*            Refresh*/}
-                                {/*        </div>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
                             </div>
-                        </div>
-                        <div class="field">
-                            <label>Screen</label>
-                            <div class="ui action input">
-                                <div class="ui selection dropdown" ref={screenSelectStage} style={{width: '100%'}}>
-                                    <input type="hidden" name="stage-screen"/>
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Screen</div>
-                                    <div class="menu" style={{width: '100%'}}>
-                                        {availableScreens.map(({name, value}, i) => (
-                                            <div key={i} class="item" data-value={value} data-text={name}>
-                                                <i class="icon desktop"></i>
-                                                {name}
-                                            </div>
-                                        ))}
+                            <div class="field">
+                                <label>Stage</label>
+                                <div class="inline field">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" name="stage"
+                                               checked={stageEnabled}
+                                               onChange={onChangeStageEnable}
+                                        />
+                                        <label>Enable</label>
                                     </div>
                                 </div>
-                                <div class="ui button small" onClick={() => onRefreshScreens()}>
-                                    <i class="sync icon"></i>
-                                    Refresh
+                            </div>
+                        </div>
+
+                        {/* Screens */}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Screen</label>
+                                <div class="ui action input" style={{width: '100%'}}>
+                                    <div
+                                        class="ui selection dropdown"
+                                        role="listbox"
+                                        tabindex={0}
+                                        ref={screenSelectMain}
+                                    >
+                                        <div role="alert" class="divider default text">
+                                            Select Screen
+                                        </div>
+                                        <i aria-hidden="true" class="dropdown icon"></i>
+                                        <div class="menu transition">
+                                            {availableScreens.map(({name, value}, i) => (
+                                                <div
+                                                    key={i}
+                                                    class="item"
+                                                    role="option"
+                                                    data-value={value}
+                                                    data-text={name}
+                                                >
+                                                    <i class="icon desktop"></i>
+                                                    <span class="text">{name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div class="ui button small" onClick={() => onRefreshScreens()}>
+                                        <i class="sync icon"></i>
+                                        Refresh
+                                    </div>
+
+                                    {/*<div class="ui equal width grid" style={{width: '100%'}}>*/}
+                                    {/*    <div class="column" style={{padding: 0}}>*/}
+                                    {/*        <div class="ui selection dropdown fluid" ref={screenSelectMain}>*/}
+                                    {/*            <input type="hidden" name="main-screen"/>*/}
+                                    {/*            <i class="dropdown icon"></i>*/}
+                                    {/*            <div class="default text">Screen</div>*/}
+                                    {/*            <div class="menu" style={{width: '100%'}}>*/}
+                                    {/*                {availableScreens.map(({name, value}, i) => (*/}
+                                    {/*                    <div key={i} class="item" data-value={value} data-text={name}>*/}
+                                    {/*                        <i class="icon desktop"></i>*/}
+                                    {/*                        {name}*/}
+                                    {/*                    </div>*/}
+                                    {/*                ))}*/}
+                                    {/*            </div>*/}
+                                    {/*        </div>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div class="five wide column" style={{padding: 0}}>*/}
+                                    {/*        <div class="ui button mini" onClick={() => onRefreshScreensMain()}>*/}
+                                    {/*            <i class="sync icon"></i>*/}
+                                    {/*            Refresh*/}
+                                    {/*        </div>*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Screen</label>
+                                <div class="ui action input" style={{width: '100%'}}>
+                                    <div
+                                        class="ui selection dropdown"
+                                        role="listbox"
+                                        tabindex={0}
+                                        ref={screenSelectStage}
+                                    >
+                                        <div role="alert" class="divider default text">
+                                            Select Screen
+                                        </div>
+                                        <i aria-hidden="true" class="dropdown icon"></i>
+                                        <div class="menu transition">
+                                            {availableScreens.map(({name, value}, i) => (
+                                                <div
+                                                    key={i}
+                                                    class="item"
+                                                    role="option"
+                                                    data-value={value}
+                                                    data-text={name}
+                                                >
+                                                    <i class="icon desktop"></i>
+                                                    <span class="text">{name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div class="ui button small" onClick={() => onRefreshScreens()}>
+                                        <i class="sync icon"></i>
+                                        Refresh
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <h4 class="ui dividing header">Presentation: Main</h4>
+                    {/* Presentation: Main */}
+                    <div class="ui basic segment">
+                        <h4 class="ui dividing header">Presentation: Main</h4>
 
-                    {/* Margins */}
-                    <div class="field">
-                        <label>Margins</label>
-
-                        <div class="fields">
-                            <div class="four wide field">
-                                <label>Top</label>
-                                <input
-                                    name="presentConfigMarginTop"
-                                    type="text"
-                                    id="presentConfigMarginTop"
-                                />
-                            </div>
-                            <div class="four wide field">
-                                <label>Left</label>
-                                <input
-                                    name="presentConfigMarginLeft"
-                                    type="text"
-                                    id="presentConfigMarginLeft"
-                                />
-                            </div>
-                            <div class="four wide field">
-                                <label>Bottom</label>
-                                <input
-                                    name="presentConfigMarginBottom"
-                                    type="text"
-                                    id="presentConfigMarginBottom"
-                                />
-                            </div>
-                            <div class="four wide field">
-                                <label>Right</label>
-                                <input
-                                    name="presentConfigMarginRight"
-                                    type="text"
-                                    id="presentConfigMarginRight"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="two fields">
+                        {/* Margins */}
                         <div class="field">
-                            <label>Font</label>
-                            <div class="inline fields">
-                                <div class="field">
-                                    <label>Max Font Size</label>
+                            <label>Margins</label>
+
+                            <div class="fields">
+                                <div class="four wide field">
+                                    <label>Top</label>
                                     <input
+                                        name="presentConfigMarginTop"
                                         type="text"
-                                        id="presentConfigMaxFontSize"
+                                        id="presentConfigMarginTop"
                                     />
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label>Text</label>
-
-                            <div class="inline fields">
-                                <label>Justification</label>
-
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="justify_left" type="radio" name="text-justification"/>
-                                        <label>Left</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="justify_center" type="radio" name="text-justification"/>
-                                        <label>Center</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="justify_right" type="radio" name="text-justification"/>
-                                        <label>Right</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Font Override */}
-                    <div class="two fields">
-                        <div class="field">
-                            <div class="inline fields">
-                                <div class="field">
-                                    {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
-                                    <label>Font Override: Primary</label>
-                                    <div class="ui action input" style={{width: '100%'}}>
-                                        <div class="ui selection dropdown" ref={fontSelectOverridePrimary}
-                                             style={{width: '100%'}}>
-                                            <input type="hidden" name="font-override"/>
-                                            <i class="dropdown icon"></i>
-                                            <div class="default text">Font</div>
-                                            <div class="menu" style={{width: '100%'}}>
-                                                <div class="item" data-value={''} data-text={'Disabled'}>
-                                                    {'Disabled'}
-                                                </div>
-                                                {availableFonts.map(({name, value}, i) => (
-                                                    <div
-                                                        key={i}
-                                                        class="item"
-                                                        data-value={value}
-                                                        data-text={name}
-                                                        style={{fontFamily: value}}
-                                                    >
-                                                        {name}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div class="ui button small" onClick={() => onRefreshFonts()}>
-                                            <i class="sync icon"></i>
-                                            Refresh
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <div class="inline fields">
-                                <div class="field">
-                                    {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
-                                    <label>Font Override: Secondary</label>
-                                    <div class="ui action input" style={{width: '100%'}}>
-                                        <div class="ui selection dropdown" ref={fontSelectOverrideSecondary}
-                                             style={{width: '100%'}}>
-                                            <input type="hidden" name="font-override"/>
-                                            <i class="dropdown icon"></i>
-                                            <div class="default text">Font</div>
-                                            <div class="menu" style={{width: '100%'}}>
-                                                <div class="item" data-value={''} data-text={'Disabled'}>
-                                                    {'Disabled'}
-                                                </div>
-                                                {availableFonts.map(({name, value}, i) => (
-                                                    <div
-                                                        key={i}
-                                                        class="item"
-                                                        data-value={value}
-                                                        data-text={name}
-                                                        style={{fontFamily: value}}
-                                                    >
-                                                        {name}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div class="ui button small" onClick={() => onRefreshFonts()}>
-                                            <i class="sync icon"></i>
-                                            Refresh
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Styling & Window */}
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Styling</label>
-
-                            <div class="fields">
-                                <div class="field">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="example" id="presentConfigEnableTransition"/>
-                                        <label>Transitions</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui checkbox disabled">
-                                        <input type="checkbox" name="example" id="presentConfigEnableOutline" disabled/>
-                                        <label>Outline</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="example" id="presentConfigEnableShadow"/>
-                                        <label>Shadow</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label>Window</label>
-
-                            <div class="inline fields">
-                                <div class="field">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="example" id="presentConfigOntop"/>
-                                        <label>Stay on Top</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Remote & Misc */}
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Remote</label>
-
-                            <div class="fields">
-                                <div class="field">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="example" id="remoteRestoreToggle"/>
-                                        <label>Restore Standby on Startup</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/*<div class="field">*/}
-                        {/*    <label>Misc</label>*/}
-
-                        {/*    <div class="inline fields">*/}
-                        {/*        <div class="field">*/}
-                        {/*            <div class="ui checkbox">*/}
-                        {/*                <input type="checkbox" name="example" id="presentConfigOntop"/>*/}
-                        {/*                <label>Stay on Top</label>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                    </div>
-
-                    {/* Orientation */}
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Orientation</label>
-
-                            <div class="inline fields">
-                                <label>Verse</label>
-
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="porient_hori" type="radio" name="verse-orientation"/>
-                                        <label>Horizontal</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="porient_vert" type="radio" name="verse-orientation"/>
-                                        <label>Vertical</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label>Orientation</label>
-
-                            <div class="inline fields">
-                                <label>Lyric</label>
-
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="porient_song_hori" type="radio" name="lyric-orientation"/>
-                                        <label>Horizontal</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input id="porient_song_vert" type="radio" name="lyric-orientation"/>
-                                        <label>Vertical</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Widgets & Lyric Config */}
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Widgets</label>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="presentConfigShowDateTime"/>
-                                    <label>Show Date and Time</label>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="presentConfigShowVVLogo"/>
-                                    <label>Show ReVerseVIEW Logo</label>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="ui checkbox">
+                                <div class="four wide field">
+                                    <label>Left</label>
                                     <input
-                                        type="checkbox"
-                                        name="example"
-                                        id="presentConfigShowCustomLogo"
+                                        name="presentConfigMarginLeft"
+                                        type="text"
+                                        id="presentConfigMarginLeft"
                                     />
-                                    <label>Show Custom Logo</label>
                                 </div>
-                            </div>
-
-                            <div class="field">
-                                <input
-                                    name="customLogoText1"
-                                    class="ui input fluid"
-                                    type="text"
-                                    id="customLogoText1"
-                                    size={40}
-                                />
-                            </div>
-
-                            <div class="field">
-                                <input
-                                    name="customLogoText2"
-                                    class="ui input fluid"
-                                    type="text"
-                                    id="customLogoText2"
-                                    size={40}
-                                />
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label>Lyric Config</label>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="presentConfigEnableSongTitle"/>
-                                    <label>Show Song Title</label>
+                                <div class="four wide field">
+                                    <label>Bottom</label>
+                                    <input
+                                        name="presentConfigMarginBottom"
+                                        type="text"
+                                        id="presentConfigMarginBottom"
+                                    />
                                 </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="showPrimaryFont"/>
-                                    <label>Show lyrics in primary language</label>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="show2LinesSlides"/>
-                                    <label>Two (2) lines per slide</label>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="hideStanzaNumber"/>
-                                    <label>Hide stanza number</label>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="fitLineSetup"/>
-                                    <label>Enable Line Wrap</label>
+                                <div class="four wide field">
+                                    <label>Right</label>
+                                    <input
+                                        name="presentConfigMarginRight"
+                                        type="text"
+                                        id="presentConfigMarginRight"
+                                    />
                                 </div>
                             </div>
                         </div>
+
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Font</label>
+                                <div class="inline fields">
+                                    <div class="field">
+                                        <label>Max Font Size</label>
+                                        <input
+                                            type="text"
+                                            id="presentConfigMaxFontSize"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>Text</label>
+
+                                <div class="inline fields">
+                                    <label>Justification</label>
+
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="justify_left" type="radio" name="text-justification"/>
+                                            <label>Left</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="justify_center" type="radio" name="text-justification"/>
+                                            <label>Center</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="justify_right" type="radio" name="text-justification"/>
+                                            <label>Right</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Font Override */}
+                        <div class="two fields">
+                            <div class="field">
+                                <div class="inline fields">
+                                    <div class="field">
+                                        {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
+                                        <label>Font Override: Primary</label>
+                                        <div class="ui action input" style={{width: '100%'}}>
+                                            <div
+                                                class="ui selection dropdown"
+                                                role="listbox"
+                                                tabindex={0}
+                                                ref={fontSelectOverridePrimary}
+                                            >
+                                                <div role="alert" class="divider default text">
+                                                    Select Font
+                                                </div>
+                                                <i aria-hidden="true" class="dropdown icon"></i>
+                                                <div class="menu transition">
+                                                    <div class="item" role="option" data-value={''}
+                                                         data-text={'Disabled'}>
+                                                        {'Disabled'}
+                                                    </div>
+                                                    {availableFonts.map(({name, value}, i) => (
+                                                        <div
+                                                            key={i}
+                                                            class="item"
+                                                            role="option"
+                                                            data-value={value}
+                                                            data-text={name}
+                                                            style={{fontFamily: value}}
+                                                        >
+                                                            <span class="text">{name}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div class="ui button small" onClick={() => onRefreshFonts()}>
+                                                <i class="sync icon"></i>
+                                                Refresh
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="inline fields">
+                                    <div class="field">
+                                        {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
+                                        <label>Font Override: Secondary</label>
+                                        <div class="ui action input" style={{width: '100%'}}>
+                                            <div
+                                                class="ui selection dropdown"
+                                                role="listbox"
+                                                tabindex={0}
+                                                ref={fontSelectOverrideSecondary}
+                                            >
+                                                <div role="alert" class="divider default text">
+                                                    Select Font
+                                                </div>
+                                                <i aria-hidden="true" class="dropdown icon"></i>
+                                                <div class="menu transition">
+                                                    <div class="item" role="option" data-value={''}
+                                                         data-text={'Disabled'}>
+                                                        {'Disabled'}
+                                                    </div>
+                                                    {availableFonts.map(({name, value}, i) => (
+                                                        <div
+                                                            key={i}
+                                                            class="item"
+                                                            role="option"
+                                                            data-value={value}
+                                                            data-text={name}
+                                                            style={{fontFamily: value}}
+                                                        >
+                                                            <span class="text">{name}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div class="ui button small" onClick={() => onRefreshFonts()}>
+                                                <i class="sync icon"></i>
+                                                Refresh
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Styling & Window */}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Styling</label>
+
+                                <div class="fields">
+                                    <div class="field">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="example" id="presentConfigEnableTransition"/>
+                                            <label>Transitions</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui checkbox disabled">
+                                            <input type="checkbox" name="example" id="presentConfigEnableOutline"
+                                                   disabled/>
+                                            <label>Outline</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="example" id="presentConfigEnableShadow"/>
+                                            <label>Shadow</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>Window</label>
+
+                                <div class="inline fields">
+                                    <div class="field">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="example" id="presentConfigOntop"/>
+                                            <label>Stay on Top</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Remote & Misc */}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Remote</label>
+
+                                <div class="fields">
+                                    <div class="field">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="example" id="remoteRestoreToggle"/>
+                                            <label>Restore Standby on Startup</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/*<div class="field">*/}
+                            {/*    <label>Misc</label>*/}
+
+                            {/*    <div class="inline fields">*/}
+                            {/*        <div class="field">*/}
+                            {/*            <div class="ui checkbox">*/}
+                            {/*                <input type="checkbox" name="example" id="presentConfigOntop"/>*/}
+                            {/*                <label>Stay on Top</label>*/}
+                            {/*            </div>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                        </div>
+
+                        {/* Orientation */}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Orientation</label>
+
+                                <div class="inline fields">
+                                    <label>Verse</label>
+
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="porient_hori" type="radio" name="verse-orientation"/>
+                                            <label>Horizontal</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="porient_vert" type="radio" name="verse-orientation"/>
+                                            <label>Vertical</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>Orientation</label>
+
+                                <div class="inline fields">
+                                    <label>Lyric</label>
+
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="porient_song_hori" type="radio" name="lyric-orientation"/>
+                                            <label>Horizontal</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="porient_song_vert" type="radio" name="lyric-orientation"/>
+                                            <label>Vertical</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Widgets & Lyric Config */}
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Widgets</label>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="presentConfigShowDateTime"/>
+                                        <label>Digital Clock</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="presentConfigShowVVLogo"/>
+                                        <label>ReVerseVIEW Logo</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input
+                                            type="checkbox"
+                                            name="example"
+                                            id="presentConfigShowCustomLogo"
+                                        />
+                                        <label>Custom Logo</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <input
+                                        name="customLogoText1"
+                                        class="ui input fluid"
+                                        type="text"
+                                        id="customLogoText1"
+                                    />
+                                </div>
+
+                                <div class="field">
+                                    <input
+                                        name="customLogoText2"
+                                        class="ui input fluid"
+                                        type="text"
+                                        id="customLogoText2"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>Lyric Config</label>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="presentConfigEnableSongTitle"/>
+                                        <label>Show Song Title</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="showPrimaryFont"/>
+                                        <label>Show lyrics in primary language</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="show2LinesSlides"/>
+                                        <label>Two (2) lines per slide</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="hideStanzaNumber"/>
+                                        <label>Hide stanza number</label>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example" id="fitLineSetup"/>
+                                        <label>Enable Line Wrap</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Save */}
+                        <button
+                            id="presentConfigSaveButton"
+                            class="ui button"
+                            type="button"
+                        >
+                            Save
+                        </button>
                     </div>
 
-                    {/* Save */}
-                    <button
-                        id="presentConfigSaveButton"
-                        class="ui button"
-                        type="button"
-                    >
-                        Save
-                    </button>
+                    <div class="ui basic segment">
+                        <h4 class="ui dividing header">Presentation: Stage</h4>
 
-                    <h4 class="ui dividing header">Presentation: Stage</h4>
-                </div>
+                        {/* TODO: style proper */}
+                        <div>
+                            <b>Stage Screen Style </b>
 
-                {/* TODO: style proper */}
-                <div class="style2">
-                    <div id="stageScreenSetupID" class="padded">
-                        <b>Stage Screen Style </b>
-
-                        {/* StageVIEW style */}
-                        <div class="ui grid">
-                            <div class="two wide column">
-                                <select id="selectStageStyle" class="selectboxStyle">
-                                    <option value="0">Horizontal</option>
-                                    <option value="1">Vertical</option>
-                                    <option value="3">1/3rd View</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* Window View */}
-                        <div id="stageviewAsWindowDiv">
+                            {/* StageVIEW style */}
                             <div class="ui grid">
                                 <div class="two wide column">
-                                    <input type="checkbox" id="stageviewWindow"/> Window View
-                                </div>
-                                <div class="two wide column">
-                                    <input type="checkbox" id="stageviewMiniWindow"/> Small Window
-                                </div>
-                                <div class="two wide column">
-                                <input type="checkbox" id="stageviewGreenWindow"/> Green Screen
+                                    <select id="selectStageStyle" class="selectboxStyle">
+                                        <option value="0">Horizontal</option>
+                                        <option value="1">Vertical</option>
+                                        <option value="3">1/3rd View</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="ui grid">
-                            <div class="six wide column">
-                                {/* Opacity of the 1/3rd view strip */}
-                                <div id="stageviewOpacityDiv">Opacity<input type="text" id="thirdview_opacity"
-                                                                            value="0.6" size={6}/>
-                                    <div class="ui range" id="thirdview_opacity_range"></div>
-                                </div>
-
-                                {/* Height of 1/3rd View */}
-                                <div id="stageviewHeightDiv">Height<input type="text" id="thirdview_height" value="33"
-                                                                          size={6}/>
-                                    <div class="ui range" id="thirdview_height_range"></div>
-                                </div>
-
-                                {/* Vertical Position of 1/3rd View */}
-                                <div id="stageviewPositionDiv">Vertical Position<input type="text"
-                                                                                       id="thirdview_position"
-                                                                                       value="33" size={6}/>
-                                    <div class="ui range" id="thirdview_position_range"></div>
+                            {/* Window View */}
+                            <div id="stageviewAsWindowDiv">
+                                <div class="ui grid">
+                                    <div class="two wide column">
+                                        <input type="checkbox" id="stageviewWindow"/> Window View
+                                    </div>
+                                    <div class="two wide column">
+                                        <input type="checkbox" id="stageviewMiniWindow"/> Small Window
+                                    </div>
+                                    <div class="two wide column">
+                                        <input type="checkbox" id="stageviewGreenWindow"/> Green Screen
+                                    </div>
                                 </div>
                             </div>
-                            <div class="six wide column">
-                                {/* Maximum font size 1/3rd View */}
-                                <div id="stageviewMaxFontsizeDiv">Maximum Font Size<input type="text"
-                                                                                          id="thirdview_maxFontSize"
-                                                                                          value="33" size={6}/>
-                                    <div class="ui range" id="thirdview_maxFontSize_range"></div>
-                                </div>
 
-                                {/* Color of Text in StageVIEW */}
-                                <div id="stageviewForegroundColorDiv">Text Color<input type="text" id="thirdview_fcolor"
-                                                                                       value="" size={6}/>
-                                    <div class="ui range" id="thirdview_fcolor_range"></div>
-                                </div>
+                            <div class="ui grid">
+                                <div class="six wide column">
+                                    {/* Opacity of the 1/3rd view strip */}
+                                    <div id="stageviewOpacityDiv">Opacity<input type="text" id="thirdview_opacity"
+                                                                                value="0.6" size={6}/>
+                                        <div class="ui range" id="thirdview_opacity_range"></div>
+                                    </div>
 
-                                {/* Background color of strip */}
-                                <div id="stageviewBackgroundColorDiv">Background Color<input type="text"
-                                                                                             id="thirdview_bcolor"
-                                                                                             value="" size={6}/>
-                                    <div class="ui range" id="thirdview_bcolor_range"></div>
+                                    {/* Height of 1/3rd View */}
+                                    <div id="stageviewHeightDiv">Height<input type="text" id="thirdview_height"
+                                                                              value="33"
+                                                                              size={6}/>
+                                        <div class="ui range" id="thirdview_height_range"></div>
+                                    </div>
+
+                                    {/* Vertical Position of 1/3rd View */}
+                                    <div id="stageviewPositionDiv">Vertical Position<input type="text"
+                                                                                           id="thirdview_position"
+                                                                                           value="33" size={6}/>
+                                        <div class="ui range" id="thirdview_position_range"></div>
+                                    </div>
+                                </div>
+                                <div class="six wide column">
+                                    {/* Maximum font size 1/3rd View */}
+                                    <div id="stageviewMaxFontsizeDiv">Maximum Font Size<input type="text"
+                                                                                              id="thirdview_maxFontSize"
+                                                                                              value="33" size={6}/>
+                                        <div class="ui range" id="thirdview_maxFontSize_range"></div>
+                                    </div>
+
+                                    {/* Color of Text in StageVIEW */}
+                                    <div id="stageviewForegroundColorDiv">Text Color<input type="text"
+                                                                                           id="thirdview_fcolor"
+                                                                                           value="" size={6}/>
+                                        <div class="ui range" id="thirdview_fcolor_range"></div>
+                                    </div>
+
+                                    {/* Background color of strip */}
+                                    <div id="stageviewBackgroundColorDiv">Background Color<input type="text"
+                                                                                                 id="thirdview_bcolor"
+                                                                                                 value="" size={6}/>
+                                        <div class="ui range" id="thirdview_bcolor_range"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <br/>
-
-                        <div class="ui grid">
-                            <div class="three wide column">
-                                <div id="stageviewPrimaryDiv"><input type="checkbox" id="thirdview_primary"/> Show
-                                    primary only
+                            <div class="ui grid">
+                                <div class="three wide column">
+                                    <div id="stageviewPrimaryDiv"><input type="checkbox" id="thirdview_primary"/> Show
+                                        primary only
+                                    </div>
+                                </div>
+                                <div class="three wide column">
+                                    <div id="stageviewSecondaryDiv"><input type="checkbox"
+                                                                           id="thirdview_secondary"/> Show
+                                        secondary only
+                                    </div>
                                 </div>
                             </div>
-                            <div class="three wide column">
-                                <div id="stageviewSecondaryDiv"><input type="checkbox" id="thirdview_secondary"/> Show
-                                    secondary only
-                                </div>
+
+                            <div id="stageviewAlignLeftDiv"><input type="checkbox" id="thirdview_alignLeft"/> Align Left
                             </div>
-                        </div>
+                            <div id="stageviewAlignCenterDiv"><input type="checkbox" id="thirdview_alignCenter"/> Align
+                                Center
+                            </div>
+                            <div id="stageviewAlignHorizontalDiv"><input type="checkbox"
+                                                                         id="thirdview_alignHorizontal"/> Horizontal
+                            </div>
 
-                        <br/>
+                            <div id="stageviewOutlineDiv"><input type="checkbox" id="thirdview_outline"/> Auto Text
+                                Outline
+                            </div>
+                            <div id="stageviewShadowDiv"><input type="checkbox" id="thirdview_shadow"/> Text Shadow
+                            </div>
+                            <div id="stageviewShowTextureDiv"><input type="checkbox" id="thirdview_showTexture"/> Add
+                                Texture
+                            </div>
 
-                        <div id="stageviewAlignLeftDiv"><input type="checkbox" id="thirdview_alignLeft"/> Align Left
-                        </div>
-                        <div id="stageviewAlignCenterDiv"><input type="checkbox" id="thirdview_alignCenter"/> Align
-                            Center
-                        </div>
-                        <div id="stageviewAlignHorizontalDiv"><input type="checkbox"
-                                                                     id="thirdview_alignHorizontal"/> Horizontal
-                        </div>
+                            <div id="stageviewTimeDiv"><input type="checkbox" id="stageSettingShowTime"/> Show date and
+                                time
+                            </div>
 
-                        <div id="stageviewOutlineDiv"><input type="checkbox" id="thirdview_outline"/> Auto Text Outline
-                        </div>
-                        <div id="stageviewShadowDiv"><input type="checkbox" id="thirdview_shadow"/> Text Shadow</div>
-                        <div id="stageviewShowTextureDiv"><input type="checkbox" id="thirdview_showTexture"/> Add
-                            Texture
-                        </div>
-
-                        <div id="stageviewTimeDiv"><input type="checkbox" id="stageSettingShowTime"/> Show date and time
-                        </div>
-
-                        <div id="stageMessageDivID" class="padded">
-                            <b>Message Setup</b><br/>
-                            <textarea rows={4} cols={50} id="stageConfigMessage"></textarea>
-                            <input name="stageMessageShow" type="button" id="stageMessageShow" value=" SHOW "/> |
-                            <input name="stageMessageHide" type="button" id="stageMessageHide" value=" CLEAR "/>
+                            <div id="stageMessageDivID" class="padded">
+                                <b>Message Setup</b><br/>
+                                <textarea rows={4} cols={50} id="stageConfigMessage"></textarea>
+                                <input name="stageMessageShow" type="button" id="stageMessageShow" value=" SHOW "/> |
+                                <input name="stageMessageHide" type="button" id="stageMessageHide" value=" CLEAR "/>
+                            </div>
                         </div>
                     </div>
-                    <br/>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import {useEffect} from "preact/hooks";
+import {useEffect, useRef} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, call_showTheme, call_closePresentation} from "@/p_window";
@@ -6,6 +6,7 @@ import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab, showRemotePa
 import {$RvW} from "@/rvw";
 
 import BibleRefSelect from "@app/ui/BibleRefSelect";
+import Spacer from "@app/ui/widgets/Spacer";
 
 const handlers = {
     present: () => {
@@ -86,92 +87,100 @@ export default function MenuBar() {
 
     return (
         <div style={{width: '100%'}}>
-            <div class="ui icon compact menu fluid hidden">
-                {/* Menu Items */}
-                <div class="item">
-                    <div class="ui buttons">
-                        {menuItems.map(e => (
-                            <button
-                                class="ui icon button"
-                                data-tooltip={e.tooltip}
-                                data-position="bottom center"
-                                data-inverted=""
-                                onClick={e.onClick}
-                            >
-                                <i class={e.iconClass + " icon"}></i>
-                            </button>
-                        ))}
+            <div class="ui clearing small attached segment">
+                <div class="ui left floated secondary icon compact mini fitted menu">
+                    {/* Menu Items */}
+                    <div class="item">
+                        <div class="ui buttons">
+                            {menuItems.map(e => (
+                                <button
+                                    class="ui icon button"
+                                    data-tooltip={e.tooltip}
+                                    data-position="bottom center"
+                                    data-inverted=""
+                                    onClick={e.onClick}
+                                >
+                                    <i class={e.iconClass + " icon"}></i>
+                                </button>
+                            ))}
+                        </div>
                     </div>
+
+                    {/* Verse Menu */}
+                    {(activeTabIndex == 0) && <>
+                        <div class="item">
+                            <div class="ui basic large label">{activeBookRef}</div>
+                        </div>
+
+                        <div class="item">
+                            <div class="ui buttons">
+                                <button
+                                    class="ui icon button"
+                                    data-tooltip="Add to Schedule"
+                                    data-position="bottom center"
+                                    data-inverted=""
+                                    onClick={handlers.addVerseToSchedule}
+                                >
+                                    <i class="add icon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <BibleRefSelect/>
+                        </div>
+                    </>}
+
+                    {/* Lyric Menu */}
+                    {(activeTabIndex == 1) && <>
+                        <div class="item">
+                            <div class="ui buttons">
+                                <button
+                                    class={"ui icon button " + ((ytLink == null) ? "" : "disabled")}
+                                    disabled={(ytLink == null)}
+                                    data-tooltip="YouTube"
+                                    data-position="bottom center"
+                                    data-inverted=""
+                                    onClick={() => handlers.gotoLink(ytLink)}
+                                >
+                                    <i class="video icon"></i>
+                                </button>
+
+                                <button
+                                    class="ui icon button"
+                                    data-tooltip="Add to Schedule"
+                                    data-position="bottom center"
+                                    data-inverted=""
+                                    onClick={handlers.addSongToSchedule}
+                                >
+                                    <i class="add icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </>}
+
+                    {/* Notification Message */}
+                    {notification && <div class="item">
+                        <a class="ui label basic" onClick={() => navNotifyMessage.set(null)}>
+                            {notification}
+                        </a>
+                    </div>}
                 </div>
 
-                {/* Verse Menu */}
-                {(activeTabIndex == 0) && <>
-                    <div class="item">
-                        <div class="ui basic large label">{activeBookRef}</div>
-                    </div>
-
-                    <div class="item">
-                        <button
-                            class="ui icon button"
-                            data-tooltip="Add to Schedule"
-                            data-position="bottom center"
-                            data-inverted=""
-                            onClick={handlers.addVerseToSchedule}
-                        >
-                            <i class="add icon"></i>
-                        </button>
-                    </div>
-
-                    <div class="item">
-                        <BibleRefSelect/>
-                    </div>
-                </>}
-
-                {/* Lyric Menu */}
-                {(activeTabIndex == 1) && <>
+                <div class="ui right floated secondary icon compact mini fitted menu">
                     <div class="item">
                         <div class="ui buttons">
                             <button
-                                class={"ui icon button " + ((ytLink == null) ? "" : "disabled")}
-                                disabled={(ytLink == null)}
-                                data-tooltip="YouTube"
-                                data-position="bottom center"
-                                data-inverted=""
-                                onClick={() => handlers.gotoLink(ytLink)}
-                            >
-                                <i class="video icon"></i>
-                            </button>
-
-                            <button
                                 class="ui icon button"
-                                data-tooltip="Add to Schedule"
+                                data-tooltip="Remote"
                                 data-position="bottom center"
                                 data-inverted=""
-                                onClick={handlers.addSongToSchedule}
+                                onClick={() => showRemotePanel.set(true)}
                             >
-                                <i class="add icon"></i>
+                                <i class="wifi icon"></i>
                             </button>
                         </div>
                     </div>
-                </>}
-
-                {/* Notification Message */}
-                {notification && <div class="item">
-                    <a class="ui label basic" onClick={() => navNotifyMessage.set(null)}>
-                        {notification}
-                    </a>
-                </div>}
-
-                <div class="right item">
-                    <button
-                        class="ui icon button"
-                        data-tooltip="Remote"
-                        data-position="bottom center"
-                        data-inverted=""
-                        onClick={() => showRemotePanel.set(true)}
-                    >
-                        <i class="wifi icon"></i>
-                    </button>
                 </div>
             </div>
         </div>
