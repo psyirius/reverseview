@@ -6,6 +6,7 @@ import ContentPane from "./ContentPane";
 import SandboxFrame from "./SandboxFrame";
 import RenderCanvas from "./RenderCanvas";
 import RemoteCanvas from "./RemoteCanvas";
+import _Test from "@app/ui/widgets/_Test";
 
 interface Props {
     dev?: boolean;
@@ -21,6 +22,8 @@ const App = ({dev}: Props) => {
                     </div>
                 </div>
             )}
+
+            {/*<_Test />*/}
 
             {/*<RenderCanvas />*/}
             {/*<RemoteCanvas url="http://localhost:8088" />*/}

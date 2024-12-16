@@ -1,0 +1,58 @@
+<html lang="en">
+    <head>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+      <title>Fiddle</title>
+
+      <link rel="stylesheet" type="text/css" href="css/app.css">
+
+      <!-- Air libraries (JS) -->
+      <script type="text/javascript" src="lib/air/AIRAliases.js"></script>
+      <script type="text/javascript" src="lib/air/AIRIntrospector.js"></script>
+      <script type="text/javascript" src="lib/air/AIRMenuBuilder.js"></script>
+      <script type="text/javascript" src="lib/air/AIRLocalizer.js"></script>
+      <script type="text/javascript" src="lib/air/AIRSourceViewer.js"></script>
+
+      <!-- jQuery -->
+      <script type="text/javascript" src="lib/jquery/jquery-3.7.1.min.js"></script>
+
+      <!-- Main Script -->
+      <script src="js/app.js"></script>
+    </head>
+    <body onload="$load()">
+        <div id="fiddle">
+          <div id="__reload__">
+            <span id="__wsz__"></span>
+
+            <button tabIndex={0} onclick="$reload()">
+              Reload
+            </button>
+          </div>
+
+          <div id="app">
+            <div id="left">
+              <div id="left__header">
+                <span id="left__title">Source</span>
+              </div>
+
+              <div id="left__content">
+                <label for="html-editor">HTML</label>
+                <textarea id="html-editor" tabIndex={0}></textarea>
+              </div>
+            </div>
+
+            <div id="right">
+              <iframe
+                height="300px"
+                id="sandbox"
+                src="index.html"
+                allowcrossDomainxhr="true"
+                sandboxRoot="http://ui.reverseview.air/"
+                documentRoot="app:/sandbox/"
+                onLoad="$onSandboxLoad()"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+    </body>
+</html>

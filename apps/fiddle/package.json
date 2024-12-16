@@ -1,0 +1,12 @@
+{
+  "name": "@rvw/fiddle",
+  "version": "1.0.0",
+  "description": "Air Fiddle to aid in the development of UI in Adobe AIR applications",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "debug": "adl ./application.xml ./src"
+  },
+  "devDependencies": {
+  }
+}

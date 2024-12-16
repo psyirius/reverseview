@@ -62,6 +62,9 @@ importers:
       '@typescript/lib-scripthost':
         specifier: workspace:@rvw/air-types@*
         version: link:../../packages/air-types
+      preact-virtual-list:
+        specifier: ^0.3.1
+        version: 0.3.1(preact@10.25.1)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -327,6 +330,8 @@ importers:
       yui:
         specifier: ^3.18.1
         version: 3.18.1
+
+  apps/fiddle: {}
 
   apps/garage:
     devDependencies:
@@ -7576,6 +7581,7 @@ packages:
   haxe@5.2.1:
     resolution: {integrity: sha512-Kc8tjvaU/KWwuRBZ/dcjikj9YWSuKgOYS8CQYa+u6/owcVn3bNRwMavRbNvoG6tXkz+WEhy2B41UDSnSYdf0LA==}
     engines: {node: '>=8.0.0'}
+    cpu: [x64, ia32]
     os: [win32, win64, darwin, linux]
     hasBin: true
 
@@ -10428,6 +10434,11 @@ packages:
 
   preact-slots@1.0.0:
     resolution: {integrity: sha512-Icng1EIGS6kV524PqFL32E0cFO1kuQC9thpZKqWz1LNaqHqeyxMriuDdJMyMhCcZOAtrlgwPtVBozsH65oFfRw==}
+    peerDependencies:
+      preact: '*'
+
+  preact-virtual-list@0.3.1:
+    resolution: {integrity: sha512-Ep1/gZWT061t8nH7EJcwMR6LPld+CabXkNyA4tJ4lv+5BjawuutWbbe+Gcr1dxPxQIYD34SS/xR7XvJ9GD4Ayw==}
     peerDependencies:
       preact: '*'
 
@@ -23910,6 +23921,10 @@ snapshots:
       preact: 10.25.1
 
   preact-slots@1.0.0(preact@10.25.1):
+    dependencies:
+      preact: 10.25.1
+
+  preact-virtual-list@0.3.1(preact@10.25.1):
     dependencies:
       preact: 10.25.1
 
