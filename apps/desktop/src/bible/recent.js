@@ -1,5 +1,6 @@
 import { setBookChVer } from "@/bible/navigation";
 import { $RvW } from "@/rvw";
+import {recentBibleRefs} from "@stores/global";
 
 export class BibleRecentRefManager {
     maxNumElements = 30
@@ -46,36 +47,32 @@ export class BibleRecentRefManager {
     }
 
     displaySelection() {
-        const a = [];
-        for (let i = 0; i < this.numElements; i++) {
-            a.push(`${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}`)
-        }
+        recentBibleRefs.update((_) => {
+            const l = new Array(this.numElements);
 
-        /** @type {HTMLSelectElement} */
-        const el = document.getElementById('recentSel');
-        el.innerHTML = '';
+            for (let i = 0; i < this.numElements; i++) {
+                const label = `${$RvW.booknames[this.bArray[i]]} ${this.cArray[i] + 1}:${this.vArray[i] + 1}`;
 
-        let b = this.numElements - 1;
-        for (let i = 0; i < this.numElements; i++) {
-            el.options[i] = new Option(a[b], b);
-            b--;
-        }
-        el.selectedIndex = 0;
-        el.addEventListener("click", (e) => this.selectRecent(e), false);
+                // save it in reverse
+                const j = this.numElements - i - 1;
+                l[j] = {
+                    label,
+                    index: i,
+                    book: this.bArray[i],
+                    chapter: this.cArray[i],
+                    verse: this.vArray[i],
+                }
+            }
+
+            return l
+        });
     }
 
-    selectRecent(e) {
-        /** @type {HTMLSelectElement} */
-        const el = document.getElementById("recentSel");
+    selectRecent({ book, chapter, verse }) {
+        $RvW.bookIndex = book;
+        $RvW.chapterIndex = chapter;
+        $RvW.verseIndex = verse;
 
-        if (el.selectedIndex !== -1) {
-            const b = el.options[el.selectedIndex].value;
-
-            $RvW.bookIndex = this.bArray[b];
-            $RvW.chapterIndex = this.cArray[b];
-            $RvW.verseIndex = this.vArray[b];
-
-            setBookChVer($RvW.bookIndex, Number($RvW.chapterIndex) + 1, Number($RvW.verseIndex) + 1);
-        }
+        setBookChVer($RvW.bookIndex, chapter + 1, verse + 1);
     }
 }

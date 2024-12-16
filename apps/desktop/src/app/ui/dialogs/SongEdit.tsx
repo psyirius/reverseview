@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "preact/hooks";
 import {showSongEditPanel} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";
+import Modal from "@app/ui/widgets/Modal";
 
 const INNER_HTML = `
 <div class="ui grid vvrow">
@@ -248,10 +249,26 @@ export default function SongEditDialog() {
         }
     }, [open]);
 
+    const modal = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        // @ts-ignore
+        // $(modal.current).modal();
+
+        setTimeout(() => {
+            // @ts-ignore
+            $(modal.current).modal('setting', 'transition', 'scale').modal('show');
+        }, 5000);
+    }, []);
+
     return (
-        <div ref={container}>
-            <div class="yui3-widget-bd" dangerouslySetInnerHTML={{__html: INNER_HTML}}>
+        <>
+            {/*<Modal />*/}
+
+            <div ref={container}>
+                <div class="yui3-widget-bd" dangerouslySetInnerHTML={{__html: INNER_HTML}}>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

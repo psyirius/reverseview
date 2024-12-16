@@ -576,7 +576,7 @@ $RvW.putver = function(a = null) {
     const selCh = $RvW.getChapterValue();
 
     console.trace("selBook|putver:", selBook);
-    console.trace("selCh|putver:", selBook);
+    console.trace("selCh|putver:", selCh, a);
 
     verseList.update((_) => {
         const list = [];
@@ -607,6 +607,7 @@ $RvW.putver = function(a = null) {
 }
 export function verseChange() {
     selectedTab.set(0); // switch to verses page if not already
+
     const a = $RvW.getVerseValue();
 
     selectedBible.update((_l) => {
@@ -899,7 +900,7 @@ function setupNavWindow() {
         document.getElementById("wrapper").style.height = $RvW.tabHeight;
 
         // TODO: make this in css
-        $("#verse-select").height($RvW.tabHeight - 240);
+        $("#verse-select").height($RvW.tabHeight - 264);
 
         const l = j - g - e - 3 * b;
         document.getElementById("container2").style.height = $RvW.tabHeight;

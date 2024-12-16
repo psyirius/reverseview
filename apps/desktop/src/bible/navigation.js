@@ -62,9 +62,9 @@ export function processNavBibleRefFind() {
     var d = document.getElementById("nav_bibleRefID").value;
     var e = $RvW.bibleRefObj.init(d);
     if (e) {
-        var c = $RvW.bibleRefObj.getBook();
-        var b = $RvW.bibleRefObj.getChapter();
-        var a = $RvW.bibleRefObj.getVerse();
+        const c = $RvW.bibleRefObj.getBook();
+        const b = $RvW.bibleRefObj.getChapter();
+        const a = $RvW.bibleRefObj.getVerse();
         setBookChVer(c, b, a);
         $RvW.scroll_to_view = true;
         $RvW.highlightVerse(a - 1);
@@ -75,7 +75,7 @@ export function processNavBibleRefFind() {
 export function setBookChVer(a, e, d) {
     selectedBible.update((_l) => {
         const l = [..._l];
-        l[0] = a - 1;
+        l[0] = a;
         console.trace("navigation.js: setBookChVer():", _l, l);
         return l;
     });

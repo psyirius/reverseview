@@ -258,7 +258,8 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
                         jsc: {
                             target: 'es5',
                             // target: 'es3',
-                            externalHelpers: true,
+                            externalHelpers: false,
+                            // externalHelpers: true,
                         }
                     }
                 }),

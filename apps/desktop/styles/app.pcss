@@ -800,3 +800,13 @@ td.navtd {
         will-change: transform, opacity;
     }
 }
+
+/* polyfill for `display:flex` in fluid input */
+.ui.fluid.input {
+    display: table;
+    width: 100%;
+
+    input {
+        display: table-cell;
+    }
+}

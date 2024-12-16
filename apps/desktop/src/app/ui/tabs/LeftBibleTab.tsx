@@ -3,12 +3,12 @@ import ScrollableSelect from "@app/ui/widgets/ScrollableSelect";
 import {$RvW} from "@/rvw";
 import {verseChange} from "@app/main";
 import {useStoreState} from "@/utils/hooks";
-import {bibleFont, bookList, chapterList, selectedBible, verseList} from "@/stores/global";
+import {bibleFont, bookList, chapterList, recentBibleRefs, selectedBible, verseList} from "@/stores/global";
 import {console} from "@/platform/adapters/air";
+import {useState} from "preact/hooks";
 
 export default function LeftBibleTab() {
-    const numItems = 26;
-    const columnSizes = [125, 60, 60];
+    const [activeRecentVerse, setActiveRecentVerse] = useState(-1);
 
     const [
         activeBook,
@@ -22,7 +22,10 @@ export default function LeftBibleTab() {
 
     const _bibleFont = useStoreState(bibleFont);
 
+    const _recentRefs = useStoreState(recentBibleRefs);
+
     console.trace('[ZZZ]:', [activeBook, activeChapter, activeVerse]);
+    console.trace('[YYY]:', _recentRefs);
 
     const bookListItems = _bookList.map((book) => {
         if (typeof book === 'string') {
@@ -35,6 +38,11 @@ export default function LeftBibleTab() {
     });
     const chapterListItems = _chapterList.map((chapter) => ({label: chapter, value: chapter}));
     const verseListItems = _verseList.map((verse) => ({label: verse, value: verse}));
+    const recentRefs = _recentRefs.map((ref) => {
+        const {label, book, chapter, verse} = ref;
+
+        return {label, value: `${book}:${chapter}:${verse}`};
+    });
 
     function onBookChange(i: number, e: any) {
         selectedBible.update((bible) => {
@@ -77,6 +85,29 @@ export default function LeftBibleTab() {
             return l as typeof bible;
         });
         verseChange();
+
+        setActiveRecentVerse(-1);
+    }
+
+    function onRecentVerseChange(i: number, e: any) {
+        const item = _recentRefs[i];
+
+        selectedBible.update((bible) => {
+            const l = [
+                ...bible
+            ];
+
+            l[0] = item.book;
+            l[1] = item.chapter;
+            l[2] = item.verse;
+
+            console.trace("onRecentVerseChange:", bible, l);
+
+            return l as typeof bible;
+        });
+        $RvW.recentBibleRefs.selectRecent(item);
+
+        setActiveRecentVerse(i);
     }
 
     return (
@@ -84,7 +115,7 @@ export default function LeftBibleTab() {
         <div class="ui left fluid vertical segment">
             {/* Bible Search */}
             <div class="ui segment basic clearing" style={{padding: 0}}>
-                <div class="ui action input">
+                <div class="ui fluid action input">
                     <input
                         type="text"
                         placeholder="Psa 23 1"
@@ -118,7 +149,8 @@ export default function LeftBibleTab() {
                     fontFamily: _bibleFont
                 }}>
                     <div class="ten wide column" style={{padding: 0}}>
-                        <ScrollableSelect items={bookListItems} onSelectItem={onBookChange} selectedItem={activeBook}/>
+                        <ScrollableSelect items={bookListItems} onSelectItem={onBookChange}
+                                          selectedItem={activeBook}/>
                     </div>
                     <div class="three wide column" style={{padding: 0}}>
                         <ScrollableSelect items={chapterListItems} onSelectItem={onChapterChange}
@@ -136,16 +168,18 @@ export default function LeftBibleTab() {
                     {/* Recent Verses */}
                     <div class="field">
                         <label>Recent Verses</label>
-                        <select
-                            id="recentSel"
-                            size={2}
-                            class="navListStyleNew recentListStyle"
-                        ></select>
+                        <div class="ui container" style={{height: '100px'}}>
+                            <ScrollableSelect
+                                items={recentRefs}
+                                onSelectItem={onRecentVerseChange}
+                                selectedItem={activeRecentVerse}
+                            />
+                        </div>
                     </div>
 
                     {/* Word Search */}
                     <div class="field">
-                        <div class="ui action input">
+                        <div class="ui fluid action input">
                             <input
                                 id="searchID"
                                 type="text"
