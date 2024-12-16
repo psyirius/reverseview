@@ -1,7 +1,7 @@
 // TODO: yui-migrate
 // - YAHOO.widget.Panel
 
-import {SongExporter} from "./exporter.js";
+import {SongExporter} from "./exporter";
 import {removeTag} from "@/song/tags";
 import {SongSearchType} from "@/const";
 import {Song} from '@/song/obj';

@@ -4,6 +4,7 @@ import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
+import {selectedBible} from "@stores/global";
 
 function notesInfo(db) {
     let conn = new air.SQLConnection();
@@ -193,8 +194,8 @@ export class NotesManager {
             var Y = document.getElementById("nm_note_type1");
             var X = document.getElementById("nm_note_type2");
             if (Y.checked) {
-                var W = document.getElementById("bookList").selectedIndex + 1;
-                var Z = document.getElementById("chapterList").selectedIndex + 1;
+                const W = $RvW.getBookValue() + 1;
+                const Z = $RvW.getChapterValue() + 1;
                 $RvW.notesObj.getNotes(W, Z, 0);
             } else {
                 $RvW.notesObj.getNotes(-1, 0, 0);

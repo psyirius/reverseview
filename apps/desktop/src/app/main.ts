@@ -58,7 +58,15 @@ import {
     pluckapple,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
-import {availableFonts, selectedBookRef, selectedTab} from "@stores/global";
+import {
+    availableFonts,
+    bookList,
+    bibleFont,
+    chapterList, selectedBible,
+    selectedBookRef,
+    selectedTab,
+    verseList
+} from "@stores/global";
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
@@ -314,13 +322,13 @@ let previousSelVerse = 0;
 let themeState = false;
 
 $RvW.getBookValue = function() {
-    return document.getElementById("bookList").selectedIndex;
+    return selectedBible.get()[0];
 }
 $RvW.getChapterValue = function() {
-    return document.getElementById("chapterList").selectedIndex;
+    return selectedBible.get()[1];
 }
 $RvW.getVerseValue = function() {
-    return document.getElementById("verseList").selectedIndex;
+    return selectedBible.get()[2];
 }
 $RvW.launch = function(g) {
     $RvW.webServerObj.broadcastWS({event: 'cc:present', type: 'verse'});
@@ -400,9 +408,9 @@ $RvW.getSingleVerse = function(j, f, k, e) {
     return l;
 }
 $RvW.present = function() {
-    $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
-    $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
-    $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
+    $RvW.bookIndex = $RvW.getBookValue();
+    $RvW.chapterIndex = $RvW.getChapterValue();
+    $RvW.verseIndex = $RvW.getVerseValue();
     $RvW.recentBibleRefs.addSelection($RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex);
     console.trace("Called in $RvW.present()");
     getdata();
@@ -481,75 +489,135 @@ function presentTheme() {
 }
 $RvW.setFontForList = function() {
     const a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    $("#bookList").css("font-family", a);
-    $("#chapterList").css("font-family", a);
-    $("#verseList").css("font-family", a);
-    $("#recentSel").css("font-family", a);
+    bibleFont.set(a);
 }
+
+/**
+ * Add the Bible book names to the select list
+ * */
 $RvW.putbook = function() {
-    clearSelectList("bookList");
-    var a = $RvW.vvConfigObj.get_listinenglish();
-    var b = $RvW.booknames.length;
-    for (let i = 0; i < b; i++) {
-        if (a) {
-            document.getElementById("bookList").options[i] = new Option(
-                $RvW.default_booknames[i],
-                i
-            );
-        } else {
-            document.getElementById("bookList").options[i] = new Option(
-                $RvW.booknames[i],
-                i
-            );
+    const eng = $RvW.vvConfigObj.get_listinenglish();
+
+    bookList.update((_) => {
+        const list = [];
+
+        for (let i = 0; i < $RvW.booknames.length; i++) {
+            if (eng) {
+                list.push($RvW.default_booknames[i]);
+            } else {
+                list.push($RvW.booknames[i]);
+            }
         }
-    }
-    document.getElementById("bookList").selectedIndex = 0;
+
+        return list;
+    });
+
+    selectedBible.update((_l) => {
+        const l = [
+            ..._l,
+        ]
+
+        l[0] = 0;
+
+        console.trace("Selected Bible|putbook:", _l, l);
+
+        return l;
+    });
+
     $RvW.setFontForList();
 }
-$RvW.putch = function(b, a) {
-    clearSelectList("chapterList");
-    const val = document.getElementById("bookList").selectedIndex + 1;
-    for (let i = 0; i < $RvW.numofch[val][0]; i++) {
-        document.getElementById("chapterList").options[i] = new Option(i + 1, i);
-    }
-    if (b == null) {
-        document.getElementById("chapterList").selectedIndex = 0;
-    } else {
-        document.getElementById("chapterList").selectedIndex = b;
-    }
-    if (!a) {
+
+$RvW.putch = function(b = null, dontUpdateVerse) {
+    const selBook = $RvW.getBookValue();
+
+    console.trace("selBook|putch:", selBook, b);
+
+    chapterList.update((_) => {
+        const list = [];
+
+        for (let i = 0; i < $RvW.numofch[selBook + 1][0]; i++) {
+            list.push(String(i + 1));
+        }
+
+        return list;
+    });
+
+    selectedBible.update((_l) => {
+        const l = [
+            ..._l,
+        ]
+
+        l[0] = selBook;
+        l[1] = b == null ? 0 : b;
+
+        console.trace("Selected Bible|putch:", _l, l);
+
+        return l;
+    });
+
+    if (!dontUpdateVerse) {
         $RvW.putver();
     }
 }
 
-let bookval, chval;
+$RvW.putver = function(a = null) {
+    const selBook = $RvW.getBookValue();
+    const selCh = $RvW.getChapterValue();
 
-$RvW.putver = function(a) {
-    bookval = document.getElementById("bookList").selectedIndex + 1;
-    chval = document.getElementById("chapterList").selectedIndex + 1;
-    clearSelectList("verseList");
-    for (let i = 0; i < $RvW.numofch[bookval][chval]; i++) {
-        document.getElementById("verseList").options[i] = new Option(i + 1, i + 1);
-    }
-    if (a == null) {
-        document.getElementById("verseList").selectedIndex = 0;
-    } else {
-        document.getElementById("verseList").selectedIndex = a;
-    }
+    console.trace("selBook|putver:", selBook);
+    console.trace("selCh|putver:", selBook);
+
+    verseList.update((_) => {
+        const list = [];
+
+        for (let i = 0; i < $RvW.numofch[selBook + 1][selCh + 1]; i++) {
+            list.push(String(i + 1));
+        }
+
+        return list;
+    });
+
+    selectedBible.update((_l) => {
+        const l = [
+            ..._l,
+        ]
+
+        l[0] = selBook;
+        l[1] = selCh;
+        l[2] = a == null ? 0 : a;
+
+        console.trace("Selected Bible|putVer:", _l, l);
+
+        return l;
+    });
+
     $RvW.scroll_to_view = true;
     $RvW.updateVerseContainer();
 }
-function verseChange() {
+export function verseChange() {
     selectedTab.set(0); // switch to verses page if not already
     const a = $RvW.getVerseValue();
+
+    selectedBible.update((_l) => {
+        const l = [
+            ..._l,
+        ]
+
+        l[2] = a;
+
+        console.trace("Selected Bible|VerseChange:", _l, l);
+
+        return l;
+    });
+
     $RvW.scroll_to_view = true;
     $RvW.highlightVerse(a);
     updateRefMenu();
 }
 function updateRefMenu() {
-    const bi = document.getElementById("bookList").selectedIndex;
-    const ci = document.getElementById("chapterList").selectedIndex;
-    const vi = document.getElementById("verseList").selectedIndex;
+    const bi = $RvW.getBookValue();
+    const ci = $RvW.getChapterValue();
+    const vi = $RvW.getVerseValue();
     const e = $RvW.booknames[bi] + " " + (ci + 1) + ":" + (vi + 1);
     selectedBookRef.set(e);
 }
@@ -571,9 +639,9 @@ $RvW.updateVerseContainer = function() {
     $RvW.priFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     $RvW.secFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
     $RvW.vvConfigObj.set_navDualLanguage(document.getElementById("navDualLanguageID").checked);
-    $RvW.bookIndex = document.getElementById("bookList").selectedIndex;
-    $RvW.chapterIndex = document.getElementById("chapterList").selectedIndex;
-    $RvW.verseIndex = document.getElementById("verseList").selectedIndex;
+    $RvW.bookIndex = $RvW.getBookValue();
+    $RvW.chapterIndex = $RvW.getChapterValue();
+    $RvW.verseIndex = $RvW.getVerseValue();
     getdata();
 }
 
@@ -637,6 +705,8 @@ $RvW.updateVerseContainer_continue = function() {
 
     if ($RvW.notesObj != null) {
         if (document.getElementById("nm_note_type1").checked) {
+            const bookval = $RvW.getBookValue() + 1;
+            const chval = $RvW.getChapterValue() + 1;
             $RvW.notesObj.getNotes(bookval, chval, 0);
         }
     }
@@ -800,31 +870,25 @@ function vvinit_continue() {
 }
 
 function setupNavWindow() {
-    var c = 280;
-    var d = window.nativeWindow.bounds.height;
-    var k = window.nativeWindow.bounds.width;
+    const d = window.nativeWindow.bounds.height;
+    const k = window.nativeWindow.bounds.width;
+
     if (navWindowHeight != d || navWindowWidth != k) {
         document.body.style.overflow = "hidden";
 
-        var j = window.nativeWindow.bounds.width - 16;
-        var f = window.innerHeight;
-        var b = parseInt((j * 3) / 100);
-        var a = parseInt((f * 4) / 100);
+        const j = window.nativeWindow.bounds.width - 16;
+        const f = window.innerHeight;
+        const b = parseInt((j * 3) / 100);
+        const a = parseInt((f * 4) / 100);
 
         $RvW.tabHeight = f - 120;
 
-        var g = 250;
-        var e = 200;
+        const g = 250;
+        const e = 200;
         document.getElementById("wrapper").style.height = $RvW.tabHeight;
 
-        // $("#container").height($RvW.tabHeight);
-        // $("#bibleNav").height($RvW.tabHeight);
-        // $("#songNavTab").height($RvW.tabHeight);
-
         // TODO: make this in css
-        $("#bookList").height($RvW.tabHeight - c);
-        $("#chapterList").height($RvW.tabHeight - c);
-        $("#verseList").height($RvW.tabHeight - c);
+        $("#verse-select").height($RvW.tabHeight - 240);
 
         const l = j - g - e - 3 * b;
         document.getElementById("container2").style.height = $RvW.tabHeight;
@@ -833,11 +897,11 @@ function setupNavWindow() {
         document.getElementById("notesTab").style.height = $RvW.tabHeight;
         document.getElementById("scheduleTab").style.height = $RvW.tabHeight;
         document.getElementById("searchTab").style.height = $RvW.tabHeight;
-        // document.getElementById("graphicsTab").style.height = $RvW.tabHeight;
         document.getElementById("screenTab").style.height = $RvW.tabHeight;
-        // document.getElementById("still_bkgnd_grid").style.height = f - 450;
+
         $RvW.graphicsObj.setNumOfPicsInRow(l);
         $RvW.songNavObj.setFormats();
+
         navWindowHeight = d;
         navWindowWidth = k;
     }
@@ -1055,11 +1119,9 @@ function updateBookNameVar() {
 function fillNav() {
     $RvW.putbook();
     $RvW.putch();
-    document.getElementById("bookList").addEventListener("change", $RvW.putch, false);
-    document.getElementById("chapterList").addEventListener("change", $RvW.putver, false);
-    document.getElementById("verseList").addEventListener("change", verseChange, false);
-    document.getElementById("nav_bibleRefID").addEventListener("blur", bibleRefBlur, false);
-    document.getElementById("nav_bibleRefID").addEventListener("focus", bibleRefFocus, false);
+
+    document.getElementById("nav_bibleRefID").addEventListener("blur", () => bibleRefBlur(), false);
+    document.getElementById("nav_bibleRefID").addEventListener("focus", () => bibleRefFocus(), false);
 
     $RvW.enterForSearchActive = true;
 

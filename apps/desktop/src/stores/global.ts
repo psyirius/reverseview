@@ -53,6 +53,11 @@ export type ScheduleItem = {
 
 // Right Tab
 export const selectedTab: Writable<number> = writable(0);
+export const selectedBible: Writable<[number, number, number]> = writable([0, 0, 0]);
+export const bookList: Writable<string[]> = writable([]);
+export const chapterList: Writable<string[]> = writable([]);
+export const verseList: Writable<string[]> = writable([]);
+export const bibleFont: Writable<string> = writable('');
 export const selectedBookRef: Writable<string> = writable('');
 export const menuYtLink: Writable<string | null> = writable(null);
 export const navNotifyMessage: Writable<string | null> = writable(null);

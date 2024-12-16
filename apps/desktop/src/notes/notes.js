@@ -1,5 +1,5 @@
 import {$RvW} from "@/rvw";
-import {showBibleNotesEditPanel} from "@stores/global";
+import {selectedBible, showBibleNotesEditPanel} from "@stores/global";
 import {console} from "@/platform/adapters/air";
 
 // BibleNotes
@@ -127,10 +127,10 @@ export class Notes {
                 if (f) {
                     K();
                 }
-                var V = document.getElementById("nm_note_type1");
+                const V = document.getElementById("nm_note_type1");
                 if (V.checked) {
-                    var T = document.getElementById("bookList").selectedIndex + 1;
-                    var W = document.getElementById("chapterList").selectedIndex + 1;
+                    const T = selectedBible.get()[0] + 1;
+                    const W = selectedBible.get()[1] + 1;
                     getNotes(T, W, 0);
                 } else {
                     getNotes(-1, 0, 0);

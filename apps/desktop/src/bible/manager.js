@@ -3,6 +3,7 @@ import {$RvW} from "@/rvw";
 import {Toast} from "@app/toast";
 import {presentationCtx} from "@app/presentation";
 import {console} from "@/platform/adapters/air";
+import {selectedBible} from "@stores/global";
 
 $RvW.bibledbObj = [];
 $RvW.queryCheckInterval = 100;
@@ -157,8 +158,13 @@ export class verseClass {
             getdata(true);
             presentationCtx.p_footer = $RvW.getFooter();
             presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
+            selectedBible.update((_l) => {
+                const l = [..._l];
+                l[2] = $RvW.verseIndex;
+                console.trace("manager|h:", _l, l);
+                return l;
+            });
             $RvW.launch($RvW.verseIndex);
-            document.getElementById("verseList").selectedIndex = $RvW.verseIndex;
             if (e) {
                 $RvW.scroll_to_view = false;
                 $RvW.highlightVerse($RvW.verseIndex);

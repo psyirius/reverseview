@@ -10,8 +10,6 @@ export default defineConfig({
         // box-sizing
         ['box-border', { '-webkit-box-sizing': 'border-box' }],
         ['box-content', { '-webkit-box-sizing': 'content-box' }],
-
-
     ],
     presets: [
         presetUno(),

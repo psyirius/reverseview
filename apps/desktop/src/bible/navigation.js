@@ -1,6 +1,7 @@
 import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
+import {selectedBible} from "@stores/global";
 
 function getNumofVerses() {
     return $RvW.numofch[$RvW.bookIndex + 1][$RvW.chapterIndex + 1];
@@ -35,7 +36,12 @@ export function processNavBibleRef() {
         var c = $RvW.bibleRefObj.getBook();
         var b = $RvW.bibleRefObj.getChapter();
         var a = $RvW.bibleRefObj.getVerse();
-        document.getElementById("bookList").selectedIndex = c;
+        selectedBible.update((_l) => {
+            const l = [..._l];
+            l[0] = c;
+            console.trace("processNavBibleRef:", _l, l);
+            return l;
+        });
         $RvW.putch(b - 1, true);
         $RvW.putver(a - 1);
         var f = null;
@@ -67,7 +73,12 @@ export function processNavBibleRefFind() {
     }
 }
 export function setBookChVer(a, e, d) {
-    document.getElementById("bookList").selectedIndex = a;
+    selectedBible.update((_l) => {
+        const l = [..._l];
+        l[0] = a - 1;
+        console.trace("navigation.js: setBookChVer():", _l, l);
+        return l;
+    });
     $RvW.putch(e - 1, true);
     $RvW.putver(d - 1);
 }

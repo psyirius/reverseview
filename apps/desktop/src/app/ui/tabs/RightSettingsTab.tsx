@@ -861,8 +861,9 @@ export default function RightSettingsTab() {
 
                             <div class="ui grid">
                                 <div class="three wide column">
-                                    <div id="stageviewPrimaryDiv"><input type="checkbox" id="thirdview_primary"/> Show
-                                        primary only
+                                    <div id="stageviewPrimaryDiv">
+                                        <input type="checkbox" id="thirdview_primary"/>
+                                        Show primary only
                                     </div>
                                 </div>
                                 <div class="three wide column">
