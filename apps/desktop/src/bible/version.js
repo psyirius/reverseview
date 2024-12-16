@@ -32,25 +32,20 @@ export function loadBibleVersion() {
     c.onreadystatechange = function () {
         if (c.readyState === 4) {
             let a = c.responseXML.documentElement;
-            var f = a.getElementsByTagName("version").length;
+            const f = a.getElementsByTagName("version").length;
             $RvW.bibleVersionArray[0][0] = "None";
             for (let i = 0; i < f; i++) {
-                var d = i + 1;
-                var e = a.getElementsByTagName("version")[i];
+                const d = i + 1;
+                const e = a.getElementsByTagName("version")[i];
                 $RvW.bibleVersionArray[d] = [];
                 $RvW.bibleVersionArray[d][0] = e.getElementsByTagName("name")[0].textContent;
                 $RvW.bibleVersionArray[d][1] = e.getElementsByTagName("file")[0].textContent;
                 $RvW.bibleVersionArray[d][2] = e.getElementsByTagName("font")[0].textContent;
-                $RvW.bibleVersionArray[d][3] =
-                    e.getElementsByTagName("copyright")[0].textContent;
-                $RvW.bibleVersionArray[d][4] =
-                    e.getElementsByTagName("fontsizefactor")[0].textContent;
-                $RvW.bibleVersionArray[d][5] =
-                    e.getElementsByTagName("searchfile")[0].textContent;
-                $RvW.bibleVersionArray[d][6] =
-                    e.getElementsByTagName("selectedfont")[0].textContent;
-                $RvW.bibleVersionArray[d][7] =
-                    e.getElementsByTagName("booknames")[0].textContent;
+                $RvW.bibleVersionArray[d][3] = e.getElementsByTagName("copyright")[0].textContent;
+                $RvW.bibleVersionArray[d][4] = e.getElementsByTagName("fontsizefactor")[0].textContent;
+                $RvW.bibleVersionArray[d][5] = e.getElementsByTagName("searchfile")[0].textContent;
+                $RvW.bibleVersionArray[d][6] = e.getElementsByTagName("selectedfont")[0].textContent;
+                $RvW.bibleVersionArray[d][7] = e.getElementsByTagName("booknames")[0].textContent;
             }
         }
     };

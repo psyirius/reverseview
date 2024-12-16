@@ -505,7 +505,18 @@ $RvW.putbook = function() {
             if (eng) {
                 list.push($RvW.default_booknames[i]);
             } else {
-                list.push($RvW.booknames[i]);
+                const x = $RvW.booknames[i];
+
+                const dualLangPattern = /^(.+)\s\((.+)\)$/;
+
+                if (dualLangPattern.test(x)) {
+                    console.log("DUAL LANG BN:", JSON.stringify(x));
+                    const match = x.match(dualLangPattern);
+                    list.push([match[1], match[2]]);
+                } else {
+                    console.log("SINGLE LANG BN:", JSON.stringify(x));
+                    list.push(x);
+                }
             }
         }
 

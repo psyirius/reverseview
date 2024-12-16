@@ -187,14 +187,13 @@ export function getVerseFromArray(d, p, f) {
     var n = d;
     var l = p;
     var o = f;
-    for (var g = 1; g < n; g++) {
-        var m = $RvW.numofch[g][0];
-        for (var e = 1; e <= m; e++) {
+    for (let g = 1; g < n; g++) {
+        for (let e = 1; e <= $RvW.numofch[g][0]; e++) {
             h += $RvW.numofch[g][e];
         }
     }
-    var m = $RvW.numofch[n][0];
-    for (var a = 1; a < l; a++) {
+
+    for (let a = 1; a < l; a++) {
         h += $RvW.numofch[n][a];
     }
     h += o;

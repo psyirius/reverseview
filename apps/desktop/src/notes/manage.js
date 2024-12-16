@@ -4,7 +4,6 @@ import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import {selectedBible} from "@stores/global";
 
 function notesInfo(db) {
     let conn = new air.SQLConnection();

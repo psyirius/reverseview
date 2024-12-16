@@ -1,8 +1,7 @@
-import {useState} from "preact/hooks";
-
 export type ScrollableSelectItem = {
     label: string;
     value: string;
+    meta?: string;
 }
 
 export type ScrollableSelectProps = {
@@ -25,7 +24,8 @@ export default function ScrollableSelect({ items, selectedItem, onSelectItem }: 
                     onClick={() => _onSelectItem(i, item)}
                 >
                     <div class="content">
-                        {item.label}
+                        <div class="header">{item.label}</div>
+                        {item.meta && <div class="meta">{item.meta}</div>}
                     </div>
                 </div>
             ))}

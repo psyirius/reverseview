@@ -24,7 +24,15 @@ export default function LeftBibleTab() {
 
     console.trace('[ZZZ]:', [activeBook, activeChapter, activeVerse]);
 
-    const bookListItems = _bookList.map((book) => ({label: book, value: book}));
+    const bookListItems = _bookList.map((book) => {
+        if (typeof book === 'string') {
+            return {label: book, value: book};
+        }
+
+        const [value, meta] = book;
+
+        return {label: value, value, meta};
+    });
     const chapterListItems = _chapterList.map((chapter) => ({label: chapter, value: chapter}));
     const verseListItems = _verseList.map((verse) => ({label: verse, value: verse}));
 
@@ -134,7 +142,7 @@ export default function LeftBibleTab() {
                             class="navListStyleNew recentListStyle"
                         ></select>
                     </div>
-                    
+
                     {/* Word Search */}
                     <div class="field">
                         <div class="ui action input">

@@ -53,32 +53,36 @@ const bibleVersionInfo = [
 
 export function setPrimaryBooknames() {
     $RvW.booknames = [];
+
     const e = parseInt($RvW.vvConfigObj.get_booknamestyle());
+
     switch (e) {
-        case 1:
+        default:
+        case 1: { /* English */
             $RvW.booknames = $RvW.default_booknames;
             break;
-        case 2: {
+        }
+        case 2: { /* Primary */
             $RvW.booknames = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
             break;
         }
-        case 3: {
+        case 3: { /* Primary with English */
             let d = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
             if (d[0] === $RvW.default_booknames[0]) {
                 $RvW.booknames = d;
             } else {
-                for (let f = 0; f < 66; f++) {
-                    let b = d[f] + " (" + $RvW.default_booknames[f] + ")";
+                for (let i = 0; i < 66; i++) {
+                    let b = d[i] + " (" + $RvW.default_booknames[i] + ")";
                     $RvW.booknames.push(b);
                 }
             }
             break;
         }
-        case 4: {
+        case 4: { /* Primary with Secondary */
             const c = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
                 .replace(/["']/g, "")
                 .split(",");
@@ -93,10 +97,6 @@ export function setPrimaryBooknames() {
                     $RvW.booknames.push(b);
                 }
             }
-            break;
-        }
-        default: {
-            $RvW.booknames = $RvW.default_booknames;
             break;
         }
     }
