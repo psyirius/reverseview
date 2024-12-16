@@ -848,7 +848,7 @@ function callRemoteAction(params, callback = null) {
 
 export function initWebSocket() {
     callRemoteAction({
-        cmd: 89,
+        cmd: 89, // get websocket config
     }, ({ok, data, error}) => {
         if (!ok) {
             toast.error('Failed to connect to WebSocket!');

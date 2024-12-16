@@ -30,9 +30,9 @@ export default function LeftSongsTab() {
 
     useEffect(() => {
         // @ts-ignore
-        // $(`#${catId}`).dropdown();
+        $(catSelect.current).dropdown();
         // @ts-ignore
-        // $(`#${tagId}`).dropdown();
+        // $(tagSelect.current).dropdown();
     }, []);
 
     function onCategoryChange(e: Event) {
@@ -76,7 +76,7 @@ export default function LeftSongsTab() {
 
     return (
         <div class="ui left fluid vertical segment">
-            {/* CATEGORY TAGS */}
+            {/* CATEGORY & TAGS */}
             <div class="ui form">
                 <div class="two fields">
                     <div class="field">
@@ -84,7 +84,7 @@ export default function LeftSongsTab() {
                         <div class="ui input">
                             <select
                                 class="ui search dropdown"
-                                ref={catSelect}
+                                // ref={catSelect}
                                 id={catId}
                                 onChange={onCategoryChange}
                                 value={selectedCategory === -1 ? null : selectedCategory}
@@ -96,6 +96,7 @@ export default function LeftSongsTab() {
                             </select>
                         </div>
                     </div>
+
                     <div class="field">
                         <label>Tag</label>
                         <div class="ui input">
@@ -119,7 +120,7 @@ export default function LeftSongsTab() {
             {/*<div class="ui divider"></div>*/}
 
             {/* Search Input */}
-            <div class="ui action input">
+            <div class="ui fluid action input">
                 <input
                     type="text"
                     size={20}

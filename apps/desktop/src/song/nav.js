@@ -121,7 +121,7 @@ export class SongNav {
         }
 
         function setFormats() {
-            rowsPerPage = (($RvW.tabHeight - 300) / 22);
+            rowsPerPage = (($RvW.tabHeight - 420) / 22);
             if (!s) {
                 if (m_songTitle != null) {
                     U();
@@ -577,8 +577,7 @@ export class SongNav {
             }
         }
         function U() {
-            var au = m_songTitle;
-            var av = m_songTitle.length;
+            const au = m_songTitle;
             if (au != null) {
                 let isRenderPending = false;
                 s = false;

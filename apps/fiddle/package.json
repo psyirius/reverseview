@@ -5,7 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "debug": "adl ./application.xml ./src"
+    "debug": "adl ./application.xml ./src",
+    "debug:dist": "adl ./application.xml ./dist"
   },
   "devDependencies": {
   }

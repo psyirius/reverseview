@@ -1,6 +1,5 @@
 ### TODO
 
 - Simplify the build system
-- Settings tab styling
+- Settings tab styling (wip)
 - Lyric Search (glitch)
-- Schedule Show in Bible/Lyrics (logic)

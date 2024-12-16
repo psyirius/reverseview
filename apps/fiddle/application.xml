@@ -9,6 +9,7 @@
     <supportedProfiles>extendedDesktop desktop</supportedProfiles>
 	<initialWindow>
 	    <content>app.html</content>
+<!--	    <content>index.html</content>-->
 	    <systemChrome>standard</systemChrome>
 	    <transparent>false</transparent>
 	    <visible>true</visible>

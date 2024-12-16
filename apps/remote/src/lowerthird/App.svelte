@@ -4,6 +4,8 @@
     import { quadInOut } from 'svelte/easing';
     import Crypto from 'crypto-js';
     import { textfit } from 'svelte-textfit';
+    import BlurFade from '$lib/components/BlurFade.svelte';
+    import TextReveal from "$lib/components/TextReveal.svelte";
     import FontFaceObserver from 'fontfaceobserver';
 
     interface SlideContent {
@@ -125,9 +127,6 @@
             });
     }
 
-    $effect(() => {
-    });
-
     onMount(() => {
         let interval: ReturnType<typeof setInterval>;
 
@@ -139,14 +138,17 @@
 
         return () => clearInterval(interval);
     });
+
+    $effect(() => {
+    });
 </script>
 
 <main class="box">
     {#if p_slide}
         <div class="slide"
-            style:border-color={isOBS ? 'black' : 'red'}
-            in:fade={{ duration: 300, easing: quadInOut }}
-            out:fade={{ duration: 300, easing: quadInOut }}
+             style:border-color={isOBS ? 'black' : 'red'}
+             in:fade={{ duration: 300, easing: quadInOut }}
+             out:fade={{ duration: 300, easing: quadInOut }}
         >
             {#if p_slide.title}
                 <div class="title">
@@ -159,15 +161,15 @@
                     <div class="content">
                         <div bind:this={content.ref} style="font-family: {content.fontFamily || ''}">
                             {#key content}
-                            <p
-                                use:textfit={{
-                                    parent: content.ref,
-                                    mode:"multi",
-                                    autoResize: true,
-                                    forceSingleModeWidth: true,
-                                }}
-                                transition:slide={{ duration: 300, easing: quadInOut }}
-                            >{@html content.html}</p>
+                                <p
+                                    use:textfit={{
+                                        parent: content.ref,
+                                        mode:"multi",
+                                        autoResize: true,
+                                        forceSingleModeWidth: false,
+                                    }}
+                                    transition:slide={{ duration: 300, easing: quadInOut }}
+                                >{@html content.html}</p>
                             {/key}
                         </div>
                     </div>

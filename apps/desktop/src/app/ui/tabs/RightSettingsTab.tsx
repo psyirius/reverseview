@@ -293,6 +293,20 @@ export default function RightSettingsTab() {
                         <div class="two fields">
                             <div class="field">
                                 <label>Screen</label>
+
+                                {/*<div class="ui action fluid input">*/}
+                                {/*    <input class="w-0" type="text" placeholder="Search..."/>*/}
+                                {/*    <div class="ui basic floating dropdown button">*/}
+                                {/*        <div class="text">This Page</div>*/}
+                                {/*        <i class="dropdown icon"></i>*/}
+                                {/*        <div class="menu">*/}
+                                {/*            <div class="item">This Organization</div>*/}
+                                {/*            <div class="item">Entire Site</div>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*    <div class="ui button">Search</div>*/}
+                                {/*</div>*/}
+
                                 <div class="ui action input" style={{width: '100%'}}>
                                     <div
                                         class="ui selection dropdown"

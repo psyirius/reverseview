@@ -44,8 +44,7 @@ export function processNavBibleRef() {
         });
         $RvW.putch(b - 1, true);
         $RvW.putver(a - 1);
-        var f = null;
-        f = setInterval(function () {
+        const f = setInterval(function () {
             if ($RvW.bibledbObj[1].isFullDataReady() && $RvW.bibledbObj[2].isFullDataReady()) {
                 clearTimeout(f);
                 $RvW.bibleRefObj.present();
