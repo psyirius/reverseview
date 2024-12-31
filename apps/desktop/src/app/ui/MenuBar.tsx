@@ -56,7 +56,7 @@ const handlers = {
 const menuItems = [
     { tooltip: 'Present',               iconClass: 'play circle',           onClick: handlers.present },
     { tooltip: 'Blank Presentation',    iconClass: 'square',                onClick: handlers.blank },
-    { tooltip: 'Show Theme',            iconClass: 'fire',                  onClick: handlers.theme },
+    // { tooltip: 'Show Theme',            iconClass: 'fire',                  onClick: handlers.theme },
     { tooltip: 'Show Logo',             iconClass: 'image',                 onClick: handlers.logo },
     { tooltip: 'Close Presentation',    iconClass: 'times circle',          onClick: handlers.close },
     { tooltip: 'Previous Slide',        iconClass: 'arrow circle left',     onClick: handlers.prev },

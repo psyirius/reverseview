@@ -22,6 +22,7 @@ import * as defineUtils from './rollup/utils/define'
 import PluginWatcher from './rollup/utils/plugin-watcher'
 import typescript from './rollup/plugins/typescript'
 import amd from './rollup/plugins/amd'
+import __styleX__ from '@stylexjs/rollup-plugin';
 
 import svelte from 'rollup-plugin-svelte';
 import * as swc_ from '@swc/core'
@@ -32,6 +33,11 @@ const esbuild: typeof __esbuild__ =
     (typeof __esbuild__ === 'function')
         ? __esbuild__
         : __esbuild__['default'];
+
+const styleX: typeof __styleX__ =
+    (typeof __styleX__ === 'function')
+        ? __styleX__
+        : __styleX__['default'];
 
 const prog = new Command()
     .name('build.src')
@@ -152,6 +158,11 @@ const DIST_DIR = path.resolve(WORKING_DIR, '.air/js');
                 //         // preserveWhitespace: false,
                 //     },
                 //     emitCss: false,
+                // }),
+                // styleX({
+                //     fileName: path.resolve(DIST_DIR, 'css/stylex.css'),
+                //     classNamePrefix: 'zx',
+                //     dev: false,
                 // }),
                 tsConfigPaths({
                     tsConfigPath: path.resolve(WORKING_DIR, 'tsconfig.x.json'),

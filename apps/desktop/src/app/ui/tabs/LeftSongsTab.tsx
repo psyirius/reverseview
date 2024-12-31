@@ -1,17 +1,28 @@
 // Song Lyric Navigation
 import {Component} from "preact";
 import {useEffect, useId, useRef, useState} from "preact/hooks";
-import {selectedSongCategory, selectedSongTag, songCategories, songSearchError, songTags} from "@stores/global";
+import {
+    selectedSongCategory,
+    selectedSongTag, selectedTab,
+    songCategories,
+    songListState,
+    songSearchError,
+    songTags
+} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {SongSearchType} from "@/const";
 import debounce from '@/utils/debounce';
 import {$RvW} from "@/rvw";
 
 import {console} from "@/platform/adapters/air";
-import DataTable from "@app/ui/widgets/Datatable";
 import {toast} from "@app/ui/Toaster";
 import Spinner from "@app/ui/Spinner";
 import Modal from "@app/ui/Modal";
+import VirtualList from "@app/ui/widgets/VirtualList";
+import Slider from "@app/ui/widgets/Slider";
+import DataTableX from "@app/ui/widgets/DataTableX";
+import DataTable from "@app/ui/widgets/Datatable";
+import PaginatedList from "../widgets/PgList";
 // import FilterableTable from "@app/ui/widgets/FilterableTable";
 
 const Zapp = () => {
@@ -1406,6 +1417,78 @@ const MdlApp = () => {
     );
 };
 
+function VListComp() {
+    const items = [];
+
+    for (let i = 0; i < 100; i++) {
+        items.push({
+            id: i,
+            text: `Item ${i + 1}`,
+        });
+    }
+
+    const renderRow = (item: any) => {
+        return (<div>{item.text}</div>);
+    };
+
+    return (
+        <div class="x-u-i sel" style={{height: '200px'}}>
+            <VirtualList
+                data={items}
+                rowHeight={22}
+                overscanCount={10}
+                renderRow={renderRow}
+                sync
+            />
+        </div>
+    )
+}
+
+// function SliderComp() {
+//     const [sliderValue, setSliderValue] = useState(50)
+//
+//     const handleSliderChange = (value: number) => {
+//         setSliderValue(value)
+//         console.log('Slider value changed:', value);
+//     };
+//
+//     return (
+//         <div class="x-u-i sli">
+//             <Slider min={0} max={100} onChange={handleSliderChange} step={10} />
+//             <Slider min={0} max={100} value={25} onChange={handleSliderChange} step={5} orientation="vertical" />
+//             <Slider min={0} max={100} size="300px" onChange={handleSliderChange} value={sliderValue} step={20} orientation="vertical"/>
+//         </div>
+//     )
+// }
+
+function DTComp({opt}) {
+    const { songs, perPage } = opt;
+
+    const handleSelect = (item: any) => {
+        selectedTab.set(1); // make the lyrics tab active if on another tab
+
+        $RvW.songNavObj.selectSong(item);
+
+        console.log(`Selected: ${item}`);
+    };
+
+    return (
+        <div class="x-u-i pgl" style={{
+            width: '100%',
+            height: '100%',
+        }}>
+            <PaginatedList
+                items={songs}
+                itemsPerPage={perPage}
+                renderItem={(item) => (
+                    <span>{item.Title}</span>
+                )}
+                onSelect={handleSelect}
+            />
+        </div>
+    )
+}
+
 const searchSong = debounce((q: string) => {
     $RvW.songNavObj.sn_searchSong(q);
 }, 200);
@@ -1423,6 +1506,7 @@ export default function LeftSongsTab() {
 
     const tags = useStoreState(songTags);
     const selectedTag = useStoreState(selectedSongTag);
+    const sngLiztState = useStoreState(songListState);
 
     const catSelect = useRef(null);
     const tagSelect = useRef(null);
@@ -1562,29 +1646,11 @@ export default function LeftSongsTab() {
 
             {/* Song List */}
             <div class="ui segment basic" style={{padding: 0}}>
-                <div id="bible-select">
-                    {/* ERROR Notification and word suggestions */}
-                    {/*{searchError && (*/}
-                    {/*    <div class="ui red mini message">{searchError}</div>*/}
-                    {/*)}*/}
-
-                    {/*<Zapp />*/}
-                    {/*<ZxApp />*/}
-                    {/*<ZyApp />*/}
-                    {/*<XomApp />*/}
-                    {/*<ZumApp />*/}
-                    {/*<ZuxApp />*/}
-
-                    <>
-                        {/*<MdlApp />*/}
-                    </>
-
-                    <div class="ui fluid vertical segment">
-                        <div id="songnav_songlistnew" class="yui-skin-sam"></div>
-                        <div class="ui center aligned basic segment">
-                            <div id="songnav_paginator" class="yui-skin-sam"></div>
-                        </div>
-                    </div>
+                <div id="bible-select" style={{
+                    // border: '1px solid #d4d4d5',
+                    // background: '#afafaf',
+                }}>
+                    <DTComp opt={sngLiztState} />
                 </div>
             </div>
         </div>

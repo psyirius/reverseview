@@ -1,13 +1,7 @@
-// TODO: yui-migrate
-// - YAHOO.util.DataSource
-// - YAHOO.widget.Paginator
-// - YAHOO.widget.DataTable
-
 import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
 import {
     menuYtLink,
     selectedSongCategory,
-    selectedTab,
     songCategories,
     songListState,
     songSearchError,
@@ -45,12 +39,12 @@ export class SongNav {
         this.songnav_tags_change = songnav_tags_change;
         this.songnav_category_change = songnav_category_change;
         this.songnav_clear = songnav_clear;
+        this.selectSong = selectSong;
 
         let searchDelay = null;
         const searchDelayTime = 600;
 
         let m_currentSongObj = null;
-        let m_canRenderList = true;
         let m_itemID_bkp = -1;
         let m_itemTitle_bkp = -1;
         let m_itemID = 0;
@@ -96,7 +90,6 @@ export class SongNav {
 
             loadTagsFromConfig();
             fillTagsToUI();
-            m_canRenderList = true;
         }
 
         function hideLyricsElements() {
@@ -127,11 +120,11 @@ export class SongNav {
         }
 
         function setFormats() {
-            m_rowsPerPage = (($RvW.tabHeight - 420) / 22);
+            m_rowsPerPage = Math.round((($RvW.tabHeight - 220) / 36));
 
-            if (!m_canRenderList) {
-                _renderSongList();
-            }
+            // console.trace("Rows per page: ", m_rowsPerPage, $RvW.tabHeight);
+
+            _renderSongList();
         }
 
         function songnav_category_change(al = 'ALL') {
@@ -585,97 +578,13 @@ export class SongNav {
                         perPage: m_rowsPerPage,
                     };
                 });
-
-                let isRenderPending = false;
-                m_canRenderList = false;
-
-                const source = new YAHOO.util.DataSource(m_songs_columns);
-                source.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-                source.responseSchema = { fields: [{ key: "ID" }, { key: "Title" }] };
-
-                const paginator = new YAHOO.widget.Paginator({
-                    rowsPerPage: m_rowsPerPage,
-                    containers : [
-                        "songnav_paginator"
-                    ],
-                    template: YAHOO.widget.Paginator.TEMPLATE_DEFAULT,
-                    pageLinks: 3,
-                });
-                const options = {
-                    sortedBy: {
-                        key: "Title",
-                        dir: "asc"
-                    },
-                    paginator: paginator,
-                    draggableColumns: false,
-                    selectionMode: "single",
-                    renderLoopSize: 0,
-                };
-
-                const columns = [
-                    { key: "ID", hidden: true },
-                    { key: "Title", sortable: true, resizeable: true, minWidth: 500 },
-                ];
-
-                const dataTable = new YAHOO.widget.DataTable(
-                    "songnav_songlistnew",
-                    columns,
-                    source,
-                    options
-                );
-
-                dataTable.subscribe("rowMouseoverEvent", dataTable.onEventHighlightRow);
-                dataTable.subscribe("rowMouseoutEvent", dataTable.onEventUnhighlightRow);
-                dataTable.subscribe("rowClickEvent", function () {
-                    selectedTab.set(1); // make the lyrics tab active if on another tab
-
-                    dataTable.onEventSelectRow.apply(this, arguments);
-                });
-                dataTable.subscribe("renderEvent", function() {
-                    __debug("onRender called...");
-                    if (isRenderPending) {
-                        isRenderPending = false;
-                    }
-                    const firstRow = dataTable.getTrEl(0);
-
-                    __debug("First Row:", firstRow);
-
-                    if (firstRow) {
-                        dataTable.selectRow(firstRow);
-                    } else {
-                        m_itemID = 0;
-                        m_itemTitle = "";
-                        renderLyricsForSelectedSong();
-                    }
-                });
-                paginator.subscribe("pageChange", function() {
-                    isRenderPending = true;
-                });
-                dataTable.subscribe("rowSelectEvent", function() {
-                    const [selectedEl] = dataTable.getSelectedTrEls();
-                    const selectedRecord = dataTable.getRecord(selectedEl);
-
-                    __debug("Selected Record: ", selectedRecord);
-
-                    if (selectedRecord != null) {
-                        if (m_itemID_bkp !== -1) {
-                            m_itemID = m_itemID_bkp;
-                            m_itemTitle = m_itemTitle_bkp;
-                            renderLyricsForSelectedSong();
-                            m_itemID_bkp = -1;
-                            m_itemTitle_bkp = -1;
-                        } else {
-                            m_itemID = selectedRecord.getData("ID");
-                            m_itemTitle = selectedRecord.getData("Title");
-                            renderLyricsForSelectedSong();
-                        }
-                    } else {
-                        m_itemID = 0;
-                        m_itemTitle = "";
-                        renderLyricsForSelectedSong();
-                    }
-                });
             }
+        }
+
+        function selectSong({ID, Title}) {
+            m_itemID = ID;
+            m_itemTitle = Title;
+            renderLyricsForSelectedSong();
         }
 
         function __debug(...messages) {

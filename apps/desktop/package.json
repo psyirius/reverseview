@@ -41,6 +41,7 @@
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
+    "@stylexjs/stylex": "^0.9.3",
     "@emotion/css": "^11.13.5",
     "@million/lint": "^1.0.13",
     "@rollup/plugin-alias": "^5.1.1",

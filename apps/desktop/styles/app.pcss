@@ -2983,4 +2983,256 @@ td.navtd {
             padding: 10px;
         }
     }
+
+    &.sel {
+        /*.virtual-list-container {
+            overflow-y: auto;
+            position: relative; !* Added relative positioning *!
+        }
+        .virtual-list-scrollable{
+            position: relative;
+        }
+        .list-item {
+            padding: 5px 10px;
+            font-family: sans-serif;
+        }*/
+
+        /*.virtual-list-container {
+            overflow-y: auto;
+            font-family: sans-serif;
+            position: relative; !*Needed for absolute positioning*!
+            border-bottom: 1px solid #eee;
+            border-radius: 4px;
+        }
+
+        .virtual-list-item {
+            position: relative; !* Needed for absolute positioning*!
+            width: 100%;
+            box-sizing: border-box; !*  to be able to have a full width item with borders and padding *!
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+        }*/
+    }
+
+    &.sli {
+        /*.slider-container {
+            width: 200px;
+            position: relative;
+            padding: 20px 0;
+            display: block;
+        }
+        .slider {
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative; !* Needed for absolute positioning of the thumb *!
+        }
+
+        .slider-thumb {
+            position: absolute; !* to allow the movement inside the slider *!
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            background-color: #3498db; !* Blue *!
+            border-radius: 50%; !* Make it round *!
+            transform: translateY(-50%); !* To center vertically *!
+        }*/
+    }
+
+    &.dtb {
+        /*.datatable-wrapper {
+            width: 100%;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        !*added the scrollable container*!
+        .datatable-scrollable{
+            overflow-y: auto;
+        }
+        .datatable {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        .datatable th,
+        .datatable td {
+            padding: 5px;
+            border: 1px solid #ccc;
+            text-align: left;
+            white-space: nowrap;
+        }
+        !*added the fixed width*!
+        .datatable td.text-ellipsis-cell {
+            overflow: hidden; !* Clip text *!
+            text-overflow: ellipsis;  !* Add ellipsis *!
+            max-width: 150px;
+        }
+
+        .datatable th {
+            background-color: #eee;
+            cursor: pointer; !* visual feedback that can be clicked*!
+        }
+        .datatable th:hover {
+            background-color: #ddd;
+        }
+
+        .datatable thead tr th span {
+            font-size: 0.8em; !* Adjust size as needed for arrows*!
+            margin-left: 0.3em;
+        }
+
+
+        .datatable tbody tr.even {
+            background-color: #f9f9f9;
+        }
+
+        !* Odd rows could use a different color if preferred *!
+        .datatable tbody tr.odd {
+            background-color: #fff;
+        }
+
+
+        .datatable tbody tr.selected-row{
+            background-color: #cce5ff; !* Blue-ish for selected row *!
+            cursor: pointer;
+        }
+
+        .loading-overlay, .error-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; !* To place it on top *!
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .error-overlay{
+            background-color: rgba(255, 0, 0, 0.4)
+        }
+
+        .pagination-controls {
+            display: block;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .pagination {
+            display: inline-block;
+        }
+
+        .page-size-select{
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .pagination button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            margin: 0 5px;
+        }
+        .pagination button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+        .pagination button:hover:enabled {
+            background-color: #e0e0e0;
+            cursor: pointer;
+        }
+        .pagination span{
+            margin: 0 5px;
+        }*/
+    }
+
+    &.pgl {
+        .paginated-list-container {
+            width: 100%;
+            margin: 0;
+            border: 1px solid #e0e0e0;
+            background-color: #fff;
+            border-radius: 0px;
+            overflow: hidden;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .item-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-align: stretch;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .item-list-item {
+            padding: 8px 15px; /* Reduced padding here */
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            -webkit-transition: background-color 0.2s ease-in-out;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-list-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .item-list-item.selected {
+            @apply bg-blue-100;
+            font-weight: 600;
+        }
+
+        .pagination-container {
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            padding: 10px 0;
+            background-color: #f7f7f7;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .pagination-current-page {
+            padding: 8px 12px;
+            display: inline-block;
+            color: #555;
+        }
+
+        .pagination-button {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+
+        .pagination-button:hover {
+            background-color: #eee;
+        }
+
+        .pagination-button:disabled {
+            background-color: #f0f0f0;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+    }
 }
