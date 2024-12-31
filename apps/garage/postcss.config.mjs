@@ -10,11 +10,11 @@ export default {
     plugins: [
         UnoCSS(),
         variables(),
-        autoprefixer(),
         presetEnv({
-            features: {
-                'nesting-rules': true,
-            }
+            autoprefixer: {
+                // remove: false,
+                overrideBrowserslist: ['Safari 5'],
+            },
         }),
         prettify(),
     ],

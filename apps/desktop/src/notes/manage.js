@@ -101,10 +101,10 @@ export class NotesManager {
             var W = S(X);
             var ab = W.filename;
             if (ab == "defaultnotes.db") {
-                Toast.show("Bible Notes", "The Default Notes file can not be deleted.");
+                Toast.error("Bible Notes", "The Default Notes file can not be deleted.");
             } else {
                 if (ab == d) {
-                    Toast.show(
+                    Toast.error(
                         "Bible Notes",
                         ab + " is the active notes file and can not be deleted."
                     );
@@ -118,11 +118,11 @@ export class NotesManager {
                         var ae = air.File.applicationStorageDirectory.resolvePath(ab);
                         try {
                             ae.deleteFile();
-                            Toast.show("Bible Notes", "Deleted Notes file " + ab);
+                            Toast.info("Bible Notes", "Deleted Notes file " + ab);
                         } catch (ad) {
-                            Toast.show(
+                            Toast.info(
                                 "Bible Notes",
-                                " Please restart VerseVIEW to update the notes list"
+                                " Please restart ReVerseVIEW to update the notes list"
                             );
                         }
                     }
@@ -141,7 +141,7 @@ export class NotesManager {
                 const aa = "./notes/" + ac;
                 Z = Z.resolvePath(aa);
                 Y.copyTo(Z, true);
-                Toast.show("Bible Notes", "Notes Database Added to VerseVIEW");
+                Toast.info("Bible Notes", "Notes Database Added to VerseVIEW");
                 notesInfo(ac);
             });
         }
@@ -166,13 +166,13 @@ export class NotesManager {
             Z.addEventListener(air.IOErrorEvent.IO_ERROR, W);
             Z.copyToAsync(af, true);
             function aa(ah) {
-                Toast.show(
+                Toast.info(
                     "Bible Notes",
                     "Notes file " + Y + ' saved to Desktop under the "vvexport" folder'
                 );
             }
             function W(ah) {
-                Toast.show("Bible Notes", "Unable to save Notes to Desktop");
+                Toast.error("Bible Notes", "Unable to save Notes to Desktop");
             }
         }
         function T() {
@@ -215,7 +215,7 @@ export class NotesManager {
                 D = false;
                 x();
             } else {
-                Toast.show("Bible Notes", "Invalid Notes name.");
+                Toast.error("Bible Notes", "Invalid Notes name.");
             }
         }
         function c() {
@@ -475,7 +475,7 @@ export class NotesManager {
             function aa(ac) {
                 Y.removeEventListener(air.SQLEvent.RESULT, W);
                 Y.removeEventListener(air.SQLErrorEvent.ERROR, aa);
-                Toast.show("Bible Notes", "Error Updating Selected");
+                Toast.error("Bible Notes", "Error Updating Selected");
                 console.trace("event.error.code:", ac.error.code);
                 console.trace("event.error.message:", ac.error.message);
             }

@@ -3,10 +3,10 @@ import {BibleSearch} from "@/bible/search";
 import {loadSQLBible} from "@/bible/manager";
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
-import {clearSelectList, extractFileName, saveFileInAppStorage} from "@app/common";
 import {$RvW} from "@/rvw";
-import {showBibleManagePanel} from "@stores/global";
 import {console} from "@/platform/adapters/air";
+import {clearSelectList, extractFileName, saveFileInAppStorage} from "@app/common";
+import {currentBibleVersions, selectedBibleVersion1, selectedBibleVersion2, showBibleManagePanel} from "@stores/global";
 
 import $ from "jquery";
 
@@ -54,56 +54,39 @@ export function loadBibleVersion() {
 }
 
 export function versionFill(setup) {
-    clearSelectList("version1Menu");
-    clearSelectList("version2Menu");
+    const _currentBibleVersions = [];
 
-    for (let i = 1; i < $RvW.bibleVersionArray.length; i++) {
-        document.getElementById("version1Menu").options[i] = new Option(
-            $RvW.bibleVersionArray[i][0],
-            i
-        );
-        document.getElementById("version2Menu").options[i] = new Option(
-            $RvW.bibleVersionArray[i][0],
-            i
-        );
+    for (let i = 0; i < $RvW.bibleVersionArray.length; i++) {
+        _currentBibleVersions.push($RvW.bibleVersionArray[i][0])
     }
 
-    document.getElementById("version1Menu").selectedIndex = $RvW.vvConfigObj.get_version1();
-    document.getElementById("version2Menu").selectedIndex = $RvW.vvConfigObj.get_version2();
+    currentBibleVersions.set(_currentBibleVersions);
 
-    document.getElementById("version1Text").innerHTML =
-        "Primary: " + $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
-    document.getElementById("version2Text").innerHTML =
-        "Secondary: " + $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
-
-    document.getElementById("booknameStyle").selectedIndex = $RvW.vvConfigObj.get_booknamestyle() - 1;
-    document.getElementById("englishList").checked = $RvW.vvConfigObj.get_listinenglish();
+    selectedBibleVersion1.set($RvW.vvConfigObj.get_version1());
+    selectedBibleVersion2.set($RvW.vvConfigObj.get_version2());
 }
 
-export function saveVersionSelection() {
-    const f = $RvW.vvConfigObj.get_version1();
-    const e = $RvW.vvConfigObj.get_version2();
-    const b = document.getElementById("version1Menu").selectedIndex;
-    const g = document.getElementById("version2Menu").selectedIndex;
-    __dbg("****************" + b + "  " + g);
-    __dbg(
-        "****************" +
-        $RvW.vvConfigObj.get_version1() +
-        "  " +
-        $RvW.vvConfigObj.get_version2()
-    );
-    if (b !== f) {
+export function saveVersionSelection(version1MenuSI, version2MenuSI, booknamestyle) {
+    const v1 = $RvW.vvConfigObj.get_version1();
+    const v2 = $RvW.vvConfigObj.get_version2();
+
+    __dbg(`****************${version1MenuSI}|${version2MenuSI}`);
+    __dbg(`****************${v1}|${v2}`);
+
+    if (version1MenuSI !== v1) {
         $RvW.bibledbObj[1].closeDB();
         $RvW.bibledbObj[1] = null;
-        loadSQLBible(b, 1);
+        loadSQLBible(version1MenuSI, 1);
     }
-    if (g !== e) {
+
+    if (version2MenuSI !== v2) {
         $RvW.bibledbObj[2].closeDB();
         $RvW.bibledbObj[2] = null;
-        loadSQLBible(g, 2);
+        loadSQLBible(version2MenuSI, 2);
     }
-    if (b !== f) {
-        const dbFile = "./bible/" + $RvW.bibleVersionArray[b][1];
+
+    if (version1MenuSI !== v1) {
+        const dbFile = "./bible/" + $RvW.bibleVersionArray[version1MenuSI][1];
         __dbg("             Search file...." + dbFile);
         if ($RvW.searchObj != null) {
             $RvW.searchObj.close();
@@ -114,21 +97,17 @@ export function saveVersionSelection() {
         document.getElementById("adSearch").disabled = false;
         document.getElementById("adSearchButton").disabled = false;
     }
-    document.getElementById("version1Text").innerHTML =
-        "Primary: " + $RvW.bibleVersionArray[b][0];
-    document.getElementById("version2Text").innerHTML =
-        "Secondary: " + $RvW.bibleVersionArray[g][0];
-    $RvW.vvConfigObj.set_version1(b);
-    $RvW.vvConfigObj.set_version2(g);
-    const d = $("#booknameStyle option:selected").val();
-    const c = $("#englishList").is(":checked");
-    __dbg(d + "  " + c);
-    $RvW.vvConfigObj.set_booknamestyle(d);
-    $RvW.vvConfigObj.set_listinenglish(c);
+
+    $RvW.vvConfigObj.set_version1(version1MenuSI);
+    $RvW.vvConfigObj.set_version2(version2MenuSI);
+    $RvW.vvConfigObj.set_booknamestyle(booknamestyle);
+
     $RvW.loadBookNames();
     $RvW.putbook();
     $RvW.putch();
+
     $RvW.vvConfigObj.save();
+
     $RvW.updateVerseContainer();
 }
 
@@ -218,7 +197,7 @@ function deleteVersion() {
         c.deleteFile();
     } catch (f) {
         g = false;
-        Toast.show(
+        Toast.error(
             "Bible Version",
             "Database in use. Please restart VerseVIEW and try deleting again."
         );
@@ -257,9 +236,9 @@ export function deleteVersionConfirm() {
     var a = document.getElementById("selectVersionList").selectedIndex;
     var b = document.getElementById("selectVersionList").options[a].value;
     if (b === $RvW.vvConfigObj.get_version1() || b === $RvW.vvConfigObj.get_version2()) {
-        Toast.show(
+        Toast.error(
             "Manage Bible Database",
-            "Can not delete the primary and seconday version."
+            "Can not delete the primary and secondary version."
         );
     } else {
         Prompt.exec(
@@ -299,19 +278,19 @@ export function loadVersion(d) {
     var e = g[h - 1];
     var b = new air.File(d);
     var c = b.extension.toLowerCase();
-    if (c != "db") {
-        Toast.show("Bible Database", "Invalid VerseVIEW file.");
+    if (c !== "db") {
+        Toast.error("Bible Database", "Invalid VerseVIEW file.");
         return false;
     }
     var k = b.exists;
     if (!k) {
-        Toast.show("Bible Database", "File does not exists.");
+        Toast.error("Bible Database", "File does not exists.");
         return false;
     }
     var a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][1];
     var f = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][1];
     if (e == a || e == f) {
-        Toast.show(
+        Toast.error(
             "Manage Bible Database",
             "Bible database in use. Can not UPDATE the primary and seconday version. <br> Go to Bible > Select Version and select another Bible database and then update " +
             e +
@@ -337,7 +316,7 @@ export function loadVersion(d) {
                 }
             }, 200);
         } else {
-            Toast.show("Bible Database", "File not VerseVIEW database");
+            Toast.error("Bible Database", "File not VerseVIEW database");
         }
     }
 }
@@ -490,10 +469,10 @@ function addFontVersionBibleOK() {
     var a = $RvW.bibleVersionArray[g][2].split(",");
     var f = $.inArray(b, a);
     if (f === -1) {
-        Toast.show("Adding new font: " + b);
+        Toast.info("Adding new font: " + b);
         $RvW.bibleVersionArray[g][2] = $RvW.bibleVersionArray[g][2] + "," + b;
     } else {
-        Toast.show("Font " + b + " already available");
+        Toast.error("Font " + b + " already available");
     }
     updateVersionDetails();
     hideFontVersionBox();
@@ -518,13 +497,6 @@ export function manageVersion() {
     showBibleManagePanel.set(true);
     fillVersionPanel();
     hideFontVersionBox();
-}
-
-export function processSingleVersion() {
-    const a = document.getElementById("singleVersionBoxID").checked;
-    $RvW.vvConfigObj.set_singleVersion(a);
-    document.getElementById("version2Menu").disabled = !!$RvW.vvConfigObj.get_singleVersion();
-    $RvW.vvConfigObj.save();
 }
 
 export function getVersion1Filename() {

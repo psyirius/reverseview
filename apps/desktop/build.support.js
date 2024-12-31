@@ -1,6 +1,6 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 
 const SWF_LIB_ROOT = '.air/swf/lib';
 const DEP_PACKAGE = '@rvw/flash-support';

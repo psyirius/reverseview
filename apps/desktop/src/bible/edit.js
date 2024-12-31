@@ -6,10 +6,10 @@ import {console} from "@/platform/adapters/air";
 import $ from "jquery";
 
 export function setupVerseEditObject() {
-    var b = $RvW.getBookValue();
-    var d = $RvW.getChapterValue();
-    var c = $RvW.getVerseValue();
-    var a = $RvW.getSingleVerse(b, d, c, 1);
+    const b = $RvW.getBookValue();
+    const d = $RvW.getChapterValue();
+    const c = $RvW.getVerseValue();
+    const a = $RvW.getSingleVerse(b, d, c, 1);
     $RvW.editVerse_UI_Obj.setValue(b, d, c, a);
 }
 

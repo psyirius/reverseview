@@ -228,6 +228,9 @@ importers:
       oxlint:
         specifier: ^0.14.1
         version: 0.14.1
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
       postcss:
         specifier: ^8.4.49
         version: 8.4.49
@@ -344,6 +347,9 @@ importers:
       '@unocss/postcss':
         specifier: ^0.65.1
         version: 0.65.1(postcss@8.4.49)
+      animate.css:
+        specifier: ^4.1.1
+        version: 4.1.1
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -5214,6 +5220,9 @@ packages:
     resolution: {integrity: sha512-Eh5QhyxrKnTI0OuGpwTRvzRrnu1NF3F2kbQJRwpXj/uMy0uycwqw2/RhdDrD1cBTD1JFFHFrxGIU8HQztowR0g==}
     engines: {node: '>=0.4.0'}
 
+  animate.css@4.1.1:
+    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
+
   ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
 
@@ -9618,9 +9627,6 @@ packages:
 
   periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
-
-  picocolors@1.0.1:
-    resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -18139,6 +18145,8 @@ snapshots:
 
   almond@0.3.3: {}
 
+  animate.css@4.1.1: {}
+
   ansi-align@3.0.1:
     dependencies:
       string-width: 4.2.3
@@ -18323,7 +18331,7 @@ snapshots:
       caniuse-lite: 1.0.30001651
       fraction.js: 4.3.7
       normalize-range: 0.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.4.49
       postcss-value-parser: 4.2.0
 
@@ -23295,8 +23303,6 @@ snapshots:
       estree-walker: 3.0.3
       is-reference: 3.0.2
 
-  picocolors@1.0.1: {}
-
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
@@ -23419,7 +23425,7 @@ snapshots:
       fs-extra: 11.2.0
       get-stdin: 9.0.0
       globby: 14.0.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.4.49
       postcss-load-config: 5.1.0(jiti@2.4.1)(postcss@8.4.49)(tsx@4.19.2)
       postcss-reporter: 7.1.0(postcss@8.4.49)
@@ -24139,7 +24145,7 @@ snapshots:
 
   postcss-reporter@7.1.0(postcss@8.4.49):
     dependencies:
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.4.49
       thenby: 1.3.4
 

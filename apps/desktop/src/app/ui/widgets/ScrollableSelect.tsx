@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef} from "preact/hooks";
+import {useEffect, useRef} from "preact/hooks";
 
 export type ScrollableSelectItem = {
     label: string;

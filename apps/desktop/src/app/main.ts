@@ -24,7 +24,6 @@ import {VerseEditUI} from "@/bible/edit";
 import {BibleRecentRefManager} from "@/bible/recent";
 import {Scheduler} from "@app/schedule";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible, verseClass} from "@/bible/manager";
-import {AppUpdater, AppUpdateUi} from "./update";
 import { HelpUiPanel } from "./help";
 import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/version";
 import { Config, configInit, svParameterSaveEvent } from "./config";
@@ -65,7 +64,7 @@ import {
     chapterList, selectedBible,
     selectedBookRef,
     selectedTab,
-    verseList
+    verseList, selectedVerseList, BibleVerse, twoVersesPerSlide
 } from "@stores/global";
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
@@ -303,9 +302,7 @@ $RvW.chordsDatabaseObj = null;
 $RvW.chordsImportExportObj = null;
 $RvW.songNavObj = null;
 $RvW.helpObj = null;
-$RvW.updateVV_UI_Obj = null;
 $RvW.editVerse_UI_Obj = null;
-$RvW.newUpdateObj = null;
 $RvW.enterForSearchActive = true;
 $RvW.enterForBibleRef = false;
 $RvW.vvConfigObj = null;
@@ -316,8 +313,6 @@ $RvW.wordbrain = null;
 $RvW.rvwPreferences = null;
 
 let firstTimeFlag = false;
-let navWindowHeight = 1000;
-let navWindowWidth = 1000;
 let previousSelVerse = 0;
 let themeState = false;
 
@@ -332,10 +327,12 @@ $RvW.getVerseValue = function() {
 }
 $RvW.launch = function(g) {
     $RvW.webServerObj.broadcastWS({event: 'cc:present', type: 'verse'});
-    var j;
-    var c = document.getElementById("multipleVerseID").checked;
-    var e = 1;
-    if (c) {
+
+    const twoVerses = twoVersesPerSlide.get();
+
+    let j;
+    let e = 1;
+    if (twoVerses) {
         e = 2;
     }
     var b;
@@ -496,27 +493,21 @@ $RvW.setFontForList = function() {
  * Add the Bible book names to the select list
  * */
 $RvW.putbook = function() {
-    const eng = $RvW.vvConfigObj.get_listinenglish();
-
     bookList.update((_) => {
         const list = [];
 
         for (let i = 0; i < $RvW.booknames.length; i++) {
-            if (eng) {
-                list.push($RvW.default_booknames[i]);
+            const x = $RvW.booknames[i];
+
+            const dualLangPattern = /^(.+)\s\((.+)\)$/;
+
+            if (dualLangPattern.test(x)) {
+                // console.log("DUAL LANG BN:", (x));
+                const match = x.match(dualLangPattern);
+                list.push([match[1], match[2]]);
             } else {
-                const x = $RvW.booknames[i];
-
-                const dualLangPattern = /^(.+)\s\((.+)\)$/;
-
-                if (dualLangPattern.test(x)) {
-                    console.log("DUAL LANG BN:", JSON.stringify(x));
-                    const match = x.match(dualLangPattern);
-                    list.push([match[1], match[2]]);
-                } else {
-                    console.log("SINGLE LANG BN:", JSON.stringify(x));
-                    list.push(x);
-                }
+                // console.log("SINGLE LANG BN:", (x));
+                list.push(x);
             }
         }
 
@@ -648,81 +639,130 @@ $RvW.highlightVerse = function(a) {
 }
 $RvW.updateVerseContainer = function() {
     previousSelVerse = 0;
+
     $RvW.priFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
     $RvW.secFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-    $RvW.vvConfigObj.set_navDualLanguage(document.getElementById("navDualLanguageID").checked);
+
     $RvW.bookIndex = $RvW.getBookValue();
     $RvW.chapterIndex = $RvW.getChapterValue();
     $RvW.verseIndex = $RvW.getVerseValue();
+
     getdata();
 }
 
 $RvW.updateVerseContainer_continue = function() {
-    let htm = "<table border=1>";
-
-    if ($RvW.vvConfigObj.get_navDualLanguage()) {
-        htm += '<tr><td width="4%"></td><td width="48%"></td><td width="48%"></td></tr>';
-    } else {
-        htm += '<tr><td width="4%"></td><td width="96%"></td></tr>';
-    }
-
-    for (let i = 0; i < $RvW.content1.length; i++) {
-        const a = `TC_${i}`;
-        htm += `<tr class="vcClass" id="${a}"><td width="4%">`;
-        const h1 = `NC_${i}`;
-        htm += `<div class="vcClassIcon" id="${h1}"><i class="file alternate icon"></i></div>`;
+    // Build Structure
+    {
+        let htm = "<table border=1>";
 
         if ($RvW.vvConfigObj.get_navDualLanguage()) {
-            htm += '</td><td class="navtd" width="48%">';
-            const h2 = `VC1_${i}`;
-            htm += `<div class="vcClass" id="${h2}">a</div>`;
-            htm += '</td><td class="navtd" width="48%">';
-            const h3 = `VC2_${i}`;
-            htm += `<div class="vcClass" id="${h3}">b</div>`;
+            htm += '<tr><td width="4%"></td><td width="48%"></td><td width="48%"></td></tr>';
         } else {
-            htm += '</td><td class="navtd" width="96%">';
-            const h2 = `VC1_${i}`;
-            htm += `<div class="vcClass" id="${h2}">x</div>`;
+            htm += '<tr><td width="4%"></td><td width="96%"></td></tr>';
         }
 
-        htm += "</td></tr>";
-    }
-    htm += "</table>";
+        for (let i = 0; i < $RvW.content1.length; i++) {
+            const a = `TC_${i}`;
+            htm += `<tr class="vcClass" id="${a}"><td width="4%">`;
+            const h1 = `NC_${i}`;
+            htm += `<div class="vcClassIcon" id="${h1}"><i class="file alternate icon"></i></div>`;
 
-    document.getElementById("verseTab").innerHTML = htm;
+            if ($RvW.vvConfigObj.get_navDualLanguage()) {
+                htm += '</td><td class="navtd" width="48%">';
+                const h2 = `VC1_${i}`;
+                htm += `<div class="vcClass" id="${h2}">a</div>`;
+                htm += '</td><td class="navtd" width="48%">';
+                const h3 = `VC2_${i}`;
+                htm += `<div class="vcClass" id="${h3}">b</div>`;
+            } else {
+                htm += '</td><td class="navtd" width="96%">';
+                const h2 = `VC1_${i}`;
+                htm += `<div class="vcClass" id="${h2}">x</div>`;
+            }
 
-    const o = [];
-    const c = [];
-    const b = [];
-
-    for (let i = 0; i < $RvW.content1.length; i++) {
-        const m = `VC1_${i}`;
-        const g = `VC2_${i}`;
-        const e = `NC_${i}`;
-
-        o[i] = new PostIt(e, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
-
-        c[i] = new verseClass();
-        const l = $RvW.content1[i];
-        const k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-        c[i].init(m, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
-
-        if ($RvW.vvConfigObj.get_navDualLanguage()) {
-            b[i] = new verseClass();
-            const l = $RvW.content2[i];
-            const k = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-            b[i].init(g, l, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, k);
+            htm += "</td></tr>";
         }
+        htm += "</table>";
+
+        document.getElementById("verseTab").innerHTML = htm;
     }
 
+    // Write Content
+    {
+        // tmp lists
+        const o = [];
+        const c = [];
+        const b = [];
+
+        for (let i = 0; i < $RvW.content1.length; i++) {
+            const verse1Id = `VC1_${i}`;
+            const verse2Id = `VC2_${i}`;
+            const notesId = `NC_${i}`;
+
+            o[i] = new PostIt(notesId, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
+
+            const verseText1 = $RvW.content1[i];
+            const verseFont1 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+            c[i] = new verseClass(verse1Id, verseText1, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, verseFont1);
+
+            if ($RvW.vvConfigObj.get_navDualLanguage()) {
+                const verseText2 = $RvW.content2[i];
+                const verseFont2 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+                b[i] = new verseClass(verse2Id, verseText2, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, verseFont2);
+            }
+        }
+
+        selectedVerseList.update((_) => {
+            const vl : BibleVerse[][] = [];
+
+            for (let i = 0; i < $RvW.content1.length; i++) {
+                const vmx : BibleVerse[] = [];
+
+                const verseText1 = $RvW.content1[i];
+                const verseFont1 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+
+                vmx.push({
+                    ref: [
+                        $RvW.bookIndex + 1,
+                        $RvW.chapterIndex + 1,
+                        i + 1,
+                    ],
+                    font: verseFont1,
+                    text: verseText1,
+                });
+
+                if ($RvW.vvConfigObj.get_navDualLanguage()) {
+                    const verseText2 = $RvW.content2[i];
+                    const verseFont2 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+
+                    vmx.push({
+                        ref: [
+                            $RvW.bookIndex + 1,
+                            $RvW.chapterIndex + 1,
+                            i + 1,
+                        ],
+                        font: verseFont2,
+                        text: verseText2,
+                    });
+                }
+
+                vl.push(vmx);
+            }
+
+            return vl;
+        });
+    }
+
+    // Setup Notes
     if ($RvW.notesObj != null) {
         if (document.getElementById("nm_note_type1").checked) {
-            const bookval = $RvW.getBookValue() + 1;
-            const chval = $RvW.getChapterValue() + 1;
-            $RvW.notesObj.getNotes(bookval, chval, 0);
+            const bkv = $RvW.getBookValue() + 1;
+            const chv = $RvW.getChapterValue() + 1;
+            $RvW.notesObj.getNotes(bkv, chv, 0);
         }
     }
 
+    // Highlight Selected Verse
     $RvW.highlightVerse($RvW.getVerseValue());
 }
 
@@ -830,7 +870,6 @@ function vvinit_continue() {
     setupMenu();
     setupConsole();
 
-    Toast.setup();
     Prompt.setup();
 
     setTimeout(function () {
@@ -844,16 +883,16 @@ function vvinit_continue() {
                     $RvW.vvConfigObj.set_version1(1);
                     $RvW.vvConfigObj.set_version2(2);
                     $RvW.vvConfigObj.set_bibleDBVersion(2);
-                    Toast.show("VerseVIEW", "Bible Database update process completed.");
+                    Toast.info("ReVerseVIEW", "Bible Database update process completed.");
                 } else {
-                    Toast.show(
-                        "VerseVIEW",
+                    Toast.error(
+                        "ReVerseVIEW",
                         "Bible Database update failed. Please contact verseview@yahoo.com"
                     );
                 }
             } else {
-                Toast.show(
-                    "VerseVIEW",
+                Toast.error(
+                    "ReVerseVIEW",
                     "Bible Database update failed. Please contact verseview@yahoo.com"
                 );
             }
@@ -866,14 +905,13 @@ function vvinit_continue() {
         SplashScreen.close();
 
         activateMainWindow();
-        setupNavWindow();
+        adjustNavWindowsHeight();
 
         $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
         $RvW.putbook();
-        window.nativeWindow.addEventListener("resize", setupNavWindow);
+        window.nativeWindow.addEventListener("resize", adjustNavWindowsHeight);
         window.nativeWindow.addEventListener("close", () => $RvW.processExit());
         window.nativeWindow.addEventListener("closing", beforeExit);
-        $RvW.newUpdateObj = new AppUpdater();
     }, 500);
 
     setTimeout(function () {
@@ -881,41 +919,48 @@ function vvinit_continue() {
     }, 3000);
 }
 
-function setupNavWindow() {
-    const d = window.nativeWindow.bounds.height;
-    const k = window.nativeWindow.bounds.width;
+function adjustNavWindowsHeight() {
+    // Note: this function is called when the window is resized
+    // it stores the previous state as properties of this function
 
-    if (navWindowHeight != d || navWindowWidth != k) {
+    const windowHeight = window.nativeWindow.bounds.height;
+    const windowWidth = window.nativeWindow.bounds.width;
+
+    if ((this.navWindowHeight !== windowHeight) || (this.navWindowWidth !== windowWidth)) {
         document.body.style.overflow = "hidden";
 
         const j = window.nativeWindow.bounds.width - 16;
-        const f = window.innerHeight;
-        const b = parseInt((j * 3) / 100);
-        const a = parseInt((f * 4) / 100);
+        const b = (j * 3) / 100;
 
-        $RvW.tabHeight = f - 120;
+        $RvW.tabHeight = window.innerHeight - 120;
 
         const g = 250;
         const e = 200;
-        document.getElementById("wrapper").style.height = $RvW.tabHeight;
 
         // TODO: make this in css
-        $("#verse-select").height($RvW.tabHeight - 264);
+
+        // Left Tabs
+        $("#verse-select").height($RvW.tabHeight - 266);
+        $("#bible-select").height($RvW.tabHeight - 148);
+
+        // Main Content Pane
+        $("#content-wrapper").height($RvW.tabHeight);
+
+        /* Right Tabs */
+        $("#bibleverseTab").height($RvW.tabHeight);
+        $("#lyricsTab").height($RvW.tabHeight);
+        $("#notesTab").height($RvW.tabHeight);
+        $("#scheduleTab").height($RvW.tabHeight);
+        $("#searchTab").height($RvW.tabHeight);
+        $("#screenTab").height($RvW.tabHeight);
 
         const l = j - g - e - 3 * b;
-        document.getElementById("container2").style.height = $RvW.tabHeight;
-        document.getElementById("bibleverseTab").style.height = $RvW.tabHeight;
-        document.getElementById("lyricsTab").style.height = $RvW.tabHeight;
-        document.getElementById("notesTab").style.height = $RvW.tabHeight;
-        document.getElementById("scheduleTab").style.height = $RvW.tabHeight;
-        document.getElementById("searchTab").style.height = $RvW.tabHeight;
-        document.getElementById("screenTab").style.height = $RvW.tabHeight;
 
         $RvW.graphicsObj.setNumOfPicsInRow(l);
         $RvW.songNavObj.setFormats();
 
-        navWindowHeight = d;
-        navWindowWidth = k;
+        this.navWindowHeight = windowHeight;
+        this.navWindowWidth = windowWidth;
     }
 }
 
@@ -933,8 +978,6 @@ function setupTheme() {
 }
 
 function setupTabContent() {
-    $RvW.updateVV_UI_Obj = new AppUpdateUi();
-
     // Right Tab
     /* setupTabView("bible_verses", "bibleverseTab"); */
     /* setupTabView("song_lyrics", "lyricsTab"); */
@@ -1326,7 +1369,7 @@ export function start(Y: YUI) {
     SplashScreen.show();
 
     if (!firstTimeCheck()) {
-        Toast.show(
+        Toast.error(
             "ReVerseVIEW",
             "Error first init!"
         );
@@ -1406,3 +1449,6 @@ export function start(Y: YUI) {
         });
     });
 }
+
+// keep it from tree-shaking
+// window.start = start;

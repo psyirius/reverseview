@@ -50,8 +50,7 @@ const tabs = [
 ];
 
 export default function RightPane() {
-    // const id = useId();
-    const id = 'container2';
+    const id = useId();
 
     const container = useRef<HTMLDivElement>(null);
 
@@ -102,7 +101,7 @@ export default function RightPane() {
     }, [activeTab]);
 
     return (
-        <div id={id} ref={container} class="verseContainer">
+        <div id={id} ref={container} style={{float: 'right', width: '100%'}}>
             {/* TabView List */}
             <ul>
                 {tabs.map(({id, label}, i) => (
@@ -113,7 +112,9 @@ export default function RightPane() {
             </ul>
 
             {/* TabView Panel */}
-            <div>
+            <div style={{
+                padding: '0.5rem',
+            }}>
                 {tabs.map(({id, content: Content}, i) => (
                     <div key={i} id={id}>
                         <Content />

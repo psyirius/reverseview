@@ -1,11 +1,17 @@
 // TODO: yui-migrate
-// - YAHOO.util.Event
 // - YAHOO.util.DataSource
 // - YAHOO.widget.Paginator
 // - YAHOO.widget.DataTable
 
 import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
-import {menuYtLink, selectedSongCategory, selectedTab, songCategories, songSearchError} from "@stores/global";
+import {
+    menuYtLink,
+    selectedSongCategory,
+    selectedTab,
+    songCategories,
+    songListState,
+    songSearchError,
+} from "@stores/global";
 import {SongSearchType} from "@/const";
 import {Deferred} from "@/utils/async";
 import {SongPresenter} from "@/song/present";
@@ -43,22 +49,20 @@ export class SongNav {
         let searchDelay = null;
         const searchDelayTime = 600;
 
-        let N = [];
-        let _currentSongObj = null;
-        let s = true;
-        let Q = -1;
-        let n = -1;
-        let _itemID = 0;
-        let _itemTitle = "";
-        let rowsPerPage = 20;
+        let m_currentSongObj = null;
+        let m_canRenderList = true;
+        let m_itemID_bkp = -1;
+        let m_itemTitle_bkp = -1;
+        let m_itemID = 0;
+        let m_itemTitle = "";
+        let m_rowsPerPage = 20;
         let m_keywords = [];
         let m_suggestion_defer = null;
-        let aa = 30;
-        let ag = false;
-        let m = "";
-        let B = null;
-        let m_songTitle = [];
-        const m_isDebug = false;
+        let m_resNotEmpty = false;
+        let m_currentQuery = "";
+        let m_songs_columns = [];
+
+        const IS_DEBUG = true;
 
         init();
 
@@ -75,6 +79,7 @@ export class SongNav {
                     __debug(`Query: ${query}`);
 
                     m_suggestion_defer = new Deferred();
+
                     // m_suggestion_defer.then((data) => {
                     //     callback(data)
                     // });
@@ -86,11 +91,12 @@ export class SongNav {
                 sn_searchSong();
             });
 
-            _currentSongObj = new Song();
-            _currentSongObj.slides = [];
+            m_currentSongObj = new Song();
+            m_currentSongObj.slides = [];
+
             loadTagsFromConfig();
             fillTagsToUI();
-            s = true;
+            m_canRenderList = true;
         }
 
         function hideLyricsElements() {
@@ -121,19 +127,22 @@ export class SongNav {
         }
 
         function setFormats() {
-            rowsPerPage = (($RvW.tabHeight - 420) / 22);
-            if (!s) {
-                if (m_songTitle != null) {
-                    U();
-                }
+            m_rowsPerPage = (($RvW.tabHeight - 420) / 22);
+
+            if (!m_canRenderList) {
+                _renderSongList();
             }
         }
 
         function songnav_category_change(al = 'ALL') {
             __debug("Selected Category Value: " + al);
+
             $("#songnav_editbox").val("");
+
             clearTagFilter();
-            ag = false;
+
+            m_resNotEmpty = false;
+
             $RvW.songManagerObj.getSongsFromCat(al);
         }
 
@@ -151,12 +160,14 @@ export class SongNav {
 
         function sn_editSong() {
             __debug("Launch panel edit song..");
-            $RvW.songEditObj.showEditPanel(_currentSongObj, true, _itemID, ag);
+            $RvW.songEditObj.showEditPanel(m_currentSongObj, true, m_itemID, m_resNotEmpty);
         }
 
         function _loadSuggestions(sqlRes, category, searchMode) {
             m_keywords = [];
-            let searchQuery = $.trim(document.getElementById("songnav_editbox").value);
+            let searchQuery = $.trim(
+                document.getElementById("songnav_editbox").value
+            );
             __debug("|" + searchQuery + "|");
             __debug("Search Flag " + searchMode);
             const wordsInQuery = searchQuery.split(" ");
@@ -179,8 +190,8 @@ export class SongNav {
                 showSuggestedList();
             }
             function ao(ax) {
-                var az = ax.toLowerCase().split(" ");
-                var ay = jQuery.inArray(az[0], m_keywords);
+                const az = ax.toLowerCase().split(" ");
+                const ay = jQuery.inArray(az[0], m_keywords);
                 if (ay === -1) {
                     m_keywords.push(az[0]);
                 }
@@ -189,44 +200,48 @@ export class SongNav {
 
         function showSuggestedList() {
             const an = $RvW.wordbrain.getSuggestions();
-            const all_sugg = an.concat(m_keywords);
+            const allSuggestions = an.concat(m_keywords);
 
-            __debug("Suggested word - concatenated : " + all_sugg);
+            __debug("Suggested word - concatenated : " + allSuggestions);
 
-            m_suggestion_defer.resolve(all_sugg);
+            m_suggestion_defer.resolve(allSuggestions);
         }
 
-        function update_songList(ap, am, at) {
+        function update_songList(sqlResult, am, at) {
             if (at == null) {
-                ag = false;
+                m_resNotEmpty = false;
             }
-            m_songTitle.length = 0;
-            if (ap.data != null) {
-                __debug("update_songList: Number of songs: " + ap.data.length);
+
+            m_songs_columns.length = 0;
+
+            if (sqlResult.data != null) {
+                __debug("update_songList: Number of songs: " + sqlResult.data.length);
                 var an = 0;
                 var aw = "";
                 var aq;
-                for (let ar = 0; ar < ap.data.length; ar++) {
-                    if (am == "ALL") {
-                        let av = ap.data[ar].name;
-                        if (C(av)) {
-                            aq = ap.data[ar].id;
-                            m_songTitle.push({ ID: ar, Title: av });
+
+                for (let ar = 0; ar < sqlResult.data.length; ar++) {
+                    if (am === "ALL") {
+                        let av = sqlResult.data[ar].name;
+                        if (startsWith(av)) {
+                            aq = sqlResult.data[ar].id;
+                            m_songs_columns.push({ ID: ar, Title: av });
                         }
                     } else {
-                        if (ap.data[ar].cat == am) {
-                            var av = ap.data[ar].name;
-                            var al = ap.data[ar].title2;
-                            var ao = ap.data[ar].font;
-                            if (C(av)) {
-                                aq = ap.data[ar].id;
-                                m_songTitle.push({ ID: ar, Title: av });
+                        if (sqlResult.data[ar].cat === am) {
+                            const av = sqlResult.data[ar].name;
+                            var al = sqlResult.data[ar].title2;
+                            var ao = sqlResult.data[ar].font;
+
+                            if (startsWith(av)) {
+                                aq = sqlResult.data[ar].id;
+                                m_songs_columns.push({ ID: ar, Title: av });
                             }
                         }
                     }
                 }
             }
-            U();
+            _renderSongList();
         }
 
         function get_songList(sqlResult, category, query) {
@@ -235,23 +250,23 @@ export class SongNav {
             if (sqlResult.data != null) {
                 const { data } = sqlResult;
 
-                for (let ii = 0; ii < data.length; ii++) {
+                for (const item of data) {
                     if (category === "ALL") {
-                        const ar = data[ii].name;
-                        const an = C(ar, query);
+                        const itemName = item.name;
+                        const an = startsWith(itemName, query);
                         if (an) {
                             res.push({
-                                id: data[ii].id,
-                                name: ar
+                                id: item.id,
+                                name: itemName
                             })
                         }
                     } else {
-                        if (data[ii].cat === category) {
-                            const ar = data[ii].name;
-                            const an = C(ar, query);
+                        if (item.cat === category) {
+                            const ar = item.name;
+                            const an = startsWith(ar, query);
                             if (an) {
                                 res.push({
-                                    id: data[ii].id,
+                                    id: item.id,
                                     name: ar
                                 })
                             }
@@ -264,52 +279,51 @@ export class SongNav {
         }
 
         function update_CategoryList(categories) {
-            const catz = categories?.map((c) => String(c.cat).trim()).filter(e => !!e) || [];
-            // console.trace("Update Category List: ", catz);
+            const catz = categories?.map((c) => $.trim(c.cat)).filter(e => !!e) || [];
+            __debug("Update Category List: ", catz);
             songCategories.set(catz);
             selectedSongCategory.set(null);
         }
 
-        function ab() {
+        function renderLyricsForSelectedSong() {
             try {
-                _currentSongObj = $RvW.songManagerObj.getSongObj(_itemID, ag);
+                m_currentSongObj = $RvW.songManagerObj.getSongObj(m_itemID, m_resNotEmpty);
             } catch (e) {
-                _currentSongObj = null;
+                m_currentSongObj = null;
             }
-            render_lyrics(_currentSongObj);
+            render_lyrics(m_currentSongObj);
         }
 
         function sn_presentSong() {
-            const al = new SongPresenter(_currentSongObj);
+            const al = new SongPresenter(m_currentSongObj);
             al.present();
         }
 
         function sn_deleteSong() {
-            var al = "Song Database";
-            var an = 'Do you want to delete "' + _itemTitle + '" ?';
-            Prompt.exec(al, an, am);
-            function am() {
-                var ao = _itemID;
-                if (_itemID != 0) {
-                    _itemID = _itemID - 1;
+            Prompt.exec(
+                `Song Database`,
+                `Do you want to delete "${m_itemTitle}" ?`,
+                () => {
+                    $RvW.songManagerObj.deleteSong(m_itemID, m_resNotEmpty);
+                    if (m_itemID !== 0) { m_itemID -= 1; }
                 }
-                $RvW.songManagerObj.deleteSong(ao, ag);
-            }
+            );
         }
 
         function sn_deleteSongByCat() {
-            const ao = selectedSongCategory.get();
-            if (ao !== null) {
-                const cat = songCategories.get()[ao];
+            const catIdx = selectedSongCategory.get();
+            if (catIdx !== null) {
+                const cat = songCategories.get()[catIdx];
                 Prompt.exec(
                     'Song Database',
                     `Do you want to delete ALL songs from "${cat}" category?`,
                     () => {
-                    _itemID = 0;
-                    $RvW.songManagerObj.deleteSongByCat(cat);
-                });
+                        m_itemID = 0;
+                        $RvW.songManagerObj.deleteSongByCat(cat);
+                    }
+                );
             } else {
-                Toast.show(
+                Toast.error(
                     "Song Database",
                     "Can not delete the ALL category. Please select a specific category."
                 );
@@ -320,10 +334,12 @@ export class SongNav {
             if (searchDelay != null) {
                 clearTimeout(searchDelay);
             }
+
             searchDelay = setTimeout(function () {
                 clearTimeout(searchDelay);
-                let al = document.getElementById("songnav_editbox").value;
-                al = $.trim(al);
+                let al = $.trim(
+                    document.getElementById("songnav_editbox").value
+                );
                 if ($.isNumeric(al)) {
                     $RvW.songManagerObj.searchRecords(al, SongSearchType.NUMBER);
                 } else {
@@ -335,13 +351,13 @@ export class SongNav {
         }
 
         function songnav_clear() {
-            ag = false;
+            m_resNotEmpty = false;
             $RvW.learner.cancelLearning();
             songnav_category_change();
         }
 
         function render_lyrics(s) {
-            __debug("Render Lyrics: ", JSON.stringify(s));
+            __debug("Render Lyrics:", (s));
 
             if (!s) {
                 // Reset the lyrics
@@ -366,7 +382,7 @@ export class SongNav {
                 name += ` (${s.subcat}) `;
             }
             document.getElementById("ly_name").innerHTML = name;
-            if (s.name2 != "null") {
+            if (s.name2 !== "null") {
                 document.getElementById("ly_name2").innerHTML = s.name2;
                 const aF = $RvW.specialFontList.indexOf(s.font);
                 if (aF === -1) {
@@ -457,9 +473,11 @@ export class SongNav {
                 }
             }
 
-            if (ag) {
-                let aA = document.getElementById("songnav_editbox").value;
-                aA = String(aA).trim();
+            if (m_resNotEmpty) {
+                let aA = $.trim(
+                    document.getElementById("songnav_editbox").value
+                );
+
                 if (aA.length > 2) {
                     // console.trace("Marking lyrics with search text: " + aA);
                     // TODO: add highlighting feature
@@ -468,6 +486,7 @@ export class SongNav {
             }
 
             document.getElementById("ly_tags").innerHTML = "";
+
             if (s.tags != null && s.tags !== "") {
                 __debug("Tags : " + s.tags);
                 const aE = s.tags.split(",");
@@ -484,38 +503,41 @@ export class SongNav {
         }
 
         function sn_backupGlobalID() {
-            Q = _itemID;
-            n = _itemTitle;
+            m_itemID_bkp = m_itemID;
+            m_itemTitle_bkp = m_itemTitle;
         }
+
         function sn_showLyricsByID(al) {
             console.trace("show lyrics by ID called.. ");
-            _currentSongObj = $RvW.songManagerObj.getSongObjWithID(al);
-            console.trace(`show lyrics by ID called.. ${_currentSongObj.name}  ${_itemID}   ${_itemTitle}`);
-            render_lyrics(_currentSongObj);
+            m_currentSongObj = $RvW.songManagerObj.getSongObjWithID(al);
+            console.trace(`show lyrics by ID called.. ${m_currentSongObj.name}  ${m_itemID}   ${m_itemTitle}`);
+            render_lyrics(m_currentSongObj);
         }
+
         function filterByTag(tag) {
             const _tag = tag.target.innerHTML;
             $RvW.songManagerObj.searchRecords(`%${_tag}%`, SongSearchType.TAGS);
         }
-        function searchComplete(res, al) {
-            __debug("Search Complete " + res);
 
-            const cix = selectedSongCategory.get();
-            const cat = cix === null ? 'ALL' : songCategories.get()[cix];
+        function searchComplete(sqlRes, al) {
+            __debug("Search Complete:", sqlRes);
 
-            if (res.data != null) {
-                ag = true;
+            const catIdx = selectedSongCategory.get();
+            const selectedCategory = catIdx === null ? 'ALL' : songCategories.get()[catIdx];
+
+            if (sqlRes.data != null) {
+                m_resNotEmpty = true;
                 songSearchError.set(undefined);
                 showLyricsElements();
 
-                _loadSuggestions(res, cat, al);
-                update_songList(res, cat, ag);
+                _loadSuggestions(sqlRes, selectedCategory, al);
+                update_songList(sqlRes, selectedCategory, m_resNotEmpty);
             } else {
                 m_keywords = [];
                 hideLyricsElements();
                 $("#ly_name").html("No matching song found.");
                 songSearchError.set("No match");
-                update_songList(res, cat, ag);
+                update_songList(sqlRes, selectedCategory, m_resNotEmpty);
             }
         }
 
@@ -527,13 +549,13 @@ export class SongNav {
             const dst = desktopDirectory.resolvePath("./vvexport/default_songs.db");
 
             src.addEventListener(air.Event.COMPLETE, function() {
-                Toast.show(
+                Toast.success(
                     "Song Database",
                     'Song database saved to Desktop under the "vvexport" folder'
                 );
             });
             src.addEventListener(air.IOErrorEvent.IO_ERROR, function() {
-                Toast.show(
+                Toast.error(
                     "Song Database",
                     "Unable to save the song database to the Desktop"
                 );
@@ -542,67 +564,65 @@ export class SongNav {
         }
 
         function sn_add2schedule() {
-            const al = $RvW.songManagerObj.getSongID(_itemID, ag);
-            $RvW.scheduleObj.processAddSong(al);
+            const song = $RvW.songManagerObj.getSongID(m_itemID, m_resNotEmpty);
+            $RvW.scheduleObj.processAddSong(song);
         }
 
-        function j() {
-            _currentSongObj.name = "Trading my Sorrows";
-            _currentSongObj.catIndex = "English";
-            _currentSongObj.font = "Ariel";
-            _currentSongObj.copyright = "Darrel Evans";
-            _currentSongObj.bkgnd_fname = "";
-            _currentSongObj.key = "c";
-            _currentSongObj.notes = "None";
-            _currentSongObj.slides[0] = "Slide 1";
-            _currentSongObj.slides[1] = "Slide 2";
-            render_lyrics(_currentSongObj);
+        function startsWith(str, start) {
+            const ss = String(start ?? m_currentQuery);
+            return str.toLowerCase().indexOf(ss) === 0;
         }
-        function C(ao, am) {
-            var al = m;
-            if (am != null) {
-                al = am;
-            }
-            var ao = ao.toLowerCase();
-            var an = ao.indexOf(al);
-            if (an == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        function __debug(...al) {
-            if (m_isDebug) {
-                console.trace("[SongNav]....", ...al);
-            }
-        }
-        function U() {
-            const au = m_songTitle;
-            if (au != null) {
+
+        function _renderSongList() {
+            if (m_songs_columns != null) {
+                console.trace("Updating song list...", m_songs_columns.length);
+                console.trace(m_songs_columns[0]);
+
+                songListState.update((state) => {
+                    return {
+                        ...state,
+                        songs: m_songs_columns,
+                        perPage: m_rowsPerPage,
+                    };
+                });
+
                 let isRenderPending = false;
-                s = false;
+                m_canRenderList = false;
 
-                const source = new YAHOO.util.DataSource(m_songTitle);
+                const source = new YAHOO.util.DataSource(m_songs_columns);
                 source.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
                 source.responseSchema = { fields: [{ key: "ID" }, { key: "Title" }] };
 
                 const paginator = new YAHOO.widget.Paginator({
-                    rowsPerPage,
-                    containers : [ "songnav_paginator" ],
+                    rowsPerPage: m_rowsPerPage,
+                    containers : [
+                        "songnav_paginator"
+                    ],
                     template: YAHOO.widget.Paginator.TEMPLATE_DEFAULT,
                     pageLinks: 3,
                 });
                 const options = {
-                    sortedBy: {key: "Title", dir: "asc"},
+                    sortedBy: {
+                        key: "Title",
+                        dir: "asc"
+                    },
                     paginator: paginator,
                     draggableColumns: false,
                     selectionMode: "single",
                     renderLoopSize: 0,
                 };
-                const dataTable = new YAHOO.widget.DataTable("songnav_songlistnew", [
-                    {key: "ID", hidden: true},
-                    {key: "Title", sortable: true, resizeable: true, minWidth: 500},
-                ], source, options);
+
+                const columns = [
+                    { key: "ID", hidden: true },
+                    { key: "Title", sortable: true, resizeable: true, minWidth: 500 },
+                ];
+
+                const dataTable = new YAHOO.widget.DataTable(
+                    "songnav_songlistnew",
+                    columns,
+                    source,
+                    options
+                );
 
                 dataTable.subscribe("rowMouseoverEvent", dataTable.onEventHighlightRow);
                 dataTable.subscribe("rowMouseoutEvent", dataTable.onEventUnhighlightRow);
@@ -623,40 +643,44 @@ export class SongNav {
                     if (firstRow) {
                         dataTable.selectRow(firstRow);
                     } else {
-                        _itemID = 0;
-                        _itemTitle = "";
-                        ab();
+                        m_itemID = 0;
+                        m_itemTitle = "";
+                        renderLyricsForSelectedSong();
                     }
                 });
                 paginator.subscribe("pageChange", function() {
                     isRenderPending = true;
                 });
-                dataTable.subscribe("rowSelectEvent", _onSelectItemInDataList);
-
-                function _onSelectItemInDataList() {
+                dataTable.subscribe("rowSelectEvent", function() {
                     const [selectedEl] = dataTable.getSelectedTrEls();
                     const selectedRecord = dataTable.getRecord(selectedEl);
 
-                    __debug("Selected Record: ", JSON.stringify(selectedRecord));
+                    __debug("Selected Record: ", selectedRecord);
 
                     if (selectedRecord != null) {
-                        if (Q !== -1) {
-                            _itemID = Q;
-                            _itemTitle = n;
-                            ab();
-                            Q = -1;
-                            n = -1;
+                        if (m_itemID_bkp !== -1) {
+                            m_itemID = m_itemID_bkp;
+                            m_itemTitle = m_itemTitle_bkp;
+                            renderLyricsForSelectedSong();
+                            m_itemID_bkp = -1;
+                            m_itemTitle_bkp = -1;
                         } else {
-                            _itemID = selectedRecord.getData("ID");
-                            _itemTitle = selectedRecord.getData("Title");
-                            ab();
+                            m_itemID = selectedRecord.getData("ID");
+                            m_itemTitle = selectedRecord.getData("Title");
+                            renderLyricsForSelectedSong();
                         }
                     } else {
-                        _itemID = 0;
-                        _itemTitle = "";
-                        ab();
+                        m_itemID = 0;
+                        m_itemTitle = "";
+                        renderLyricsForSelectedSong();
                     }
-                }
+                });
+            }
+        }
+
+        function __debug(...messages) {
+            if (IS_DEBUG) {
+                console.trace("[SongNav]....", ...messages);
             }
         }
     }

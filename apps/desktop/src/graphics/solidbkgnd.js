@@ -22,7 +22,7 @@ export class SolidBackgroundColor {
 
     addEventsHandlers() {
         document.getElementById("gfx-solid-color")
-            .addEventListener("click", () => this.onClickChange(), false);
+            .addEventListener("click", (e) => this.onClickChange(e), false);
         document.getElementById("gfx-solid-color-input")
             .addEventListener("input", (e) => this.onColorInput(e), false);
         document.getElementById("gfx-solid-color-input")
@@ -47,7 +47,7 @@ export class SolidBackgroundColor {
         }
     }
 
-    onClickChange() {
+    onClickChange(e) {
         new ColorPickerPanel(this._color, 1);
     }
 

@@ -360,7 +360,7 @@ export class SongEdit {
         function onClick_submitCatButtonID2() {
             var ad = document.getElementById("se_catTextID").value;
             if (specialCategory(ad)) {
-                Toast.show(
+                Toast.error(
                     "Add Edit Song",
                     "Category name starting with 'vv' are reserved."
                 );
@@ -685,7 +685,7 @@ export class SongEdit {
             ao = ao.replace(/\s\s+/g, " ");
 
             if (ao === "") {
-                Toast.show("Add Edit Songs", "Enter a valid Song Name");
+                Toast.error("Add Edit Songs", "Enter a valid Song Name");
                 return false;
             } else {
                 const sngObj = new Song();
@@ -726,7 +726,7 @@ export class SongEdit {
                 if (am) {
                     sngObj.yvideo = ag;
                 } else {
-                    Toast.show("Add Edit Songs", "Enter valid YouTube video link.");
+                    Toast.error("Add Edit Songs", "Enter valid YouTube video link.");
                     return false;
                 }
 

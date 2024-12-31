@@ -17,9 +17,8 @@ const tabs = [
     },
 ];
 
-export default function LeftPane() {
-    // const id = useId();
-    const id = 'container';
+export default function LeftPane({ width = '22.5rem' }) {
+    const id = useId();
 
     const container = useRef<HTMLDivElement>(null);
 
@@ -54,7 +53,7 @@ export default function LeftPane() {
     }, []);
 
     return (
-        <div id={id} ref={container} class="tabContainer">
+        <div id={id} ref={container} style={{float: 'left', width: width, marginLeft: `-${width}`}}>
             {/* Tab Headers */}
             <ul>
                 {tabs.map(({id, label}, i) => (

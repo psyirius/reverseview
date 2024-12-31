@@ -27,8 +27,8 @@ export class BibleSearch {
         var I = null;
         var e = 0;
         var l = 0;
-        var y = false;
-        var H = false;
+        var _searchFieldFocussed = false;
+        var _adSearchFieldFocussed = false;
         var u = [];
         var s = [];
         var M = null;
@@ -43,39 +43,39 @@ export class BibleSearch {
             // $("#searchID").css("font-family", getVersion1Font());
             $("#adSearch").css("font-family", getVersion1Font());
             D();
-            v();
+            attachEvtListeners();
             G();
         }
+
         function close() {
-            V();
+            detachEvtListeners();
             if (K != null) {
                 K = null;
             }
         }
-        function v() {
-            document.getElementById("searchButtonID").addEventListener("click", p);
-            document.getElementById("adSearchButton").addEventListener("click", t);
-            YAHOO.util.Event.addListener("searchID", "blur", d);
-            YAHOO.util.Event.addListener("searchID", "focus", n);
-            YAHOO.util.Event.addListener("adSearch", "blur", w);
-            YAHOO.util.Event.addListener("adSearch", "focus", x);
+
+        function attachEvtListeners() {
+            document.getElementById("searchButtonID").addEventListener("click", onSearchButtonClick);
+            document.getElementById("adSearchButton").addEventListener("click", onAdSearchButtonClick);
+            document.getElementById("searchID").addEventListener("blur", function() {
+                _searchFieldFocussed = false;
+            });
+            document.getElementById("searchID").addEventListener("focus", function() {
+                _searchFieldFocussed = true;
+            });
+            document.getElementById("adSearch").addEventListener("blur", function() {
+                _adSearchFieldFocussed = false;
+            });
+            document.getElementById("adSearch").addEventListener("focus", function() {
+                _adSearchFieldFocussed = true;
+            });
         }
-        function n() {
-            y = true;
+
+        function detachEvtListeners() {
+            document.getElementById("searchButtonID").removeEventListener("click", onSearchButtonClick);
+            document.getElementById("adSearchButton").removeEventListener("click", onAdSearchButtonClick);
         }
-        function d() {
-            y = false;
-        }
-        function x() {
-            H = true;
-        }
-        function w() {
-            H = false;
-        }
-        function V() {
-            document.getElementById("searchButtonID").removeEventListener("click", p);
-            document.getElementById("adSearchButton").removeEventListener("click", t);
-        }
+
         function G() {
             clearSelectList("searchBook");
             document.getElementById("searchBook").options[0] = new Option(
@@ -105,12 +105,12 @@ export class BibleSearch {
         function F(Y) {
             K.removeEventListener(air.SQLEvent.OPEN, U);
             K.removeEventListener(air.SQLErrorEvent.ERROR, F);
-            var X = "Error message:" +
+            const X = "Error message:" +
                 Y.error.message +
                 " Details:" +
                 Y.error.details +
                 "Error opening connection Contact verseview@yahoo.com with this error message";
-            Toast.show("Searh", X);
+            Toast.error("Search", X);
         }
         function W() {
             N = new air.SQLStatement();
@@ -235,9 +235,9 @@ export class BibleSearch {
                 al = al + "</table>";
                 ak.innerHTML = ab;
                 Y.innerHTML = al;
-                var am = new Array();
-                var ad = new Array();
-                var ac = new Array();
+                var am = [];
+                var ad = [];
+                var ac = [];
                 for (let i = R; i < R + aa; i++) {
                     var af = "searchNC_" + i;
                     var aj = "searchVC1_" + i;
@@ -247,7 +247,6 @@ export class BibleSearch {
                     var Z = u[i];
                     var X = s[i];
                     Z = g(Z);
-                    ad[i] = new verseClass();
                     var ai = '<font face="Arial, Helvetica, sans-serif">' +
                         $RvW.booknames[an.bookNum - 1] +
                         " " +
@@ -257,8 +256,8 @@ export class BibleSearch {
                         "</font><br>" +
                         Z;
                     var ah = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-                    ad[i].init(aj, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
-                    ac[i] = new verseClass();
+                    ad[i] = new verseClass(aj, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
+
                     var ai = '<font face="Arial, Helvetica, sans-serif">' +
                         $RvW.booknames[an.bookNum - 1] +
                         " " +
@@ -268,7 +267,7 @@ export class BibleSearch {
                         "</font><br>" +
                         X;
                     var ah = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-                    ac[i].init(ae, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
+                    ac[i] = new verseClass(ae, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
                 }
                 if (C > L) {
                     document.getElementById("prevResult").addEventListener("click", a);
@@ -375,9 +374,9 @@ export class BibleSearch {
                 " Details:" +
                 Y.error.details +
                 "Error handling results Contact verseview@yahoo.com with this error message";
-            Toast.show("Bible Search", X);
+            Toast.error("Bible Search", X);
         }
-        function p() {
+        function onSearchButtonClick() {
             var X = j(0);
             if (X) {
                 document.getElementById("adSearch").value = E;
@@ -385,7 +384,7 @@ export class BibleSearch {
                 W();
             }
         }
-        function t() {
+        function onAdSearchButtonClick() {
             var X = j(1);
             if (X) {
                 e = document.getElementById("searchStyle").value;
@@ -394,11 +393,11 @@ export class BibleSearch {
             }
         }
         function searchKeywordInit() {
-            if (y) {
-                p();
+            if (_searchFieldFocussed) {
+                onSearchButtonClick();
             } else {
-                if (H) {
-                    t();
+                if (_adSearchFieldFocussed) {
+                    onAdSearchButtonClick();
                 } else {
                 }
             }
@@ -412,12 +411,12 @@ export class BibleSearch {
             E = E.trim();
             var Z = E.replace(/ /g, "");
             if (Z == null) {
-                Toast.show("Bible Search", "Invalid Search Entry");
+                Toast.error("Bible Search", "Invalid Search Entry");
                 return false;
             }
             var X = Z.split("");
             if (X.length < 3) {
-                Toast.show("Bible Search", "Invalid or Small word for search");
+                Toast.error("Bible Search", "Invalid or Small word for search");
                 return false;
             }
             return true;
@@ -438,8 +437,8 @@ export class BibleSearch {
             return Y;
         }
         function m(X) {
-            var Y = new Array();
-            if (X == 0) {
+            var Y = [];
+            if (X === 0) {
                 var ab = 0;
                 var aa = E.split(" ");
                 for (var Z = 0; Z < aa.length; Z++) {
@@ -479,6 +478,7 @@ export class BibleSearch {
             }
             return ae;
         }
+
         function setFontSize(X) {
             r = X;
             if (I != null) {

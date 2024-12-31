@@ -54,7 +54,7 @@ export function processNavBibleRef() {
             }
         }, $RvW.queryCheckInterval);
     } else {
-        Toast.show("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
+        Toast.error("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
     }
 }
 export function processNavBibleRefFind() {
@@ -68,7 +68,7 @@ export function processNavBibleRefFind() {
         $RvW.scroll_to_view = true;
         $RvW.highlightVerse(a - 1);
     } else {
-        Toast.show("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
+        Toast.error("Bible Reference", $RvW.bibleRefObj.getErrorMessage());
     }
 }
 export function setBookChVer(a, e, d) {

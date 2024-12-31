@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {showBibleManagePanel} from "@stores/global";
 import {deleteVersionConfirm, saveVersion, showBrowse} from "@/bible/version";
+import Modal from "@app/ui/Modal";
 
 export default function BibleManageDialog() {
     const container = useRef(null);

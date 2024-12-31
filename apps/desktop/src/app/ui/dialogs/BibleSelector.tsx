@@ -3,139 +3,200 @@ import {
     currentBibleVersions,
     selectedBibleVersion1,
     selectedBibleVersion2,
-    showBibleSelectPanel
+    showBibleSelectPanel, twoVersesPerSlide
 } from "@stores/global";
 import {$RvW} from "@/rvw";
-import {loadSQLBible} from "@/bible/manager";
+import { saveVersionSelection} from "@/bible/version";
+import Modal from "@/app/ui/Modal";
 import {useEffect, useRef, useState} from "preact/hooks";
-import {saveVersionSelection} from "@/bible/version";
 
 export default function BibleSelectorDialog() {
-    const container = useRef(null);
+    const navFontSizeSliderRef = useRef(null);
 
     const open = useStoreState(showBibleSelectPanel);
 
     const bibleVersions = useStoreState(currentBibleVersions);
     const bibleVersion1 = useStoreState(selectedBibleVersion1);
     const bibleVersion2 = useStoreState(selectedBibleVersion2);
+    const twoVPS = useStoreState(twoVersesPerSlide);
 
-    const [panel, setPanel] = useState(null);
+    const dualLangNav = !!$RvW.vvConfigObj.get_navDualLanguage();
 
-    useEffect(() => {
-        const panel = new $Y.Panel({
-            headerContent   : 'Bible Version Selection',
-            srcNode         : container.current!,
-            width           : "300px",
-            height          : 'auto',
-            zIndex          : 100,
-            centered        : true,
-            modal           : true,
-            render          : true,
-            visible         : false, // make visible explicitly with .show()
-        });
+    const [version2Enable, setVersion2Enable] = useState(!$RvW.vvConfigObj.get_singleVersion());
+    const [bookNameStyle, setBookNameStyle] = useState($RvW.vvConfigObj.get_booknamestyle() - 1);
 
-        panel.on('visibleChange', function (e: any) {
-            showBibleSelectPanel.set(e.newVal);
-        });
+    function handleCloseModal() {
+        showBibleSelectPanel.set(false);
+    }
 
-        setPanel(panel);
-    }, []);
+    function onClickDualLangNav(e: Event) {
+        const el = e.target as HTMLInputElement;
 
-    // panel visibility
+        $RvW.vvConfigObj.set_navDualLanguage(el.checked);
+
+        $RvW.updateVerseContainer();
+    }
+
+    function onSave(e: Event) {
+        e.preventDefault();
+
+        saveVersionSelection(
+            selectedBibleVersion1.get(),
+            selectedBibleVersion2.get(),
+            bookNameStyle,
+        );
+    }
+
+    function onClickVer2Enable(e: Event) {
+        const el = e.target as HTMLInputElement;
+        const { checked } = el;
+
+        setVersion2Enable(checked);
+
+        $RvW.vvConfigObj.set_singleVersion(!checked);
+        $RvW.vvConfigObj.save();
+    }
+
+    function onClickTwoVPS(e: Event) {
+        const el = e.target as HTMLInputElement;
+        const {checked} = el;
+
+        twoVersesPerSlide.set(checked);
+    }
+
     useEffect(() => {
         if (open) {
-            panel?.show();
-        } else {
-            panel?.hide();
+            // @ts-ignore
+            $(navFontSizeSliderRef.current).range({
+                min: 0,
+                max: 200,
+                start: ($RvW.vvConfigObj.get_navFontSize() - 8) * 10,
+                onChange: function (sVal: number) {
+                    $(navFontSizeSliderRef.current).val(sVal);
+
+                    const fz = Math.round(sVal) / 10 + 8;
+
+                    $RvW.vvConfigObj.set_navFontSize(fz);
+
+                    // Update the font size
+                    $RvW.updateVerseContainer();
+                    $RvW.searchObj.setFontSize(fz);
+                    $RvW.scheduleObj.changeFontsizeScheduleTab();
+
+                    console.trace("Slider value changed:", fz);
+                },
+            });
         }
     }, [open]);
 
     return (
-        <div ref={container}>
-            <div class="yui3-widget-bd">
-                <div class="generalPanelDIV">
-                    <div class="generalheading2">Bible Version Selection</div>
+        <Modal
+            title="Bible Version Selection"
+            width="480px"
+            isOpen={open}
+            onClose={handleCloseModal}
+        >
+            <form class="ui form">
+                <h4 class="ui dividing header">Primary</h4>
 
-                    <br/>
+                {/*<a class="ui basic label">{*/}
+                {/*    bibleVersions[bibleVersion1]*/}
+                {/*}</a>*/}
 
-                    <div class="style2">
-                        <label>Primary</label>
+                <div class="field">
+                    <label>Bible Version</label>
 
-                        <select
-                            name="version1Menu"
-                            id="version1Menu"
-                            class="selectboxStyle"
-                            value={bibleVersion1}
-                            onClick={(e) => selectedBibleVersion1.set((e.target as HTMLSelectElement).selectedIndex)}
-                        >
-                            {bibleVersions.map((version, i) => (
-                                <option value={i} key={i}>{version}</option>
-                            ))}
-                        </select>
-
-                        <div class="style2" id="version1Text"></div>
-
-                        <br/>
-
-                        <label>Secondary</label>
-
-                        <select
-                            name="version2Menu"
-                            id="version2Menu"
-                            class="selectboxStyle"
-                            value={bibleVersion2}
-                            onClick={(e) => selectedBibleVersion2.set((e.target as HTMLSelectElement).selectedIndex)}
-                        >
-                            {bibleVersions.map((version, i) => (
-                                <option value={i} key={i}>{version}</option>
-                            ))}
-                        </select>
-
-                        <div class="style2" id="version2Text"></div>
-
-                        <br/>
-
-                        <input type="checkbox" id="singleVersionBoxID" value="checkbox"/> Display Only Version 1 <br/>
-                        <input type="checkbox" id="multipleVerseID" value="checkbox"/> Display 2 verse per slide <br/>
-
-                        <br/>
-                        Book Name Style
-                        <br/>
-
-                        <select name="booknameStyle" id="booknameStyle" class="selectboxStyle">
-                            <option value="1" selected>English</option>
-                            <option value="2">Primary Language</option>
-                            <option value="3">Primary Language with English</option>
-                            <option value="4">Primary Language with Secondary</option>
-                        </select>
-
-                        <br/>
-
-                        <input type="checkbox" id="englishList" value="checkbox"/> Book selection in English
-
-                        <br/>
-                        <br/>
-
-                        <button class="ui icon button mini" onClick={saveVersionSelection}>Save</button>
-                    </div>
-
-                    <br/>
-                    <br/>
-
-                    <div class="style2">
-                        <input type="checkbox" id="navDualLanguageID" onClick={$RvW.updateVerseContainer} />Dual language display for Navigation
-
-                        <br/>
-                        <br/>
-
-                        <div class="style2">Navigation Font Size</div>
-
-                        <div id="nav-font-size-slider"></div>
-                    </div>
-
-                    <br/>
+                    <select
+                        class="selectboxStyle"
+                        value={bibleVersion1}
+                        onChange={(e) => selectedBibleVersion1.set((e.target as HTMLSelectElement).selectedIndex)}
+                    >
+                        {bibleVersions.map((version, i) => (
+                            <option value={i} key={i}>{version}</option>
+                        ))}
+                    </select>
                 </div>
-            </div>
-        </div>
+
+                <h4 class="ui dividing header">Secondary</h4>
+
+                {/*<a class="ui basic label">{*/}
+                {/*    bibleVersions[bibleVersion2]*/}
+                {/*}</a>*/}
+
+                <div class="field">
+                    <label>Bible Version</label>
+
+                    <select
+                        class="selectboxStyle"
+                        value={bibleVersion2}
+                        onChange={(e) => selectedBibleVersion2.set((e.target as HTMLSelectElement).selectedIndex)}
+                        disabled={!version2Enable}
+                    >
+                        {bibleVersions.map((version, i) => (
+                            <option value={i} key={i}>{version}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input
+                            type="checkbox"
+                            name="enable-version-2"
+                            checked={version2Enable}
+                            onClick={onClickVer2Enable}
+                        />
+                        <label>Enable Secondary</label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>BookName Style</label>
+
+                    <select
+                        class="selectboxStyle"
+                        value={bookNameStyle}
+                        onChange={(e) => setBookNameStyle((e.target as HTMLSelectElement).selectedIndex + 1)}
+                    >
+                        <option value="1">English</option>
+                        <option value="2">Primary Language</option>
+                        <option value="3">Primary Language with English</option>
+                        <option value="4">Primary Language with Secondary</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input
+                            type="checkbox"
+                            name="two-vps"
+                            checked={twoVPS}
+                            onClick={onClickTwoVPS}
+                        />
+                        <label>Display 2 verse per slide</label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input
+                            type="checkbox"
+                            name="dual-lang-nav"
+                            checked={dualLangNav}
+                            onClick={onClickDualLangNav}
+                        />
+                        <label>Dual language display for Navigation</label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Navigation Font Size</label>
+
+                    <div class="ui range" ref={navFontSizeSliderRef}></div>
+                </div>
+
+                <button class="ui icon button" tabIndex={0} onClick={onSave}>Save</button>
+            </form>
+        </Modal>
     );
 }

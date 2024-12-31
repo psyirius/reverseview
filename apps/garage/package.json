@@ -9,6 +9,7 @@
     "css:watch": "postcss -w ./src/sass/app.scss -o ./src/css/app.css"
   },
   "devDependencies": {
+    "animate.css": "^4.1.1",
     "@csstools/postcss-sass": "^5.1.1",
     "@unocss/postcss": "^0.65.1",
     "autoprefixer": "^10.4.20",

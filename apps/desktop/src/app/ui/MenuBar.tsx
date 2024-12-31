@@ -1,12 +1,11 @@
-import {useEffect, useRef} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, call_showTheme, call_closePresentation} from "@/p_window";
-import {menuYtLink, navNotifyMessage, selectedBookRef, selectedTab, showRemotePanel} from "@stores/global";
+import {menuYtLink, selectedBookRef, selectedTab, showRemotePanel} from "@stores/global";
 import {$RvW} from "@/rvw";
 
 import BibleRefSelect from "@app/ui/BibleRefSelect";
-import Spacer from "@app/ui/widgets/Spacer";
+import {toast} from "@app/ui/Toaster";
 
 const handlers = {
     present: () => {
@@ -40,13 +39,13 @@ const handlers = {
         const v = $RvW.getVerseValue();
         $RvW.scheduleObj.processAddVerse(b, c, v);
 
-        navNotifyMessage.set("Added verse to schedule");
+        toast("Added verse to schedule", {type: 'success'});
     },
     addSongToSchedule: () => {
         $RvW.learner.finishLearning();
         $RvW.songNavObj.sn_add2schedule();
 
-        navNotifyMessage.set("Added song to schedule");
+        toast("Added song to schedule", {type: 'success'});
     },
     gotoLink: (url: string) => {
         const al = new air.URLRequest(url);
@@ -64,26 +63,10 @@ const menuItems = [
     { tooltip: 'Next Slide',            iconClass: 'arrow circle right',    onClick: handlers.next },
 ]
 
-const notificationMessages = [];
-
 export default function MenuBar() {
     const activeTabIndex = useStoreState(selectedTab);
     const activeBookRef = useStoreState(selectedBookRef);
     const ytLink = useStoreState(menuYtLink);
-    const notification = useStoreState(navNotifyMessage);
-
-    useEffect(() => {
-        if (!!notification) {
-            notificationMessages.forEach(e => clearTimeout(e));
-            notificationMessages.length = 0;
-
-            const t = setTimeout(() => {
-                navNotifyMessage.set(null);
-            }, 3000);
-
-            notificationMessages.push(t);
-        }
-    }, [notification]);
 
     return (
         <div style={{width: '100%'}}>
@@ -158,13 +141,6 @@ export default function MenuBar() {
                             </div>
                         </div>
                     </>}
-
-                    {/* Notification Message */}
-                    {notification && <div class="item">
-                        <a class="ui label basic" onClick={() => navNotifyMessage.set(null)}>
-                            {notification}
-                        </a>
-                    </div>}
                 </div>
 
                 <div class="ui right floated secondary icon compact mini fitted menu">

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/32.0">
-	<id>ReVerseVIEW</id>
-	<filename>ReVerseVIEW</filename>
+	<id>ReVerseVIEWGarage</id>
+	<filename>ReVerseVIEWGarage</filename>
 	<versionNumber>0.1.0</versionNumber>
 	<description>Bible and Song Presentation Software</description>
 	<copyright>Copyright (c) 2024 ReVerseVIEW</copyright>
-	<programMenuFolder>ReVerseVIEW</programMenuFolder>
+	<programMenuFolder>ReVerseVIEWGarage</programMenuFolder>
     <supportedProfiles>extendedDesktop desktop</supportedProfiles>
 	<initialWindow>
 	    <content>app.html</content>

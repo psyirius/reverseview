@@ -3,6 +3,7 @@ import {setupVerseEditObject} from "@/bible/edit";
 import {manageVersion, showBrowse} from "@/bible/version";
 import {promoteVV} from "@app/common";
 import {$RvW} from "@/rvw";
+import {console} from "@/platform/adapters/air";
 import {showBibleSelectPanel, showRemotePanel} from "@stores/global";
 
 const MAIN_MENU = [
@@ -10,7 +11,7 @@ const MAIN_MENU = [
         label: 'File',
         items: [
             { label: 'Remote', onSelect: remoteVV_UI },
-            { label: 'Check for Updates', onSelect: show_updateVV_UI },
+            // { label: 'Check for Updates', onSelect: () => {} },
             { type: 'separator' },
             { label: 'Exit', onSelect: verseviewExit }
         ]
@@ -128,9 +129,6 @@ function show_editVerse_UI() {
 }
 function remoteVV_UI() {
     showRemotePanel.set(true);
-}
-function show_updateVV_UI() {
-    $RvW.newUpdateObj.checkForUpdates();
 }
 function verseviewExit() {
     $RvW.processExit();

@@ -3,7 +3,6 @@ import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-
 import $ from "jquery";
 
 export let apple = false;
@@ -85,14 +84,14 @@ export function backupWebroot() {
                 c.moveTo(a, true);
                 return true;
             } catch (b) {
-                Toast.show(
+                Toast.error(
                     "Creating Webroot Backup",
                     b.message + " Files in use by another application"
                 );
                 return false;
             }
         } else {
-            Toast.show("Creating Webroot Backup", "Backup already exists.");
+            Toast.error("Creating Webroot Backup", "Backup already exists.");
             return true;
         }
     } else {
@@ -116,64 +115,56 @@ export function IsNumeric(v) {
     return true;
 }
 
-function stopWatch() {
-    this.start = h;
-    this.stop = d;
-    this.reset = f;
-    this.delta = g;
-    var e = 0;
-    var b = 0;
-    var a = 0;
-    var c = "";
+/**
+ * A simple stopwatch class.
+ */
+class Stopwatch {
+    /**
+     * @type {number} The timestamp when the stopwatch was started.
+     * @private
+     */
+    #startTime = 0;
 
-    function h() {
-        var j = new Date();
-        e = j.getTime();
+    /**
+     * @type {number} The timestamp when the stopwatch was stopped.
+     * @private
+     */
+    #stopTime = 0;
+
+    /**
+     * Starts the stopwatch.
+     */
+    start() {
+        this.#startTime = Date.now();
     }
 
-    function d() {
-        var j = new Date();
-        b = j.getTime();
+    /**
+     * Stops the stopwatch.
+     */
+    stop() {
+        this.#stopTime = Date.now();
     }
 
-    function f() {
-        e = 0;
-        b = 0;
+    /**
+     * Resets the stopwatch, setting both start and stop times to 0.
+     */
+    reset() {
+        this.#startTime = 0;
+        this.#stopTime = 0;
     }
 
-    function g(j) {
-        d();
-        a = b - e;
-        console.trace(j + " " + a);
-        return a;
-    }
-}
-
-export class FontSizeSlider {
-    constructor() {
-        const _slider = new $Y.Slider({
-            axis: 'x',
-            min: 0,
-            max: 200,
-            length: 200,
-            value: ($RvW.vvConfigObj.get_navFontSize() - 8) * 10,
-            after : {
-                valueChange: function() {
-                    const fz = Math.round(_slider.get('value')) / 10 + 8;
-
-                    $RvW.vvConfigObj.set_navFontSize(fz);
-
-                    // Update the font size
-                    $RvW.updateVerseContainer();
-                    $RvW.searchObj.setFontSize(fz);
-                    $RvW.scheduleObj.changeFontsizeScheduleTab();
-
-                    // console.trace("Slider value changed:", fz);
-                }
-            }
-        });
-
-        _slider.render('#nav-font-size-slider');
+    /**
+     * Calculates the time difference between when the stopwatch was started and stopped.
+     * Logs the time difference with a custom message to the console.
+     *
+     * @param {string} message - A custom message to log along with the delta time.
+     * @returns {number} The time difference in milliseconds or 0 if not started/stopped.
+     */
+    delta(message) {
+        this.stop();
+        const elapsedTime = this.#stopTime - this.#startTime;
+        console.trace(`${message} ${elapsedTime}`);
+        return elapsedTime;
     }
 }
 

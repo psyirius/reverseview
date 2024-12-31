@@ -101,6 +101,7 @@
     "postcss-nested": "^7.0.2",
     "postcss-preset-env": "^10.1.1",
     "preact": "^10.25.1",
+    "picocolors": "^1.1.1",
     "preact-portal": "^1.1.3",
     "preact-richtextarea": "^1.2.1",
     "preact-slots": "^1.0.0",
@@ -128,5 +129,8 @@
     "vanilla-picker": "^2.12.3",
     "yaml": "^2.6.1",
     "yui": "^3.18.1"
-  }
+  },
+  "browserslist": [
+    "Safari 5"
+  ]
 }

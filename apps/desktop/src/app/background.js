@@ -1,11 +1,6 @@
-// TODO: yui-migrate
-// - YAHOO.widget.ColorPicker
-// - YAHOO.util.Event
-
 import {Toast} from "@/app/toast";
 import {saveFileInAppStorage} from "@/app/common";
 import {$RvW} from "@/rvw";
-import {console} from "@/platform/adapters/air";
 
 export const BgContext = {
     selectedIndex: 0,
@@ -129,7 +124,7 @@ export const BgContext = {
             ];
             BgContext.newBkgndFile.browseForOpen("Select Background", filters);
         } else {
-            Toast.show(
+            Toast.error(
                 "Background Graphics",
                 "VerseVIEW supports a maximum of 50 backgrounds. Please delete backgrounds to add new ones."
             );
@@ -160,7 +155,7 @@ export const BgContext = {
             saveFileInAppStorage(g, l);
             BgContext.fill();
         } else {
-            Toast.show("Background Graphics", "Background already exists.");
+            Toast.error("Background Graphics", "Background already exists.");
         }
     },
     generateBkgndXML: function () {
@@ -195,41 +190,3 @@ export const BgContext = {
         }
     },
 };
-
-class ColorPicker {
-    constructor() {
-        this.init = init;
-        this.cp_reset = cp_reset;
-        let d = null;
-
-        function init() {
-            d = new YAHOO.widget.ColorPicker("colorPickerID", {
-                showcontrols: false,
-                showhexcontrols: false,
-                showhsvcontrols: false,
-                showwebsafe: true,
-                images: {
-                    PICKER_THUMB: "graphics/picker_thumb.png",
-                    HUE_THUMB: "graphics/hue_thumb.png"
-                }
-            });
-            d.on("rgbChange", a);
-            document.getElementById("cp_reset_id").addEventListener("click", cp_reset, false);
-            document.getElementById("cp_reset_id").setAttribute('data-tooltip', 'Set to White Text');
-            document.getElementById("cp_save_id").addEventListener("click", f, false);
-            document.getElementById("cp_save_id").setAttribute('data-tooltip', 'Save as Default');
-        }
-
-        function a(i) {
-            let textColorHEX = d.get("hex");
-        }
-
-        function cp_reset() {
-            d.setValue([255, 255, 255], false);
-        }
-
-        function f() {
-            console.trace("Save as default");
-        }
-    }
-}

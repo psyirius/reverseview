@@ -32,7 +32,7 @@ export function savePresentationMargin() {
         $RvW.vvConfigObj.set_p_rightMargin(n);
     } else {
         canSave = false;
-        Toast.show("Error", "Invalid entry for margin");
+        Toast.error("Error", "Invalid entry for margin");
         document.getElementById("presentConfigMarginTop").value =
             $RvW.vvConfigObj.get_p_topMargin();
         document.getElementById("presentConfigMarginBottom").value =
@@ -48,12 +48,12 @@ export function savePresentationMargin() {
             $RvW.vvConfigObj.set_p_maxFontSize(v);
         } else {
             canSave = false;
-            Toast.show("Error", "Maximum font size value out of Range");
+            Toast.error("Error", "Maximum font size value out of Range");
             document.getElementById("presentConfigMaxFontSize").value = $RvW.vvConfigObj.get_p_maxFontSize();
         }
     } else {
         canSave = false;
-        Toast.show("Error", "Invalid maximum font size value.");
+        Toast.error("Error", "Invalid maximum font size value.");
         document.getElementById("presentConfigMaxFontSize").value = $RvW.vvConfigObj.get_p_maxFontSize();
     }
     var l = document.getElementById("presentConfigEnableTransition").checked;

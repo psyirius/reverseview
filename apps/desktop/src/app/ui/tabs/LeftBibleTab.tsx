@@ -1,10 +1,17 @@
 import {processNavBibleRef, processNavBibleRefFind} from "@/bible/navigation";
 import ScrollableSelect from "@app/ui/widgets/ScrollableSelect";
-import {$RvW} from "@/rvw";
-import {verseChange} from "@app/main";
 import {useStoreState} from "@/utils/hooks";
-import {bibleFont, bookList, chapterList, recentBibleRefs, selectedBible, verseList} from "@/stores/global";
+import {verseChange} from "@app/main";
 import {console} from "@/platform/adapters/air";
+import {$RvW} from "@/rvw";
+import {
+    bibleFont,
+    bookList,
+    chapterList,
+    recentBibleRefs,
+    selectedBible,
+    verseList,
+} from "@/stores/global";
 import {useState} from "preact/hooks";
 
 export default function LeftBibleTab() {
@@ -24,12 +31,15 @@ export default function LeftBibleTab() {
 
     const _recentRefs = useStoreState(recentBibleRefs);
 
-    console.trace('[ZZZ]:', [activeBook, activeChapter, activeVerse]);
-    console.trace('[YYY]:', _recentRefs);
+    // console.trace('[ZZZ]:', [activeBook, activeChapter, activeVerse]);
+    // console.trace('[YYY]:', _recentRefs);
 
     const bookListItems = _bookList.map((book) => {
         if (typeof book === 'string') {
-            return {label: book, value: book};
+            return {
+                label: book,
+                value: book,
+            };
         }
 
         const [value, meta] = book;
@@ -65,7 +75,7 @@ export default function LeftBibleTab() {
 
             l[1] = i;
 
-            console.trace("onChapterChange:", bible, l);
+            // console.trace("onChapterChange:", bible, l);
 
             return l as typeof bible;
         });
@@ -80,7 +90,7 @@ export default function LeftBibleTab() {
 
             l[2] = i;
 
-            console.trace("onVerseChange:", bible, l);
+            // console.trace("onVerseChange:", bible, l);
 
             return l as typeof bible;
         });
@@ -101,7 +111,7 @@ export default function LeftBibleTab() {
             l[1] = item.chapter;
             l[2] = item.verse;
 
-            console.trace("onRecentVerseChange:", bible, l);
+            // console.trace("onRecentVerseChange:", bible, l);
 
             return l as typeof bible;
         });
@@ -142,6 +152,7 @@ export default function LeftBibleTab() {
                 </div>
             </div>
 
+            {/* Bible Select */}
             <div class="ui segment basic clearing" style={{padding: 0}}>
                 <div id="verse-select" class="ui three column padded grid font-medium" style={{
                     height: '340px',
@@ -163,6 +174,7 @@ export default function LeftBibleTab() {
                 </div>
             </div>
 
+            {/* Recent & Word Search */}
             <div class="ui segment basic clearing" style={{padding: 0}}>
                 <div class="ui form">
                     {/* Recent Verses */}

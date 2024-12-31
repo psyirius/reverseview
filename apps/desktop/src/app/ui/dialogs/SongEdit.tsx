@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from "preact/hooks";
 import {showSongEditPanel} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";
-import Modal from "@app/ui/widgets/Modal";
 
 const INNER_HTML = `
 <div class="ui grid vvrow">

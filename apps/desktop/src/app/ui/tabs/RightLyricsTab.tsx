@@ -1,7 +1,6 @@
-import {navNotifyMessage} from "@stores/global";
-import {$RvW} from "@/rvw";
 import {SongSearchType} from "@/const";
-
+import {$RvW} from "@/rvw";
+import {toast} from "@app/ui/Toaster";
 
 export default function RightLyricsTab() {
     function onClickEdit() {
@@ -11,7 +10,8 @@ export default function RightLyricsTab() {
     function onClickAdd2Schedule() {
         $RvW.learner.finishLearning();
         $RvW.songNavObj.sn_add2schedule();
-        navNotifyMessage.set("Added to schedule");
+
+        toast("Added to schedule", {type: 'success'});
     }
 
     function onClickPresent() {
@@ -30,7 +30,11 @@ export default function RightLyricsTab() {
     ]
 
     return (
-        <div id="lyricsTab" class="tabSubContainer">
+        <div id="lyricsTab" style={{
+            zIndex: 0,
+            overflowX: 'hidden',
+            overflowY: 'auto',
+        }}>
             {/* TITLE SEQUENCE */}
             <div class="ui grid">
                 <div class="sixteen wide column">

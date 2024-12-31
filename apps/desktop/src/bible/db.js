@@ -25,21 +25,22 @@ export class BibleDB {
     constructor() {
         this.init = init;
         this.closeDB = v;
-        this.isConnectionReady = Y;
-        this.isDataReady = N;
-        this.isSingleDataReady = l;
-        this.isFullDataReady = Q;
-        this.isConfigDataReady = A;
-        this.getVerse = y;
-        this.getChapter = o;
+        this.isConnectionReady = isConnectionReady;
+        this.isDataReady = isDataReady;
+        this.isSingleDataReady = isSingleDataReady;
+        this.isFullDataReady = isFullDataReady;
+        this.isConfigDataReady = isConfigDataReady;
+        this.getVerse = getVerse;
+        this.getChapter = getChapter;
         this.getFull = H;
         this.setBookNumber = h;
         this.setChapterNumber = P;
         this.setVerseNumber = a;
-        this.getResultArray = E;
-        this.getResultFullData = J;
-        this.getSingleResult = ab;
-        this.getSingleVerseFromBuffer = m;
+        this.getResultArray = getResultArray;
+        this.getResultArray2 = getResultArray2;
+        this.getResultFullData = getResultFullData;
+        this.getSingleResult = getSingleResult;
+        this.getSingleVerseFromBuffer = getSingleVerseFromBuffer;
         this.getConfigRevision = ac;
         this.getConfigFonts = R;
         this.getConfigBooknames = U;
@@ -95,10 +96,10 @@ export class BibleDB {
             }
             D();
         }
-        function Y() {
+        function isConnectionReady() {
             return r;
         }
-        function N() {
+        function isDataReady() {
             var ai = false;
             __debug("Status of DB " + r + " " + aa);
             if (r && aa) {
@@ -106,7 +107,7 @@ export class BibleDB {
             }
             return ai;
         }
-        function l() {
+        function isSingleDataReady() {
             var ai = false;
             __debug("Status of DB " + r + " " + af);
             if (r && af) {
@@ -114,7 +115,7 @@ export class BibleDB {
             }
             return ai;
         }
-        function Q() {
+        function isFullDataReady() {
             var ai = false;
             __debug("DataConnection:" + r + " | FullDataReady:" + i);
             if (r && i) {
@@ -122,7 +123,7 @@ export class BibleDB {
             }
             return ai;
         }
-        function A() {
+        function isConfigDataReady() {
             return c;
         }
         function h(ai) {
@@ -146,25 +147,34 @@ export class BibleDB {
                 X = 1;
             }
         }
-        function o() {
+        function getChapter() {
             V();
         }
-        function y(ai, ak, aj) {
+        function getVerse(ai, ak, aj) {
             d(ai, ak, aj);
         }
         function H() {
             Z();
         }
-        function E() {
-            var ai = ag.data.length;
-            var al = [];
-            for (var ak = 0; ak < ai; ak++) {
-                var aj = ag.data[ak];
+        function getResultArray() {
+            const ai = ag.data.length;
+            const al = [];
+            for (let ak = 0; ak < ai; ak++) {
+                const aj = ag.data[ak];
                 al.push(aj.verseNum + " " + aj.word);
             }
             return al;
         }
-        function J() {
+        function getResultArray2() {
+            const ai = ag.data.length;
+            const al = [];
+            for (let ak = 0; ak < ai; ak++) {
+                const aj = ag.data[ak];
+                al.push([aj.verseNum, aj.word]);
+            }
+            return al;
+        }
+        function getResultFullData() {
             var ai = S.data.length;
             var al = [];
             for (var ak = 0; ak < ai; ak++) {
@@ -173,7 +183,7 @@ export class BibleDB {
             }
             return al;
         }
-        function ab() {
+        function getSingleResult() {
             var ai = W.data[0];
             return ai.word;
         }
@@ -257,14 +267,14 @@ export class BibleDB {
             aj = setInterval(function () {
                 if (ah) {
                     clearTimeout(aj);
-                    q = J();
+                    q = getResultFullData();
                     i = true;
                 } else {
                     __debug(" ****** Full Data not ready ");
                 }
             }, O);
         }
-        function m(ai) {
+        function getSingleVerseFromBuffer(ai) {
             return q[ai];
         }
         function V() {
@@ -351,18 +361,18 @@ export class BibleDB {
                 ak.removeEventListener(air.SQLErrorEvent.ERROR, am);
                 var aq = getVerseFromArray(ai, ap, aj);
                 q[aq - 1] = aj + " " + ao;
-                Toast.show("Bible Verse Update", "Verse Updated");
+                Toast.info("Bible Verse Update", "Verse Updated");
             }
             function am(aq) {
                 ak.removeEventListener(air.SQLEvent.RESULT, al);
                 ak.removeEventListener(air.SQLErrorEvent.ERROR, am);
-                var ar = "UPDATE Record - error:" +
+                const ar = "UPDATE Record - error:" +
                     aq.error +
                     " | " +
                     aq.error.code +
                     " | " +
                     aq.error.message;
-                Toast.show("Bible Verse Update", ar);
+                Toast.error("Bible Verse Update", ar);
             }
         }
     }

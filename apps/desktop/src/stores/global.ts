@@ -58,23 +58,40 @@ export type BibleVerseRef = {
     verse: number,
 }
 
+export type BibleVerse = {
+    ref: [number, number, number], /* [book, chapter, verse] */
+    font: string,
+    text: string,
+}
+
 // Right Tab
 export const selectedTab: Writable<number> = writable(0);
 export const selectedBible: Writable<[number, number, number]> = writable([0, 0, 0]);
 export const bookList: Writable<(string | string[])[]> = writable([]);
 export const chapterList: Writable<string[]> = writable([]);
 export const verseList: Writable<string[]> = writable([]);
+export const selectedVerseList: Writable<BibleVerse[][]> = writable([]);
 export const bibleFont: Writable<string> = writable('');
 export const selectedBookRef: Writable<string> = writable('');
 export const recentBibleRefs: Writable<BibleVerseRef[]> = writable([]);
 export const menuYtLink: Writable<string | null> = writable(null);
-export const navNotifyMessage: Writable<string | null> = writable(null);
+
 export const songSearchQuery: Writable<SongSearchQuery | null> = writable(null);
 export const songCategories: Writable<string[]> = writable([]);
 export const songTags: Writable<string[]> = writable([]);
 export const selectedSongCategory: Writable<number | null> = writable(null);
 export const selectedSongTag: Writable<number | null> = writable(null);
 export const selectedSong: Writable<Song | null> = writable(undefined);
+
+export const songListState: Writable<any> = writable({
+    songs: [],
+    total: 0,
+    page: 1,
+    perPage: 10,
+    loading: false,
+    error: null,
+});
+
 export const showRemotePanel: Writable<boolean> = writable(false);
 export const showSongEditPanel: Writable<boolean> = writable(false);
 export const showLyricEditPanel: Writable<boolean> = writable(false);
@@ -107,5 +124,6 @@ export const remoteListenPort: Writable<number> = writable(50000);
 export const currentBibleVersions: Writable<BibleVersion[]> = writable([]);
 export const selectedBibleVersion1: Writable<number> = writable(0);
 export const selectedBibleVersion2: Writable<number> = writable(0);
+export const twoVersesPerSlide: Writable<boolean> = writable(false);
 
 export const colorTheme: Writable<ColorTheme> = writable(ColorTheme.DARK);

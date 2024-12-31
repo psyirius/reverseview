@@ -197,6 +197,7 @@ export class SongManager {
             ax = false;
             ah();
         }
+
         function aw() {
             __debug("Generating ProgressPanel");
             _importProgressPanel = new YAHOO.widget.Panel("panelObj2xx", {
@@ -211,6 +212,7 @@ export class SongManager {
             _importProgressPanel.setBody('<span id="total"></span> songs remaining');
             _importProgressPanel.hide();
         }
+
         function ay(aQ) {
             var aN = "";
             var aP = aQ.length;
@@ -219,6 +221,7 @@ export class SongManager {
             }
             return aN;
         }
+
         function D(aR) {
             var aQ = aR.split("<slide>");
             aQ.splice(aQ.length - 1, 1);
@@ -232,6 +235,7 @@ export class SongManager {
             }
             return aQ;
         }
+
         function j(aQ, aP) {
             var aN = aQ.length;
             var aO = [];
@@ -244,6 +248,7 @@ export class SongManager {
             }
             return aO;
         }
+
         function n() {
             var aO = songz.length;
             for (var aN = 0; aN < aO; aN++) {
@@ -251,6 +256,7 @@ export class SongManager {
                 ae[aN] = songz[aN].id;
             }
         }
+
         function addSong(aN, aP, aO) {
             m = aN.name;
             K = aN.catIndex;
@@ -278,6 +284,7 @@ export class SongManager {
             ao = aN.subcat;
             s(aP, aO);
         }
+
         function updateSong(aN, aO, aR, aS) {
             var aP = null;
             var aQ;
@@ -317,6 +324,7 @@ export class SongManager {
             ao = aN.subcat;
             Q(aP);
         }
+
         function deleteSong(aN, aO) {
             let aP;
             if (aO) {
@@ -326,9 +334,11 @@ export class SongManager {
             }
             X(aP);
         }
+
         function deleteSongByCat(aN) {
             y(aN);
         }
+
         /**
          * @param {number} songId
          */
@@ -367,6 +377,7 @@ export class SongManager {
 
             return null;
         }
+
         function getSongObjWithName(aQ) {
             var aP = false;
             var aS = new Song();
@@ -405,6 +416,7 @@ export class SongManager {
                 return null;
             }
         }
+
         function getSongID(aO, aP) {
             var aN = 0;
             if (!aP) {
@@ -414,6 +426,7 @@ export class SongManager {
             }
             return aN;
         }
+
         function getSongObj(aO, aQ) {
             var aP = new Song();
             aP.slides = [];
@@ -464,11 +477,13 @@ export class SongManager {
             }
             return aP;
         }
+
         function getSongsFromCat(aN) {
             ab = aN;
             __debug("In getSongsFromCat function " + aN);
             $RvW.songNavObj.update_songList({ data: songz }, aN);
         }
+
         function aK() {
             var aN = songz.length;
             var aO = "";
@@ -478,14 +493,17 @@ export class SongManager {
             var aQ = "./song/songlist.txt";
             saveFileInAppStorage(aO, aQ);
         }
+
         function get_sm_cat_records() {
             return aq;
         }
+
         function d() {
             for (let i = 0; i < songy.length; i++) {
                 ap[i] = songy[i].font;
             }
         }
+
         function getFontList() {
             return ap;
         }
@@ -530,6 +548,7 @@ export class SongManager {
                 }
             }
         }
+
         function checkSongExists(aO) {
             var aN = songz.length;
             for (var aP = 0; aP < aN; aP++) {
@@ -539,6 +558,7 @@ export class SongManager {
             }
             return false;
         }
+
         function checkSongExistsInCat(aP, aN) {
             var aO = songz.length;
             for (var aQ = 0; aQ < aO; aQ++) {
@@ -550,11 +570,13 @@ export class SongManager {
             }
             return false;
         }
+
         function __debug(...aN) {
             if (IS_DEBUG) {
                 console.trace("[SongManager]....", ...aN);
             }
         }
+
         function ah() {
             m_sqlConnection = new air.SQLConnection();
             m_sqlConnection.addEventListener(air.SQLEvent.OPEN, z);
@@ -562,26 +584,28 @@ export class SongManager {
             var aN = air.File.applicationStorageDirectory.resolvePath(ad);
             m_sqlConnection.openAsync(aN);
         }
+
         function z(aN) {
             __debug("DB was created successfully");
             ax = true;
             aG();
         }
+
         function I(aN) {
             __debug("Error message:" + aN.error.message);
             __debug("Details (create DB):" + aN.error.details);
             ax = false;
-            Toast.show(
+            Toast.error(
                 "Song Database",
                 "Error opening Song Database : " + aN.error.message
             );
         }
+
         function alterSongTable(aO, aQ) {
             __debug("Updating the Song database TABLE: " + aO + " " + aQ);
-            var aS = new air.SQLStatement();
+            const aS = new air.SQLStatement();
             aS.sqlConnection = m_sqlConnection;
-            var aR = "ALTER TABLE sm ADD COLUMN " + aO + " " + aQ;
-            aS.text = aR;
+            aS.text = `ALTER TABLE sm ADD COLUMN ${aO} ${aQ}`;
             aS.addEventListener(air.SQLEvent.RESULT, aP);
             aS.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aS.execute();
@@ -594,6 +618,7 @@ export class SongManager {
                 __debug("Details in creating table :" + event.error.details);
             }
         }
+
         function aG() {
             __debug("Creating song table...");
             aA = new air.SQLStatement();
@@ -603,6 +628,7 @@ export class SongManager {
             aA.addEventListener(air.SQLErrorEvent.ERROR, M);
             aA.execute();
         }
+
         function r() {
             aA.removeEventListener(air.SQLEvent.RESULT, r);
             aA.removeEventListener(air.SQLErrorEvent.ERROR, M);
@@ -628,15 +654,18 @@ export class SongManager {
                 _loadSongsFromDB();
             }
         }
+
         function M(aN) {
             aA.removeEventListener(air.SQLEvent.RESULT, r);
             aA.removeEventListener(air.SQLErrorEvent.ERROR, M);
             __debug("Error message:" + aN.error.message);
             __debug("Details in creating table :" + aN.error.details);
         }
+
         function aD() {
             ax = false;
         }
+
         function s(aN, aR) {
             if (T === 0) {
                 _importProgressPanel.show();
@@ -678,6 +707,7 @@ INSERT INTO sm (
             aP.addEventListener(air.SQLErrorEvent.ERROR, aQ);
             T++;
             aP.execute();
+
             function aO() {
                 T--;
                 if (T % 10 === 0) {
@@ -688,12 +718,12 @@ INSERT INTO sm (
                 if (aR) {
                     if (T === 0) {
                         _importProgressPanel.hide();
-                        Toast.show(
+                        Toast.success(
                             "Song Database",
                             "Song Lyrics imported to the Song Database complete."
                         );
                         if (!isUpToDate()) {
-                            Toast.show("Songs", "Imported song database");
+                            Toast.info("Songs", "Imported song database");
                             task1Complete();
                             checkVerUpdateFlags();
                         }
@@ -711,12 +741,12 @@ INSERT INTO sm (
                     F();
                     _loadSongsFromDB();
                     if (aR) {
-                        Toast.show(
+                        Toast.success(
                             "Song Database",
                             "Song Lyrics imported to the Song Database"
                         );
                     } else {
-                        Toast.show(
+                        Toast.success(
                             "Song Database",
                             'Song "' + m + '" added to the Song Database.'
                         );
@@ -727,11 +757,12 @@ INSERT INTO sm (
                     _importProgressPanel.hide();
                 }
             }
+
             function aQ(aU) {
                 T--;
                 aP.removeEventListener(air.SQLEvent.RESULT, aO);
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-                Toast.show(
+                Toast.error(
                     "ADD EDIT Song",
                     "Failed to update song database.  Error message:" + aU.error.message
                 );
@@ -740,7 +771,7 @@ INSERT INTO sm (
                     if (aT === 2) {
                         $RvW.vvConfigObj.set_songDBVersion(1);
                         $RvW.vvConfigObj.save();
-                        Toast.show(
+                        Toast.error(
                             "ADD EDIT Song",
                             "Failed to update song database. Please restart VerseVIEW Error message:" +
                             aU.error.message
@@ -749,6 +780,7 @@ INSERT INTO sm (
                 }
             }
         }
+
         function Q(aN) {
             const aO = new air.SQLStatement();
             aO.sqlConnection = m_sqlConnection;
@@ -784,7 +816,7 @@ WHERE id=:id;
                 C();
                 F();
                 _loadSongsFromDB();
-                Toast.show("Song Database", 'Song "' + m + '" updated.');
+                Toast.info("Song Database", 'Song "' + m + '" updated.');
             });
             aO.addEventListener(air.SQLErrorEvent.ERROR, function aQ(e) {
                 __debug("UPDATE error:" + e.error);
@@ -819,6 +851,7 @@ WHERE id=:id;
                 __debug("Error details :" + e.error.details);
             }
         }
+
         function getAllTitlesForWeb(query, callback) {
             __debug("Getting ALL Titles from Song DB");
 
@@ -835,42 +868,48 @@ WHERE id=:id;
             });
             sqlStatement.execute();
         }
+
         function C() {
             __debug("Getting ALL Categories from Song DB");
-            var aP = new air.SQLStatement();
+            const aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
-            var aQ = "SELECT DISTINCT cat FROM sm ORDER BY cat ASC";
-            aP.text = aQ;
+            aP.text = "SELECT DISTINCT cat FROM sm ORDER BY cat ASC";
             aP.addEventListener(air.SQLEvent.RESULT, aO);
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.execute();
+
             function aO(aR) {
                 __debug("Successfully got all categories from Song DB");
                 aq = aP.getResult();
                 $RvW.songNavObj.update_CategoryList(aq.data);
             }
+
             function aN(aR) {
                 __debug("Song Manager data error while trying to get category...");
             }
         }
+
         function F() {
             __debug("Getting ALL Unique Fonts from Song DB");
-            var aP = new air.SQLStatement();
+            const aP = new air.SQLStatement();
             aP.sqlConnection = m_sqlConnection;
             aP.text = "SELECT DISTINCT font FROM sm ORDER BY font ASC";
             aP.addEventListener(air.SQLEvent.RESULT, aO);
             aP.addEventListener(air.SQLErrorEvent.ERROR, aN);
             aP.execute();
+
             function aO(aR) {
                 __debug("Successfully got all fonts from Song DB");
                 const { data } = aP.getResult();
                 songy = data ?? [];
                 d();
             }
+
             function aN(aR) {
                 __debug("Song Manager data error while trying to get fonts...");
             }
         }
+
         function searchRecords(aP, type, cb = null) {
             __debug("Searching Song DB | type: " + type);
 
@@ -911,7 +950,7 @@ WHERE id=:id;
                 songx = data ?? [];
                 if (type === SongSearchType.TAGS && data == null) {
                     removeTag(aP.split("%")[1]);
-                    Toast.show("Song Tag Search", "No matching tag");
+                    Toast.error("Song Tag Search", "No matching tag");
                 } else {
                     if (aP.length > 2) {
                         $RvW.wordbrain.findRecordBy_wordin(aP);
@@ -926,6 +965,7 @@ WHERE id=:id;
                 alert("Search function failed.");
             }
         }
+
         function X(id) {
             __debug("Deleting record with keyValue as primary key from Song Database...");
 
@@ -952,6 +992,7 @@ WHERE id=:id;
                 __debug("event.error.message:" + aS.error.message);
             }
         }
+
         function y(cat) {
             __debug("Deleting records based on category from Song Database...");
             const aQ = new air.SQLStatement();
@@ -977,6 +1018,7 @@ WHERE id=:id;
                 __debug("event.error.message:" + aS.error.message);
             }
         }
+
         function delCatManagedUpdate() {
             __debug("Deleting Category for managed update from Song Database...");
             var aP = new air.SQLStatement();
@@ -1004,6 +1046,7 @@ WHERE id=:id;
                 __debug("event.error.message:" + aR.error.message);
             }
         }
+
         function g() {
             __debug("about to copy new records...");
             const aP = air.File.applicationDirectory.resolvePath("./song/default.db");
@@ -1019,6 +1062,7 @@ WHERE id=:id;
                 __debug("Details (Update Failed):" + aR.error.details);
             }
         }
+
         function aF() {
             __debug("Getting ALL Data from Original Song DB");
             const aP = new air.SQLStatement();
@@ -1033,7 +1077,7 @@ WHERE id=:id;
             function aO(aR) {
                 __debug("Successfully got all data from Original Song DB and inserted");
                 if (!isUpToDate()) {
-                    Toast.show("Songs", "Updated song database");
+                    Toast.info("Songs", "Updated song database");
                     task1Complete();
                     checkVerUpdateFlags();
                 }
@@ -1046,9 +1090,10 @@ WHERE id=:id;
                 __debug("UPDATE error:" + aR.error);
                 __debug("event.error.code:" + aR.error.code);
                 __debug("event.error.message:" + aR.error.message);
-                Toast.show("Song Manager", "Song DB updater data error...");
+                Toast.error("Song Manager", "Song DB updater data error...");
             }
         }
+
         function ag() {
             var aO = songz.length;
             var aP = [0, 0];
@@ -1075,11 +1120,13 @@ WHERE id=:id;
             aP[1] = aP[1] - 5000;
             return aP;
         }
+
         function a() {
             const aN = ag();
             $RvW.songNumberObj.setMaxMalayalam(aN[0]);
             $RvW.songNumberObj.setMaxHindi(aN[1]);
         }
+
         function aB() {
             const aO = songz.length;
             alert("Number of records..." + aO);
@@ -1125,6 +1172,7 @@ WHERE id=:id;
                 }
             }
         }
+
         function S() {
             var aO = songz.length;
             var aQ = 0;
@@ -1167,6 +1215,7 @@ WHERE id=:id;
                 }
             }
         }
+
         function test2_updateRecords() {
             var aS = testName.length;
             var aT = songz.length;
@@ -1187,6 +1236,7 @@ WHERE id=:id;
                 }
             }
         }
+
         function test2_getOrgsonglist() {
             var aS = [];
             var aR = "";
@@ -1202,6 +1252,7 @@ WHERE id=:id;
             }
             return aS;
         }
+
         function w(aS) {
             var aO = songz.length;
             __debug("record length " + aO);

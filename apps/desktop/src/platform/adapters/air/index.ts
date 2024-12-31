@@ -1,3 +1,11 @@
+import { polyfillLog } from './console';
+
+const { runtime } = window;
+
+if (!runtime) {
+    throw new Error('Air runtime api is not available!')
+}
+
 const {
     File,
     // @ts-ignore
@@ -12,11 +20,6 @@ const {
     // @ts-ignore
     ByteArray,
 } = air;
-const { runtime } = window;
-
-if (!runtime) {
-    throw new Error('Air runtime api is not available!')
-}
 
 export const fs = {
     resolveUrlInDesktopDir(path: string, nativePath = false): string {
@@ -112,16 +115,38 @@ export const net = {
     },
 }
 
+const polyfills = {
+    console: {
+        log(...args: any[]): void {
+            polyfillLog(trace, ...args);
+        },
+    }
+};
+
 export const console = {
-    log: (...args: any[]) => trace.apply(null, args),
-    warn: (...args: any[]) => trace.apply(null, args),
-    info: (...args: any[]) => trace.apply(null, args),
-    debug: (...args: any[]) => trace.apply(null, args),
-    error: (...args: any[]) => trace.apply(null, args),
-    trace: (...args: any[]) => trace.apply(null, args),
+    log: (...args: any[]) => polyfills.console.log.apply(null, args),
+    warn: (...args: any[]) => polyfills.console.log.apply(null, args),
+    info: (...args: any[]) => polyfills.console.log.apply(null, args),
+    debug: (...args: any[]) => polyfills.console.log.apply(null, args),
+    error: (...args: any[]) => polyfills.console.log.apply(null, args),
+    trace: (...args: any[]) => polyfills.console.log.apply(null, args),
+}
+
+export const createLogger = (context: string) => {
+    const log = (...args: any[]) => polyfills.console.log(`[${context}]`, ...args);
+
+    return {
+        log: log,
+        warn: log,
+        info: log,
+        debug: log,
+        error: log,
+        trace: log,
+    }
 }
 
 export default {
     fs,
     console,
+    createLogger,
 }

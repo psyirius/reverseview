@@ -64,7 +64,7 @@ export class SongExporter {
             }
 
             if (specialCategory(m_category)) {
-                Toast.show("Song Database", "Only user added lyrics can be exported");
+                Toast.error("Song Database", "Only user added lyrics can be exported");
                 return false;
             }
 
@@ -109,7 +109,7 @@ export class SongExporter {
             xmlContent += "</songDB>\n";
 
             if (errored) {
-                Toast.show(
+                Toast.error(
                     "Song Database",
                     "Database contains invalid Category. Contact VerseVIEW"
                 );
@@ -119,7 +119,7 @@ export class SongExporter {
         }
 
         function exportSingle() {
-            Toast.show(
+            Toast.error(
                 "Song Database",
                 "Exporting single song is not supported in XML format."
             );
@@ -160,19 +160,19 @@ export class SongExporter {
                         if (rootTagName === "XMLsong") {
                             loadSongs(root);
                         } else {
-                            Toast.show(
+                            Toast.error(
                                 "Song Database",
                                 "Invalid database for VerseVIEW Songs in XML format. (Wrong type field)"
                             );
                         }
                     } else {
-                        Toast.show(
+                        Toast.error(
                             "Song Database",
                             "Invalid database for VerseVIEW Songs in XML format. (Type field not present)"
                         );
                     }
                 } else {
-                    Toast.show(
+                    Toast.error(
                         "Song Database",
                         "Invalid database for VerseVIEW Songs in XML format. (Invalid XML format)"
                     );
@@ -235,7 +235,7 @@ export class SongExporter {
                     const stream = new FileStream();
                     stream.openAsync(newFile, FileMode.WRITE);
                     stream.addEventListener(Event.CLOSE, function () {
-                        Toast.show(
+                        Toast.success(
                             "Song Database",
                             `Exported to ${newFile.name}`
                         );
@@ -243,7 +243,7 @@ export class SongExporter {
                     stream.writeMultiByte(content, "utf-8");
                     stream.close();
                 } else {
-                    Toast.show(
+                    Toast.error(
                         "Song Database",
                         "File already exists. Choose a different name."
                     );
@@ -293,7 +293,7 @@ export class SongExporter {
             if (addedSongs > 0) {
                 fillTagsToUI();
             } else {
-                Toast.show("No New Songs to add.");
+                Toast.error("No New Songs to add.");
             }
 
             function w(D) {

@@ -3,8 +3,8 @@ import {$RvW} from "@/rvw";
 // TODO: clean up this file
 export let version_number = 14;
 
-let task1 = false;
-let task2 = true;
+let task1 = false; // song db update task
+let task2 = true; // webroot copy task
 
 export function isUpToDate() {
     return $RvW.vvConfigObj.get_versionNum() === version_number;

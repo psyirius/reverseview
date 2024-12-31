@@ -36,6 +36,11 @@ export default function RightGraphicsTab() {
                 meta.triggeredByUser && bgGradientAngle.set(value);
             }
         });
+
+        // @ts-ignore
+        // $("#custom-picket").spectrum({
+        //     color: "#f00"
+        // });
     }, []);
 
     useEffect(() => {
@@ -96,6 +101,7 @@ export default function RightGraphicsTab() {
                         </div>
                     </div>
                 </div>
+
                 {/* Tab: Background */}
                 <div class="ui bottom attached tab segment" data-tab="background-color">
                     <div class="ui content">
@@ -164,7 +170,8 @@ export default function RightGraphicsTab() {
                                         <label>Solid Color</label>
 
                                         <div class="ui action input">
-                                            <input id="gfx-solid-color-input" type="text" value={solidColor} />
+                                            <input id="gfx-solid-color-input" type="text" value={solidColor}/>
+                                            {/*<input type='text' id="custom-picket"/>*/}
                                             <button
                                                 id="gfx-solid-color"
                                                 class="ui right icon button"
@@ -295,122 +302,120 @@ export default function RightGraphicsTab() {
                         >
                             <div class="ui grid">
                                 <div class="sixteen wide column">
-                                    <div class="ui vertical">
-                                        <div class="ui segment">
-                                            {/* Previews */}
-                                            <div class="ui form">
-                                                <div class="fields">
-                                                    <div class="field">
-                                                        <label>Preview</label>
-                                                        <img
-                                                            id="selectedx_still_id"
-                                                            class="ui bordered image"
-                                                            width={150}
-                                                            height={100}
-                                                            alt=""
-                                                        />
+                                    <div class="ui segment top attached">
+                                        {/* Previews */}
+                                        <div class="ui form">
+                                            <div class="fields">
+                                                <div class="field">
+                                                    <label>Preview</label>
+                                                    <img
+                                                        id="selectedx_still_id"
+                                                        class="ui bordered image"
+                                                        width={150}
+                                                        height={100}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div class="field">
+                                                    <label>Background</label>
+                                                    <img
+                                                        id="selected_still_id"
+                                                        class="ui bordered image"
+                                                        width={150}
+                                                        height={100}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div class="field">
+                                                    <label>Logo</label>
+                                                    <img
+                                                        id="selected_logostill_id"
+                                                        class="ui bordered image"
+                                                        width={150}
+                                                        height={100}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ui divider"></div>
+
+                                        {/* Controls */}
+                                        <div class="ui form">
+                                            <div class="fields">
+                                                <div class="field">
+                                                    <div class="ui icon buttons">
+                                                        <button
+                                                            class="ui button"
+                                                            id="setAsBackgroundButtonID"
+                                                            data-tooltip="Set as Background"
+                                                            data-position="bottom center"
+                                                            data-inverted=""
+                                                        >
+                                                            <i class="icon his his-photo"></i>
+                                                        </button>
+                                                        <button
+                                                            class="ui button"
+                                                            id="setAsLogoButtonID"
+                                                            data-tooltip="Set as Logo"
+                                                            data-position="bottom center"
+                                                            data-inverted=""
+                                                        >
+                                                            <i class="icon his his-sparkles"></i>
+                                                        </button>
                                                     </div>
-                                                    <div class="field">
-                                                        <label>Background</label>
-                                                        <img
-                                                            id="selected_still_id"
-                                                            class="ui bordered image"
-                                                            width={150}
-                                                            height={100}
-                                                            alt=""
-                                                        />
-                                                    </div>
-                                                    <div class="field">
-                                                        <label>Logo</label>
-                                                        <img
-                                                            id="selected_logostill_id"
-                                                            class="ui bordered image"
-                                                            width={150}
-                                                            height={100}
-                                                            alt=""
-                                                        />
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui icon buttons">
+                                                        <button
+                                                            class="ui button"
+                                                            id="addStillBkgndButtonID"
+                                                            data-tooltip="Add New Background"
+                                                            data-position="bottom center"
+                                                            data-inverted=""
+                                                        >
+                                                            <i class="add icon"></i>
+                                                        </button>
+                                                        <button
+                                                            class="ui red button"
+                                                            id="delStillBkgndButton"
+                                                            data-tooltip="Delete Selected Background"
+                                                            data-position="bottom center"
+                                                            data-inverted=""
+                                                        >
+                                                            <i class="trash icon"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="ui divider"></div>
-
-                                            {/* Controls */}
-                                            <div class="ui form">
-                                                <div class="fields">
-                                                    <div class="field">
-                                                        <div class="ui icon buttons">
-                                                            <button
-                                                                class="ui button"
-                                                                id="setAsBackgroundButtonID"
-                                                                data-tooltip="Set as Background"
-                                                                data-position="bottom center"
-                                                                data-inverted=""
-                                                            >
-                                                                <i class="icon his his-photo"></i>
-                                                            </button>
-                                                            <button
-                                                                class="ui button"
-                                                                id="setAsLogoButtonID"
-                                                                data-tooltip="Set as Logo"
-                                                                data-position="bottom center"
-                                                                data-inverted=""
-                                                            >
-                                                                <i class="icon his his-sparkles"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field">
-                                                        <div class="ui icon buttons">
-                                                            <button
-                                                                class="ui button"
-                                                                id="addStillBkgndButtonID"
-                                                                data-tooltip="Add New Background"
-                                                                data-position="bottom center"
-                                                                data-inverted=""
-                                                            >
-                                                                <i class="add icon"></i>
-                                                            </button>
-                                                            <button
-                                                                class="ui red button"
-                                                                id="delStillBkgndButton"
-                                                                data-tooltip="Delete Selected Background"
-                                                                data-position="bottom center"
-                                                                data-inverted=""
-                                                            >
-                                                                <i class="trash icon"></i>
-                                                            </button>
-                                                        </div>
+                                            <div class="fields">
+                                                <div class="field">
+                                                    <div class="ui checkbox">
+                                                        <input type="checkbox" name="bg-still-options"
+                                                               id="still_animate"/>
+                                                        <label htmlFor="still_animate">Motion</label>
                                                     </div>
                                                 </div>
-                                                <div class="fields">
-                                                    <div class="field">
-                                                        <div class="ui checkbox">
-                                                            <input type="checkbox" name="bg-still-options"
-                                                                   id="still_animate"/>
-                                                            <label htmlFor="still_animate">Motion</label>
-                                                        </div>
+                                                <div class="field">
+                                                    <div class="ui checkbox">
+                                                        <input type="checkbox" name="bg-still-options"
+                                                               id="randomBackgroundID"/>
+                                                        <label htmlFor="randomBackgroundID">Random</label>
                                                     </div>
-                                                    <div class="field">
-                                                        <div class="ui checkbox">
-                                                            <input type="checkbox" name="bg-still-options"
-                                                                   id="randomBackgroundID"/>
-                                                            <label htmlFor="randomBackgroundID">Random</label>
-                                                        </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui checkbox">
+                                                        <input type="checkbox" name="bg-still-options"
+                                                               id="shadedBackgroundID"/>
+                                                        <label htmlFor="shadedBackgroundID">Shaded</label>
                                                     </div>
-                                                    <div class="field">
-                                                        <div class="ui checkbox">
-                                                            <input type="checkbox" name="bg-still-options"
-                                                                   id="shadedBackgroundID"/>
-                                                            <label htmlFor="shadedBackgroundID">Shaded</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field">
-                                                        <div class="ui checkbox">
-                                                            <input type="checkbox" name="bg-still-options"
-                                                                   id="transparentBackgroundID"/>
-                                                            <label htmlFor="transparentBackgroundID">Transparent</label>
-                                                        </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui checkbox">
+                                                        <input type="checkbox" name="bg-still-options"
+                                                               id="transparentBackgroundID"/>
+                                                        <label htmlFor="transparentBackgroundID">Transparent</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -418,10 +423,8 @@ export default function RightGraphicsTab() {
                                     </div>
 
                                     {/* Gallery */}
-                                    <div class="ui vertical">
-                                        <div class="ui segment">
-                                            <div id="still_bkgnd_grid" style={{overflowY: 'auto'}}>
-                                            </div>
+                                    <div class="ui segment bottom attached">
+                                        <div id="still_bkgnd_grid" style={{overflowY: 'auto'}}>
                                         </div>
                                     </div>
                                 </div>

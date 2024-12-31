@@ -1,8 +1,6 @@
-import {BibleUpdater} from "@/bible/setup";
 import {fillTagsToUI, loadTagsFromConfig} from "@/song/tags";
-import {processSingleVersion} from "@/bible/version";
 import {Toast} from "@app/toast";
-import {FontSizeSlider, saveFileInAppStorage} from "@app/common";
+import {saveFileInAppStorage} from "@app/common";
 import {savePresentationMargin} from "@app/presentation";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
@@ -111,7 +109,7 @@ export class Config {
                                 this.save();
                                 this.load(callback, retry + 1);
                             } else {
-                                Toast.show(
+                                Toast.error(
                                     "ReVerseVIEW",
                                     "Error parsing ReVerseVIEW config. Please restart VerseVIEW."
                                 );
@@ -119,8 +117,8 @@ export class Config {
                         }
                     },
                     failure: (x, o) => {
-                        Toast.show(
-                            "VerseVIEW",
+                        Toast.error(
+                            "ReVerseVIEW",
                             "Error loading VerseVIEW database. Please restart VerseVIEW."
                         );
                     }
@@ -526,11 +524,7 @@ export class Config {
             }
         }
         function _parse_bool_str(aH) {
-            if (aH == "false") {
-                return false;
-            } else {
-                return true;
-            }
+            return aH != "false";
         }
         function _toXML() {
             let aH = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -592,6 +586,68 @@ export class Config {
             aH += "</configuration>\n";
             return aH;
         }
+        function _toPipeString() {
+            let aH = "";
+            aH = aH + m_svOpacity + "|" + m_svHeight + "|" + m_svShowPrimary + "|" + m_svTextOutline + "|" + m_svShowDate + "|" + m_svFcolor;
+            aH = aH + "|" + m_svWindow + "|" + m_svPosition + "|" + m_svMaxFontSize + "|" + m_svBcolor;
+            aH = aH + "|" + m_svGreenWindow + "|" + m_svTextShadow;
+            aH = aH + "|" + m_svAlignLeft + "|" + m_svAlignCenter + "|" + m_svAddTexture + "|" + m_svShowHorizontal;
+            aH = aH + "|" + m_svShowSecondary;
+            return aH;
+        }
+        function _loadSvParameters(ps) {
+            const aI = ps.split("|");
+            m_svOpacity = aI[0];
+            m_svHeight = aI[1];
+            m_svShowPrimary = aI[2];
+            m_svTextOutline = aI[3];
+            m_svShowDate = aI[4];
+            m_svFcolor = aI[5];
+            if (aI[6] == null) {
+                aI[6] = false;
+            }
+            if (aI[7] == null) {
+                aI[7] = 0;
+            }
+            if (aI[8] == null) {
+                aI[8] = 30;
+            }
+            if (aI[9] == null) {
+                aI[9] = 0;
+            }
+            if (aI[10] == null) {
+                aI[10] = true;
+            }
+            if (aI[11] == null) {
+                aI[11] = false;
+            }
+            if (aI[12] == null) {
+                aI[12] = false;
+            }
+            if (aI[13] == null) {
+                aI[13] = false;
+            }
+            if (aI[14] == null) {
+                aI[14] = false;
+            }
+            if (aI[15] == null) {
+                aI[15] = false;
+            }
+            if (aI[16] == null) {
+                aI[16] = false;
+            }
+            m_svWindow = aI[6];
+            m_svPosition = aI[7];
+            m_svMaxFontSize = aI[8];
+            m_svBcolor = aI[9];
+            m_svGreenWindow = aI[10];
+            m_svTextShadow = aI[11];
+            m_svAlignLeft = aI[12];
+            m_svAlignCenter = aI[13];
+            m_svAddTexture = aI[14];
+            m_svShowHorizontal = aI[15];
+            m_svShowSecondary = aI[16];
+        }
 
         this.save = function() {
             m_saveCtr++;
@@ -612,6 +668,8 @@ export class Config {
             saveFileInAppStorage(_toXML(), "./xml/config.xml");
             m_saveCtr--;
         }
+
+        /* Getters and setters */
 
         this.get_version1 = function () {
             return m_version1;
@@ -1103,70 +1161,6 @@ export class Config {
             m_taglist = aH;
             return true;
         };
-
-        function _toPipeString() {
-            let aH = "";
-            aH = aH + m_svOpacity + "|" + m_svHeight + "|" + m_svShowPrimary + "|" + m_svTextOutline + "|" + m_svShowDate + "|" + m_svFcolor;
-            aH = aH + "|" + m_svWindow + "|" + m_svPosition + "|" + m_svMaxFontSize + "|" + m_svBcolor;
-            aH = aH + "|" + m_svGreenWindow + "|" + m_svTextShadow;
-            aH = aH + "|" + m_svAlignLeft + "|" + m_svAlignCenter + "|" + m_svAddTexture + "|" + m_svShowHorizontal;
-            aH = aH + "|" + m_svShowSecondary;
-            return aH;
-        }
-
-        function _loadSvParameters(ps) {
-            const aI = ps.split("|");
-            m_svOpacity = aI[0];
-            m_svHeight = aI[1];
-            m_svShowPrimary = aI[2];
-            m_svTextOutline = aI[3];
-            m_svShowDate = aI[4];
-            m_svFcolor = aI[5];
-            if (aI[6] == null) {
-                aI[6] = false;
-            }
-            if (aI[7] == null) {
-                aI[7] = 0;
-            }
-            if (aI[8] == null) {
-                aI[8] = 30;
-            }
-            if (aI[9] == null) {
-                aI[9] = 0;
-            }
-            if (aI[10] == null) {
-                aI[10] = true;
-            }
-            if (aI[11] == null) {
-                aI[11] = false;
-            }
-            if (aI[12] == null) {
-                aI[12] = false;
-            }
-            if (aI[13] == null) {
-                aI[13] = false;
-            }
-            if (aI[14] == null) {
-                aI[14] = false;
-            }
-            if (aI[15] == null) {
-                aI[15] = false;
-            }
-            if (aI[16] == null) {
-                aI[16] = false;
-            }
-            m_svWindow = aI[6];
-            m_svPosition = aI[7];
-            m_svMaxFontSize = aI[8];
-            m_svBcolor = aI[9];
-            m_svGreenWindow = aI[10];
-            m_svTextShadow = aI[11];
-            m_svAlignLeft = aI[12];
-            m_svAlignCenter = aI[13];
-            m_svAddTexture = aI[14];
-            m_svShowHorizontal = aI[15];
-            m_svShowSecondary = aI[16];
-        }
     }
 }
 
@@ -1176,62 +1170,69 @@ function showLogoChangeEvent() {
         document.getElementById("presentConfigShowVVLogo").checked = false;
     }
 }
+
 export function svParameterSaveEvent() {
-    var e = $("#thirdview_opacity").val();
-    var g = $("#thirdview_height").val();
-    var l = $("#thirdview_fcolor").val();
-    var f = $("#thirdview_primary").is(":checked");
-    var q = $("#thirdview_secondary").is(":checked");
-    var k = $("#stageviewWindow").is(":checked");
-    var m = $("#stageviewGreenWindow").is(":checked");
-    var j = $("#thirdview_position").val();
-    var p = $("#thirdview_maxFontSize").val();
-    var d = $("#thirdview_bcolor").val();
-    var c = $("#thirdview_outline").is(":checked");
-    var b = $("#thirdview_shadow").is(":checked");
-    var a = $("#stageSettingShowTime").is(":checked");
-    var o = $("#thirdview_alignLeft").is(":checked");
-    var n = $("#thirdview_alignCenter").is(":checked");
-    var i = $("#thirdview_showTexture").is(":checked");
-    var h = $("#thirdview_alignHorizontal").is(":checked");
-    $RvW.vvConfigObj.set_svOpacity(e);
-    $RvW.vvConfigObj.set_svHeight(g);
-    $RvW.vvConfigObj.set_svFcolor(l);
-    $RvW.vvConfigObj.set_svShowPrimary(f);
-    $RvW.vvConfigObj.set_svShowSecondary(q);
-    $RvW.vvConfigObj.set_svWindow(k);
-    $RvW.vvConfigObj.set_svGreenWindow(m);
-    $RvW.vvConfigObj.set_svPosition(j);
-    $RvW.vvConfigObj.set_svMaxFontSize(p);
-    $RvW.vvConfigObj.set_svBcolor(d);
-    $RvW.vvConfigObj.set_svTextOutline(c);
-    $RvW.vvConfigObj.set_svTextShadow(b);
-    $RvW.vvConfigObj.set_svAlignLeft(o);
-    $RvW.vvConfigObj.set_svAlignCenter(n);
-    $RvW.vvConfigObj.set_svAddTexture(i);
-    $RvW.vvConfigObj.set_svShowHorizontal(h);
-    $RvW.vvConfigObj.set_svShowDate(a);
+    const e = $("#thirdview_opacity").val();
+    const g = $("#thirdview_height").val();
+    const l = $("#thirdview_fcolor").val();
+    const f = $("#thirdview_primary").is(":checked");
+    const q = $("#thirdview_secondary").is(":checked");
+    const k = $("#stageviewWindow").is(":checked");
+    const m = $("#stageviewGreenWindow").is(":checked");
+    const j = $("#thirdview_position").val();
+    const p = $("#thirdview_maxFontSize").val();
+    const d = $("#thirdview_bcolor").val();
+    const c = $("#thirdview_outline").is(":checked");
+    const b = $("#thirdview_shadow").is(":checked");
+    const a = $("#stageSettingShowTime").is(":checked");
+    const o = $("#thirdview_alignLeft").is(":checked");
+    const n = $("#thirdview_alignCenter").is(":checked");
+    const i = $("#thirdview_showTexture").is(":checked");
+    const h = $("#thirdview_alignHorizontal").is(":checked");
+
+    {
+        $RvW.vvConfigObj.set_svOpacity(e);
+        $RvW.vvConfigObj.set_svHeight(g);
+        $RvW.vvConfigObj.set_svFcolor(l);
+        $RvW.vvConfigObj.set_svShowPrimary(f);
+        $RvW.vvConfigObj.set_svShowSecondary(q);
+        $RvW.vvConfigObj.set_svWindow(k);
+        $RvW.vvConfigObj.set_svGreenWindow(m);
+        $RvW.vvConfigObj.set_svPosition(j);
+        $RvW.vvConfigObj.set_svMaxFontSize(p);
+        $RvW.vvConfigObj.set_svBcolor(d);
+        $RvW.vvConfigObj.set_svTextOutline(c);
+        $RvW.vvConfigObj.set_svTextShadow(b);
+        $RvW.vvConfigObj.set_svAlignLeft(o);
+        $RvW.vvConfigObj.set_svAlignCenter(n);
+        $RvW.vvConfigObj.set_svAddTexture(i);
+        $RvW.vvConfigObj.set_svShowHorizontal(h);
+        $RvW.vvConfigObj.set_svShowDate(a);
+    }
     $RvW.vvConfigObj.save();
 }
+
 function svPassMessage() {
-    var a = $("#stageConfigMessage").val();
+    const a = $("#stageConfigMessage").val();
     if ($RvW.stageWindow != null) {
         $RvW.stageWindow.window.postMessage(a);
     }
 }
+
 function svClearMessage() {
-    var a = "";
     if ($RvW.stageWindow != null) {
-        $RvW.stageWindow.window.postMessage(a);
+        $RvW.stageWindow.window.postMessage("");
     }
 }
+
 function stageStyleChangeEvent() {
     console.trace("stage Style change.. ");
-    var a = $("#selectStageStyle").val();
+    const a = $("#selectStageStyle").val();
     setupStageViewOptions();
     $RvW.vvConfigObj.set_stageStyleVal(a);
     $RvW.vvConfigObj.save();
 }
+
 function setupStageViewOptions() {
     $("#stageviewOpacityDiv").hide();
     $("#stageviewHeightDiv").hide();
@@ -1264,12 +1265,10 @@ function setupStageViewOptions() {
             break;
     }
 }
+
 function stageShowTimeChangeEvent() {}
 
 export function configInit() {
-    document
-        .getElementById("singleVersionBoxID")
-        .addEventListener("click", processSingleVersion);
     document
         .getElementById("presentConfigSaveButton")
         .addEventListener("click", savePresentationMargin);
@@ -1310,11 +1309,6 @@ export function configInit() {
 
     document.getElementById("presentConfigEnableSongTitle").checked = !!$RvW.vvConfigObj.get_p_showTitle();
     document.getElementById("presentConfigEnableShadow").checked = !!$RvW.vvConfigObj.get_p_enableShadow();
-    if ($RvW.vvConfigObj.get_singleVersion()) {
-        document.getElementById("singleVersionBoxID").checked = true;
-        document.getElementById("version2Menu").disabled = true;
-    }
-    document.getElementById("navDualLanguageID").checked = !!$RvW.vvConfigObj.get_navDualLanguage();
     const a = $RvW.vvConfigObj.get_p_align();
     document.getElementById("justify_left").checked = false;
     document.getElementById("justify_center").checked = false;
@@ -1360,9 +1354,6 @@ export function configInit() {
     document.getElementById("presentConfigShowDateTime").checked = k === true;
     document.getElementById("presentConfigShowVVLogo").checked = !!g;
     document.getElementById("presentConfigShowCustomLogo").checked = !!b;
-
-    new FontSizeSlider();
-    new BibleUpdater();
 
     document.getElementById("thirdview_opacity").value =
         $RvW.vvConfigObj.get_svOpacity();

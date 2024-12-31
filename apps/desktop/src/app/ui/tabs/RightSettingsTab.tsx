@@ -51,7 +51,7 @@ export default function RightSettingsTab() {
 
     useEffect(() => {
         // always add this after the select list is populated
-        // console.trace('[Main EFFECT]', JSON.stringify([mainScreen, stageScreen, [fontOverridePrimary, fontOverrideSecondary], availableScreens, {length: availableFonts.length}]));
+        // console.trace('[Main EFFECT]', ([mainScreen, stageScreen, [fontOverridePrimary, fontOverrideSecondary], availableScreens, {length: availableFonts.length}]));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown({
@@ -116,7 +116,7 @@ export default function RightSettingsTab() {
     }, []);
 
     useEffect(() => {
-        // console.trace('Screens.Update:', JSON.stringify(availableScreens));
+        // console.trace('Screens.Update:', (availableScreens));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown('refresh'); refreshMainScreen();
@@ -125,7 +125,7 @@ export default function RightSettingsTab() {
     }, [availableScreens]);
 
     useEffect(() => {
-        console.trace('Fonts.Update:', JSON.stringify({length: availableFonts.length}));
+        console.trace('Fonts.Update:', ({length: availableFonts.length}));
 
         // @ts-ignore
         $(fontSelectOverridePrimary.current).dropdown('refresh'); refreshPrimaryFontOverride();
@@ -134,14 +134,14 @@ export default function RightSettingsTab() {
     }, [availableFonts]);
 
     useEffect(() => {
-        // console.trace('Screen.Main:', JSON.stringify(mainScreen));
+        // console.trace('Screen.Main:', (mainScreen));
 
         // @ts-ignore
         $(screenSelectMain.current).dropdown('set selected', mainScreen + 1);
     }, [mainScreen]);
 
     useEffect(() => {
-        // console.trace('Screen.Stage:', JSON.stringify(stageScreen));
+        // console.trace('Screen.Stage:', (stageScreen));
 
         // @ts-ignore
         $(screenSelectStage.current).dropdown('set selected', stageScreen + 1);

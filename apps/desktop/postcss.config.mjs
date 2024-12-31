@@ -16,7 +16,10 @@ const config = {
         UnoCSS(),
         variables(),
         postcss_import,
-        autoprefixer(),
+        autoprefixer({
+            // remove: false,
+            overrideBrowserslist: ['Safari 5'],
+        }),
         postcss_nested,
         postcss_alias,
         postcss_preset_env({

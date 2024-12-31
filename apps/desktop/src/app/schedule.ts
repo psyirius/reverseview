@@ -4,7 +4,6 @@ import {SongPresenter} from "@/song/present";
 import {SongLyrics} from "@/song/lyrics";
 import {Prompt} from "@app/prompt";
 import {processNavBibleRefFind} from "@/bible/navigation";
-import {clearSelectList} from "@app/common";
 import {Toast} from "@app/toast";
 import {console} from "@/platform/adapters/air";
 import {navFontSize, ScheduleItemType, scheduleList} from "@stores/global";
@@ -167,10 +166,10 @@ export class Scheduler {
         }
 
         function loadScheduleAtIndex(ai) {
-            console.trace('loadScheduleAtIndex', ai, JSON.stringify(_scheduledItems));
+            __debug('loadScheduleAtIndex', ai, (_scheduledItems));
 
             if (ai === -1) {
-                Toast.show("Schedule", "No Schedule Selected");
+                Toast.error("Schedule", "No Schedule Selected");
                 return
             }
 
@@ -300,7 +299,7 @@ export class Scheduler {
                 // TODO: fix getting null data for some entries
                 // - by the time we call it, songs might not be finished loading
                 const aa = $RvW.songManagerObj.getSongObjWithID(songID);
-                __debug('SONG:', songID, JSON.stringify(aa));
+                __debug('SONG:', songID, (aa));
                 return aa?.name;
             } else {
                 const ab = $RvW.booknames[book];
@@ -624,7 +623,7 @@ export class Scheduler {
                 __debug("Successfully got all data from schedule DB");
                 _scheduledItems = stmt.getResult().data;
 
-                __debug('SCHD|DATA:', JSON.stringify(_scheduledItems));
+                __debug('SCHD|DATA:', (_scheduledItems));
 
                 if (_scheduledItems != null) {
                     scheduleList.update(items => {

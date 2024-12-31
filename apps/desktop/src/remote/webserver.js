@@ -1,11 +1,11 @@
 // TODO: Implement an express fork using air apis
 
-import {SongPresenter} from "@/song/present";
 import {getAllVersesFromChapter} from "@/bible/manager";
-import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
+import {SongPresenter} from "@/song/present";
+import {$RvW} from "@/rvw";
 
-const mimeTypeMap = {
+const MIME_TYPES = {
     '.txt'  : 'text/plain',
     '.css'  : 'text/css',
     '.gif'  : 'image/gif',
@@ -209,10 +209,10 @@ class WebRequestHandler {
         const ext = filename.lastIndexOf(".");
 
         if (ext !== -1) {
-            return mimeTypeMap[filename.substring(ext)];
+            return MIME_TYPES[filename.substring(ext)];
         }
 
-        return mimeTypeMap['.bin'];
+        return MIME_TYPES['.bin'];
     }
 
     _writeLine(socket, data = '') {
@@ -254,7 +254,7 @@ class WebRequestHandler {
             clientSocket.flush();
         } else {
             this._writeLine(clientSocket, "HTTP/1.1 404 Not Found");
-            this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
+            this._writeHeader(clientSocket, "Content-Type", MIME_TYPES['.txt']);
             this._writeLine(clientSocket);
             clientSocket.flush();
         }
@@ -265,9 +265,10 @@ class WebRequestHandler {
 
         if (text != null) {
             this._writeLine(clientSocket, "HTTP/1.1 200 OK");
-            this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
+            this._writeHeader(clientSocket, "Content-Type", MIME_TYPES['.txt']);
             // this._writeHeader(clientSocket, "Content-Length", text.length);
             this._writeLine(clientSocket);
+
             clientSocket.writeUTFBytes(text);
             clientSocket.flush();
         }
@@ -275,23 +276,25 @@ class WebRequestHandler {
 
     _sendJSON(data = {}) {
         const clientSocket = this.m_clientSocket;
-        const json = JSON.stringify(data);
+        {
+            this._writeLine(clientSocket, "HTTP/1.1 200 OK");
+            this._writeHeader(clientSocket, "Content-Type", MIME_TYPES['.json']);
+            // this._writeHeader(clientSocket, "Content-Length", json.length);
+            this._writeLine(clientSocket);
 
-        this._writeLine(clientSocket, "HTTP/1.1 200 OK");
-        this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.json']);
-        // this._writeHeader(clientSocket, "Content-Length", json.length);
-        this._writeLine(clientSocket);
-        clientSocket.writeUTFBytes(json);
+            const json = JSON.stringify(data);
+            clientSocket.writeUTFBytes(json);
+        }
         clientSocket.flush();
     }
 
     _notFound() {
         const clientSocket = this.m_clientSocket;
-
-        this._writeLine(clientSocket, "HTTP/1.1 404 Not Found");
-        this._writeHeader(clientSocket, "Content-Type", mimeTypeMap['.txt']);
-        this._writeLine(clientSocket);
-
+        {
+            this._writeLine(clientSocket, "HTTP/1.1 404 Not Found");
+            this._writeHeader(clientSocket, "Content-Type", MIME_TYPES['.txt']);
+            this._writeLine(clientSocket);
+        }
         clientSocket.flush();
     }
 
@@ -410,7 +413,7 @@ class WebRequestHandler {
                             error: err,
                         });
                     } else {
-                        console.trace(JSON.stringify(res));
+                        console.trace(res);
 
                         this._sendJSON({
                             ok: true,
@@ -452,7 +455,7 @@ class WebRequestHandler {
             // Songs: Present Slide
             case 17: { // Present Song Slide
                 const song = $RvW.songManagerObj.getSongObjWithID(args.id);
-                console.trace('Song: ' + JSON.stringify(song));
+                console.trace('Song: ', (song));
                 const spo = new SongPresenter(song);
                 spo.present(args.index);
 
@@ -496,7 +499,7 @@ class WebRequestHandler {
             case 9: {
                 const res = $RvW.webEngineObj.stageViewContent() || "";
 
-                console.trace('Stage View: ' + JSON.stringify(res));
+                console.trace('Stage View:', (res));
 
                 const [
                     title,
@@ -620,7 +623,7 @@ export class WebServer {
     broadcastWS(data) {
         if (!this.m_serverWebSocket || !this.m_serverWebSocket.listening) return;
 
-        air.trace('Broadcasting: ' + JSON.stringify(data));
+        console.trace('Broadcasting:', (data));
 
         this.m_serverWebSocket.sendALL(JSON.stringify(data));
     }
