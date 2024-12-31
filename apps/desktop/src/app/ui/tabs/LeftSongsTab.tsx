@@ -1624,14 +1624,14 @@ export default function LeftSongsTab() {
                         <i class="search icon"></i>
                     </button>
 
-                    <button
-                        class="ui icon button"
-                        id="song-search-author"
-                        data-tooltip="Search by Author"
-                        onClick={filterByAuthor}
-                    >
-                        <i class="user icon"></i>
-                    </button>
+                    {/*<button*/}
+                    {/*    class="ui icon button"*/}
+                    {/*    id="song-search-author"*/}
+                    {/*    data-tooltip="Search by Author"*/}
+                    {/*    onClick={filterByAuthor}*/}
+                    {/*>*/}
+                    {/*    <i class="user icon"></i>*/}
+                    {/*</button>*/}
 
                     <button
                         class="ui icon button"
