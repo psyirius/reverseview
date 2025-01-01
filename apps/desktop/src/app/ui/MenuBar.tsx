@@ -5,7 +5,7 @@ import {menuYtLink, selectedBookRef, selectedTab, showRemotePanel} from "@stores
 import {$RvW} from "@/rvw";
 
 import BibleRefSelect from "@app/ui/BibleRefSelect";
-import {toast} from "@app/ui/Toaster";
+import {Toast} from "@app/toast";
 
 const handlers = {
     present: () => {
@@ -39,13 +39,13 @@ const handlers = {
         const v = $RvW.getVerseValue();
         $RvW.scheduleObj.processAddVerse(b, c, v);
 
-        toast("Added verse to schedule", {type: 'success'});
+        Toast.success("Verse", "Added verse to schedule");
     },
     addSongToSchedule: () => {
         $RvW.learner.finishLearning();
         $RvW.songNavObj.sn_add2schedule();
 
-        toast("Added song to schedule", {type: 'success'});
+        Toast.success("Song", "Added song to schedule");
     },
     gotoLink: (url: string) => {
         const al = new air.URLRequest(url);

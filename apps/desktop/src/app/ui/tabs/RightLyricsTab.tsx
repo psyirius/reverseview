@@ -1,6 +1,6 @@
 import {SongSearchType} from "@/const";
 import {$RvW} from "@/rvw";
-import {toast} from "@app/ui/Toaster";
+import {Toast} from "@app/toast";
 
 export default function RightLyricsTab() {
     function onClickEdit() {
@@ -11,7 +11,7 @@ export default function RightLyricsTab() {
         $RvW.learner.finishLearning();
         $RvW.songNavObj.sn_add2schedule();
 
-        toast("Added to schedule", {type: 'success'});
+        Toast.success(undefined, "Added verse to schedule");
     }
 
     function onClickPresent() {
