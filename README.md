@@ -14,4 +14,4 @@ ReVerseVIEW is a reborn open-source version of the popular legacy (Adobe AIR) Ve
 
 ---
 
-**Made with ❤️ and 🍵**
+**Made with ❤️ and Caffeine**

@@ -56,7 +56,7 @@ const App = ({dev}: Props) => {
                         <ContentPane/>
                     </main>
 
-                    <footer class="h-6">
+                    <footer class="h-8">
                         ReVerseVIEW
                     </footer>
                 </div>
