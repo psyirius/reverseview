@@ -86,6 +86,7 @@ export class SongNav {
             });
 
             m_currentSongObj = new Song();
+            m_currentSongObj.name = '<@INIT@>';
             m_currentSongObj.slides = [];
 
             loadTagsFromConfig();
@@ -578,13 +579,20 @@ export class SongNav {
                         perPage: m_rowsPerPage,
                     };
                 });
+
+                if (!m_currentSongObj || (m_currentSongObj.name === '<@INIT@>')) {
+                    selectSong(m_songs_columns[0]); // select the first song
+                }
             }
         }
 
-        function selectSong({ID, Title}) {
-            m_itemID = ID;
-            m_itemTitle = Title;
-            renderLyricsForSelectedSong();
+        function selectSong(p) {
+            if (p) {
+                const {ID, Title} = p;
+                m_itemID = ID;
+                m_itemTitle = Title;
+                renderLyricsForSelectedSong();
+            }
         }
 
         function __debug(...messages) {

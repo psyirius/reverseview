@@ -84,7 +84,7 @@ export default function MenuBar() {
                                 fontFamily: 'BespokeStencil-Variable',
                             }}
                         >
-                          VerseVIEW
+                          ReVerseVIEW
                         </span>
                     </div>
 
