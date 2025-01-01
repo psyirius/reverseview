@@ -863,36 +863,31 @@ function adjustNavWindowsHeight() {
     // Note: this function is called when the window is resized
     // it stores the previous state as properties of this function
 
-    const windowHeight = window.nativeWindow.bounds.height;
-    const windowWidth = window.nativeWindow.bounds.width;
-
-    if ((this.navWindowHeight !== windowHeight) || (this.navWindowWidth !== windowWidth)) {
+    {
         document.body.style.overflow = "hidden";
 
-        const j = window.nativeWindow.bounds.width - 16;
-        const b = (j * 3) / 100;
-
-        $RvW.tabHeight = window.innerHeight - 140;
-
-        const g = 250;
-        const e = 200;
+        const windowWidth = window.nativeWindow.bounds.width;
 
         // TODO: make this in css
 
-        /* Right Tabs */
-        $("#lyricsTab").height($RvW.tabHeight);
-        $("#notesTab").height($RvW.tabHeight);
-        $("#scheduleTab").height($RvW.tabHeight);
-        $("#searchTab").height($RvW.tabHeight);
-        $("#screenTab").height($RvW.tabHeight);
+        // bg still image gallery
+        {
+            const j = windowWidth - 16;
+            const b = (j * 3) / 100;
 
-        const l = j - g - e - 3 * b;
+            const g = 250;
+            const e = 200;
 
-        $RvW.graphicsObj.setNumOfPicsInRow(l);
-        $RvW.songNavObj.setFormats();
+            const l = j - g - e - 3 * b;
 
-        this.navWindowHeight = windowHeight;
-        this.navWindowWidth = windowWidth;
+            $RvW.graphicsObj.setNumOfPicsInRow(l);
+        }
+
+        // song list rows per page
+        {
+            const rpp = Math.round(((window.innerHeight - 360) / 36));
+            $RvW.songNavObj.setFormats(rpp);
+        }
     }
 }
 
@@ -911,16 +906,10 @@ function setupTheme() {
 
 function setupTabContent() {
     // Right Tab
-    /* setupTabView("song_lyrics", "lyricsTab"); */
-    /* setupTabView("notes", "notesTab"); */
-    /* setupTabView("search", "searchTab"); */
-    /* setupTabView("schedule", "scheduleTab"); */
-    /* setupTabView("graphics", "graphicsTab"); */
     setupSettingsTab();
 
     // Left Tab
-    /* setupTabView("nav", "bibleNav"); */ fillNav();
-    /* setupTabView("song_nav", "songNavTab"); */
+    fillNav();
 
     $RvW.scheduleObj = new Scheduler();
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);

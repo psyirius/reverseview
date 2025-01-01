@@ -30,11 +30,7 @@ export default function RightLyricsTab() {
     ]
 
     return (
-        <div id="lyricsTab" style={{
-            zIndex: 0,
-            overflowX: 'hidden',
-            overflowY: 'auto',
-        }}>
+        <div class="h-full overflow-hidden overflow-y-auto">
             {/* TITLE SEQUENCE */}
             <div class="ui grid">
                 <div class="sixteen wide column">

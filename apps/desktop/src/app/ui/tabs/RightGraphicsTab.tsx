@@ -54,7 +54,7 @@ export default function RightGraphicsTab() {
     ]
 
     return (
-        <div id="graphicsTab" style={{height: '100%'}}>
+        <div class="h-full">
             <div class="ui content" id="bg-tabs">
                 <div class="ui top attached tabular menu">
                     {tabs.map(({name, title}, i) => (

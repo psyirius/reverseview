@@ -1,6 +1,6 @@
 export default function RightNotesTab() {
     return (
-        <div id="notesTab" class="notesTabSubContainer">
+        <div class="h-full overflow-hidden overflow-y-auto">
             <div class="generalheading2">Bible Notes Manager</div>
 
             <table style={{border: 0}}>

@@ -119,10 +119,10 @@ export class SongNav {
             $("#ly_notes").show();
         }
 
-        function setFormats() {
-            m_rowsPerPage = Math.round((($RvW.tabHeight - 220) / 36));
+        function setFormats(rpp) {
+            m_rowsPerPage = rpp;
 
-            // console.trace("Rows per page: ", m_rowsPerPage, $RvW.tabHeight);
+            // console.trace("Rows per page: ", m_rowsPerPage);
 
             _renderSongList();
         }

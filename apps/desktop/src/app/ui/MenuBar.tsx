@@ -77,10 +77,23 @@ export default function MenuBar() {
                 // borderBottom: 'none',
             }}>
                 <div class="ui left floated secondary icon compact mini fitted menu">
+                    <div class="item">
+                        <span
+                            class="font-medium text-xl text-gray-800 dark:text-gray-200"
+                            style={{
+                                fontFamily: 'BespokeStencil-Variable',
+                            }}
+                        >
+                          VerseVIEW
+                        </span>
+                    </div>
+
+                    <div class="item w-2"></div>
+
                     {/* Menu Items */}
                     <div class="item">
                         <div class="ui buttons">
-                            {menuItems.map(e => (
+                        {menuItems.map(e => (
                                 <button
                                     class="ui icon button"
                                     data-tooltip={e.tooltip}
