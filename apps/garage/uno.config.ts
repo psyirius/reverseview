@@ -4,12 +4,11 @@ export default defineConfig({
     content: {
         filesystem: [
             'src/**/*.html',
+            'src/**/*.jsx',
+            'src/**/*.tsx',
         ],
     },
     rules: [
-        // box-sizing
-        ['box-border', { '-webkit-box-sizing': 'border-box' }],
-        ['box-content', { '-webkit-box-sizing': 'content-box' }],
     ],
     presets: [
         presetUno(),

@@ -92,6 +92,7 @@ class Toaster extends Component<Props, State> {
 
     render() {
         const { position = 'bottom-right' } = this.props;
+
         return (
             <div class={`toaster ${position}`}>
                 {this.state.toasts.map((toast) => (

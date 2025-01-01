@@ -685,15 +685,15 @@ export class Scheduler {
                     const aa = $RvW.songManagerObj.getSongObjWithID(ab);
                     $("#songnav_editbox").val(aa.name);
                     $RvW.songNavObj.sn_searchSong();
-                    $RvW.leftTabView.selectChild(1);
-                    $RvW.rightTabView.selectChild(1);
+                    $RvW.leftTabView.setSelectedTab(1);
+                    $RvW.rightTabView.setSelectedTab(1);
                 } else {
                     $("#nav_bibleRefID").val(
                         [$RvW.english_booknames[X.book], (X.ch + 1), (X.ver + 1)].join(' ')
                     );
                     processNavBibleRefFind();
-                    $RvW.leftTabView.selectChild(0);
-                    $RvW.rightTabView.selectChild(0);
+                    $RvW.leftTabView.setSelectedTab(0);
+                    $RvW.rightTabView.setSelectedTab(0);
                 }
             }
         }

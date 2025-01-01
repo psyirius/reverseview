@@ -1,4 +1,4 @@
-import {useEffect, useId, useRef, useState} from "preact/hooks";
+import {useEffect } from "preact/hooks";
 import {$RvW} from "@/rvw";
 import {selectedTab} from "@stores/global";
 
@@ -10,6 +10,8 @@ import RightNotesTab from "@app/ui/tabs/RightNotesTab";
 import RightScheduleTab from "@app/ui/tabs/RightScheduleTab";
 import RightGraphicsTab from "@app/ui/tabs/RightGraphicsTab";
 import {useStoreState} from "@/utils/hooks";
+import {console} from "@/platform/adapters/air";
+import Tabs from "@app/ui/Tabz";
 
 const tabs = [
     {
@@ -50,77 +52,37 @@ const tabs = [
 ];
 
 export default function RightPane() {
-    const id = useId();
-
-    const container = useRef<HTMLDivElement>(null);
-
-    const [tabView, setTabView] = useState(null);
+    const rti = $RvW.rvwPreferences.get('app.state.rightTabActiveIndex', 0);
 
     const activeTab = useStoreState(selectedTab);
 
     useEffect(() => {
-        const { TabView } = $Y;
-
-        const tabview = new TabView({
-            srcNode: container.current!,
-        });
-
-        tabview.render();
-
-        const rti = $RvW.rvwPreferences.get('app.state.rightTabActiveIndex', 0);
-        tabview.selectChild(rti);
-        selectedTab.set(rti);
-
-        tabview.after('selectionChange', (e: any) => {
-            const currentTab = e.newVal;
-
-            selectedTab.set(currentTab.get('index'));
-
-            // TODO: figure out store base tab sync
-            switch (currentTab.get('index')) {
-                case 0: {
-                    $RvW.leftTabView.selectChild(0);
-                    break;
-                }
-                case 1: {
-                    $RvW.leftTabView.selectChild(1);
-                    break;
-                }
-            }
-        });
-
-        $RvW.rightTabView = tabview;
-
-        setTabView(tabview);
-    }, []);
-
-    useEffect(() => {
-        if (tabView) {
-            $RvW.rightTabView.selectChild(activeTab);
-        }
+        $RvW.rightTabView?.setSelectedTab(activeTab);
     }, [activeTab]);
 
-    return (
-        <div id={id} ref={container} style={{float: 'right', width: '100%'}}>
-            {/* TabView List */}
-            <ul>
-                {tabs.map(({id, label}, i) => (
-                    <li key={i}>
-                        <a href={'#' + id}>{label}</a>
-                    </li>
-                ))}
-            </ul>
+    function onTabChange(index: number) {
+        console.log('Right Pane Tab changed to:', index);
 
-            {/* TabView Panel */}
-            <div style={{
-                padding: '0.5rem',
-            }}>
-                {tabs.map(({id, content: Content}, i) => (
-                    <div key={i} id={id}>
-                        <Content />
-                    </div>
-                ))}
-            </div>
+        switch (index) {
+            case 0: {
+                $RvW.leftTabView.setSelectedTab(0);
+                break;
+            }
+            case 1: {
+                $RvW.leftTabView.setSelectedTab(1);
+                break;
+            }
+        }
+    }
+
+    return (
+        <div class="right-pane">
+            <Tabs
+                tabs={tabs.map(({label, content}) => ({title: label, content}))}
+                initialSelected={rti}
+                onChange={onTabChange}
+                ref={e => $RvW.rightTabView = e}
+            />
         </div>
     );
 }

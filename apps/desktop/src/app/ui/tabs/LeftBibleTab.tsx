@@ -122,92 +122,100 @@ export default function LeftBibleTab() {
 
     return (
         /* Bible Nav */
-        <div class="ui left fluid vertical segment">
-            {/* Bible Search */}
-            <div class="ui segment basic clearing" style={{padding: 0}}>
-                <div class="ui fluid action input">
-                    <input
-                        type="text"
-                        placeholder="Psa 23 1"
-                        id="nav_bibleRefID"
-                    />
-
-                    <button
-                        class="ui icon button"
-                        id="bible-ref-find"
-                        data-tooltip="Find"
-                        onClick={processNavBibleRefFind}
-                    >
-                        <i class="search icon"></i>
-                    </button>
-
-                    <button
-                        class="ui icon button"
-                        id="bible-quick-present"
-                        data-tooltip="Quick Present"
-                        onClick={processNavBibleRef}
-                    >
-                        <i class="rocket icon"></i>
-                    </button>
-                </div>
-            </div>
-
-            {/* Bible Select */}
-            <div class="ui segment basic clearing" style={{padding: 0}}>
-                <div id="verse-select" class="ui three column padded grid font-medium" style={{
-                    height: '340px',
-                    minWidth: '100%',
-                    fontFamily: _bibleFont
-                }}>
-                    <div class="ten wide column" style={{padding: 0}}>
-                        <ScrollableSelect items={bookListItems} onSelectItem={onBookChange}
-                                          selectedItem={activeBook}/>
-                    </div>
-                    <div class="three wide column" style={{padding: 0}}>
-                        <ScrollableSelect items={chapterListItems} onSelectItem={onChapterChange}
-                                          selectedItem={activeChapter}/>
-                    </div>
-                    <div class="three wide column" style={{padding: 0}}>
-                        <ScrollableSelect items={verseListItems} onSelectItem={onVerseChange}
-                                          selectedItem={activeVerse}/>
-                    </div>
-                </div>
-            </div>
-
-            {/* Recent & Word Search */}
-            <div class="ui segment basic clearing" style={{padding: 0}}>
-                <div class="ui form">
-                    {/* Recent Verses */}
-                    <div class="field">
-                        <label>Recent Verses</label>
-                        <div class="ui container" style={{height: '100px'}}>
-                            <ScrollableSelect
-                                items={recentRefs}
-                                onSelectItem={onRecentVerseChange}
-                                selectedItem={activeRecentVerse}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Word Search */}
-                    <div class="field">
+        <>
+            <div class="left-bible-tab">
+                <div class="flex flex-col h-full w-full">
+                    {/* Bible Search */}
+                    <div class="flex-[0]">
                         <div class="ui fluid action input">
                             <input
-                                id="searchID"
                                 type="text"
-                                placeholder="Search words..."
+                                placeholder="Psa 23 1"
+                                id="nav_bibleRefID"
                             />
+
                             <button
-                                id="searchButtonID"
                                 class="ui icon button"
-                                data-tooltip="Search words"
+                                id="bible-ref-find"
+                                data-tooltip="Find"
+                                onClick={processNavBibleRefFind}
                             >
                                 <i class="search icon"></i>
                             </button>
+
+                            <button
+                                class="ui icon button"
+                                id="bible-quick-present"
+                                data-tooltip="Quick Present"
+                                onClick={processNavBibleRef}
+                            >
+                                <i class="rocket icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-[0] h-4"></div>
+
+                    {/* Bible Select */}
+                    <div class="flex-[1] relative h-full w-full">
+                        <div class="absolute h-full w-full">
+                            <div class="ui three column padded grid font-medium h-full min-w-full" style={{
+                                fontFamily: _bibleFont
+                            }}>
+                                <div class="ten wide column" style={{padding: 0}}>
+                                    <ScrollableSelect items={bookListItems} onSelectItem={onBookChange}
+                                                      selectedItem={activeBook}/>
+                                </div>
+                                <div class="three wide column" style={{padding: 0}}>
+                                    <ScrollableSelect items={chapterListItems} onSelectItem={onChapterChange}
+                                                      selectedItem={activeChapter}/>
+                                </div>
+                                <div class="three wide column" style={{padding: 0}}>
+                                    <ScrollableSelect items={verseListItems} onSelectItem={onVerseChange}
+                                                      selectedItem={activeVerse}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-[0] h-4"></div>
+
+                    {/* Recent & Word Search */}
+                    <div class="flex-[0]">
+                        <div class="ui form">
+                            {/* Recent Verses */}
+                            <div class="field">
+                                <label>Recent Verses</label>
+                                <div class="ui container" style={{height: '100px'}}>
+                                    <ScrollableSelect
+                                        items={recentRefs}
+                                        onSelectItem={onRecentVerseChange}
+                                        selectedItem={activeRecentVerse}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Word Search */}
+                            <div class="field">
+                                <div class="ui fluid action input">
+                                    <input
+                                        id="searchID"
+                                        type="text"
+                                        placeholder="Search words..."
+                                    />
+                                    <button
+                                        id="searchButtonID"
+                                        class="ui icon button"
+                                        data-tooltip="Search words"
+                                    >
+                                        <i class="search icon"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

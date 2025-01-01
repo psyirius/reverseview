@@ -9,7 +9,7 @@ import {toast} from "@app/ui/Toaster";
 
 const handlers = {
     present: () => {
-        if ($RvW.leftTabView.get('selection').get('index') === 1) {
+        if ($RvW.leftTabView.getSelectedTab() === 1) {
             $RvW.songNavObj.sn_presentSong();
         } else {
             $RvW.present();
@@ -69,8 +69,13 @@ export default function MenuBar() {
     const ytLink = useStoreState(menuYtLink);
 
     return (
-        <div style={{width: '100%'}}>
-            <div class="ui clearing small attached segment">
+        <div style={{
+            width: '100%'
+        }}>
+            <div class="ui clearing small attached segment" style={{
+                borderTop: 'none',
+                // borderBottom: 'none',
+            }}>
                 <div class="ui left floated secondary icon compact mini fitted menu">
                     {/* Menu Items */}
                     <div class="item">

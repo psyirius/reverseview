@@ -18,12 +18,12 @@ import {console} from "@/platform/adapters/air";
 import {toast} from "@app/ui/Toaster";
 import Spinner from "@app/ui/Spinner";
 import Modal from "@app/ui/Modal";
-import VirtualList from "@app/ui/widgets/VirtualList";
-import Slider from "@app/ui/widgets/Slider";
-import DataTableX from "@app/ui/widgets/DataTableX";
-import DataTable from "@app/ui/widgets/Datatable";
-import PaginatedList from "../widgets/PgList";
+// import VirtualList from "@app/ui/widgets/VirtualList";
+// import Slider from "@app/ui/widgets/Slider";
+// import DataTableX from "@app/ui/widgets/DataTableX";
 // import FilterableTable from "@app/ui/widgets/FilterableTable";
+import DataTable from "@app/ui/widgets/Datatable";
+import PaginatedList from "@app/ui/widgets/PaginatedList";
 
 const Zapp = () => {
     // const columns = [
@@ -1417,32 +1417,32 @@ const MdlApp = () => {
     );
 };
 
-function VListComp() {
-    const items = [];
-
-    for (let i = 0; i < 100; i++) {
-        items.push({
-            id: i,
-            text: `Item ${i + 1}`,
-        });
-    }
-
-    const renderRow = (item: any) => {
-        return (<div>{item.text}</div>);
-    };
-
-    return (
-        <div class="x-u-i sel" style={{height: '200px'}}>
-            <VirtualList
-                data={items}
-                rowHeight={22}
-                overscanCount={10}
-                renderRow={renderRow}
-                sync
-            />
-        </div>
-    )
-}
+// function VListComp() {
+//     const items = [];
+//
+//     for (let i = 0; i < 100; i++) {
+//         items.push({
+//             id: i,
+//             text: `Item ${i + 1}`,
+//         });
+//     }
+//
+//     const renderRow = (item: any) => {
+//         return (<div>{item.text}</div>);
+//     };
+//
+//     return (
+//         <div class="x-u-i sel" style={{height: '200px'}}>
+//             <VirtualList
+//                 data={items}
+//                 rowHeight={22}
+//                 overscanCount={10}
+//                 renderRow={renderRow}
+//                 sync
+//             />
+//         </div>
+//     )
+// }
 
 // function SliderComp() {
 //     const [sliderValue, setSliderValue] = useState(50)
@@ -1465,7 +1465,7 @@ function DTComp({opt}) {
     const { songs, perPage } = opt;
 
     const handleSelect = (item: any) => {
-        selectedTab.set(1); // make the lyrics tab active if on another tab
+        $RvW.rightTabView?.setSelectedTab(1); // make the lyrics tab active if on another tab
 
         $RvW.songNavObj.selectSong(item);
 
@@ -1558,101 +1558,110 @@ export default function LeftSongsTab() {
     }
 
     return (
-        <div class="ui left fluid vertical segment">
-            {/* CATEGORY & TAGS */}
-            <div class="ui segment basic" style={{padding: 0}}>
-                <div class="ui form">
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Category</label>
-                            <div class="ui input">
-                                <select
-                                    class="ui search dropdown"
-                                    // ref={catSelect}
-                                    id={catId}
-                                    onChange={onCategoryChange}
-                                    value={selectedCategory === -1 ? null : selectedCategory}
-                                >
-                                    <option value="">All</option>
-                                    {categories.map((category, i) => (
-                                        <option value={category} key={i}>{category}</option>
-                                    ))}
-                                </select>
+        <>
+            <div class="left-songs-tab">
+                <div class="flex flex-col h-full w-full">
+                    {/* CATEGORY & TAGS */}
+                    <div class="flex-[0]">
+                        <div class="ui form">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Category</label>
+                                    <div class="ui input">
+                                        <select
+                                            class="ui search dropdown"
+                                            // ref={catSelect}
+                                            id={catId}
+                                            onChange={onCategoryChange}
+                                            value={selectedCategory === -1 ? null : selectedCategory}
+                                        >
+                                            <option value="">All</option>
+                                            {categories.map((category, i) => (
+                                                <option value={category} key={i}>{category}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label>Tag</label>
+                                    <div class="ui input">
+                                        <select
+                                            class="ui search dropdown"
+                                            ref={tagSelect}
+                                            id={tagId}
+                                            onChange={onTagChange}
+                                            value={selectedTag === -1 ? null : selectedTag}
+                                        >
+                                            <option value="">All</option>
+                                            {tags.map((tag, i) => (
+                                                <option value={tag} key={i}>{tag}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="field">
-                            <label>Tag</label>
-                            <div class="ui input">
-                                <select
-                                    class="ui search dropdown"
-                                    ref={tagSelect}
-                                    id={tagId}
-                                    onChange={onTagChange}
-                                    value={selectedTag === -1 ? null : selectedTag}
-                                >
-                                    <option value="">All</option>
-                                    {tags.map((tag, i) => (
-                                        <option value={tag} key={i}>{tag}</option>
-                                    ))}
-                                </select>
-                            </div>
+                    <div class="flex-[0] h-4"></div>
+
+                    {/* Search Input */}
+                    <div class="flex-[0]">
+                        <div class="ui fluid action input">
+                            <input
+                                type="text"
+                                size={20}
+                                id="songnav_editbox"
+                                placeholder="Search..."
+                                value={searchQuery}
+                                onSearch={onSearchInput}
+                                onKeyUp={onSearchInput}
+                            />
+
+                            <button
+                                class="ui icon button"
+                                id="song-search-lyrics"
+                                data-tooltip="Search"
+                                onClick={filterByLyrics}
+                            >
+                                <i class="search icon"></i>
+                            </button>
+
+                            <button
+                                class="ui icon button"
+                                id="song-search-author"
+                                data-tooltip="Search by Author"
+                                onClick={filterByAuthor}
+                            >
+                                <i class="user icon"></i>
+                            </button>
+
+                            <button
+                                class="ui icon button"
+                                id="song-search-clear"
+                                data-tooltip="Clear Filters"
+                                onClick={clearFilters}
+                            >
+                                <i class="times circle icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-[0] h-4"></div>
+
+                    {/* Song List */}
+                    {/* TODO: remove overflow auto after setting list to auto height  */}
+                    <div class="flex-[1] relative h-full w-full overflow-y-auto">
+                        <div class="absolute h-full w-full">
+                            <DTComp opt={sngLiztState}/>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Search Input */}
-            <div class="ui segment basic" style={{padding: 0}}>
-                <div class="ui fluid action input">
-                    <input
-                        type="text"
-                        size={20}
-                        id="songnav_editbox"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onSearch={onSearchInput}
-                        onKeyUp={onSearchInput}
-                    />
-
-                    <button
-                        class="ui icon button"
-                        id="song-search-lyrics"
-                        data-tooltip="Search"
-                        onClick={filterByLyrics}
-                    >
-                        <i class="search icon"></i>
-                    </button>
-
-                    {/*<button*/}
-                    {/*    class="ui icon button"*/}
-                    {/*    id="song-search-author"*/}
-                    {/*    data-tooltip="Search by Author"*/}
-                    {/*    onClick={filterByAuthor}*/}
-                    {/*>*/}
-                    {/*    <i class="user icon"></i>*/}
-                    {/*</button>*/}
-
-                    <button
-                        class="ui icon button"
-                        id="song-search-clear"
-                        data-tooltip="Clear Filters"
-                        onClick={clearFilters}
-                    >
-                        <i class="times circle icon"></i>
-                    </button>
-                </div>
+            <div class="hidden">
             </div>
-
-            {/* Song List */}
-            <div class="ui segment basic" style={{padding: 0}}>
-                <div id="bible-select" style={{
-                    // border: '1px solid #d4d4d5',
-                    // background: '#afafaf',
-                }}>
-                    <DTComp opt={sngLiztState} />
-                </div>
-            </div>
-        </div>
+        </>
     );
 }

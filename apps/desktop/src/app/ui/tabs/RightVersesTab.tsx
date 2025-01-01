@@ -95,7 +95,7 @@ export default function RightVersesTab() {
 
     return (
         <>
-            <div class="" style={{padding: 0, height: '100%'}}>
+            <div class="p-0 h-full">
                 {/* Scrollable List */}
                 <div class="ui middle aligned selection list scrollable bg-white" style={{height: '100%'}}>
                     {verseListItems.map((verseList, i) => (
@@ -146,18 +146,6 @@ export default function RightVersesTab() {
                             </div>
                         </div>
                     ))}
-                </div>
-            </div>
-
-            <div id="bibleverseTab" class="hidden" style={{
-                zIndex: 0,
-                overflow: 'auto',
-            }}>
-                <div id="verseTab" style={{
-                    zIndex: 0,
-                    overflow: 'auto',
-                }}>
-                    {/* Verse List Here */}
                 </div>
             </div>
         </>

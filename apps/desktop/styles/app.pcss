@@ -162,18 +162,6 @@ td.navtd {
     /* overflow: hidden; */ /* if you don't want #second to wrap below #first */
 }
 
-#content-pane {
-    margin: 0;
-    padding: 0;
-
-    width: 100%;
-    height: 100%;
-
-    user-select: none;
-
-    //background: #0b2e13;
-}
-
 #cleared {
     clear: both;
 }
@@ -2876,7 +2864,83 @@ td.navtd {
 }
 
 /* UI Components */
+/* https://autoprefixer.github.io/ with 'Safari 5' */
 .x-u-i {
+    &.app {
+        /*background: #0a36e9;*/
+        @apply h-full w-full;
+        @apply m-0 p-0;
+        @apply overflow-hidden;
+        @apply select-none;
+
+        & > .app-content {
+            @apply flex;
+            @apply flex-col;
+            @apply h-full w-full;
+            //border: 1px solid red;
+
+            & > header {
+                @apply flex-[0]; /* Only takes the space it needs */
+                //border: 1px solid black;
+            }
+
+            /* flexible flex child */
+            & > main {
+                @apply flex-1; /* Fills the remaining space */
+                //border: 2px solid green;
+                @apply overflow-y-auto;
+                @apply h-full w-full;
+                /*@apply rounded-b-lg;*/
+                @apply relative;
+
+                & > .content-panes {
+                    @apply absolute;
+                    @apply h-full w-full;
+                    @apply m-0 p-0;
+                    /*@apply bg-amber-100;*/
+                    /*@apply border-2 border-solid border-amber-500;*/
+
+                    #content-wrapper {
+                        @apply flex;
+                        @apply flex-row;
+                        @apply h-full w-full;
+                        @apply m-0 p-2;
+                        /*@apply bg-amber-100;*/
+
+                        & > .left-pane {
+                            @apply flex-[0]; /* Only takes the space it needs */
+                            //border: 1px solid green;
+
+                            .left-bible-tab {
+                                //border: 1px solid green;
+                                @apply h-full w-full;
+                            }
+
+                            .left-songs-tab {
+                                //border: 1px solid green;
+                                @apply h-full w-full;
+                            }
+                        }
+
+                        & > .right-pane {
+                            @apply flex-1; /* Fills the remaining space */
+                            //border: 1px solid red;
+                        }
+                    }
+                }
+            }
+
+            & > footer {
+                @apply flex-[0]; /* Only takes the space it needs */
+                @apply bg-white;
+                border-top: 1px solid #D4D4D5;
+            }
+        }
+
+        & > .overlays {
+        }
+    }
+
     &.spinner {
         margin: 0 auto 0;
         width: 70px;

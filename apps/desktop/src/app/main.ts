@@ -625,17 +625,19 @@ function updateRefMenu() {
     selectedBookRef.set(e);
 }
 $RvW.highlightVerse = function(a) {
-    let b = "TC_" + previousSelVerse;
-    document.getElementById(b).style.backgroundColor = "edf5ff";
-    b = "TC_" + a;
-    document.getElementById(b).style.backgroundColor = $RvW.highlightColor;
-    previousSelVerse = a;
-    const c = "TC_" + a;
-    if ($RvW.scroll_to_view) {
-        document.getElementById(c).scrollIntoView();
-        $RvW.scroll_to_view = false;
-    }
-    window.scroll(0, 0);
+    console.trace("Highlight Verse:", a);
+    // TODO: Highlight the selected verse in the list
+    // let b = "TC_" + previousSelVerse;
+    // document.getElementById(b).style.backgroundColor = "edf5ff";
+    // b = "TC_" + a;
+    // document.getElementById(b).style.backgroundColor = $RvW.highlightColor;
+    // previousSelVerse = a;
+    // const c = "TC_" + a;
+    // if ($RvW.scroll_to_view) {
+    //     document.getElementById(c).scrollIntoView();
+    //     $RvW.scroll_to_view = false;
+    // }
+    // window.scroll(0, 0);
 }
 $RvW.updateVerseContainer = function() {
     previousSelVerse = 0;
@@ -651,75 +653,28 @@ $RvW.updateVerseContainer = function() {
 }
 
 $RvW.updateVerseContainer_continue = function() {
-    // Build Structure
-    {
-        let htm = "<table border=1>";
-
-        if ($RvW.vvConfigObj.get_navDualLanguage()) {
-            htm += '<tr><td width="4%"></td><td width="48%"></td><td width="48%"></td></tr>';
-        } else {
-            htm += '<tr><td width="4%"></td><td width="96%"></td></tr>';
-        }
+    selectedVerseList.update((_) => {
+        const vl : BibleVerse[][] = [];
 
         for (let i = 0; i < $RvW.content1.length; i++) {
-            const a = `TC_${i}`;
-            htm += `<tr class="vcClass" id="${a}"><td width="4%">`;
-            const h1 = `NC_${i}`;
-            htm += `<div class="vcClassIcon" id="${h1}"><i class="file alternate icon"></i></div>`;
-
-            if ($RvW.vvConfigObj.get_navDualLanguage()) {
-                htm += '</td><td class="navtd" width="48%">';
-                const h2 = `VC1_${i}`;
-                htm += `<div class="vcClass" id="${h2}">a</div>`;
-                htm += '</td><td class="navtd" width="48%">';
-                const h3 = `VC2_${i}`;
-                htm += `<div class="vcClass" id="${h3}">b</div>`;
-            } else {
-                htm += '</td><td class="navtd" width="96%">';
-                const h2 = `VC1_${i}`;
-                htm += `<div class="vcClass" id="${h2}">x</div>`;
-            }
-
-            htm += "</td></tr>";
-        }
-        htm += "</table>";
-
-        document.getElementById("verseTab").innerHTML = htm;
-    }
-
-    // Write Content
-    {
-        // tmp lists
-        const o = [];
-        const c = [];
-        const b = [];
-
-        for (let i = 0; i < $RvW.content1.length; i++) {
-            const verse1Id = `VC1_${i}`;
-            const verse2Id = `VC2_${i}`;
-            const notesId = `NC_${i}`;
-
-            o[i] = new PostIt(notesId, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1);
+            const vmx : BibleVerse[] = [];
 
             const verseText1 = $RvW.content1[i];
             const verseFont1 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-            c[i] = new verseClass(verse1Id, verseText1, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, verseFont1);
+
+            vmx.push({
+                ref: [
+                    $RvW.bookIndex + 1,
+                    $RvW.chapterIndex + 1,
+                    i + 1,
+                ],
+                font: verseFont1,
+                text: verseText1,
+            });
 
             if ($RvW.vvConfigObj.get_navDualLanguage()) {
                 const verseText2 = $RvW.content2[i];
                 const verseFont2 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-                b[i] = new verseClass(verse2Id, verseText2, $RvW.bookIndex + 1, $RvW.chapterIndex + 1, i + 1, verseFont2);
-            }
-        }
-
-        selectedVerseList.update((_) => {
-            const vl : BibleVerse[][] = [];
-
-            for (let i = 0; i < $RvW.content1.length; i++) {
-                const vmx : BibleVerse[] = [];
-
-                const verseText1 = $RvW.content1[i];
-                const verseFont1 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
 
                 vmx.push({
                     ref: [
@@ -727,31 +682,16 @@ $RvW.updateVerseContainer_continue = function() {
                         $RvW.chapterIndex + 1,
                         i + 1,
                     ],
-                    font: verseFont1,
-                    text: verseText1,
+                    font: verseFont2,
+                    text: verseText2,
                 });
-
-                if ($RvW.vvConfigObj.get_navDualLanguage()) {
-                    const verseText2 = $RvW.content2[i];
-                    const verseFont2 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
-
-                    vmx.push({
-                        ref: [
-                            $RvW.bookIndex + 1,
-                            $RvW.chapterIndex + 1,
-                            i + 1,
-                        ],
-                        font: verseFont2,
-                        text: verseText2,
-                    });
-                }
-
-                vl.push(vmx);
             }
 
-            return vl;
-        });
-    }
+            vl.push(vmx);
+        }
+
+        return vl;
+    });
 
     // Setup Notes
     if ($RvW.notesObj != null) {
@@ -932,22 +872,14 @@ function adjustNavWindowsHeight() {
         const j = window.nativeWindow.bounds.width - 16;
         const b = (j * 3) / 100;
 
-        $RvW.tabHeight = window.innerHeight - 120;
+        $RvW.tabHeight = window.innerHeight - 140;
 
         const g = 250;
         const e = 200;
 
         // TODO: make this in css
 
-        // Left Tabs
-        $("#verse-select").height($RvW.tabHeight - 266);
-        $("#bible-select").height($RvW.tabHeight - 148);
-
-        // Main Content Pane
-        $("#content-wrapper").height($RvW.tabHeight);
-
         /* Right Tabs */
-        $("#bibleverseTab").height($RvW.tabHeight);
         $("#lyricsTab").height($RvW.tabHeight);
         $("#notesTab").height($RvW.tabHeight);
         $("#scheduleTab").height($RvW.tabHeight);
@@ -979,13 +911,12 @@ function setupTheme() {
 
 function setupTabContent() {
     // Right Tab
-    /* setupTabView("bible_verses", "bibleverseTab"); */
     /* setupTabView("song_lyrics", "lyricsTab"); */
     /* setupTabView("notes", "notesTab"); */
     /* setupTabView("search", "searchTab"); */
     /* setupTabView("schedule", "scheduleTab"); */
     /* setupTabView("graphics", "graphicsTab"); */
-    /* setupTabView("settings", "screenTab"); */ setupSettingsTab();
+    setupSettingsTab();
 
     // Left Tab
     /* setupTabView("nav", "bibleNav"); */ fillNav();
@@ -1188,10 +1119,10 @@ function fillNav() {
 function beforeExit() {
     // save app state
     {
-        const lti = $RvW.leftTabView.get('selection').get('index');
+        const lti = $RvW.leftTabView.getSelectedTab();
         $RvW.rvwPreferences.set('app.state.leftTabActiveIndex', lti);
 
-        const rti = $RvW.rightTabView.get('selection').get('index');
+        const rti = $RvW.rightTabView.getSelectedTab();
         $RvW.rvwPreferences.set('app.state.rightTabActiveIndex', rti);
     }
 

@@ -160,7 +160,7 @@ export class BibleSearch {
             R = 0;
             L = 50;
             Q();
-            $RvW.rightTabView.selectChild(3);
+            $RvW.rightTabView.setSelectedTab(3);
         }
         function Q() {
             if (I.data == null) {
