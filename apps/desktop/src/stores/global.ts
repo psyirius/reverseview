@@ -7,7 +7,7 @@ import {
     writable,
 } from '@/utils/_store'
 import {SongSearchType} from "@/const";
-import {Song} from "@/song/obj";
+import {Song} from "@/song/song-obj";
 
 export enum ColorTheme {
     LIGHT = 0,

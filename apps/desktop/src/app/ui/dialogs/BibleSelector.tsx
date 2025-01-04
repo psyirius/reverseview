@@ -1,6 +1,6 @@
 import {useStoreState} from "@/utils/hooks";
 import {
-    currentBibleVersions,
+    currentBibleVersions, navFontSize,
     selectedBibleVersion1,
     selectedBibleVersion2,
     showBibleSelectPanel, twoVersesPerSlide
@@ -77,11 +77,12 @@ export default function BibleSelectorDialog() {
                     const fz = Math.round(sVal) / 10 + 8;
 
                     $RvW.vvConfigObj.set_navFontSize(fz);
+                    navFontSize.set(fz);
 
                     // Update the font size
                     $RvW.updateVerseContainer();
                     $RvW.searchObj.setFontSize(fz);
-                    $RvW.scheduleObj.changeFontsizeScheduleTab();
+                    // $RvW.scheduleObj.changeFontsizeScheduleTab();
 
                     console.trace("Slider value changed:", fz);
                 },

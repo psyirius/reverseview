@@ -10,9 +10,9 @@ import { WebEngine } from "@/remote/webengine";
 import { WebServer } from "@/remote/webserver";
 import { WordBrain } from "@/words/wordbrain";
 import { WordLearner } from "@/words/wordlearner";
-import { SongManager } from "@/song/manager";
+import { SongManager } from "@/song/song-manager";
 import { SongNumber } from "@/song/number";
-import { SongNav } from "@/song/nav";
+import { SongNav } from "@/song/song-nav";
 import { setupMenu } from "@app/menu";
 import { SongEdit } from "@/song/edit";
 import { NotesManager } from "@/notes/manage";
@@ -290,7 +290,7 @@ $RvW.rightTabView = null;
 $RvW.searchObj = null;
 $RvW.notesObj = null;
 $RvW.notesManageObj = null;
-$RvW.scheduleObj = null;
+// $RvW.scheduleObj = null;
 $RvW.webServerObj = null;
 $RvW.webEngineObj = null;
 $RvW.bibleRefObj = null;
@@ -911,7 +911,7 @@ function setupTabContent() {
     // Left Tab
     fillNav();
 
-    $RvW.scheduleObj = new Scheduler();
+    // $RvW.scheduleObj = new Scheduler();
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes();
     $RvW.searchObj = new BibleSearch(`./bible/${getVersion1Filename()}`);
@@ -920,7 +920,7 @@ function setupTabContent() {
     $RvW.bibleRefObj = new BibleReference();
     $RvW.editVerse_UI_Obj = new VerseEditUI();
     $RvW.songNumberObj = new SongNumber();
-    $RvW.songManagerObj = new SongManager(true, true);
+    $RvW.songManagerObj = new SongManager();
     $RvW.songEditObj = new SongEdit();
     $RvW.songNavObj = new SongNav();
     $RvW.helpObj = new HelpUiPanel();
@@ -1336,7 +1336,6 @@ export function start(Y: YUI) {
         loadBibleInfo('en-US', function (e, data) {
             if (e) {
                 throw new Error("[!] LoadBibleInfo: " + e);
-                return;
             }
 
             const [numChMap] = data;

@@ -1,5 +1,5 @@
 import {addTagList} from "@/song/tags";
-import {Song} from "@/song/obj";
+import {Song} from "@/song/song-obj";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 

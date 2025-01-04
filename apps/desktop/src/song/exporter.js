@@ -1,6 +1,6 @@
 import {addTagList, fillTagsToUI} from "@/song/tags";
 import {fixHTTPS_Link, specialCategory} from "@app/common";
-import {Song} from '@/song/obj';
+import {Song} from '@/song/song-obj';
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";

@@ -30,7 +30,7 @@ export default function RightVersesTab() {
 
     const verseFontSize = $RvW.vvConfigObj.get_navFontSize() + "px";
 
-    function onClickListItem(e: MouseEvent, [i, ref]: [number, [number, number, number]]) {
+    function onClickListItem(e: MouseEvent, [i, ref]: [number, [number, number, number]], present = false) {
         selectedBible.update((bible) => {
             const l = [
                 ...bible
@@ -44,7 +44,7 @@ export default function RightVersesTab() {
         });
         verseChange();
 
-        if (e.ctrlKey) {
+        if (e.ctrlKey || present) {
             presentVerse(i, ref);
         }
     }
@@ -93,6 +93,10 @@ export default function RightVersesTab() {
         getdata(true);
     }
 
+    // NOTE: ctrl + click to present verse
+    // NOTE: double click to present verse
+    // NOTE: single click to select verse
+
     return (
         <>
             <div class="p-0 h-full">
@@ -103,15 +107,20 @@ export default function RightVersesTab() {
                             key={i}
                             class={`item ${i === activeVerse ? 'active' : ''}`}
                             onClick={(e) => onClickListItem(e, [i, verseList[0].ref])}
+                            onDblClick={(e) => onClickListItem(e, [i, verseList[0].ref], true)}
                         >
-                            <div class="right floated content">
+                            <div class="middle aligned right floated content" style={{
+                                margin: 0,
+                            }}>
                                 <div class="ui buttons">
                                     <button class="ui icon button"
                                             onClick={() => editVerseNote(i, verseList[0].ref)}>
                                         <i aria-hidden="true" class="file alternate icon"></i>
                                     </button>
-                                    <button class="ui icon button"
-                                            onClick={() => presentVerse(i, verseList[0].ref)}>
+                                    <button
+                                        class="ui icon button"
+                                        onClick={() => presentVerse(i, verseList[0].ref)}
+                                    >
                                         <i aria-hidden="true" class="play circle icon"></i>
                                     </button>
                                 </div>

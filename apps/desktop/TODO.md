@@ -7,5 +7,6 @@
 - Improve SongDB Importing (perf)
 - Make big lists as virtualized (perf)
 - Make song name list paginated from db (perf)
-- Move DB operations to worker thread (perf)
-- Move Remote API Service to worker thread (perf)
+- Move DB operations to worker (perf)
+- Move Remote API Service to worker (perf)
+- Alert Dialog if closing app when presenting

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-!(function(exports) {
+!(function (exports) {
     const _$ = {
         p_text1_arr: [],
         p_text2_arr: [],
@@ -46,37 +46,37 @@
         p_format_multiplelines: true,
     };
 
-    var p_window_Y_org = 0;
-    var header_top = 0;
-    var header_left = 0;
-    var header_width = 0;
-    var header_height = 0;
-    var content1_top = 0;
-    var content1_left = 0;
-    var content1_width = 0;
-    var content1_height = 0;
-    var content2_top = 0;
-    var content2_left = 0;
-    var content2_width = 0;
-    var content2_height = 0;
-    var footer_top = 0;
-    var footer_left = 0;
-    var footer_width = 0;
-    var footer_height = 0;
-    var footerL_top = 0;
-    var footerL_left = 0;
-    var footerL_width = 0;
-    var footerL_height = 0;
-    var footerR_top = 0;
-    var footerR_left = 0;
-    var footerR_width = 0;
-    var footerR_height = 0;
-    var footer_message = "";
-    var messageFromMain = "";
-    var calculateFontSize = false;
-    var MIN_FONT_FOR_OUTLINE = 22;
+    let p_window_Y_org = 0;
+    let header_top = 0;
+    let header_left = 0;
+    let header_width = 0;
+    let header_height = 0;
+    let content1_top = 0;
+    let content1_left = 0;
+    let content1_width = 0;
+    let content1_height = 0;
+    let content2_top = 0;
+    let content2_left = 0;
+    let content2_width = 0;
+    let content2_height = 0;
+    let footer_top = 0;
+    let footer_left = 0;
+    let footer_width = 0;
+    let footer_height = 0;
+    let footerL_top = 0;
+    let footerL_left = 0;
+    let footerL_width = 0;
+    let footerL_height = 0;
+    let footerR_top = 0;
+    let footerR_left = 0;
+    let footerR_width = 0;
+    let footerR_height = 0;
+    let footer_message = "";
+    let messageFromMain = "";
+    let calculateFontSize = false;
+    let MIN_FONT_FOR_OUTLINE = 22;
 
-    var IS_DEBUG = true;
+    const IS_DEBUG = true;
 
     function initStageView() {
         _debug_log('initStageView');
@@ -85,32 +85,33 @@
         p_window_Y_org = _$.p_window_Y;
         updatePresentation();
     }
+
     function updatePresentation() {
-        var C = _$.p_window_X / _$.p_window_Y;
-        var o = false;
+        const C = _$.p_window_X / _$.p_window_Y;
+        let o = false;
         if (C > 2.5) {
             o = true;
         }
-        var b = 10;
-        var i = _$.p_text_orientation.split("|");
-        var p_text_orientation_local = i[0];
-        var p = i[1];
-        var h = i[4];
-        var z = i[5];
-        var k = i[6];
-        var F = parseInt(i[2]) / 100;
-        var E = i[8] == "true" ? true : false;
-        var d = i[7] == "true" ? true : false;
-        var A = i[9] == "true" ? true : false;
-        var H = i[10] == "true" ? true : false;
-        var G = i[11] == "true" ? true : false;
-        var e = i[12] == "true" ? true : false;
-        var u = i[13] == "true" ? true : false;
-        var c = false;
+        const b = 10;
+        const i = _$.p_text_orientation.split("|");
+        let p_text_orientation_local = i[0];
+        const p = i[1];
+        const h = i[4];
+        const z = i[5];
+        const k = i[6];
+        const F = parseInt(i[2]) / 100;
+        const E = i[8] == "true";
+        const d = i[7] == "true";
+        const A = i[9] == "true";
+        const H = i[10] == "true";
+        const G = i[11] == "true";
+        const e = i[12] == "true";
+        const u = i[13] == "true";
+        let c = false;
         if (i[3] == "true") {
             c = true;
         }
-        var q = false;
+        let q = false;
         if (i[14] == "true") {
             q = true;
         }
@@ -144,9 +145,9 @@
             $("#content2Container").removeClass("textCenter textLeft textRight");
             $("#content2Container").addClass("textCenter");
         }
+
         switch (p_text_orientation_local) {
-            case "0":
-            default:
+            case "0": default: {
                 var l = _$.p_text1_arr[_$.p_current_index].length;
                 var j = _$.p_text2_arr[_$.p_current_index].length;
                 var w = l + j;
@@ -180,7 +181,8 @@
                 $("#footerL").hide();
                 $("#footerR").hide();
                 break;
-            case "1":
+            }
+            case "1": {
                 header_top = 0;
                 header_left = 0;
                 header_width = _$.p_window_X;
@@ -224,9 +226,9 @@
                 $("#presentationTitle").show();
                 $("#presentationTitle2").show();
                 break;
-            case "2":
-                if (o) {
-                } else {
+            }
+            case "2": {
+                if (!o) {
                     header_top = 0;
                     header_left = 0;
                     header_width = _$.p_window_X;
@@ -248,7 +250,8 @@
                     $("#footerR").hide();
                 }
                 break;
-            case "3":
+            }
+            case "3": {
                 $("#footer").hide();
                 $("#footerL").hide();
                 $("#footerR").hide();
@@ -316,7 +319,8 @@
                     }
                 }
                 break;
-            case "4":
+            }
+            case "4": {
                 header_top = 0;
                 header_left = 0;
                 header_width = _$.p_window_X;
@@ -337,7 +341,9 @@
                 $("#footerL").hide();
                 $("#footerR").hide();
                 break;
+            }
         }
+
         $("#content1").show();
         $("#content2").show();
         if (A) {
@@ -602,10 +608,12 @@
             $("#footer").css("padding-left", "50px");
         }
     }
+
     function updateContent() {
         $("#content1").html(_$.p_text1_arr[_$.p_current_index]);
         $("#content2").html(_$.p_text2_arr[_$.p_current_index]);
     }
+
     function get_next_index() {
         var a = _$.p_current_index * 1 + 1;
         if (_$.p_current_index == _$.p_last_index) {
@@ -613,6 +621,7 @@
         }
         return a;
     }
+
     function get_prev_index() {
         var a = _$.p_current_index * 1 - 1;
         if (_$.p_current_index == 0) {
@@ -620,23 +629,27 @@
         }
         return a;
     }
+
     function nextSlide() {
         _$.p_current_index = get_next_index();
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
         updatePresentation();
     }
+
     function prevSlide() {
         _$.p_current_index = get_prev_index();
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
         updatePresentation();
     }
+
     function postMessage(a) {
         messageFromMain = a;
         calculateFontSize = true;
         writeFooter();
     }
+
     function showBlankProcess() {
         $("#footer").hide();
         $("#footerL").hide();
@@ -648,9 +661,11 @@
         $("#content1").hide();
         $("#content2").hide();
     }
+
     function clearPresenter() {
         window.close();
     }
+
     function onBodyKeyUp(a) {
         key = a.keyCode;
         switch (key) {
@@ -662,6 +677,7 @@
             window.parent.iamclosingPresentation();
         };
     }
+
     function getDate() {
         var d = new Date();
         var c = d.getHours();
@@ -690,6 +706,7 @@
         writeFooter(e);
         var e = setTimeout(getDate, 5000);
     }
+
     function writeFooter(a) {
         if (a != null) {
             if (_$.p_showDate && (messageFromMain == "" || messageFromMain == null)) {
@@ -733,6 +750,7 @@
             calculateFontSize = false;
         }
     }
+
     function formatReferenceWithFonts(i, c, b) {
         var h = "";
         var a = i.split(")");
@@ -749,6 +767,7 @@
         }
         return h;
     }
+
     function _debug_log(msg) {
         if (IS_DEBUG) {
             // console.trace('StageView:....' + msg);
@@ -770,7 +789,7 @@
 
     // set by parent
     // exports.parent.iamclosingPresentation = null;
-    
+
     // DON'T SET IT
     // exports.passVariable = null; // sync func
 

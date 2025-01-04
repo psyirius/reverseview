@@ -1,10 +1,11 @@
 export default function RightNotesTab() {
     return (
-        <div class="h-full overflow-hidden overflow-y-auto">
-            <div class="generalheading2">Bible Notes Manager</div>
+        <div class="flex flex-col h-full w-full overflow-hidden overflow-y-auto">
+            <div class="flex-[0]">
+                <div class="generalheading2">Bible Notes Manager</div>
 
-            <table style={{border: 0}}>
-                <tbody>
+                <table style={{border: 0}}>
+                    <tbody>
                     <tr style={{height: '100px'}}>
                         <td>
                             <div class="bibleMngContainerLeft">
@@ -31,7 +32,8 @@ export default function RightNotesTab() {
                                 <br/>
                                 <br/>
                                 <b>Notes Type</b>
-                                <input type="radio" name="nm_note_type" id="nm_note_type1" value="1" checked/>Chapter&nbsp;&nbsp;
+                                <input type="radio" name="nm_note_type" id="nm_note_type1" value="1"
+                                       checked/>Chapter&nbsp;&nbsp;
                                 <input type="radio" name="nm_note_type" id="nm_note_type2" value="2"/>Topic&nbsp;&nbsp;
                                 <br/>
                                 <br/>
@@ -39,6 +41,7 @@ export default function RightNotesTab() {
                         </td>
 
                         <td>
+                            {/* TODO: make it a dialog */}
                             <div id="nm_new_promptID" class="bibleMngContainerRight">
                                 <b>Name</b>
                                 <br/>
@@ -64,13 +67,24 @@ export default function RightNotesTab() {
                             </div>
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            <hr/>
+                <div class="generalheading2">Notes</div>
+            </div>
 
-            <div class="generalheading2">Notes</div>
-            <div id="notesResultsID" class="notesResultDIV"></div>
+            <div class="flex-1 overflow-y-auto h-full w-full relative">
+                <div
+                    id="notesResultsID"
+                    class="absolute h-full w-full m-0 p-0 overflow-hidden overflow-y-auto"
+                    style={{
+                        border: '1px solid #d4d4d5',
+                        borderRadius: '0.28571429rem',
+                    }}
+                >
+                    {/* Content */}
+                </div>
+            </div>
         </div>
     )
 }

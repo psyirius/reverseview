@@ -5,12 +5,14 @@
   "private": true,
   "scripts": {
     "db:make": "tsx src/index.ts",
+    "tools:migrate-db": "tsx tools/migrate-db.ts",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
     "prisma:init": "prisma migrate dev --name init"
   },
   "devDependencies": {
-    "prisma": "^5.19.1",
+    "prisma": "^6.1.0",
+    "@prisma/client": "^6.1.0",
     "sqlite3": "^5.1.7"
   }
 }

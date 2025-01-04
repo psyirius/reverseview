@@ -24,6 +24,8 @@ import Modal from "@app/ui/Modal";
 // import FilterableTable from "@app/ui/widgets/FilterableTable";
 import DataTable from "@app/ui/widgets/Datatable";
 import PaginatedList from "@app/ui/widgets/PaginatedList";
+import {songManager} from "@app/glc";
+import {SearchFilterType} from "@/song/song-manager";
 
 const Zapp = () => {
     // const columns = [
@@ -1539,6 +1541,23 @@ export default function LeftSongsTab() {
     function filterByLyrics() {
         const q = searchQuery.trim();
         $RvW.songManagerObj.searchRecords(`%${q}%`, SongSearchType.LYRICS);
+
+        songManager.search([
+            {
+                type: SearchFilterType.TITLE,
+                value: q,
+            }
+        ], (data, err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            console.log('SEARCH RES:', data.length);
+            for (const item of data) {
+                console.log(item.name);
+            }
+        });
     }
 
     function filterByAuthor() {

@@ -57,7 +57,7 @@ const App = ({dev}: Props) => {
                     </main>
 
                     <footer class="h-8">
-                        ReVerseVIEW
+                        {/* TODO: impl */}
                     </footer>
                 </div>
 

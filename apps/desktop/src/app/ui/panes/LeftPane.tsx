@@ -22,7 +22,7 @@ export default function LeftPane() {
     const lti = $RvW.rvwPreferences.get('app.state.leftTabActiveIndex', 0);
 
     function onTabChange(index: number) {
-        console.log('Left Pane Tab changed to:', index);
+        // console.log('Left Pane Tab changed to:', index);
 
         switch (index) {
             case 0: {

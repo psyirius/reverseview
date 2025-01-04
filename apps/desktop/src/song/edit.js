@@ -1,6 +1,6 @@
 import {addTagList, fillTagsToUI} from "@/song/tags";
 import {SongPresenter} from "./present";
-import {Song} from '@/song/obj';
+import {Song} from '@/song/song-obj';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {apple, clearSelectList, isBlank, specialCategory} from "@app/common";

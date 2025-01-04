@@ -61,7 +61,9 @@ export default function RightPane() {
     }, [activeTab]);
 
     function onTabChange(index: number) {
-        console.log('Right Pane Tab changed to:', index);
+        // console.log('Right Pane Tab changed to:', index);
+
+        selectedTab.set(index);
 
         switch (index) {
             case 0: {

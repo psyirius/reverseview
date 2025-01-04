@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-!(function(exports) {
+!(function (exports) {
     const _$ = {
         p_text1_arr: [],
         p_text2_arr: [],
@@ -89,8 +89,11 @@
         debug("*** Init Presentation****");
 
         window.onload = function () {
-            document.body.onkeyup = findKey;
+            document.body.onkeyup = onKeyUp;
+
             document.body.style.overflow = "hidden";
+            document.body.style.userSelect = "none";
+            document.body.style.webkitUserSelect = "none";
         }
 
         // Fetch data from parent
@@ -215,7 +218,7 @@
                 debug('p_bkgnd_motion: ' + _$.p_bkgnd_motion);
                 debug('p_bkgnd_filename: ' + _$.p_bkgnd_filename);
 
-                const { applicationStorageDirectory } = air.File;
+                const {applicationStorageDirectory} = air.File;
 
                 const bgImgFile = applicationStorageDirectory.resolvePath(_$.p_bkgnd_filename[0]);
 
@@ -288,6 +291,7 @@
         document.getElementById("presentationTitle").style.width = title_width;
         document.getElementById("presentationTitle").style.height = title_height;
     }
+
     function setupContentPosition() {
         const b = _$.p_text1_arr[_$.p_current_index].length;
         const a = _$.p_text2_arr[_$.p_current_index].length;
@@ -337,6 +341,7 @@
         document.getElementById("content2").style.width = c2_width;
         document.getElementById("content2").style.height = c2_height;
     }
+
     function setupFooterPosition() {
         f_height = parseInt(canvas_height * footerAllocation);
         f_top = parseInt(canvas_top) + parseInt(canvas_height) - f_height;
@@ -390,19 +395,21 @@
     }
 
     function get_next_index() {
-        let a = _$.p_current_index * 1 + 1;
+        let a = parseInt(_$.p_current_index) + 1;
         if (_$.p_current_index === _$.p_last_index) {
             a = 0;
         }
         return a;
     }
+
     function get_prev_index() {
-        let a = _$.p_current_index * 1 - 1;
+        let a = parseInt(_$.p_current_index) - 1;
         if (_$.p_current_index === 0) {
             a = _$.p_last_index;
         }
         return a;
     }
+
     function nextSlide() {
         _$.p_current_index = get_next_index();
         document.getElementById("content1").style.textShadow = null;
@@ -415,6 +422,7 @@
             updateContent2();
         }
     }
+
     function prevSlide() {
         _$.p_current_index = get_prev_index();
         document.getElementById("content1").style.textShadow = null;
@@ -427,6 +435,7 @@
             updateContent2();
         }
     }
+
     function updateContent() {
         if (!showingTheme) {
             updateContentWithAnimation();
@@ -437,17 +446,17 @@
         const contentContainer = $("#presentationContent");
 
         contentContainer.animate(
-            { opacity: '0' }, transitionDuration, "swing", () => {
-            updateContent2();
-            contentContainer.animate({ opacity: '1' }, transitionDuration, "swing");
-        });
+            {opacity: '0'}, transitionDuration, "swing", () => {
+                updateContent2();
+                contentContainer.animate({opacity: '1'}, transitionDuration, "swing");
+            });
     }
 
     function updateDate() {
         const now = new Date();
         const hours = now.getHours();
 
-        let hh;
+        let hh: number;
         let pp = " AM";
         if (hours === 0) {
             hh = 12;
@@ -578,7 +587,7 @@
                 detectMultiLine: false,
                 multiLine: b,
                 minFontSize: 30,
-                maxFontSize: _$.p_maxFontSize * 1,
+                maxFontSize: parseInt(_$.p_maxFontSize),
                 reProcess: true,
                 alignVertWithFlexbox: false,
             });
@@ -589,7 +598,7 @@
                     detectMultiLine: false,
                     multiLine: b,
                     minFontSize: 30,
-                    maxFontSize: _$.p_maxFontSize * 1,
+                    maxFontSize: parseInt(_$.p_maxFontSize),
                     alignVertWithFlexbox: false,
                 });
             }
@@ -655,6 +664,7 @@
             }
         }
     }
+
     function showThemeProcess() {
         if (!showingTheme) {
             showingTheme = true;
@@ -670,6 +680,7 @@
             $("#footnote").show();
         }
     }
+
     function showBlankProcess() {
         document.getElementById("presentationTitle").innerHTML = "";
         document.getElementById("content1").innerHTML = "";
@@ -678,38 +689,44 @@
         $("#backgroundLayer").css("background-color", "black");
         $("#backgroundImage").hide();
     }
+
     function restoreSlideProcess() {
         $("#backgroundImage").show();
     }
-    function findKey(a) {
-        key = a.keyCode;
-        switch (key) {
-            case 27:
+
+    function onKeyUp(e: KeyboardEvent) {
+        switch (e.keyCode) {
+            case 27: {
                 clearPresenter();
                 break;
+            }
             case 39:
             case 40:
-            case 34:
+            case 34: {
                 if (!showingTheme) {
                     nextSlide();
                     window.parent.goToNextSlide();
                 }
                 break;
+            }
             case 37:
             case 38:
-            case 33:
+            case 33: {
                 if (!showingTheme) {
                     prevSlide();
                     window.parent.goToPrevSlide();
                 }
                 break;
-            case 84:
+            }
+            case 84: {
                 showThemeProcess();
                 break;
+            }
             default:
                 break;
         }
     }
+
     function savePresentationMargin() {
         var k = true;
         var e = document.getElementById("presentConfigMarginTop").value;
@@ -810,14 +827,17 @@
             $RvW.vvConfigObj.save();
         }
     }
+
     function initTransition(enabled) {
         transitionDuration = 0;
         if (enabled) {
             transitionDuration = TRANSITION_DURATION;
         }
     }
-    function animateZoomPan(layer, c) {
+
+    function animateZoomPan(layer, imgSrc) {
         const img = new Image(); // probably ensuring the image is loaded before we start the animation
+
         let a = 1;
         img.onload = function () {
             const g = img.height;
@@ -834,59 +854,59 @@
             }
             animateZP();
         };
-        img.src = c;
+        img.src = imgSrc;
 
         function animateZP() {
             const e = 13;
             jQuery.fx.interval = 80;
 
             $(layer).crossSlide(
-                { fade: 1 },
+                {fade: 1},
                 [
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
                         time: e,
                     },
                     {
-                        src: c,
+                        src: imgSrc,
                         alt: "",
                         from: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% ${a}x`,
                         to: `${Math.floor(Math.random() * 100 + 1)}% ${Math.floor(Math.random() * 100 + 1)}% 3x`,
@@ -895,7 +915,7 @@
                 ],
                 function (f, g, h, i) {
                     if (h === undefined) {
-                        $("div.caption").text(g.alt).animate({ opacity: 0.7 });
+                        $("div.caption").text(g.alt).animate({opacity: 0.7});
                     } else {
                         $("div.caption").fadeOut();
                     }
@@ -903,6 +923,7 @@
             );
         }
     }
+
     function formatReferenceWithFonts(i, c, b) {
         var h = "";
         var a = i.split(")");
@@ -919,16 +940,19 @@
         }
         return h;
     }
+
     function invert_hex_color(d) {
         const e = "0123456789ABCDEF";
 
         function c(f) {
             return e.charAt((f >> 4) & 15) + e.charAt(f & 15);
         }
+
         function b(f) {
             f = f.toUpperCase();
             return parseInt(f, 16);
         }
+
         function a(h) {
             var f = h;
             if (f.toString().length < 6 || f.toString().length > 6) {
@@ -948,6 +972,7 @@
             hexc1 = hexc2 + hexc3;
             return c(255 - hex1) + "" + c(255 - hexb1) + "" + c(255 - hexc1);
         }
+
         return a(d);
     }
 
@@ -959,7 +984,7 @@
 
     // exports (global)
     exports.$load = initPresentation;
-    exports.$onKeyUp = findKey;
+    exports.$onKeyUp = onKeyUp;
 
     // exports (bridge)
     exports.ctx = _$;

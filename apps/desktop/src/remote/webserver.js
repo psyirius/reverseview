@@ -4,6 +4,8 @@ import {getAllVersesFromChapter} from "@/bible/manager";
 import {console} from "@/platform/adapters/air";
 import {SongPresenter} from "@/song/present";
 import {$RvW} from "@/rvw";
+import {scheduler} from "@app/glc";
+import {ScheduleItemType} from "@stores/global";
 
 const MIME_TYPES = {
     '.txt'  : 'text/plain',
@@ -444,7 +446,8 @@ class WebRequestHandler {
             }
             // Songs: Add to Schedule
             case 22: {
-                $RvW.scheduleObj.processAddSong(args.id);
+                scheduler.addSong(args.id);
+                // $RvW.scheduleObj.processAddSong(args.id);
 
                 this._sendJSON({
                     ok: true,
@@ -468,7 +471,8 @@ class WebRequestHandler {
 
             // Schedule: Fetch
             case 30: {
-                const res = $RvW.scheduleObj.getScheduleList(0 /* All */);
+                // const res = $RvW.scheduleObj.getScheduleList(0 /* All */);
+                const res = scheduler.entriesForRemote();
 
                 this._sendJSON({
                     ok: true,
@@ -478,7 +482,19 @@ class WebRequestHandler {
             }
             // Schedule: Get Content
             case 31: { // Only for lyrics
-                const songId = $RvW.scheduleObj.getSongIndexFromSch(args.index);
+                // const songId = $RvW.scheduleObj.getSongIndexFromSch(args.index);
+                const item = scheduler.entries()[args.index];
+
+                // TODO: Add support for verses
+                if (item.type !== ScheduleItemType.LYRIC) {
+                    this._sendJSON({
+                        ok: false,
+                        error: 'Invalid schedule item type',
+                    });
+                    break;
+                }
+
+                const songId = item.ref;
                 const song = $RvW.songManagerObj.getSongObjWithID(songId);
 
                 this._sendJSON({

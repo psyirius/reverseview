@@ -110,7 +110,13 @@ class Tabs extends Component<TabsProps, TabsState> {
         ));
 
         const tabContents = tabs.map(({content: Content}, index) => (
-            <div key={index} className={`ui bottom attached tab segment ${selectedTab === index ? 'active' : ''} h-full w-full`}>
+            <div
+                key={index}
+                className={`ui bottom attached tab segment ${selectedTab === index ? 'active' : ''} h-full w-full`}
+                style={{
+                    borderTop: 'none',
+                }}
+            >
                 <Content />
             </div>
         ));
@@ -119,8 +125,10 @@ class Tabs extends Component<TabsProps, TabsState> {
         const itemCount = ((c) => {
             switch (c) {
                 case 2: return 'two';
+                case 3: return 'three';
+                case 4: return 'four';
                 case 7: return 'seven';
-                default: return '';
+                default: throw new Error('Unsupported tab count');
             }
         })(tabs.length);
 

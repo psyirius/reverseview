@@ -1,11 +1,11 @@
 import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, call_showTheme, call_closePresentation} from "@/p_window";
+import BibleRefSelect from "@app/ui/BibleRefSelect";
 import {menuYtLink, selectedBookRef, selectedTab, showRemotePanel} from "@stores/global";
 import {$RvW} from "@/rvw";
-
-import BibleRefSelect from "@app/ui/BibleRefSelect";
 import {Toast} from "@app/toast";
+import {scheduler} from "@app/glc";
 
 const handlers = {
     present: () => {
@@ -37,7 +37,8 @@ const handlers = {
         const b = $RvW.getBookValue();
         const c = $RvW.getChapterValue();
         const v = $RvW.getVerseValue();
-        $RvW.scheduleObj.processAddVerse(b, c, v);
+        scheduler.addVerse(b, c, v);
+        // $RvW.scheduleObj.processAddVerse(b, c, v);
 
         Toast.success("Verse", "Added verse to schedule");
     },
