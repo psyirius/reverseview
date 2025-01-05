@@ -92,6 +92,17 @@ export const songListState: Writable<any> = writable({
     error: null,
 });
 
+export const selectedSongStateObject: Writable<any | null> = writable(null);
+export const selectedSongStateTags: Writable<string[]> = writable([]);
+export const selectedSongStateCategory: Writable<string | null> = writable(null);
+export const selectedSongStateKey: Writable<string | null> = writable(null);
+export const selectedSongStateAuthor: Writable<string | null> = writable(null);
+export const selectedSongStateNotes: Writable<string | null> = writable(null);
+export const selectedSongStateName1: Writable<string | null> = writable(null);
+export const selectedSongStateName2: Writable<string | null> = writable(null);
+export const selectedSongStateSeqNum: Writable<number | null> = writable(null);
+export const selectedSongStateSlides: Writable<any | null> = writable(null);
+
 export const showRemotePanel: Writable<boolean> = writable(false);
 export const showSongEditPanel: Writable<boolean> = writable(false);
 export const showLyricEditPanel: Writable<boolean> = writable(false);

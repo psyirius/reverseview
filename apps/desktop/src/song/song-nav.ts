@@ -4,6 +4,15 @@ import {fillTagsToUI, loadTagsFromConfig, clearTagFilter} from "@/song/tags";
 import {
     menuYtLink,
     selectedSongCategory,
+    selectedSongStateAuthor,
+    selectedSongStateCategory,
+    selectedSongStateKey,
+    selectedSongStateName1,
+    selectedSongStateName2,
+    selectedSongStateNotes, selectedSongStateObject,
+    selectedSongStateSeqNum,
+    selectedSongStateSlides,
+    selectedSongStateTags,
     songCategories,
     songListState,
     songSearchError,
@@ -101,30 +110,31 @@ export class SongNav {
         }
 
         function hideLyricsElements() {
-            $("#ly_name2").hide();
+            // $("#ly_name").hide();
+            // $("#ly_name2").hide();
             // $("#ly_edit").hide();
             // $("#ly_add2schedule").hide();
             // $("#ly_present").hide();
-            $("#ly_slide").hide();
-            $("#ly_tags").hide();
-            $("#ly_cat").hide();
-            $("#ly_key").hide();
-            $("#ly_copy").hide();
-            $("#ly_notes").hide();
+            // $("#ly_slide").hide();
+            // $("#ly_tags").hide();
+            // $("#ly_cat").hide();
+            // $("#ly_key").hide();
+            // $("#ly_copy").hide();
+            // $("#ly_notes").hide();
         }
 
         function showLyricsElements() {
-            $("#ly_name").show();
-            $("#ly_name2").show();
+            // $("#ly_name").show();
+            // $("#ly_name2").show();
             // $("#ly_edit").show();
             // $("#ly_add2schedule").show();
             // $("#ly_present").show();
-            $("#ly_slide").show();
-            $("#ly_tags").show();
-            $("#ly_cat").show();
-            $("#ly_key").show();
-            $("#ly_copy").show();
-            $("#ly_notes").show();
+            // $("#ly_slide").show();
+            // $("#ly_tags").show();
+            // $("#ly_cat").show();
+            // $("#ly_key").show();
+            // $("#ly_copy").show();
+            // $("#ly_notes").show();
         }
 
         function setFormats(rpp) {
@@ -360,54 +370,51 @@ export class SongNav {
 
             if (!s) {
                 // Reset the lyrics
-                document.getElementById("ly_name").innerHTML = '';
-                document.getElementById("ly_name2").innerHTML = '';
-                document.getElementById("ly_cat").innerHTML = '';
-                document.getElementById("ly_key").innerHTML = '';
-                document.getElementById("ly_copy").innerHTML = '';
-                document.getElementById("ly_notes").innerHTML = '';
-                document.getElementById("ly_slide").innerHTML = '';
-                document.getElementById("ly_tags").innerHTML = '';
+                selectedSongStateObject.set(null);
+                selectedSongStateName1.set(null);
+                selectedSongStateName2.set(null);
+                selectedSongStateCategory.set(null);
+                selectedSongStateKey.set(null);
+                selectedSongStateAuthor.set(null);
+                selectedSongStateTags.set([]);
+                selectedSongStateNotes.set(null);
+                selectedSongStateSlides.set(null);
 
                 menuYtLink.set(null);
-                $("#ly_copy").hide();
 
                 return;
             }
 
-            document.getElementById("ly_slide").style.fontSize = $RvW.vvConfigObj.get_navFontSize() + "px";
-            let name = s.name;
+            selectedSongStateObject.set(s);
+
             if (s.subcat) {
-                name += ` (${s.subcat}) `;
-            }
-            document.getElementById("ly_name").innerHTML = name;
-            if (s.name2 !== "null") {
-                document.getElementById("ly_name2").innerHTML = s.name2;
-                const aF = $RvW.specialFontList.indexOf(s.font);
-                if (aF === -1) {
-                    document.getElementById("ly_name2").style.fontFamily = s.font;
-                } else {
-                    document.getElementById("ly_name2").style.fontFamily = "Arial";
-                }
+                selectedSongStateSeqNum.set(s.subcat);
             } else {
-                document.getElementById("ly_name2").innerHTML = "";
+                selectedSongStateSeqNum.set(null);
             }
-            document.getElementById("ly_cat").innerHTML = s.catIndex;
-            document.getElementById("ly_key").innerHTML = s.key;
-            if (!s.copyright) {
-                $("#ly_copy").hide();
+
+            selectedSongStateName1.set(s.name);
+
+            if (s.name2 != "null") {
+                selectedSongStateName2.set(s.name2);
             } else {
-                $("#ly_copy").show();
+                selectedSongStateName2.set(null);
             }
-            document.getElementById("ly_copy").innerHTML = s.copyright;
-            document.getElementById("ly_notes").innerHTML = s.notes;
+
+            selectedSongStateCategory.set(s.catIndex);
+            selectedSongStateKey.set(s.key);
+            selectedSongStateAuthor.set(s.copyright);
+            selectedSongStateNotes.set(s.notes);
+            selectedSongStateSlides.set([
+                s.slides,
+                s.slides2
+            ]);
+
             // menubar
             {
                 menuYtLink.set(s.yvideo || null);
             }
-            document.getElementById("ly_slide").style.fontFamily = s.font;
 
-            let aC = s.slides2[0] || null;
             const aH = window.nativeWindow.bounds.width;
             let numCellsPerRow = 5;
             if (aH < 2000 && aH >= 1600) {
@@ -423,54 +430,55 @@ export class SongNav {
                 numCellsPerRow = 1;
             }
 
-            let html = '<div class="ui cards">';
-            for (let i = 0; i < s.slides.length; i++) {
-                if (aC != null) {
-                    html +=
-                        '<div class="card">' +
-                            '<div class="content">' +
-                                '<div class="header">' + (i + 1) + '</div>' +
-                                '<div class="meta"></div>' +
-                                '<div class="description">' +
-                                    '<div id="lyricsID' + i + '" class="context"></div>' +
-                                    '<div id="lyricsID' + i + '_2" class="context"></div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>'
-                    ;
-                } else {
-                    html +=
-                        '<div class="card">' +
-                            '<div class="content">' +
-                                '<div class="header">' + (i + 1) + '</div>' +
-                                '<div class="meta"></div>' +
-                                '<div class="description">' +
-                                    '<div id="lyricsID' + i + '" class="context"></div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>'
-                    ;
-                }
+            // let aC = s.slides2[0] || null;
+            // let html = '<div class="ui cards">';
+            // for (let i = 0; i < s.slides.length; i++) {
+            //     if (aC != null) {
+            //         html +=
+            //             '<div class="card">' +
+            //                 '<div class="content">' +
+            //                     '<div class="header">' + (i + 1) + '</div>' +
+            //                     '<div class="meta"></div>' +
+            //                     '<div class="description">' +
+            //                         '<div id="lyricsID' + i + '" class="context"></div>' +
+            //                         '<div id="lyricsID' + i + '_2" class="context"></div>' +
+            //                     '</div>' +
+            //                 '</div>' +
+            //             '</div>'
+            //         ;
+            //     } else {
+            //         html +=
+            //             '<div class="card">' +
+            //                 '<div class="content">' +
+            //                     '<div class="header">' + (i + 1) + '</div>' +
+            //                     '<div class="meta"></div>' +
+            //                     '<div class="description">' +
+            //                         '<div id="lyricsID' + i + '" class="context"></div>' +
+            //                     '</div>' +
+            //                 '</div>' +
+            //             '</div>'
+            //         ;
+            //     }
+            //
+            //     if (((i + 1) % numCellsPerRow) === 0) {
+            //         html += '</div>';
+            //         html += '<div class="ui cards">';
+            //     }
+            // }
+            // html += "</div>";
 
-                if (((i + 1) % numCellsPerRow) === 0) {
-                    html += '</div>';
-                    html += '<div class="ui cards">';
-                }
-            }
-            html += "</div>";
+            // document.getElementById("ly_slide").innerHTML = html;
 
-            document.getElementById("ly_slide").innerHTML = html;
-
-            for (let jjj = 0; jjj < s.slides.length; jjj++) {
-                const ay = "lyricsID" + jjj;
-                const aq = "lyricsID" + jjj + "_2";
-                document.getElementById(ay).style.fontFamily = s.font;
-                new SongLyrics(s, ay, jjj, 1);
-                if (aC != null) {
-                    document.getElementById(aq).style.fontFamily = s.font2;
-                    new SongLyrics(s, aq, jjj, 2);
-                }
-            }
+            // for (let jjj = 0; jjj < s.slides.length; jjj++) {
+            //     const ay = "lyricsID" + jjj;
+            //     const aq = "lyricsID" + jjj + "_2";
+            //     document.getElementById(ay).style.fontFamily = s.font;
+            //     new SongLyrics(s, ay, jjj, 1);
+            //     if (aC != null) {
+            //         document.getElementById(aq).style.fontFamily = s.font2;
+            //         new SongLyrics(s, aq, jjj, 2);
+            //     }
+            // }
 
             if (m_resNotEmpty) {
                 let aA = $.trim(
@@ -484,20 +492,9 @@ export class SongNav {
                 }
             }
 
-            document.getElementById("ly_tags").innerHTML = "";
-
             if (s.tags != null && s.tags !== "") {
-                __debug("Tags : " + s.tags);
                 const aE = s.tags.split(",");
-                let ap = "";
-                for (let i = 0; i < aE.length; i++) {
-                    ap += `<button type="button" class="btn btn-outline-secondary btn-sm" id="tag_${i}">${aE[i].toUpperCase()}</button>`;
-                }
-                __debug("Tags Content : " + ap);
-                document.getElementById("ly_tags").innerHTML = ap;
-                for (let i = 0; i < aE.length; i++) {
-                    document.getElementById(`tag_${i}`).addEventListener("click", filterByTag, false);
-                }
+                selectedSongStateTags.set(aE);
             }
         }
 
@@ -534,7 +531,7 @@ export class SongNav {
             } else {
                 m_keywords = [];
                 hideLyricsElements();
-                $("#ly_name").html("No matching song found.");
+                // $("#ly_name").html("No matching song found.");
                 songSearchError.set("No match");
                 update_songList(sqlRes, selectedCategory, m_resNotEmpty);
             }

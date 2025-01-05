@@ -10,3 +10,5 @@
 - Move DB operations to worker (perf)
 - Move Remote API Service to worker (perf)
 - Alert Dialog if closing app when presenting
+- New SongManager & Scheduler inits earlier than in First Init
+- Make the new SongManager default

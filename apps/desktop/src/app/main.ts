@@ -71,6 +71,7 @@ import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 // import AppState from "@/stores/state";
 import {console} from "@/platform/adapters/air";
+import {ngInit} from "@app/glc";
 
 // import * as dojoDom from 'dojo/dom';
 // console.trace("dojo/dom", dojoDom);
@@ -392,11 +393,11 @@ $RvW.loadBookNames = function(a) {
     setPrimaryBooknames();
 }
 $RvW.getSingleVerse = function(j, f, k, e) {
-    var l;
-    var g = j * 1 + 1;
-    var a = f * 1 + 1;
-    var h = k * 1 + 1;
-    var d = getVerseFromArray(g, a, h);
+    let l;
+    const g = j * 1 + 1;
+    const a = f * 1 + 1;
+    const h = k * 1 + 1;
+    const d = getVerseFromArray(g, a, h);
     if (e == 1) {
         l = $RvW.bibledbObj[1].getSingleVerseFromBuffer(d - 1);
     } else {
@@ -926,6 +927,8 @@ function setupTabContent() {
     $RvW.helpObj = new HelpUiPanel();
     $RvW.graphicsObj = new GraphicsMgr();
 
+    ngInit();
+
     versionFill(true); configInit();
 
     if (!isUpToDate() && !task2Status()) {
@@ -1193,6 +1196,10 @@ function setupVVersion() {
         return a;
     }
     a = copyFile2AppStorage("song/default.db", "song/default.db");
+    if (!a) {
+        return a;
+    }
+    a = copyFile2AppStorage("song/songs.db", "song/songs.db");
     if (!a) {
         return a;
     }

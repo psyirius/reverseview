@@ -5,4 +5,5 @@ export enum SongSearchType {
     AUTHOR      = 3,
     NUMBER      = 4,
     CATEGORY    = 5,
+    KEY         = 6,
 }

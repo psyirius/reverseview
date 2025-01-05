@@ -49,7 +49,7 @@ export class _Scheduler_ {
             // - by the time we call it, songs might not be finished loading
             const songID = Number(record.ref);
 
-            const song = $RvW.songManagerObj?.getSongObjWithID(songID);
+            const song = $RvW.songManagerObj.getSongObjWithID(songID);
 
             return song?.name || 'Unknown';
         }
@@ -349,6 +349,8 @@ export class _Scheduler_ {
         deleteRecordQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
             // console.log('DB schedule delete data: pre', record);
 
+            this._dbConnection.compact();
+
             // cost-effective way to remove the record cache
             {
                 const itemIndex = this.getRecordIndexByIdCached(id);
@@ -380,6 +382,8 @@ export class _Scheduler_ {
         `;
 
         deleteRecordsQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
+            this._dbConnection.compact();
+
             this._records.length = 0;
 
             this.onUpdate(this._records);

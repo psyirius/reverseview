@@ -1,8 +1,10 @@
 import {_Scheduler_} from "@app/schedule";
 import {_SongManager_} from "@/song/song-manager";
-import {$RvW} from "@/rvw";
 
-$RvW.english_booknames = [];
+export let songManager: _SongManager_;
+export let scheduler: _Scheduler_;
 
-export const songManager = new _SongManager_();
-export const scheduler = new _Scheduler_();
+export function ngInit() {
+    songManager = new _SongManager_()
+    scheduler = new _Scheduler_();
+}

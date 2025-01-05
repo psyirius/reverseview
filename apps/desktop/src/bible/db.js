@@ -166,9 +166,8 @@ export class BibleDB {
             return al;
         }
         function getResultArray2() {
-            const ai = ag.data.length;
             const al = [];
-            for (let ak = 0; ak < ai; ak++) {
+            for (let ak = 0; ak < ag.data.length; ak++) {
                 const aj = ag.data[ak];
                 al.push([aj.verseNum, aj.word]);
             }

@@ -15,16 +15,18 @@ import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 import {songCategories, songTags} from "@stores/global";
 
-export interface SongSlideContent {
+type SongSlide = string[];
+
+export interface SongLyrics {
     font: string,
-    content: string[][],
+    content: SongSlide[],
 }
 
 export interface SongItem {
     id: number,
     name: string, // english name
     title?: string, // local lang title
-    slides: SongSlideContent[],
+    lyrics: SongLyrics[],
     author?: string,
     copyright?: string,
     category: string,
@@ -40,7 +42,7 @@ export interface SongItem {
 export enum SearchFilterType {
     ID,
     TITLE,
-    CONTENT,
+    LYRICS,
     SEQUENCE,
     CATEGORY,
     TAGS,
@@ -116,6 +118,14 @@ type ResultCallback<Result, Error = any> = (
     result?: Result,
     error?: Error,
 ) => void;
+
+type Nullable<T> = T | null;
+type Optional<T> = T | undefined;
+
+type PaginationState = {
+    page: number,
+    limit: number,
+}
 
 export class _SongManager_ {
     private readonly static DB_PATH: string = 'song/songs.db';
@@ -200,8 +210,8 @@ export class _SongManager_ {
                     }
                     break;
                 }
-                case SearchFilterType.CONTENT: { // args: {value: string}
-                    wcq.push(`slides LIKE :param_${i}`);
+                case SearchFilterType.LYRICS: { // args: {value: string}
+                    wcq.push(`lyrics LIKE :param_${i}`);
                     params[`:param_${i}`] = `%${value}%`;
                     break;
                 }
@@ -266,7 +276,7 @@ export class _SongManager_ {
                     sequence: record.sequence,
                     category: record.category,
                     tags: JSON.parse(record.tags),
-                    slides: JSON.parse(record.slides),
+                    lyrics: JSON.parse(record.lyrics),
                     youtube: record.youtube,
                     author: record.author,
                     copyright: record.copyright,
@@ -343,7 +353,7 @@ export class _SongManager_ {
                 sequence        INTEGER,
                 category        TEXT,
                 tags            TEXT,
-                slides          TEXT,
+                lyrics          TEXT,
                 youtube         TEXT,
                 author          TEXT,
                 copyright       TEXT,
@@ -482,7 +492,7 @@ export class _SongManager_ {
                 sequence,
                 category,
                 tags,
-                slides,
+                lyrics,
                 youtube,
                 author,
                 copyright,
@@ -496,7 +506,7 @@ export class _SongManager_ {
                 :sequence,
                 :category,
                 :tags,
-                :slides,
+                :lyrics,
                 :youtube,
                 :author,
                 :copyright,
@@ -512,7 +522,7 @@ export class _SongManager_ {
         createRecordQ.parameters[":sequence"] = song.sequence;
         createRecordQ.parameters[":category"] = song.category;
         createRecordQ.parameters[":tags"] = JSON.stringify(song.tags);
-        createRecordQ.parameters[":slides"] = JSON.stringify(song.slides);
+        createRecordQ.parameters[":lyrics"] = JSON.stringify(song.lyrics);
         createRecordQ.parameters[":youtube"] = song.youtube;
         createRecordQ.parameters[":author"] = song.author;
         createRecordQ.parameters[":copyright"] = song.copyright;
@@ -571,7 +581,7 @@ export class _SongManager_ {
                 sequence = :sequence,
                 category = :category,
                 tags = :tags,
-                slides = :slides,
+                lyrics = :lyrics,
                 youtube = :youtube,
                 author = :author,
                 copyright = :copyright,
@@ -588,7 +598,7 @@ export class _SongManager_ {
         updateRecordQ.parameters[":sequence"] = song.sequence;
         updateRecordQ.parameters[":category"] = song.category;
         updateRecordQ.parameters[":tags"] = JSON.stringify(song.tags);
-        updateRecordQ.parameters[":slides"] = JSON.stringify(song.slides);
+        updateRecordQ.parameters[":lyrics"] = JSON.stringify(song.lyrics);
         updateRecordQ.parameters[":youtube"] = song.youtube;
         updateRecordQ.parameters[":author"] = song.author;
         updateRecordQ.parameters[":copyright"] = song.copyright;
@@ -644,6 +654,8 @@ export class _SongManager_ {
         deleteRecordQ.parameters[":id"] = id;
 
         deleteRecordQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
+            this._dbConnection.compact();
+
             const { rowsAffected } = deleteRecordQ.getResult();
 
             // cost-effective way to remove the record cache
@@ -695,6 +707,8 @@ export class _SongManager_ {
         deleteRecordsQ.text = qs.join(' ');
 
         deleteRecordsQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
+            this._dbConnection.compact();
+
             const { rowsAffected } = deleteRecordsQ.getResult();
 
             this._records.length = 0;
@@ -708,6 +722,102 @@ export class _SongManager_ {
             callback(null, evt);
         });
         deleteRecordsQ.execute();
+    }
+}
+
+export class _SongNavigator_ {
+    private _selectedItem: Optional<SongItem> = undefined;
+
+    private readonly _records: SongItem[];
+
+    private readonly _pagination: PaginationState = {
+        page: 1,
+        limit: 10,
+    }
+
+    constructor(private readonly manager: _SongManager_) {
+        this._records = [];
+    }
+
+    public applyFilters(filters: SearchFilter[], callback: ResultCallback<SongItem[]>) {
+        // TODO: impl
+    }
+
+    public clearFilters() {
+        // TODO: impl
+    }
+
+    public showSongCreateDialog() {
+        // TODO: impl
+    }
+
+    public showSongEditDialog() {
+        // TODO: impl
+    }
+
+    public select(item: SongItem) {
+        this._selectedItem = item;
+
+        // TODO: impl
+    }
+
+    public delete(item: SongItem) {
+        // TODO: impl
+    }
+
+    public deleteByCategory(category: string) {
+        // TODO: impl
+    }
+
+    public setRecordsPerPage(limit: number) {
+        this._pagination.limit = limit;
+
+        // TODO: update records
+    }
+
+    public nextPage() {
+        this._pagination.page++;
+
+        // TODO: update records
+    }
+
+    public prevPage() {
+        this._pagination.page--;
+
+        // TODO: update records
+    }
+
+    public gotoPage(page: number) {
+        this._pagination.page = page;
+    }
+
+    public entries(copy: boolean = false) {
+        return copy ? [...this._records] : this._records;
+    }
+
+    public present(item: SongItem, slideIndex: number = 0) {
+        // TODO: impl
+    }
+
+    public addToSchedule(item: SongItem) {
+        // TODO: impl
+    }
+}
+
+export class _BibleManager_ {
+
+}
+
+export class _BibleNavigator_ {
+    constructor(private readonly manager: _BibleManager_) {
+    }
+}
+
+export class _Presenter_ {
+    constructor(
+        private readonly song: _SongManager_,
+        private readonly bible: _BibleManager_,
+    ) {
     }
 }
 
@@ -794,7 +904,7 @@ function processImportSongDB() {
     }
 }
 
-function splitIN2(slides) {
+function splitIN2(slides: string[]): string[] {
     const result: string[] = [];
 
     for (const slide of slides) {
@@ -953,32 +1063,32 @@ export class SongManager {
             }
         }
 
-        function addSong(aN, aP, aO) {
-            m = aN.name;
-            K = aN.catIndex;
-            x = aN.font;
-            v = aN.font2;
-            L = aN.timestamp;
-            k = aN.yvideo;
-            am = aN.bkgnd_fname;
-            P = aN.key;
-            J = aN.copyright;
-            W = aN.notes;
-            if (aO) {
-                au = aN.slides;
-                b = aN.slides2;
+        function addSong(Obj, aP, isImporting) {
+            m = Obj.name;
+            K = Obj.catIndex;
+            x = Obj.font;
+            v = Obj.font2;
+            L = Obj.timestamp;
+            k = Obj.yvideo;
+            am = Obj.bkgnd_fname;
+            P = Obj.key;
+            J = Obj.copyright;
+            W = Obj.notes;
+            if (isImporting) {
+                au = Obj.slides;
+                b = Obj.slides2;
             } else {
-                au = ay(aN.slides);
-                b = ay(aN.slides2);
+                au = ay(Obj.slides);
+                b = ay(Obj.slides2);
             }
-            an = aN.name2;
-            u = aN.tags;
-            R = aN.slideseq;
-            ac = aN.rating;
-            aM = aN.chordsavailable;
-            af = aN.usagecount;
-            ao = aN.subcat;
-            s(aP, aO);
+            an = Obj.name2;
+            u = Obj.tags;
+            R = Obj.slideseq;
+            ac = Obj.rating;
+            aM = Obj.chordsavailable;
+            af = Obj.usagecount;
+            ao = Obj.subcat;
+            s(aP, isImporting);
         }
 
         function updateSong(aN, aO, aR, aS) {
@@ -1362,7 +1472,7 @@ export class SongManager {
             ax = false;
         }
 
-        function s(aN, aR) {
+        function s(aN, isImporting) {
             if (T === 0) {
                 _importProgressPanel.show();
             }
@@ -1411,7 +1521,7 @@ INSERT INTO sm (
                 }
                 aP.removeEventListener(air.SQLEvent.RESULT, aO);
                 aP.removeEventListener(air.SQLErrorEvent.ERROR, aQ);
-                if (aR) {
+                if (isImporting) {
                     if (T === 0) {
                         _importProgressPanel.hide();
                         Toast.success(
@@ -1436,7 +1546,7 @@ INSERT INTO sm (
                     C();
                     F();
                     _loadSongsFromDB();
-                    if (aR) {
+                    if (isImporting) {
                         Toast.success(
                             "Song Database",
                             "Song Lyrics imported to the Song Database"
@@ -1615,26 +1725,46 @@ WHERE id=:id;
             sqlQuery.addEventListener(air.SQLErrorEvent.ERROR, _onSqlError);
 
             let qqq = "";
-            if (type === SongSearchType.TITLE) {
-                qqq = "SELECT * FROM sm WHERE name LIKE :param1 OR title2 LIKE :param1";
-                sqlQuery.parameters[":param1"] = aP;
-            }
-            if (type === SongSearchType.LYRICS) {
-                qqq = "SELECT * FROM sm WHERE lyrics LIKE :param1 OR lyrics2 LIKE :param1 OR name LIKE :param1 OR subcat == :param2";
-                sqlQuery.parameters[":param1"] = aP;
-                sqlQuery.parameters[":param2"] = aP.replace(/%/gi, "");
-            }
-            if (type === SongSearchType.TAGS) {
-                qqq = "SELECT * FROM sm WHERE tags LIKE :param1";
-                sqlQuery.parameters[":param1"] = aP;
-            }
-            if (type === SongSearchType.AUTHOR) {
-                qqq = "SELECT * FROM sm WHERE copy LIKE :param1";
-                sqlQuery.parameters[":param1"] = aP;
-            }
-            if (type === SongSearchType.NUMBER) {
-                qqq = "SELECT * FROM sm WHERE subcat LIKE :param1";
-                sqlQuery.parameters[":param1"] = aP;
+            switch (type) {
+                case SongSearchType.TITLE: {
+                    qqq = "SELECT * FROM sm WHERE name LIKE :param1 OR title2 LIKE :param1";
+                    sqlQuery.parameters[":param1"] = aP;
+                    break;
+                }
+                case SongSearchType.LYRICS: {
+                    qqq = "SELECT * FROM sm WHERE lyrics LIKE :param1 OR lyrics2 LIKE :param1 OR name LIKE :param1 OR subcat == :param2";
+                    sqlQuery.parameters[":param1"] = aP;
+                    sqlQuery.parameters[":param2"] = aP.replace(/%/gi, "");
+                    break;
+                }
+                case SongSearchType.TAGS: {
+                    qqq = "SELECT * FROM sm WHERE tags LIKE :param1";
+                    sqlQuery.parameters[":param1"] = aP;
+                    break;
+                }
+                case SongSearchType.CATEGORY: {
+                    qqq = "SELECT * FROM sm WHERE cat LIKE :param1";
+                    sqlQuery.parameters[":param1"] = aP;
+                    break;
+                }
+                case SongSearchType.AUTHOR: {
+                    qqq = "SELECT * FROM sm WHERE copy LIKE :param1";
+                    sqlQuery.parameters[":param1"] = aP;
+                    break;
+                }
+                case SongSearchType.NUMBER: {
+                    qqq = "SELECT * FROM sm WHERE subcat LIKE :param1";
+                    sqlQuery.parameters[":param1"] = aP;
+                    break;
+                }
+                case SongSearchType.KEY: {
+                    qqq = "SELECT * FROM sm WHERE key = :param1";
+                    sqlQuery.parameters[":param1"] = aP;
+                    break;
+                }
+                default: {
+                    throw new Error("Invalid search type...");
+                }
             }
             sqlQuery.text = qqq;
             sqlQuery.execute();

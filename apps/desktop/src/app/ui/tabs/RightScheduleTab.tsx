@@ -4,7 +4,7 @@ import {ScheduleItemType, scheduleList} from "@stores/global";
 import {scheduler, songManager} from "@/app/glc";
 import {console} from "@/platform/adapters/air";
 import {Component} from "preact";
-import {SongSlideContent} from "@/song/song-manager";
+import {SongPresenter} from "@/song/present";
 
 interface Props {
     scheduleList: any[]; // Replace 'any[]' with the actual type of scheduleList if known
@@ -51,37 +51,31 @@ class _RightScheduleTab extends Component<Props, State> {
     onSelectItem = (index: number) => {
         this.setState({ selectedItem: index });
         // TODO: render selected item's content
-        // $RvW.scheduleObj.onSelChange(index);
     };
 
     locateItem = (index: number) => {
-        scheduler.locate(scheduler.entries()[index]);
-        // $RvW.scheduleObj.locateScheduleItem(index);
+        scheduler.locate(this.props.scheduleList[index]);
     };
 
     deleteItem = (index: number) => {
-        scheduler.remove(scheduler.entries()[index]);
-        // $RvW.scheduleObj.processDelete(index);
+        scheduler.remove(this.props.scheduleList[index]);
     };
 
     deleteAllItems = () => {
         // TODO: prompt user for confirmation
         scheduler.clear();
-        // $RvW.scheduleObj.processDeleteAll();
     };
 
     moveItemUp = () => {
-        if (scheduler.moveUp(scheduler.entries()[this.state.selectedItem])) {
+        if (scheduler.moveUp(this.props.scheduleList[this.state.selectedItem])) {
             this.setState(prevState => ({ selectedItem: prevState.selectedItem - 1 }));
         }
-        // $RvW.scheduleObj.processUp(selectedItem);
     };
 
     moveItemDown = () => {
-        if (scheduler.moveDown(scheduler.entries()[this.state.selectedItem])) {
+        if (scheduler.moveDown(this.props.scheduleList[this.state.selectedItem])) {
             this.setState(prevState => ({ selectedItem: prevState.selectedItem + 1 }));
         }
-        // $RvW.scheduleObj.processDown(selectedItem);
     };
 
     handleSelectedItemChange = () => {
@@ -92,6 +86,7 @@ class _RightScheduleTab extends Component<Props, State> {
         }
 
         const item = this.props.scheduleList[this.state.selectedItem];
+
         console.log('SCH ITEM:', item);
 
         if (item.type === ScheduleItemType.VERSE) {
@@ -100,19 +95,69 @@ class _RightScheduleTab extends Component<Props, State> {
             const pri = $RvW.getSingleVerse(book, chapter, verse, 1);
             const sec = $RvW.getSingleVerse(book, chapter, verse, 2);
 
-            const v = [pri, sec];
+            const v = [{
+                font: $RvW.priFontName,
+                content: pri,
+            }, {
+                font: $RvW.secFontName,
+                content: sec,
+            }];
 
             console.log('VERSE ITEM:', v);
 
-            this.setState({ currentItem: v });
+            this.setState({ currentItem: [item, v] });
         } else {
             const song = songManager.getSong(item.meta.ref);
             // const song = songManager.getSong(207629);
             console.log('SONG ITEM:', song);
 
-            this.setState({ currentItem: song?.slides });
+            const lyrics = [];
+
+            // flatten lyrics
+            if (song) {
+                const lyx = song.lyrics;
+
+                for (let k = 0; k < lyx.length; k++) {
+                    const lyr = lyx[k];
+
+                    for (let i = 0; i < lyr.content.length; i++) {
+                        const slide = lyr.content[i];
+
+                        const slx = (lyrics[i] ||= []);
+                        slx.push({
+                            index: k,
+                            font: lyr.font,
+                            content: slide,
+                        });
+                    }
+                }
+            }
+
+            this.setState({ currentItem: [item, lyrics] });
         }
     };
+
+    presentVerse = (item: any) => {
+        console.log('Presenting verse:', item);
+
+        const [book, chapter, verse] = item.meta.ref.split(':').map(Number);
+
+        $RvW.present_external(book, chapter, verse);
+    }
+
+    presentSlide = (item: any, i: number) => {
+        console.log('Presenting slide:', item, i);
+
+        const id = item.meta.ref;
+        const song = $RvW.songManagerObj.getSongObjWithID(id);
+
+        if (!song) {
+            console.error('Song not found:', id);
+            return;
+        }
+
+        (new SongPresenter(song)).present(i);
+    }
 
     render() {
         const { scheduleList } = this.props;
@@ -141,14 +186,14 @@ class _RightScheduleTab extends Component<Props, State> {
                                             <div class="ui buttons">
                                                 <button
                                                     class="ui icon button"
-                                                    data-tooltip="Locate"
+                                                    // data-tooltip="Locate"
                                                     onClick={() => this.locateItem(i)}
                                                 >
                                                     <i aria-hidden="true" class="bullseye icon"></i>
                                                 </button>
                                                 <button
                                                     class="ui icon negative button"
-                                                    data-tooltip="Remove"
+                                                    // data-tooltip="Remove"
                                                     onClick={() => this.deleteItem(i)}
                                                 >
                                                     <i aria-hidden="true" class="trash icon"></i>
@@ -175,21 +220,19 @@ class _RightScheduleTab extends Component<Props, State> {
                         </div>
 
                         <div class="flex-[0] w-full">
-                            <div class="ui buttons attached">
+                            <div class="ui basic buttons attached">
                                 <button
-                                    class="ui left labeled icon button fluid"
+                                    class="ui icon button fluid"
                                     onClick={() => this.moveItemUp()}
                                     disabled={this.isInvalidSelection() || this.isSelectedFirst()}
                                 >
                                     <i class="caret up icon"></i>
-                                    Move Up
                                 </button>
                                 <button
-                                    class="ui right labeled icon button fluid"
+                                    class="ui icon button fluid"
                                     onClick={() => this.moveItemDown()}
                                     disabled={this.isInvalidSelection() || this.isSelectedLast()}
                                 >
-                                    Move Down
                                     <i class="caret down icon"></i>
                                 </button>
                             </div>
@@ -223,30 +266,48 @@ class _RightScheduleTab extends Component<Props, State> {
                                 </div>
                             </div>
                         ) : (
-                            (scheduleList[selectedItem].type === ScheduleItemType.VERSE) ? (
+                            (currentItem[0].type === ScheduleItemType.VERSE) ? (
                                 <>
-                                    <b>{scheduleList[selectedItem].title}</b>
+                                    <div class="ui basic segment">
+                                        <b>{currentItem[0].title}</b>
 
-                                    {currentItem.map((v: string, i: number) => (
-                                        <div key={i} class="ui compact message">
-                                            <p>{v}</p>
+                                        <div
+                                            class="ui segments cursor-pointer"
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={() => this.presentVerse(currentItem[0])}
+                                        >
+                                            {currentItem[1].map(({font, content}, i: number) => (
+                                                <div key={i} class="ui segment" style={{
+                                                    fontFamily: font,
+                                                }}>
+                                                    <p class="m-0">{content}</p>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    </div>
                                 </>
                             ) : (
                                 <>
-                                    <b>{scheduleList[selectedItem].title}</b>
+                                    <div class="ui basic segment">
+                                        <b>{currentItem[0].title}</b>
 
-                                    <div class="ui segments">
-                                        {currentItem.map(({font, content}: SongSlideContent, i: number) => (
-                                            <div key={i} style={{
-                                                fontFamily: font,
-                                            }} class="ui segment">
-                                                {/* FIXME: content might be null sometimes */}
-                                                {content && content.map((lines: string[], j: number) => (
-                                                    <div key={j} class="ui compact message">
-                                                        {lines.map((line: string, k: number) => (
-                                                            <p key={k}>{line}</p>
+                                        {currentItem[1].map((slide: any[], i: number) => (
+                                            <div
+                                                key={i}
+                                                class="ui segments cursor-pointer"
+                                                role="button"
+                                                tabIndex={0}
+                                                onClick={() => this.presentSlide(currentItem[0], i)}
+                                            >
+                                                {/*<p>Slide {k + 1}</p>*/}
+                                                {slide.map(({font, content}: any, j: number) => (
+                                                    <div key={j} style={{fontFamily: font}} class="ui segment">
+                                                        {(j === 0) && (
+                                                            <div class="ui top left attached label">{i + 1}</div>
+                                                        )}
+                                                        {content.map((line: string, k: number) => (
+                                                            <p class="m-0" key={k}>{line}</p>
                                                         ))}
                                                     </div>
                                                 ))}
@@ -266,5 +327,5 @@ class _RightScheduleTab extends Component<Props, State> {
 export default function RightScheduleTab() {
     const scheduleItems = useStoreState(scheduleList);
 
-    return <_RightScheduleTab scheduleList={scheduleItems} />
+    return <_RightScheduleTab scheduleList={scheduleItems}/>
 }
