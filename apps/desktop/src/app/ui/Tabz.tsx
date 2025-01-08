@@ -104,6 +104,9 @@ class Tabs extends Component<TabsProps, TabsState> {
                 key={index}
                 className={`item ${selectedTab === index ? 'active' : ''}`}
                 onClick={() => this.handleTabClick(index)}
+                style={{
+                    width: `${100 / tabs.length}%`,
+                }}
             >
                 {tab.title}
             </a>
@@ -121,21 +124,10 @@ class Tabs extends Component<TabsProps, TabsState> {
             </div>
         ));
 
-        // TODO: make this dynamic
-        const itemCount = ((c) => {
-            switch (c) {
-                case 2: return 'two';
-                case 3: return 'three';
-                case 4: return 'four';
-                case 7: return 'seven';
-                default: throw new Error('Unsupported tab count');
-            }
-        })(tabs.length);
-
         return (
-            <div class="h-full flex flex-col">
+            <div class="h-full w-full flex flex-col">
                 <div class="flex-[0]">
-                    <div class={`ui fluid ${itemCount} item top attached menu`}>
+                    <div class={`ui fluid item top attached menu`}>
                         {tabTriggers}
                     </div>
                 </div>

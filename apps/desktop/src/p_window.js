@@ -116,6 +116,7 @@ function passVariable(isStageView, _ = undefined) {
     _.p_maxFontSize = $RvW.vvConfigObj.get_p_maxFontSize();
     _.p_enableTransition = $RvW.vvConfigObj.get_p_enableTransition();
     _.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
+    _.p_enableStroke = $RvW.vvConfigObj.get_p_enableStroke();
     _.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
     _.p_align = $RvW.vvConfigObj.get_p_align();
 
@@ -152,6 +153,17 @@ function passVariable(isStageView, _ = undefined) {
             _.p_isArabic2 = true;
         }
     }
+
+    console.log('[>>> passVariable <<<]:', {
+        stageview: isStageView,
+        data: _,
+    });
+
+    $RvW.webServerObj.broadcastWS({
+        event: 'presentation-update',
+        type: Number(isStageView),
+        data: _,
+    });
 }
 
 function getCurrentScreen() {

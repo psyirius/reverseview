@@ -29,6 +29,7 @@ import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
+import {SongEdit} from "@/song/edit";
 
 // export class _SongNavigator_ {
 //     constructor() {
@@ -146,7 +147,7 @@ export class SongNav {
         }
 
         function songnav_category_change(al = 'ALL') {
-            __debug("Selected Category Value: " + al);
+            // __debug("Selected Category Value: " + al);
 
             $("#songnav_editbox").val("");
 
@@ -166,12 +167,12 @@ export class SongNav {
         }
 
         function sn_newSong() {
-            $RvW.songEditObj.showEditPanel(null, false, null);
+            SongEdit.showEditPanel(null);
         }
 
         function sn_editSong() {
-            __debug("Launch panel edit song..");
-            $RvW.songEditObj.showEditPanel(m_currentSongObj, true, m_itemID, m_resNotEmpty);
+            // __debug("Launch panel edit song..");
+            SongEdit.showEditPanel(m_currentSongObj);
         }
 
         function _loadSuggestions(sqlRes, category, searchMode) {
@@ -179,11 +180,11 @@ export class SongNav {
             let searchQuery = $.trim(
                 document.getElementById("songnav_editbox").value
             );
-            __debug("|" + searchQuery + "|");
-            __debug("Search Flag " + searchMode);
+            // __debug("|" + searchQuery + "|");
+            // __debug("Search Flag " + searchMode);
             const wordsInQuery = searchQuery.split(" ");
             const numWordsInQuery = wordsInQuery.length;
-            __debug("Words " + numWordsInQuery);
+            // __debug("Words " + numWordsInQuery);
             if (searchMode === SongSearchType.TITLE && numWordsInQuery === 1) {
                 const av = sqlRes.data.length;
                 for (let ap = 0; ap < av; ap++) {
@@ -195,8 +196,8 @@ export class SongNav {
                         }
                     }
                 }
-                __debug("Keywords Length: " + m_keywords.length);
-                __debug("Keywords: " + m_keywords);
+                // __debug("Keywords Length: " + m_keywords.length);
+                // __debug("Keywords: " + m_keywords);
 
                 showSuggestedList();
             }
@@ -213,38 +214,39 @@ export class SongNav {
             const an = $RvW.wordbrain.getSuggestions();
             const allSuggestions = an.concat(m_keywords);
 
-            __debug("Suggested word - concatenated : " + allSuggestions);
+            // __debug("Suggested word - concatenated : " + allSuggestions);
         }
 
-        function update_songList(sqlResult, am, at) {
+        function update_songList({data}, am, at) {
             if (at == null) {
                 m_resNotEmpty = false;
             }
 
             m_songs_columns.length = 0;
 
-            if (sqlResult.data != null) {
-                __debug("update_songList: Number of songs: " + sqlResult.data.length);
+            if (data != null) {
+                __debug("Loaded SONG from DB:", data.length);
+
                 var an = 0;
                 var aw = "";
                 var aq;
 
-                for (let ar = 0; ar < sqlResult.data.length; ar++) {
+                for (let ar = 0; ar < data.length; ar++) {
                     if (am === "ALL") {
-                        let av = sqlResult.data[ar].name;
+                        let av = data[ar].name;
                         if (startsWith(av)) {
-                            aq = sqlResult.data[ar].id;
-                            m_songs_columns.push({ ID: ar, Title: av });
+                            aq = data[ar].id;
+                            m_songs_columns.push({ id: ar, title: av });
                         }
                     } else {
-                        if (sqlResult.data[ar].cat === am) {
-                            const av = sqlResult.data[ar].name;
-                            var al = sqlResult.data[ar].title2;
-                            var ao = sqlResult.data[ar].font;
+                        if (data[ar].cat === am) {
+                            const av = data[ar].name;
+                            var al = data[ar].title2;
+                            var ao = data[ar].font;
 
                             if (startsWith(av)) {
-                                aq = sqlResult.data[ar].id;
-                                m_songs_columns.push({ ID: ar, Title: av });
+                                aq = data[ar].id;
+                                m_songs_columns.push({ id: ar, title: av });
                             }
                         }
                     }
@@ -253,12 +255,10 @@ export class SongNav {
             _renderSongList();
         }
 
-        function get_songList(sqlResult, category, query) {
+        function get_songList({data}, category, query) {
             let res = [];
 
-            if (sqlResult.data != null) {
-                const { data } = sqlResult;
-
+            if (data != null) {
                 for (const item of data) {
                     if (category === "ALL") {
                         const itemName = item.name;
@@ -289,7 +289,7 @@ export class SongNav {
 
         function update_CategoryList(categories) {
             const catz = categories?.map((c) => $.trim(c.cat)).filter(e => !!e) || [];
-            __debug("Update Category List: ", catz);
+            // __debug("Update Category List: ", catz);
             songCategories.set(catz);
             selectedSongCategory.set(null);
         }
@@ -366,7 +366,7 @@ export class SongNav {
         }
 
         function render_lyrics(s) {
-            __debug("Render Lyrics:", (s));
+            // __debug("Render Lyrics:", s);
 
             if (!s) {
                 // Reset the lyrics
@@ -516,7 +516,7 @@ export class SongNav {
         }
 
         function searchComplete(sqlRes, al) {
-            __debug("Search Complete:", sqlRes);
+            // __debug("Search Complete:", sqlRes);
 
             const catIdx = selectedSongCategory.get();
             const selectedCategory = catIdx === null ? 'ALL' : songCategories.get()[catIdx];
@@ -573,7 +573,7 @@ export class SongNav {
         function _renderSongList() {
             if (m_songs_columns != null) {
                 console.trace("Updating song list...", m_songs_columns.length);
-                console.trace(m_songs_columns[0]);
+                // console.trace(m_songs_columns[0]);
 
                 songListState.update((state) => {
                     return {
@@ -591,9 +591,9 @@ export class SongNav {
 
         function selectSong(p) {
             if (p) {
-                const {ID, Title} = p;
-                m_itemID = ID;
-                m_itemTitle = Title;
+                const {id, title} = p;
+                m_itemID = id;
+                m_itemTitle = title;
                 renderLyricsForSelectedSong();
             }
         }

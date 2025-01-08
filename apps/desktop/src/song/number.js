@@ -5,7 +5,7 @@ export class SongNumber {
         this.setMaxMalayalam = f;
         this.setMaxHindi = c;
         this.getUniqueSongNumber = i;
-        this.assignSongNumber = d;
+        this.assignSongNumber = assignSongNumber;
 
         function f(j) {
             a[0] = parseInt(j) + 1;
@@ -15,7 +15,7 @@ export class SongNumber {
         }
         function b() { }
         function i(j) { }
-        function d(k, l) {
+        function assignSongNumber(k, l) {
             var j = h(k);
             var m = "";
             switch (j) {

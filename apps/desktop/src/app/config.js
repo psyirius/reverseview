@@ -27,6 +27,7 @@ export class Config {
         let m_maxFontSize;
         let m_enableTransition;
         let m_enableShadow;
+        let m_enableStroke;
         let m_enableTitle;
         let m_textColor;
         let m_textColor2;
@@ -144,6 +145,7 @@ export class Config {
             m_maxFontSize = 100;
             m_enableTransition = true;
             m_enableShadow = true;
+            m_enableStroke = true;
             m_enableTitle = true;
             m_textColor = "#FFFFFF";
             m_textColor2 = "#FFFFFF";
@@ -252,6 +254,14 @@ export class Config {
             } else {
                 m_enableShadow = true;
             }
+
+            var aU = doc.getElementsByTagName("enableStroke")[0];
+            if (aU != null) {
+                m_enableStroke = _parse_bool_str(aU.textContent);
+            } else {
+                m_enableStroke = true;
+            }
+
             var a1 = doc.getElementsByTagName("enableTitle")[0];
             if (a1 != null) {
                 m_enableTitle = _parse_bool_str(a1.textContent);
@@ -547,6 +557,7 @@ export class Config {
             aH += "  <maxFontSize>" + m_maxFontSize + "</maxFontSize>\n";
             aH += "  <enableTransition>" + m_enableTransition + "</enableTransition>\n";
             aH += "  <enableShadow>" + m_enableShadow + "</enableShadow>\n";
+            aH += "  <enableStroke>" + m_enableStroke + "</enableStroke>\n";
             aH += "  <enableTitle>" + m_enableTitle + "</enableTitle>\n";
             aH += "  <textColor>" + m_textColor + "</textColor>\n";
             aH += "  <textColor2>" + m_textColor2 + "</textColor2>\n";
@@ -724,6 +735,9 @@ export class Config {
         };
         this.get_p_enableShadow = function () {
             return m_enableShadow;
+        };
+        this.get_p_enableStroke = function () {
+            return m_enableStroke;
         };
         this.get_p_showTitle = function () {
             return m_enableTitle;
@@ -953,6 +967,10 @@ export class Config {
             m_enableShadow = aH;
             return true;
         };
+        this.set_p_enableStroke = function (aH) {
+            m_enableStroke = aH;
+            return true;
+        }
         this.set_p_showTitle = function (aH) {
             m_enableTitle = aH;
             return true;
@@ -1309,6 +1327,7 @@ export function configInit() {
 
     document.getElementById("presentConfigEnableSongTitle").checked = !!$RvW.vvConfigObj.get_p_showTitle();
     document.getElementById("presentConfigEnableShadow").checked = !!$RvW.vvConfigObj.get_p_enableShadow();
+    document.getElementById("presentConfigEnableOutline").checked = !!$RvW.vvConfigObj.get_p_enableStroke();
     const a = $RvW.vvConfigObj.get_p_align();
     document.getElementById("justify_left").checked = false;
     document.getElementById("justify_center").checked = false;

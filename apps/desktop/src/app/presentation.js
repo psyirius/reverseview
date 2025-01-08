@@ -62,6 +62,8 @@ export function savePresentationMargin() {
     $RvW.vvConfigObj.set_p_showTitle(d);
     var g = document.getElementById("presentConfigEnableShadow").checked;
     $RvW.vvConfigObj.set_p_enableShadow(g);
+    var z = document.getElementById("presentConfigEnableOutline").checked;
+    $RvW.vvConfigObj.set_p_enableStroke(z);
     var q = document.getElementById("justify_left").checked;
     var z = document.getElementById("justify_center").checked;
     var a = document.getElementById("justify_right").checked;

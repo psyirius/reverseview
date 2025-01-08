@@ -1,10 +1,14 @@
 import { BgContext } from '@app/background'
-import {setupVerseEditObject} from "@/bible/edit";
 import {manageVersion, showBrowse} from "@/bible/version";
 import {promoteVV} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import {showBibleSelectPanel, showRemotePanel} from "@stores/global";
+import {
+    selectedBibleVersionForVerseEdit,
+    showBibleSelectPanel,
+    showRemotePanel,
+    showVerseEditPanel
+} from "@stores/global";
 
 const MAIN_MENU = [
     {
@@ -23,7 +27,13 @@ const MAIN_MENU = [
             { label: 'Select', onSelect: setup_bible_version },
             { label: 'Manage', onSelect: show_bible_manage },
             { type: 'separator' },
-            { label: 'Edit Verse', onSelect: show_editVerse_UI },
+            {
+                label: 'Edit Verse',
+                items: [
+                    { label: 'Primary', onSelect: show_editVerse_UI_1 },
+                    { label: 'Secondary', onSelect: show_editVerse_UI_2 },
+                ]
+            },
         ]
     },
     {
@@ -123,9 +133,13 @@ function add_bible_version() {
 function show_bible_manage() {
     manageVersion();
 }
-function show_editVerse_UI() {
-    setupVerseEditObject();
-    $RvW.editVerse_UI_Obj.show();
+function show_editVerse_UI_1() {
+    selectedBibleVersionForVerseEdit.set(0);
+    showVerseEditPanel.set(true);
+}
+function show_editVerse_UI_2() {
+    selectedBibleVersionForVerseEdit.set(1);
+    showVerseEditPanel.set(true);
 }
 function remoteVV_UI() {
     showRemotePanel.set(true);

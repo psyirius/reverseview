@@ -20,6 +20,7 @@ declare var YAHOO: YUI2;
 interface YUI3 {
     Promise: any;
     Panel: any;
+    Tab: any;
     TabView: any;
     Slider: any;
     Color: any;

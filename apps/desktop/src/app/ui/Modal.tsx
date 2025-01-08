@@ -9,6 +9,8 @@ interface Props {
     children: any;
     title?: string;
     width?: string;
+    zIndex?: number;
+    height?: string;
 }
 
 interface State {
@@ -63,14 +65,14 @@ class Modal extends Component<Props, State> {
     };
 
     render() {
-        const {isOpen, onClose, children, title, width = '80%'} = this.props;
+        const {isOpen, onClose, children, title, height, width = '80%', zIndex = 1001} = this.props;
 
         if (!isOpen) return null;
 
         return createPortal(
-            <div class="x-u-i mdl">
+            <div class="x-u-i mdl" style={{ zIndex }}>
                 <div class="modal-backdrop" onClick={this.handleBackdropClick}>
-                    <div class="modal" style={{ width }}>
+                    <div class="modal" style={{ width, height }}>
                         <div class="modal-header">
                             {title && <h2 class="modal-title">{title}</h2>}
                             <button class="modal-close-button" onClick={onClose}>

@@ -9,7 +9,12 @@ import {SongSearchType} from "@/const";
 import {Song} from '@/song/song-obj';
 import {Toast} from "@app/toast";
 import {insertError, insertResult} from "@/song/indexing";
-import {checkVerUpdateFlags, isUpToDate, task1Complete, task1Status} from "@/versionupdate";
+import {
+    checkVerUpdateFlags,
+    isUpToDate,
+    task1Complete,
+    task1Status
+} from "@/versionupdate";
 import {isBlank, saveFileInAppStorage} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
@@ -68,7 +73,7 @@ interface SearchFilterWithTITLE {
 }
 
 interface SearchFilterWithCONTENT {
-    type: SearchFilterType.CONTENT;
+    type: SearchFilterType.LYRICS;
     value: string;
 }
 
@@ -99,19 +104,20 @@ interface SearchFilterWithBPM {
 }
 
 type SearchFilter = (
-    SearchFilterWithID |
-    SearchFilterWithSEQUENCE |
-    SearchFilterWithCONTENT |
-    SearchFilterWithCATEGORY |
-    SearchFilterWithTAGS |
-    SearchFilterWithAUTHOR |
-    SearchFilterWithKEY |
-    SearchFilterWithBPM |
+    SearchFilterWithID          |
+    SearchFilterWithSEQUENCE    |
+    SearchFilterWithCONTENT     |
+    SearchFilterWithCATEGORY    |
+    SearchFilterWithTAGS        |
+    SearchFilterWithAUTHOR      |
+    SearchFilterWithKEY         |
+    SearchFilterWithBPM         |
     SearchFilterWithTITLE
 );
 
 type SearchFilterOptions = {
     limit?: number,
+    page?: number, // 0-based, used with limit
 }
 
 type ResultCallback<Result, Error = any> = (
@@ -256,6 +262,10 @@ export class _SongManager_ {
 
         if (options.limit) {
             qs.push(`LIMIT ${options.limit}`);
+
+            if (options.page) {
+                qs.push(`OFFSET ${options.page * options.limit}`);
+            }
         }
 
         searchQ.text = qs.join(' ');
@@ -726,7 +736,7 @@ export class _SongManager_ {
 }
 
 export class _SongNavigator_ {
-    private _selectedItem: Optional<SongItem> = undefined;
+    private _activeItem: Optional<SongItem> = undefined;
 
     private readonly _records: SongItem[];
 
@@ -735,8 +745,14 @@ export class _SongNavigator_ {
         limit: 10,
     }
 
-    constructor(private readonly manager: _SongManager_) {
+    constructor(
+        private readonly manager: _SongManager_,
+    ) {
         this._records = [];
+    }
+
+    onChange(activeItem: SongItem) {
+        console.log('Song changed:', activeItem);
     }
 
     public applyFilters(filters: SearchFilter[], callback: ResultCallback<SongItem[]>) {
@@ -756,7 +772,7 @@ export class _SongNavigator_ {
     }
 
     public select(item: SongItem) {
-        this._selectedItem = item;
+        this._activeItem = item;
 
         // TODO: impl
     }
@@ -767,6 +783,10 @@ export class _SongNavigator_ {
 
     public deleteByCategory(category: string) {
         // TODO: impl
+    }
+
+    public getRecordsPerPage() {
+        return this._pagination.limit;
     }
 
     public setRecordsPerPage(limit: number) {
@@ -804,12 +824,137 @@ export class _SongNavigator_ {
     }
 }
 
-export class _BibleManager_ {
+// index based
+interface BibleVerses {
+    [book: number]: {
+        [chapter: number]: {
+            [verse: number]: string,
+        }
+    }
+}
 
+interface BibleVersion {
+    id: number,
+    name: string,
+    lang: string,
+    file: string,
+    font: string,
+    bookNames: string[],
+    verses: BibleVerses,
+    copyright: string,
+}
+
+export class _BibleManager_ {
+    private readonly _versions: BibleVersion[];
+
+    constructor() {
+        this._versions = [];
+    }
+
+    public getVersions() {
+        return this._versions;
+    }
+
+    public getVersionById(versionId: number) {
+        for (const version of this._versions) {
+            if (version.id === versionId) {
+                return version;
+            }
+        }
+
+        return null;
+    }
+
+    public getBookName(book: number, versionId: number) {
+        const version = this.getVersionById(versionId);
+
+        if (version) {
+            return version.bookNames[book];
+        }
+
+        return null;
+    }
+
+    public addVersion(version: BibleVersion) {
+        this._versions.push(version);
+    }
+
+    public clearVersions() {
+        this._versions.length = 0;
+    }
 }
 
 export class _BibleNavigator_ {
-    constructor(private readonly manager: _BibleManager_) {
+    private readonly _activeVersions: BibleVersion[];
+    private readonly _activeVerse: [number, number, number] = [0, 0, 0];
+
+    constructor(
+        private readonly manager: _BibleManager_
+    ) {
+    }
+
+    public getSelectedRefName(versionId: number): string {
+        const [book, chapter, verse] = this._activeVerse;
+
+        const bookName = this.manager.getBookName(book, versionId);
+
+        if (bookName) {
+            return `${bookName} ${chapter + 1}:${verse + 1}`;
+        }
+
+        return null;
+    }
+
+    onChange(ref: [number, number, number]) {
+        console.log('Verse changed:', ref);
+    }
+
+    public activateVersion(versionId: number) {
+        const version = this.manager.getVersionById(versionId);
+
+        if (version) {
+            this._activeVersions.push(version);
+        } else {
+            throw new Error(`Version with ID ${versionId} not found`);
+        }
+    }
+
+    public deactivateVersion(versionId: number) {
+        const version = this.manager.getVersionById(versionId);
+
+        if (version) {
+            const index = this._activeVersions.indexOf(version);
+
+            if (index !== -1) {
+                this._activeVersions.splice(index, 1);
+            }
+        } else {
+            throw new Error(`Version with ID ${versionId} not found`);
+        }
+    }
+
+    public deactivateAllVersions() {
+        this._activeVersions.length = 0;
+    }
+
+    public search(query: string, callback: ResultCallback<any[]>) {
+        // TODO: impl
+    }
+
+    public select(book: number): void;
+    public select(book: number, chapter: number): void;
+    public select(book: number, chapter: number, verse: number): void {
+        book ||= 0;
+        chapter ||= 0;
+        verse ||= 0;
+
+        this._activeVerse[0] = book;
+        this._activeVerse[1] = chapter;
+        this._activeVerse[2] = verse;
+
+        this.onChange(this._activeVerse);
+
+        // TODO: impl
     }
 }
 
@@ -818,6 +963,38 @@ export class _Presenter_ {
         private readonly song: _SongManager_,
         private readonly bible: _BibleManager_,
     ) {
+    }
+
+    public presentSong(item: SongItem, slideIndex: number = 0) {
+        // TODO: impl
+    }
+
+    public presentVerse(book: number, chapter: number, verse: number) {
+        // TODO: impl
+    }
+
+    public nextSlide() {
+        // TODO: impl
+    }
+
+    public prevSlide() {
+        // TODO: impl
+    }
+
+    public nextVerse() {
+        // TODO: impl
+    }
+
+    public prevVerse() {
+        // TODO: impl
+    }
+
+    public blank() {
+        // TODO: impl
+    }
+
+    public close() {
+        // TODO: impl
     }
 }
 
@@ -1153,6 +1330,7 @@ export class SongManager {
                 if (item.id === parseInt(songId)) {
                     const so = new Song();
 
+                    so.id = item.id;
                     so.name = item.name;
                     so.catIndex = item.cat;
                     so.font = item.font;
@@ -1191,6 +1369,7 @@ export class SongManager {
             var aN = songz.length;
             for (var aR = 0; aR < aN; aR++) {
                 if (songz[aR].name == aQ) {
+                    aS.id = songz[aR].id;
                     aS.name = songz[aR].name;
                     aS.catIndex = songz[aR].cat;
                     aS.font = songz[aR].font;
@@ -1237,6 +1416,7 @@ export class SongManager {
             var aP = new Song();
             aP.slides = [];
             if (!aQ) {
+                aP.id = songz[aO].id;
                 aP.name = songz[aO].name;
                 aP.catIndex = songz[aO].cat;
                 aP.font = songz[aO].font;
@@ -1542,7 +1722,6 @@ INSERT INTO sm (
                     __debug("UPDATE UI Flag....");
                     const aU = aP.getResult();
                     const aT = aU.lastInsertRowID;
-                    $RvW.songEditObj.setEditPrimaryKey(aT);
                     C();
                     F();
                     _loadSongsFromDB();

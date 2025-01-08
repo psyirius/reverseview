@@ -1,4 +1,5 @@
 export class Song {
+    id                         = null;
     catIndex            = "";
     name                = "";
     font                = "";

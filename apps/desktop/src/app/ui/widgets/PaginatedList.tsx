@@ -76,9 +76,11 @@ class PaginatedList<T> extends Component<Props<T>, State<T>> {
                 >
                     ‹
                 </button>
+
                 <span class="pagination-current-page">
-          {this.state.currentPage} of {pageCount}
-        </span>
+                    {this.state.currentPage} of {pageCount}
+                </span>
+
                 <button
                     class="pagination-button"
                     disabled={this.state.currentPage === pageCount}

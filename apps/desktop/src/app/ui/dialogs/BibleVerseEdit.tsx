@@ -1,72 +1,139 @@
 import {useEffect, useRef, useState} from "preact/hooks";
-import {showVerseEditPanel} from "@stores/global";
+import {selectedBibleVersionForVerseEdit, showVerseEditPanel} from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
+import Modal from "@app/ui/Modal";
+import {$RvW} from "@/rvw";
 
 export default function BibleVerseEditDialog() {
-    const container = useRef(null);
-
     const open = useStoreState(showVerseEditPanel);
+    const version2Edit = useStoreState(selectedBibleVersionForVerseEdit);
 
-    const [panel, setPanel] = useState(null);
+    const [verseRef, setVerseRef] = useState('');
+    const [verseText, setVerseText] = useState('');
+    const [verseFont, setVerseFont] = useState('');
 
-    useEffect(() => {
-        const panel = new $Y.Panel({
-            headerContent   : 'Edit Bible Verse',
-            srcNode         : container.current!,
-            width           : "600px",
-            height          : 'auto',
-            zIndex          : 100,
-            centered        : true,
-            modal           : true,
-            render          : true,
-            visible         : false, // make visible explicitly with .show()
-        });
+    const updatedVerseTextRef = useRef<HTMLTextAreaElement>(null);
 
-        panel.on('visibleChange', function (e: any) {
-            showVerseEditPanel.set(e.newVal);
-        });
+    function handleCloseModal() {
+        showVerseEditPanel.set(false);
+    }
 
-        setPanel(panel);
-    }, []);
+    const onClickCancel = () => {
+        handleCloseModal();
+    }
+
+    const onClickUpdate = () => {
+        const b = $RvW.getBookValue();
+        const c = $RvW.getChapterValue();
+        const v = $RvW.getVerseValue();
+
+        const verseText = String(updatedVerseTextRef.current.value).trim();
+
+        switch (version2Edit) {
+            case 0: {
+                $RvW.bibledbObj[1].updateVerse(b + 1, c + 1, v + 1, verseText);
+                break;
+            }
+            case 1: {
+                $RvW.bibledbObj[2].updateVerse(b + 1, c + 1, v + 1, verseText);
+                break;
+            }
+            default: {
+                throw new Error(`Invalid version: ${version2Edit}`);
+            }
+        }
+
+        handleCloseModal();
+    }
 
     // panel visibility
     useEffect(() => {
         if (open) {
-            panel?.show();
-        } else {
-            panel?.hide();
+            const b = $RvW.getBookValue();
+            const c = $RvW.getChapterValue();
+            const v = $RvW.getVerseValue();
+
+            setVerseRef(`${$RvW.booknames[b]} ${parseInt(c) + 1}:${parseInt(v) + 1}`);
+
+            let font: string;
+            let verseText: string;
+            switch (version2Edit) {
+                case 0: {
+                    font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+                    verseText = $RvW.getSingleVerse(b, c, v, 1);
+                    break;
+                }
+                case 1: {
+                    font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+                    verseText = $RvW.getSingleVerse(b, c, v, 2);
+                    break;
+                }
+                default: {
+                    throw new Error(`Invalid version: ${version2Edit}`);
+                }
+            }
+
+            setVerseFont(font);
+
+            // TODO: get verse text directly without the number prefix
+            const vt = verseText.substr(verseText.indexOf(" ") + 1);
+
+            setVerseText(vt);
         }
     }, [open]);
 
     return (
-        <div ref={container}>
-            <div class="yui3-widget-bd">
-                <div class="ui form container segment">
-                    <div id="generalPanelDIV_delete" class="ui grid bibleEditDIV">
-                        <div class="column">
-                            <div class="form-group row field">
-                                <label>Reference</label>
-                                <div id="currentVerseRefDiv"></div>
-                            </div>
+        <Modal
+            title="Edit Bible Verse"
+            width="600px"
+            isOpen={open}
+            onClose={handleCloseModal}
+        >
+            <div class="ui form container segment">
+                <div class="field">
+                    <label>Reference</label>
+                    <div>{verseRef}</div>
+                </div>
+                <div class="field">
+                    <label>Current</label>
+                    <textarea
+                        style={{
+                            fontFamily: verseFont,
+                        }}
+                        rows={3}
+                        readOnly={true}
+                    >
+                        {verseText}
+                    </textarea>
+                </div>
+                <div class="field">
+                    <label>Updated</label>
+                    <textarea
+                        style={{
+                            fontFamily: verseFont,
+                        }}
+                        rows={3}
+                        readOnly={true}
+                    >
+                        {verseText}
+                    </textarea>
+                </div>
 
-                            <div class="form-group row field">
-                                <label>Current Verse Text</label>
-                                <div id="currentVerseTextDiv"></div>
-                            </div>
-
-                            <div class="form-group row field">
-                                <label>Updated Verse Text</label>
-                                <textarea rows={3} id="updatedVerseTextDiv"></textarea>
-                            </div>
-
-                            <div class="form-group row field">
-                                <button class="ui primary button" id="updateVerseTextButton">UPDATE</button>
-                                <button class="ui primary button" id="cancelVerseTextButton">CANCEL</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="ui buttons">
+                    <button
+                        class="ui primary button"
+                        onClick={onClickUpdate}
+                    >
+                        Update
+                    </button>
+                    <button
+                        class="ui secondary button"
+                        onClick={onClickCancel}
+                    >
+                        Cancel
+                    </button>
                 </div>
             </div>
-        </div>
+        </Modal>
     );
 }

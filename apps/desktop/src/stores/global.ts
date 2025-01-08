@@ -103,6 +103,9 @@ export const selectedSongStateName2: Writable<string | null> = writable(null);
 export const selectedSongStateSeqNum: Writable<number | null> = writable(null);
 export const selectedSongStateSlides: Writable<any | null> = writable(null);
 
+export const selectedBibleVersionForVerseEdit: Writable<number> = writable(0);
+export const selectedSongForEdit: Writable<any | null> = writable(null);
+
 export const showRemotePanel: Writable<boolean> = writable(false);
 export const showSongEditPanel: Writable<boolean> = writable(false);
 export const showLyricEditPanel: Writable<boolean> = writable(false);

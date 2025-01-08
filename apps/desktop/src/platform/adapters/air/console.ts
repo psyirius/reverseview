@@ -92,51 +92,88 @@ function objectToString(obj: any, indent = 0): string {
         return colorize(`[Function: ${obj.name}]`, COLORS.blue);
     }
 
+    // date
     if (isDate(obj)) {
         return colorize(obj.toISOString(), COLORS.magenta);
     }
 
+    // array
+    if (isArray(obj)) {
+        const indentStr = repeatString('  ', indent);
+
+        const lines: string[] = [
+            '[',
+        ];
+
+        for (let j = 0; j < obj.length; j++) {
+            let value = obj[j];
+            let valueStr: string;
+
+            switch (typeof value) {
+                case 'string': valueStr = colorize(`"${value}"`, COLORS.green); break;
+                case 'number': valueStr = colorize(String(value), COLORS.yellow); break;
+
+                case 'object':
+                default: valueStr = objectToString(value, indent + 1); break;
+            }
+
+            let output = `${indentStr}  ${valueStr}`;
+
+            output += (j < obj.length - 1) ? ',' : '';
+
+            lines.push(output);
+        }
+
+        lines.push(indentStr + ']');
+
+        return lines.join('\n');
+    }
+
+    // non-plain object
     if ((typeof obj.toString === 'function') && (obj.toString() !== '[object Object]')) {
         return obj.toString();
     }
 
-    const indentStr = repeatString("  ", indent);
+    // plain object
+    {
+        const indentStr = repeatString('  ', indent);
 
-    const lines: string[] = [
-        '{',
-    ];
+        const lines: string[] = [
+            '{',
+        ];
 
-    const keys: string[] = [];
-    for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            keys.push(key);
-        }
-    }
-
-    for (let j = 0; j < keys.length; j++) {
-        const k = keys[j];
-
-        let value = obj[k as keyof typeof obj];
-        let valueStr: string;
-
-        switch (typeof value) {
-            case 'string': valueStr = colorize(`"${value}"`, COLORS.green); break;
-            case 'number': valueStr = colorize(String(value), COLORS.yellow); break;
-
-            case 'object':
-            default: valueStr = objectToString(value, indent + 1); break;
+        const keys: string[] = [];
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                keys.push(key);
+            }
         }
 
-        let output = `${indentStr}  ${k}: ${valueStr}`;
+        for (let j = 0; j < keys.length; j++) {
+            const k = keys[j];
 
-        output += (j < keys.length - 1) ? "," : "";
+            let value = obj[k as keyof typeof obj];
+            let valueStr: string;
 
-        lines.push(output);
+            switch (typeof value) {
+                case 'string': valueStr = colorize(`"${value}"`, COLORS.green); break;
+                case 'number': valueStr = colorize(String(value), COLORS.yellow); break;
+
+                case 'object':
+                default: valueStr = objectToString(value, indent + 1); break;
+            }
+
+            let output = `${indentStr}  ${k}: ${valueStr}`;
+
+            output += (j < keys.length - 1) ? ',' : '';
+
+            lines.push(output);
+        }
+
+        lines.push(indentStr + '}');
+
+        return lines.join('\n');
     }
-
-    lines.push(indentStr + "}");
-
-    return lines.join("\n");
 }
 
 function polyfillLog(outputLog: (val: string) => void, ...args: any[]): void {

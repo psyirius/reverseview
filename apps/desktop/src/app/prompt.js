@@ -7,7 +7,7 @@ export const Prompt = {
 
         const dialog = this.__instance = new $Y.Panel({
             width      : 410,
-            zIndex     : 1000,
+            zIndex     : 9999,
             centered   : true,
             modal      : true,
             render     : '#prompt-panel',

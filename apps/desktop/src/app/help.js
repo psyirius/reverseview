@@ -11,7 +11,7 @@ export class HelpUiPanel {
         this.m_body = `
 <div id="helpID" class="generalDIV">
   <div class="generaltext">
-    <p><b>ReVerseView 8.5.0 (dev)</b></p>
+    <p><b>ReVerseView 8.5.0 (alpha)</b></p>
     <br>
     <p>Runtime: Adobe AIR ${runtimeVersion}</p>
     <p>User Agent: ${userAgent}</p>

@@ -96,17 +96,6 @@ export default function RightLyricsTab() {
                 ))}
             </div>
 
-            {/* TAGS */}
-            <div class="ui vertical segment">
-                <div class="ui basic labels">
-                    {songTags.map((tag, i) => (
-                        <a key={i} class="ui label" onClick={() => filterByTag(tag)}>
-                            {tag}
-                        </a>
-                    ))}
-                </div>
-            </div>
-
             {/* SLIDES */}
             <div class="flex-1 h-full w-full relative">
                 <div class="absolute h-full w-full m-0 p-2 overflow-auto" style={{
@@ -162,6 +151,16 @@ export default function RightLyricsTab() {
             {/* ADDITIONAL INFO */}
             <div class="flex flex-col pt-2">
                 <div class="ui form">
+                    <div class="inline fields">
+                        <div class="eight wide field">
+                            <label>Tags</label>
+                            {songTags.map((tag, i) => (
+                                <a key={i} class="ui label" onClick={() => filterByTag(tag)}>
+                                    {tag}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
                     <div class="inline fields">
                         <div class="eight wide field">
                             <label>Category</label>

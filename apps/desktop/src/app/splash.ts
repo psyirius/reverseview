@@ -60,7 +60,7 @@ const Splash = {
             this.__instance = htmlWindow;
         } else {
             const instance = this.__instance;
-            if (instance != null) {
+            if (instance !== null) {
                 instance.window.nativeWindow.close();
                 this.__instance = null;
             }

@@ -1,7 +1,178 @@
 // @ts-nocheck
 
+interface PresentationConfig {
+    /**
+     * List of primary slides (html)
+     * */
+    p_text1_arr: string[];
+    /**
+     * List of secondary slides (html)
+     * */
+    p_text2_arr: string[];
+    /**
+     * Primary text font
+     * */
+    p_text1_font: string;
+    /**
+     * Secondary text font
+     * */
+    p_text2_font: string;
+    /**
+     * Title text
+     * */
+    p_title?: string;
+    /**
+     * Footnote text
+     * */
+    p_footnote?: string;
+    /**
+     * Current index
+     * */
+    p_current_index: number;
+    /**
+     * Last index
+     * */
+    p_last_index: number;
+    /**
+     * Background image filenames
+     * */
+    p_bkgnd_filename: string[];
+    /**
+     * Enable background motion (zoom/pan)
+     * */
+    p_bkgnd_motion: boolean;
+    /**
+     * Text color in hex (primary)
+     * */
+    p_font_color: string;
+    /**
+     * Text color in hex (secondary)
+     * */
+    p_font_color2: string;
+    /**
+     * Inverted text color in hex (primary)
+     * */
+    p_font_color_invert: string;
+    /**
+     * Inverted text color in hex (secondary)
+     * */
+    p_font_color2_invert: string;
+    /**
+     * Window width
+     * */
+    p_window_X: number;
+    /**
+     * Window height
+     * */
+    p_window_Y: number;
+    /**
+     * Top margin
+     * */
+    p_topMargin: number;
+    /**
+     * Bottom margin
+     * */
+    p_bottomMargin: number;
+    /**
+     * Left margin
+     * */
+    p_leftMargin: number;
+    /**
+     * Right margin
+     * */
+    p_rightMargin: number;
+    /**
+     * Text alignment
+     * */
+    p_align: 'left' | 'center' | 'right';
+    /**
+     * Text orientation
+     * */
+    p_text_orientation: number;
+    /**
+     * Maximum font size
+     * */
+    p_maxFontSize: number;
+    /**
+     * Enable transition
+     * */
+    p_enableTransition: boolean;
+    /**
+     * Transition duration
+     * */
+    p_transitionDuration: number;
+    /**
+     * Enable shadow
+     * */
+    p_enableShadow: boolean;
+    /**
+     * Enable stroke
+     * */
+    p_enableStroke: boolean;
+    /**
+     * Background color in hex
+     * */
+    p_bkgnd_color: string;
+    /**
+     * Background color 1 in rgb (gradient)
+     * */
+    p_bkgnd_color1: string;
+    /**
+     * Background color 2 in rgb (gradient)
+     * */
+    p_bkgnd_color2: string;
+    /**
+     * Background gradient orientation (angle)
+     * */
+    p_bkgnd_grad_orient: number;
+    /**
+     * Background type
+     * */
+    p_bkgnd_type: 1 | 2 | 3;
+    /**
+     * Logo text
+     * */
+    p_logo: string;
+    /**
+     * Show title
+     * */
+    p_showTitle: boolean;
+    /**
+     * Show date
+     * */
+    p_showDate: boolean;
+    /**
+     * Shade background
+     * */
+    p_shadeBackground: boolean;
+    /**
+     * Transparent background
+     * */
+    p_transparentBackground: boolean;
+    /**
+     * Is Arabic (primary)
+     * */
+    p_isArabic1: boolean;
+    /**
+     * Is Arabic (secondary)
+     * */
+    p_isArabic2: boolean;
+    /**
+     * Verse 1 scale factor (primary)
+     * */
+    p_ver1ScaleFactor: number;
+    /**
+     * Verse 2 scale factor (secondary)
+     * */
+    p_ver2ScaleFactor: number;
+    /**
+     * Format multiple lines
+     * */
+    p_format_multiplelines: boolean;
+}
+
 !(function (exports) {
-    const _$ = {
+    const _$: PresentationConfig = {
         p_text1_arr: [],
         p_text2_arr: [],
         p_text1_font: "",
@@ -25,7 +196,9 @@
         p_align: "left",
         p_maxFontSize: 100,
         p_enableTransition: true,
+        p_transitionDuration: 150,
         p_enableShadow: true,
+        p_enableStroke: true,
         p_bkgnd_color: "000000",
         p_bkgnd_color1: "00ffa0",
         p_bkgnd_color2: "FacFFF",
@@ -46,7 +219,6 @@
         p_format_multiplelines: true,
     };
 
-    const TRANSITION_DURATION = 150;
     const DEBUG_ENABLED = true;
 
     let transitionDuration = 0;
@@ -57,32 +229,15 @@
     let showingTheme = false;
     let firstTime = true;
 
+    let titleAllocation = 0.1;
+    let contentAllocation = 0.85;
+    let footerAllocation = 0.05;
+
     let canvas_top, canvas_left, canvas_height, canvas_width;
     let title_top, title_left, title_height, title_width;
     let c1_top, c1_left, c1_height, c1_width;
     let c2_top, c2_left, c2_height, c2_width;
     let f_top, f_left, f_height, f_width;
-
-    let titleAllocation = 0.1;
-    let contentAllocation = 0.85;
-    let footerAllocation = 0.05;
-
-    function withinRange(lb, ub, val) {
-        return val >= lb && val <= ub;
-    }
-
-    function IsNumeric(val) {
-        const charset = "0123456789";
-
-        for (let i = 0; i < val.length; i++) {
-            const char = val.charAt(i);
-            if (charset.indexOf(char) === -1) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     // INIT
     function initPresentation() {
@@ -515,9 +670,10 @@
     function updateContentStyling() {
         _$.p_font_color_invert = invert_hex_color(_$.p_font_color);
         _$.p_font_color2_invert = invert_hex_color(_$.p_font_color2);
-        let b = _$.p_format_multiplelines;
+
+        let multiLine = _$.p_format_multiplelines;
         if (_$.p_title !== "") {
-            b = true;
+            multiLine = true;
         }
 
         const titleEl = document.getElementById("presentationTitle");
@@ -532,7 +688,7 @@
                     detectMultiLine: false,
                     multiLine: _$.p_format_multiplelines,
                     minFontSize: 30,
-                    maxFontSize: _$.p_maxFontSize * 1,
+                    maxFontSize: parseInt(_$.p_maxFontSize),
                     alignVertWithFlexbox: false,
                 });
                 titleEl.style.visibility = "visible";
@@ -548,44 +704,47 @@
         if (_$.p_showLogo) {
             document.getElementById("footer_vv").innerHTML = _$.p_logo;
             document.getElementById("footer_vv").style.color = _$.p_font_color;
-        }
-
-        document.getElementById("footer_vv").style.textShadow =
-            "2px 2px 3px #" +
-            _$.p_font_color_invert +
-            ", -2px -2px 3px #" +
-            _$.p_font_color_invert;
-        document.getElementById("footer_date").style.textShadow =
-            "2px 2px 3px #" +
-            _$.p_font_color_invert +
-            ", -2px -2px 3px #" +
-            _$.p_font_color_invert;
-
-        if (_$.p_enableShadow) {
-            document.getElementById("footnote").style.textShadow =
+            document.getElementById("footer_vv").style.textShadow =
                 "2px 2px 3px #" +
                 _$.p_font_color_invert +
                 ", -2px -2px 3px #" +
                 _$.p_font_color_invert;
         }
 
+        document.getElementById("footer_date").style.textShadow =
+            "2px 2px 3px #" +
+            _$.p_font_color_invert +
+            ", -2px -2px 3px #" +
+            _$.p_font_color_invert;
+
         document.getElementById("content1").style.textAlign = _$.p_align;
         document.getElementById("content2").style.textAlign = _$.p_align;
+
         document.getElementById("content1").style.fontFamily = _$.p_text1_font;
         document.getElementById("content2").style.fontFamily = _$.p_text2_font;
+
         document.getElementById("content1").style.color = _$.p_font_color;
         document.getElementById("content2").style.color = _$.p_font_color2;
+
         document.getElementById("content1").innerHTML = _$.p_text1_arr[_$.p_current_index];
 
         if (_$.p_text_orientation != "2") {
             document.getElementById("content2").innerHTML = _$.p_text2_arr[_$.p_current_index];
         }
 
+        if (_$.p_enableShadow) {
+            /* offset-x | offset-y | blur-radius | color */
+            const textShadow = "2px 2px 5px rgba(0, 0, 0, 0.8)";
+
+            document.getElementById("content1").style.textShadow = textShadow;
+            document.getElementById("content2").style.textShadow = textShadow;
+        }
+
         setTimeout(() => {
             textFit(document.getElementsByClassName("box1"), {
                 alignVert: true,
                 detectMultiLine: false,
-                multiLine: b,
+                multiLine: multiLine,
                 minFontSize: 30,
                 maxFontSize: parseInt(_$.p_maxFontSize),
                 reProcess: true,
@@ -596,15 +755,15 @@
                 textFit(document.getElementsByClassName("box2"), {
                     alignVert: true,
                     detectMultiLine: false,
-                    multiLine: b,
+                    multiLine: multiLine,
                     minFontSize: 30,
                     maxFontSize: parseInt(_$.p_maxFontSize),
                     alignVertWithFlexbox: false,
                 });
             }
 
-            if (_$.p_enableShadow) {
-                renderShadow();
+            if (_$.p_enableStroke) {
+                renderStroke();
             }
 
             document.getElementById("content1").style.visibility = "visible";
@@ -613,7 +772,7 @@
             initialRenderDelay = 100;
         }, initialRenderDelay);
 
-        function renderShadow() {
+        function renderStroke() {
             outlineThickness = getOutlineThickness(
                 _$.p_text1_arr[_$.p_current_index],
                 _$.p_text1_font
@@ -727,111 +886,10 @@
         }
     }
 
-    function savePresentationMargin() {
-        var k = true;
-        var e = document.getElementById("presentConfigMarginTop").value;
-        var c = document.getElementById("presentConfigMarginBottom").value;
-        var f = document.getElementById("presentConfigMarginLeft").value;
-        var n = document.getElementById("presentConfigMarginRight").value;
-        if (IsNumeric(e) && IsNumeric(c) && IsNumeric(f) && IsNumeric(n)) {
-            $RvW.vvConfigObj.set_p_topMargin(e);
-            $RvW.vvConfigObj.set_p_bottomMargin(c);
-            $RvW.vvConfigObj.set_p_leftMargin(f);
-            $RvW.vvConfigObj.set_p_rightMargin(n);
-        } else {
-            k = false;
-            alert("Invalid entry for margin");
-            document.getElementById("presentConfigMarginTop").value =
-                $RvW.vvConfigObj.get_p_topMargin();
-            document.getElementById("presentConfigMarginBottom").value =
-                $RvW.vvConfigObj.get_p_bottomMargin();
-            document.getElementById("presentConfigMarginLeft").value =
-                $RvW.vvConfigObj.get_p_leftMargin();
-            document.getElementById("presentConfigMarginRight").value =
-                $RvW.vvConfigObj.get_p_rightMargin();
-        }
-        var v = document.getElementById("presentConfigMaxFontSize").value;
-        if (IsNumeric(v)) {
-            if (withinRange(30, 200, v)) {
-                $RvW.vvConfigObj.set_p_maxFontSize(v);
-            } else {
-                k = false;
-                alert("Maximum font size value out of Range");
-                document.getElementById("presentConfigMaxFontSize").value =
-                    $RvW.vvConfigObj.get_p_maxFontSize();
-            }
-        } else {
-            k = false;
-            alert("Invalid maximum font size value.");
-            document.getElementById("presentConfigMaxFontSize").value =
-                $RvW.vvConfigObj.get_p_maxFontSize();
-        }
-        var l = document.getElementById("presentConfigEnableTransition").checked;
-        $RvW.vvConfigObj.set_p_enableTransition(l);
-        var d = document.getElementById("presentConfigEnableSongTitle").checked;
-        $RvW.vvConfigObj.set_p_showTitle(d);
-        var g = document.getElementById("presentConfigEnableShadow").checked;
-        $RvW.vvConfigObj.set_p_enableShadow(g);
-        var q = document.getElementById("justify_left").checked;
-        var z = document.getElementById("justify_center").checked;
-        var a = document.getElementById("justify_right").checked;
-        var i = "left";
-        if (z) {
-            i = "center";
-        }
-        if (a) {
-            i = "right";
-        }
-        $RvW.vvConfigObj.set_p_align(i);
-        var y = document.getElementById("porient_hori").checked;
-        var h = document.getElementById("porient_vert").checked;
-        var r = "0";
-        if (h) {
-            r = "1";
-        }
-        _$.p_text_orientation = r;
-        $RvW.vvConfigObj.set_p_text_orientation(_$.p_text_orientation);
-        var p = document.getElementById("showPrimaryFont").checked;
-        if (p) {
-            $RvW.vvConfigObj.set_song_primaryOnly("true");
-        } else {
-            $RvW.vvConfigObj.set_song_primaryOnly("false");
-        }
-        var y = document.getElementById("porient_song_hori").checked;
-        var h = document.getElementById("porient_song_vert").checked;
-        var r = "0";
-        if (h) {
-            r = "1";
-        }
-        p_song_text_orientation = r;
-        $RvW.vvConfigObj.set_song_text_orientation(p_song_text_orientation);
-        var x = document.getElementById("customLogoText1").value;
-        var w = document.getElementById("customLogoText2").value;
-        $RvW.vvConfigObj.set_logoText1(x);
-        $RvW.vvConfigObj.set_logoText2(w);
-        var t = document.getElementById("presentConfigShowDateTime").checked;
-        var m = document.getElementById("presentConfigShowVVLogo").checked;
-        var s = document.getElementById("presentConfigShowCustomLogo").checked;
-        $RvW.vvConfigObj.set_showDateTime(t);
-        $RvW.vvConfigObj.set_showVVLogo(m);
-        $RvW.vvConfigObj.set_showCustomLogo(s);
-        var j = document.getElementById("presentConfigOntop").checked;
-        $RvW.vvConfigObj.set_presentationOnTop(j);
-        var u = document.getElementById("show2LinesSlides").checked;
-        $RvW.vvConfigObj.set_show2lines(u);
-        var o = document.getElementById("hideStanzaNumber").checked;
-        $RvW.vvConfigObj.set_hideStanzaNumber(o);
-        var b = document.getElementById("fitLineSetup").checked;
-        $RvW.vvConfigObj.set_pformat_multiplelines(b);
-        if (k) {
-            $RvW.vvConfigObj.save();
-        }
-    }
-
     function initTransition(enabled) {
         transitionDuration = 0;
         if (enabled) {
-            transitionDuration = TRANSITION_DURATION;
+            transitionDuration = _$.p_transitionDuration;
         }
     }
 

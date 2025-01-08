@@ -586,20 +586,31 @@ export default function RightSettingsTab() {
                             <div class="fields">
                                 <div class="field">
                                     <div class="ui checkbox">
-                                        <input type="checkbox" name="example" id="presentConfigEnableTransition"/>
+                                        <input
+                                            type="checkbox"
+                                            name="example"
+                                            id="presentConfigEnableTransition"
+                                        />
                                         <label>Transitions</label>
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <div class="ui checkbox disabled">
-                                        <input type="checkbox" name="example" id="presentConfigEnableOutline"
-                                               disabled/>
+                                    <div class="ui checkbox">
+                                        <input
+                                            type="checkbox"
+                                            name="example"
+                                            id="presentConfigEnableOutline"
+                                        />
                                         <label>Outline</label>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="ui checkbox">
-                                        <input type="checkbox" name="example" id="presentConfigEnableShadow"/>
+                                        <input
+                                            type="checkbox"
+                                            name="example"
+                                            id="presentConfigEnableShadow"
+                                        />
                                         <label>Shadow</label>
                                     </div>
                                 </div>

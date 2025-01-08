@@ -1,6 +1,6 @@
+import {$RvW} from "@/rvw";
 import {Toast} from "@/app/toast";
 import {saveFileInAppStorage} from "@/app/common";
-import {$RvW} from "@/rvw";
 
 export const BgContext = {
     selectedIndex: 0,
@@ -10,7 +10,7 @@ export const BgContext = {
     newBkgndFile: null,
     numofPicsInRow: 4,
     randomBkgnd: false,
-    init: function () {
+    init() {
         BgContext.selectedIndex = $RvW.vvConfigObj.get_bkgndIndex();
         BgContext.newSelectedIndex = -1;
         BgContext.name = [];
@@ -18,7 +18,7 @@ export const BgContext = {
         BgContext.loadList();
         BgContext.randomBkgnd = true;
     },
-    getBkgndFilename: function () {
+    getBkgndFilename() {
         var b = [];
         var a = BgContext.filename.length;
         b[0] = "./background/" + BgContext.filename[BgContext.selectedIndex];
@@ -44,7 +44,7 @@ export const BgContext = {
         b.open("GET", d.url, true);
         b.send(null);
     },
-    fill: function () {
+    fill() {
         const d = air.File.applicationStorageDirectory;
         const e = d.resolvePath(
             "./background/thumbnail/" + BgContext.filename[BgContext.selectedIndex]
@@ -91,13 +91,13 @@ export const BgContext = {
             }
         }
     },
-    processMouseOver: function (a) {
+    processMouseOver(a) {
         a.style.background = "black";
     },
-    processMouseOut: function (a) {
+    processMouseOut(a) {
         a.style.background = "#edf5ff";
     },
-    processClick: function (e) {
+    processClick(e) {
         var h = e.currentTarget.id;
         var f = h.split("img");
         var d = f[1];
@@ -115,7 +115,7 @@ export const BgContext = {
         } else {
         }
     },
-    showBrowse: function () {
+    showBrowse() {
         const a = BgContext.filename.length;
         if (a < 50) {
             const filters = [
@@ -130,7 +130,7 @@ export const BgContext = {
             );
         }
     },
-    processAdd: function () {
+    processAdd() {
         var k = BgContext.newBkgndFile.nativePath;
         var h = k.split("\\");
         var d = h[h.length - 1];
@@ -158,7 +158,7 @@ export const BgContext = {
             Toast.error("Background Graphics", "Background already exists.");
         }
     },
-    generateBkgndXML: function () {
+    generateBkgndXML() {
         let d = "<backgroundlist>\n";
         for (let i = 0; i < BgContext.filename.length; i++) {
             d += "  <bkg>\n";
@@ -169,11 +169,11 @@ export const BgContext = {
         d += "</backgroundlist>\n";
         return d;
     },
-    setNumOfPicsInRow: function (a) {
+    setNumOfPicsInRow(a) {
         BgContext.numofPicsInRow = a;
         BgContext.fill();
     },
-    delBkgnd: function () {
+    delBkgnd() {
         const d = confirm("Are you sure you want to delete the selected Background?");
         if (!!d) {
             const f = BgContext.selectedIndex;

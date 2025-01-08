@@ -1471,7 +1471,7 @@ function DTComp({opt}) {
 
         $RvW.songNavObj.selectSong(item);
 
-        console.log(`Selected: ${item}`);
+        console.log(`Selected Song:`, item);
     };
 
     return (
@@ -1483,7 +1483,7 @@ function DTComp({opt}) {
                 items={songs}
                 itemsPerPage={perPage}
                 renderItem={(item) => (
-                    <span>{item.Title}</span>
+                    <span>{item.title}</span>
                 )}
                 onSelect={handleSelect}
             />
@@ -1508,7 +1508,7 @@ export default function LeftSongsTab() {
 
     const tags = useStoreState(songTags);
     const selectedTag = useStoreState(selectedSongTag);
-    const sngLiztState = useStoreState(songListState);
+    const songList = useStoreState(songListState);
 
     const catSelect = useRef(null);
     const tagSelect = useRef(null);
@@ -1673,7 +1673,7 @@ export default function LeftSongsTab() {
                     {/* TODO: remove overflow auto after setting list to auto height  */}
                     <div class="flex-[1] relative h-full w-full overflow-y-auto">
                         <div class="absolute h-full w-full">
-                            <DTComp opt={sngLiztState}/>
+                            <DTComp opt={songList}/>
                         </div>
                     </div>
                 </div>
