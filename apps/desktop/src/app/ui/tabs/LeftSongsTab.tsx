@@ -1,16 +1,13 @@
 // Song Lyric Navigation
 import {Component} from "preact";
-import {useEffect, useId, useRef, useState} from "preact/hooks";
+import {useState} from "preact/hooks";
 import {
-    selectedSongCategory,
-    selectedSongTag, selectedTab,
+    selectedSong,
+    selectedTab,
     songCategories,
-    songListState,
-    songSearchError,
     songTags
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
-import {SongSearchType} from "@/const";
 import debounce from '@/utils/debounce';
 import {$RvW} from "@/rvw";
 
@@ -25,7 +22,7 @@ import Modal from "@app/ui/Modal";
 import DataTable from "@app/ui/widgets/Datatable";
 import PaginatedList from "@app/ui/widgets/PaginatedList";
 import {songManager} from "@app/glc";
-import {SearchFilterType} from "@/song/song-manager";
+import {SearchFilter, SearchFilterType} from "@/song/song-manager";
 
 const Zapp = () => {
     // const columns = [
@@ -65,12 +62,12 @@ const Zapp = () => {
         { id: 12, name: "Item 12", value: 120 },
     ];
 
-// function fetchDataCallback(callback) {
-//     // Simulate a data fetch
-//     setTimeout(() => {
-//         callback(mockData);
-//     }, 9999);
-// }
+    // function fetchDataCallback(callback) {
+    //     // Simulate a data fetch
+    //     setTimeout(() => {
+    //         callback(mockData);
+    //     }, 9999);
+    // }
 
     function fetchDataCallback(page, itemsPerPage, callback) {
         // Simulate a data fetch
@@ -1463,16 +1460,8 @@ const MdlApp = () => {
 //     )
 // }
 
-function DTComp({opt}) {
-    const { songs, perPage } = opt;
-
-    const handleSelect = (item: any) => {
-        $RvW.rightTabView?.setSelectedTab(1); // make the lyrics tab active if on another tab
-
-        $RvW.songNavObj.selectSong(item);
-
-        console.log(`Selected Song:`, item);
-    };
+function DTComp({results, onSelect}) {
+    const { items, perPage, total, page } = results;
 
     return (
         <div class="x-u-i pgl" style={{
@@ -1480,207 +1469,345 @@ function DTComp({opt}) {
             height: '100%',
         }}>
             <PaginatedList
-                items={songs}
+                items={items}
                 itemsPerPage={perPage}
-                renderItem={(item) => (
-                    <span>{item.title}</span>
+                renderItem={(item: any) => (
+                    <span>{item.name}</span>
                 )}
-                onSelect={handleSelect}
+                onSelect={onSelect}
             />
         </div>
     )
 }
 
-const searchSong = debounce((q: string) => {
-    $RvW.songNavObj.sn_searchSong(q);
-}, 200);
+interface Props {
+    searchDebounceDelay?: number;
+    categories: string[];
+    tags: string[];
+}
 
-export default function LeftSongsTab() {
-    const catId = useId();
-    const tagId = useId();
+interface State {
+    results: {
+        items: any[];
+        page: number;
+        total: number;
+        perPage: number;
+    };
+    searchFilters: SearchFilter[];
+    searchQuery?: string;
+    searchError?: string;
+    searchInProgress: boolean;
+    selectedCategory: number;
+    selectedTag: number;
+    page: number; // index based
+    itemsPerPage: number;
+}
 
-    const [searchQuery, setSearchQuery] = useState('');
+class _LeftSongsTab_ extends Component<Props, State> {
+    private readonly search: (query: string) => void;
+    private readonly searchDelayed: (query: string) => void;
 
-    const categories = useStoreState(songCategories);
-    const selectedCategory = useStoreState(selectedSongCategory);
+    constructor(props: Props) {
+        super(props);
 
-    const searchError = useStoreState(songSearchError);
+        this.props.searchDebounceDelay ??= 200;
+        this.state = {
+            results: {
+                items: [],
+                page: 0,
+                total: 0,
+                perPage: 10,
+            },
+            searchFilters: [],
+            searchQuery: null,
+            searchError: null,
+            selectedTag: -1,
+            selectedCategory: -1,
+            searchInProgress: false,
+            page: 0,
+            itemsPerPage: 10,
+        };
 
-    const tags = useStoreState(songTags);
-    const selectedTag = useStoreState(selectedSongTag);
-    const songList = useStoreState(songListState);
+        this.search = (query?: string) => {
+            this.setState({
+                searchError: null,
+                searchInProgress: true,
+            });
 
-    const catSelect = useRef(null);
-    const tagSelect = useRef(null);
+            const filters = [...this.state.searchFilters];
 
-    useEffect(() => {
-        // @ts-ignore
-        // $(catSelect.current).dropdown();
-        // @ts-ignore
-        // $(tagSelect.current).dropdown();
-    }, []);
-
-    function onCategoryChange(e: Event) {
-        const el = (e.target as HTMLSelectElement);
-
-        console.trace('onCategoryChange', el.value, el.selectedIndex);
-
-        $RvW.songNavObj.songnav_category_change(el.selectedIndex > 0 ? el.value : 'ALL');
-        selectedSongCategory.set(el.selectedIndex > 0 ? el.selectedIndex - 1 : null);
-    }
-
-    function onTagChange(e: Event) {
-        const el = (e.target as HTMLSelectElement);
-
-        console.trace('onTagChange', el.value, el.selectedIndex);
-
-        $RvW.songNavObj.songnav_tags_change(el.selectedIndex > 0 ? el.value : 'ALL');
-        selectedSongTag.set(el.selectedIndex > 0 ? el.selectedIndex - 1 : null);
-    }
-
-    function filterByLyrics() {
-        const q = searchQuery.trim();
-        $RvW.songManagerObj.searchRecords(`%${q}%`, SongSearchType.LYRICS);
-
-        songManager.search([
-            {
-                type: SearchFilterType.TITLE,
-                value: q,
+            if (query) {
+                filters.push({
+                    type: SearchFilterType.TITLE,
+                    value: query,
+                });
             }
-        ], (data, err) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
 
-            console.log('SEARCH RES:', data.length);
-            for (const item of data) {
-                console.log(item.name);
-            }
-        });
+            const opts = { page: this.state.page, limit: this.state.itemsPerPage };
+
+            // @ts-ignore
+            songManager.search(filters, opts, (data, err) => {
+                if (err) {
+                    console.error(err);
+                    this.setState({
+                        searchError: err.toString(),
+                        searchInProgress: false,
+                    });
+                    return;
+                }
+
+                this.setState({
+                    searchInProgress: false,
+                    results: {
+                        ...this.state.results,
+                        items: data,
+                    }
+                });
+            });
+        };
+        this.searchDelayed = debounce(this.search, this.props.searchDebounceDelay);
     }
 
-    function filterByAuthor() {
-        const q = searchQuery.trim();
-        $RvW.songManagerObj.searchRecords(`%${q}%`, SongSearchType.AUTHOR);
+    componentDidMount() {
+        // Initialize the results
+        // this.search(null); // don't call it, right tab view wont be ready
     }
 
-    function clearFilters() {
-        $RvW.songNavObj.songnav_clear();
-        songSearchError.set(undefined);
-    }
-
-    function onSearchInput(e: Event) {
+    onSearchInput = (e: KeyboardEvent) => {
         const q = (e.target as HTMLInputElement).value;
-        setSearchQuery(q);
-        searchSong(q);
+        this.setState({ searchQuery: q });
+
+        if (e.keyCode === 13) { // Enter key
+            this.onSearchGo();
+        } else {
+            this.searchDelayed(q);
+        }
+    };
+
+    onSearchGo = () => {
+        this.search(this.state.searchQuery);
+    };
+
+    onClearQueryAndFilters = () => {
+        this.setState({
+            searchQuery: '',
+            searchFilters: [],
+        });
+    };
+
+    onCategoryChange = (e: Event) => {
+        const filters = [...this.state.searchFilters];
+
+        for (const filter of filters) {
+            if (filter.type === SearchFilterType.CATEGORY) {
+                filters.splice(filters.indexOf(filter), 1);
+                break;
+            }
+        }
+
+        const categoryIndex = (e.target as HTMLSelectElement).selectedIndex;
+        const category = this.props.categories[categoryIndex - 1];
+
+        if (category) {
+            filters.push({
+                type: SearchFilterType.CATEGORY,
+                value: category,
+            });
+        }
+
+        this.setState({ selectedCategory: categoryIndex, searchFilters: filters });
+    };
+
+    onTagChange = (e: Event) => {
+        const filters = [...this.state.searchFilters];
+
+        for (const filter of filters) {
+            if (filter.type === SearchFilterType.TAGS) {
+                filters.splice(filters.indexOf(filter), 1);
+                break;
+            }
+        }
+
+        const tagIndex = (e.target as HTMLSelectElement).selectedIndex;
+        const tag = this.props.tags[tagIndex - 1];
+
+        if (tag) {
+            filters.push({
+                type: SearchFilterType.TAGS,
+                value: [tag],
+            });
+        }
+
+        this.setState({ selectedTag: tagIndex, searchFilters: filters });
+    };
+
+    removeSearchFilter = (index: number) => {
+        const filters = [...this.state.searchFilters];
+        filters.splice(index, 1);
+        this.setState({ searchFilters: filters });
     }
 
-    return (
-        <>
-            <div class="left-songs-tab">
-                <div class="flex flex-col h-full w-full">
-                    {/* CATEGORY & TAGS */}
-                    <div class="flex-[0]">
-                        <div class="ui form">
-                            <div class="two fields">
-                                <div class="field">
-                                    <label>Category</label>
-                                    <div class="ui input">
-                                        <select
-                                            class="ui search dropdown"
-                                            // ref={catSelect}
-                                            id={catId}
-                                            onChange={onCategoryChange}
-                                            value={selectedCategory === -1 ? null : selectedCategory}
-                                        >
-                                            <option value="">All</option>
-                                            {categories.map((category, i) => (
-                                                <option value={category} key={i}>{category}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot: any) {
+        if (this.state.searchFilters != prevState.searchFilters) {
+            this.search(this.state.searchQuery);
+        }
+    }
 
-                                <div class="field">
-                                    <label>Tag</label>
-                                    <div class="ui input">
-                                        <select
-                                            class="ui search dropdown"
-                                            ref={tagSelect}
-                                            id={tagId}
-                                            onChange={onTagChange}
-                                            value={selectedTag === -1 ? null : selectedTag}
-                                        >
-                                            <option value="">All</option>
-                                            {tags.map((tag, i) => (
-                                                <option value={tag} key={i}>{tag}</option>
-                                            ))}
-                                        </select>
+    handleSelect = (item: any) => {
+        selectedTab.set(1); // make the lyrics tab active if on another tab
+        selectedSong.set(item);
+
+        console.log(`Selected Song:`, item);
+    };
+
+    render() {
+        const { categories, tags } = this.props;
+        const { searchQuery, searchFilters, results, selectedCategory, selectedTag, searchInProgress } = this.state;
+
+        return (
+            <>
+                <div class="left-songs-tab">
+                    <div class="flex flex-col h-full w-full">
+                        {/* CATEGORY & TAGS */}
+                        <div class="flex-[0]">
+                            <div class="ui form">
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Category</label>
+                                        <div class="ui input">
+                                            <select
+                                                class="ui search dropdown"
+                                                onChange={this.onCategoryChange}
+                                                value={selectedCategory === -1 ? null : selectedCategory}
+                                            >
+                                                <option value={null}>All</option>
+                                                {categories.map((category, i) => (
+                                                    <option value={category} key={i}>{category}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label>Tag</label>
+                                        <div class="ui input">
+                                            <select
+                                                class="ui search dropdown"
+                                                onChange={this.onTagChange}
+                                                value={selectedTag === -1 ? null : selectedTag}
+                                            >
+                                                <option value={null}>All</option>
+                                                {tags.map((tag, i) => (
+                                                    <option value={tag} key={i}>{tag}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="flex-[0] h-4"></div>
+                        <div class="flex-[0] h-4"></div>
 
-                    {/* Search Input */}
-                    <div class="flex-[0]">
-                        <div class="ui fluid action input">
-                            <input
-                                type="text"
-                                size={20}
-                                id="songnav_editbox"
-                                placeholder="Search..."
-                                value={searchQuery}
-                                onSearch={onSearchInput}
-                                onKeyUp={onSearchInput}
-                            />
+                        {/* Search Input */}
+                        <div class="flex-[0]">
+                            <div class="ui fluid action input">
+                                <input
+                                    type="text"
+                                    size={20}
+                                    id="songnav_editbox"
+                                    placeholder="Search..."
+                                    value={searchQuery}
+                                    onKeyUp={this.onSearchInput}
+                                />
 
-                            <button
-                                class="ui icon button"
-                                id="song-search-lyrics"
-                                data-tooltip="Search"
-                                onClick={filterByLyrics}
-                            >
-                                <i class="search icon"></i>
-                            </button>
+                                <button
+                                    class="ui icon button"
+                                    id="song-search-lyrics"
+                                    data-tooltip="Search"
+                                    onClick={this.onSearchGo}
+                                >
+                                    <i class="search icon"></i>
+                                </button>
 
-                            <button
-                                class="ui icon button"
-                                id="song-search-author"
-                                data-tooltip="Search by Author"
-                                onClick={filterByAuthor}
-                            >
-                                <i class="user icon"></i>
-                            </button>
+                                {/*<button*/}
+                                {/*    class="ui icon button"*/}
+                                {/*    id="song-search-author"*/}
+                                {/*    data-tooltip="Search by Author"*/}
+                                {/*    onClick={filterByAuthor}*/}
+                                {/*>*/}
+                                {/*    <i class="user icon"></i>*/}
+                                {/*</button>*/}
 
-                            <button
-                                class="ui icon button"
-                                id="song-search-clear"
-                                data-tooltip="Clear Filters"
-                                onClick={clearFilters}
-                            >
-                                <i class="times circle icon"></i>
-                            </button>
+                                <button
+                                    class="ui icon button"
+                                    id="song-search-clear"
+                                    data-tooltip="Clear Filters"
+                                    onClick={this.onClearQueryAndFilters}
+                                >
+                                    <i class="times circle icon"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="flex-[0] h-4"></div>
+                        {searchInProgress && (
+                            <>
+                                <div class="flex-[0] h-4"></div>
 
-                    {/* Song List */}
-                    {/* TODO: remove overflow auto after setting list to auto height  */}
-                    <div class="flex-[1] relative h-full w-full overflow-y-auto">
-                        <div class="absolute h-full w-full">
-                            <DTComp opt={songList}/>
+                                <div class="flex-[0]">
+                                    LOADING...
+                                </div>
+                            </>
+                        )}
+
+                        {searchFilters.length > 0 && (
+                            <>
+                                <div class="flex-[0] h-4"></div>
+
+                                <div class="flex-[0]">
+                                    {searchFilters.map((filter, i) => (
+                                        <a key={i} class="ui label">
+                                            {filter.type === SearchFilterType.CATEGORY && (
+                                                <span>Category: {filter.value}</span>
+                                            )}
+                                            {filter.type === SearchFilterType.TAGS && (
+                                                <span>Tag: {filter.value}</span>
+                                            )}
+                                            <i class="delete icon" onClick={() => this.removeSearchFilter(i)}></i>
+                                        </a>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+
+                        <div class="flex-[0] h-4"></div>
+
+                        {/* Song List */}
+                        {/* TODO: remove overflow auto after setting list to auto height  */}
+                        <div class="flex-[1] relative h-full w-full overflow-y-auto">
+                            <div class="absolute h-full w-full">
+                                <DTComp
+                                    results={results}
+                                    onSelect={this.handleSelect}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
+        );
+    }
+}
 
-            <div class="hidden">
-            </div>
-        </>
-    );
+export default function LeftSongsTab() {
+    const categories = useStoreState(songCategories);
+    const tags = useStoreState(songTags);
+
+    return (
+        <_LeftSongsTab_
+            tags={tags}
+            categories={categories}
+            searchDebounceDelay={200}
+        />
+    )
 }

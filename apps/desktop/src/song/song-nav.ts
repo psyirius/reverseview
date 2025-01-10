@@ -290,7 +290,7 @@ export class SongNav {
         function update_CategoryList(categories) {
             const catz = categories?.map((c) => $.trim(c.cat)).filter(e => !!e) || [];
             // __debug("Update Category List: ", catz);
-            songCategories.set(catz);
+            // songCategories.set(catz);
             selectedSongCategory.set(null);
         }
 

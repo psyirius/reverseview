@@ -3,6 +3,7 @@ import {$RvW} from "@/rvw";
 import {Toast} from "@app/toast";
 import {useStoreState} from "@/utils/hooks";
 import {
+    selectedSong,
     selectedSongStateAuthor,
     selectedSongStateCategory,
     selectedSongStateKey,
@@ -18,6 +19,8 @@ import {SongPresenter} from "@/song/present";
 
 export default function RightLyricsTab() {
     const fontSize = $RvW.vvConfigObj.get_navFontSize();
+
+    const song = useStoreState(selectedSong);
 
     const obj = useStoreState(selectedSongStateObject);
 
@@ -75,6 +78,14 @@ export default function RightLyricsTab() {
 
     return (
         <div class="flex flex-col h-full w-full overflow-auto">
+            <div>
+                {song ? (
+                    <h2 class="ui header">{song.name}</h2>
+                ) : (
+                    <h2 class="ui header">No song selected</h2>
+                )}
+            </div>
+
             {/* TITLE SEQUENCE */}
             <div class="ui vertical segment">
                 {seqNum && <div class="ui top right attached label">{seqNum}</div>}

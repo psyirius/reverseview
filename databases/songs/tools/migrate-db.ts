@@ -40,14 +40,19 @@ db.serialize(() => {
             yvideo: youtube,
             key,
             copy: copyright,
-            subcat: sequence,
+            subcat: serial,
             lyrics: lyrics1,
             lyrics2,
+            notes,
+            slideseq: sequence,
         } = row as any;
 
         if (category in CATEGORY_MAP) {
             category = CATEGORY_MAP[category];
         }
+
+        font1 = (font1 === "null" || !font1) ? null : font1;
+        font2 = (font2 === "null" || !font2) ? null : font2;
 
         const lyrics = [];
 
@@ -62,29 +67,29 @@ db.serialize(() => {
             lyrics.push(
                 {
                     font: font1,
-                    content: lyrics1
+                    slides: lyrics1
                         .replace(/<br>/gi, '<br>')
                         .split('<slide>')
                         .filter((slide: string) => slide.trim().length > 0)
-                        .map((slide: string) => slide.split('<br>').map(l => l.trim())),
+                        .map((slide: string) => slide.split('<br>').map(l => l.trim()).join('\n')),
                 }
             );
         }
 
         if (lyrics2) {
-            const content = lyrics2
+            const slides = lyrics2
                 .replace(/<br>/gi, '<br>')
                 .split('<slide>')
                 .filter((slide: string) => slide.trim().length > 0)
-                .map((slide: string) => slide.split('<br>').map(l => l.trim()));
+                .map((slide: string) => slide.split('<br>').map(l => l.trim()).join('\n'));
 
-            if (content.length) {
-                const l1c = lyrics.at(0).content;
+            if (slides.length) {
+                const l1c = lyrics.at(0).slides;
 
-                if (content.length !== l1c.length) {
+                if (slides.length !== l1c.length) {
                     console.error("Content length mismatch:", {
                         id, name, title, category,
-                        lengths: [content.length, l1c.length],
+                        lengths: [slides.length, l1c.length],
                     });
                     slideMisMatches++;
                     return;
@@ -100,7 +105,7 @@ db.serialize(() => {
                 lyrics.push(
                     {
                         font: font2,
-                        content,
+                        slides: slides,
                     }
                 );
             }
@@ -108,6 +113,7 @@ db.serialize(() => {
 
         title = (title === "null" || !title) ? null : title;
         tags = tags ? tags.split(',').map((tag: string) => tag.trim()) : [];
+        sequence = (sequence === "null" || !sequence) ? null : sequence;
 
         const timestamp = new Date();
 
@@ -115,7 +121,7 @@ db.serialize(() => {
             id,
             name,
             title,
-            sequence: Number(sequence),
+            serial: Number.parseInt(serial) || null,
             category,
             tags,
             lyrics,
@@ -125,6 +131,8 @@ db.serialize(() => {
             key: key || null,
             chords: null,
             bpm: null,
+            notes: notes || null,
+            sequence: sequence || null,
             timestamp,
         });
     }, () => {
@@ -142,13 +150,15 @@ db.serialize(() => {
                     id              INTEGER PRIMARY KEY AUTOINCREMENT,
                     name            TEXT NOT NULL,
                     title           TEXT,
-                    sequence        INTEGER,
+                    serial          INTEGER,
                     category        TEXT,
                     tags            TEXT,
                     lyrics          TEXT,
                     youtube         TEXT,
                     author          TEXT,
+                    sequence        TEXT,
                     copyright       TEXT,
+                    notes           TEXT,
                     chords          TEXT,
                     key             TEXT,
                     bpm             INTEGER,
@@ -161,13 +171,15 @@ db.serialize(() => {
                             id,
                             name,
                             title,
-                            sequence,
+                            serial,
                             category,
                             tags,
                             lyrics,
                             youtube,
                             author,
+                            sequence,
                             copyright,
+                            notes,
                             chords,
                             key,
                             bpm,
@@ -176,13 +188,15 @@ db.serialize(() => {
                             $id,
                             $name,
                             $title,
-                            $sequence,
+                            $serial,
                             $category,
                             $tags,
                             $lyrics,
                             $youtube,
                             $author,
+                            $sequence,
                             $copyright,
+                            $notes,
                             $chords,
                             $key,
                             $bpm,
@@ -192,13 +206,15 @@ db.serialize(() => {
                         $id: record.id,
                         $name: record.name,
                         $title: record.title,
-                        $sequence: record.sequence,
+                        $serial: record.serial,
                         $category: record.category,
                         $tags: JSON.stringify(record.tags),
                         $lyrics: JSON.stringify(record.lyrics),
                         $youtube: record.youtube,
                         $author: record.author,
+                        $sequence: record.sequence,
                         $copyright: record.copyright,
+                        $notes: record.notes,
                         $chords: record.chords,
                         $key: record.key,
                         $bpm: record.bpm,

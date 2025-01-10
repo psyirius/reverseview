@@ -2,10 +2,10 @@
 
 import {getAllVersesFromChapter} from "@/bible/manager";
 import {console} from "@/platform/adapters/air";
-import {SongPresenter} from "@/song/present";
 import {$RvW} from "@/rvw";
-import {scheduler} from "@app/glc";
+import {presenter, scheduler, songManager} from "@app/glc";
 import {ScheduleItemType} from "@stores/global";
+import {SearchFilterType} from "@/song/song-manager";
 
 const MIME_TYPES = {
     '.txt'  : 'text/plain',
@@ -393,7 +393,7 @@ class WebRequestHandler {
             }
             // Bible Ref : Present Verse
             case 8: {
-                const [book, chapter, verse] = args.ref;
+                const [book, chapter, verse] = args.ref; // index + 1
 
                 // convert to indexes
                 $RvW.present_external(book - 1, chapter - 1, verse - 1);
@@ -408,7 +408,25 @@ class WebRequestHandler {
 
             // Songs: Search
             case 20: {
-                $RvW.songManagerObj.getAllTitlesForWeb(args.query, (err, res) => {
+                // $RvW.songManagerObj.getAllTitlesForWeb(args.query, (err, res) => {
+                //     if (err) {
+                //         this._sendJSON({
+                //             ok: false,
+                //             error: err,
+                //         });
+                //     } else {
+                //         console.trace(res);
+                //
+                //         this._sendJSON({
+                //             ok: true,
+                //             data: res,
+                //         });
+                //     }
+                // });
+                songManager.search([{
+                    type: SearchFilterType.TITLE,
+                    value: args.query,
+                }], (res, err) => {
                     if (err) {
                         this._sendJSON({
                             ok: false,
@@ -428,17 +446,19 @@ class WebRequestHandler {
             }
             // Songs: Get Content
             case 21: {
-                const song = $RvW.songManagerObj.getSongObjWithID(args.id);
+                // const song = $RvW.songManagerObj.getSongObjWithID(args.id);
+                const song = songManager.getSong(args.id);
 
                 this._sendJSON({
                     ok: true,
                     data: {
-                        id: song.id,
-                        name: song.name,
-                        font: song.font,
-                        font2: song.font2,
-                        slides: song.slides,
-                        slides2: song.slides2,
+                        // id: song.id,
+                        // name: song.name,
+                        // font: song.font,
+                        // font2: song.font2,
+                        // slides: song.slides,
+                        // slides2: song.slides2,
+                        ...song,
                     },
                 });
 
@@ -457,10 +477,12 @@ class WebRequestHandler {
             }
             // Songs: Present Slide
             case 17: { // Present Song Slide
-                const song = $RvW.songManagerObj.getSongObjWithID(args.id);
+                // const song = $RvW.songManagerObj.getSongObjWithID(args.id);
+                const song = songManager.getSong(args.id);
                 console.trace('Song: ', (song));
-                const spo = new SongPresenter(song);
-                spo.present(args.index);
+                // const spo = new SongPresenter(song);
+                // spo.present(args.index);
+                presenter.presentSong(song, args.index);
 
                 this._sendJSON({
                     ok: true,
@@ -495,17 +517,19 @@ class WebRequestHandler {
                 }
 
                 const songId = item.ref;
-                const song = $RvW.songManagerObj.getSongObjWithID(songId);
+                // const song = $RvW.songManagerObj.getSongObjWithID(songId);
+                const song = songManager.getSong(songId);
 
                 this._sendJSON({
                     ok: true,
                     data: {
-                        id: song.id,
-                        name: song.name,
-                        font: song.font,
-                        font2: song.font2,
-                        slides: song.slides,
-                        slides2: song.slides2,
+                        // id: song.id,
+                        // name: song.name,
+                        // font: song.font,
+                        // font2: song.font2,
+                        // slides: song.slides,
+                        // slides2: song.slides2,
+                        ...song,
                     },
                 });
                 break;

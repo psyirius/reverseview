@@ -62,7 +62,7 @@ export const loadTagsFromConfig = () => {
 };
 
 export const fillTagsToUI = () => {
-    songTags.set($tags$);
+    // songTags.set($tags$);
 };
 
 export function clearTagFilter() {

@@ -20,11 +20,11 @@ import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 import {songCategories, songTags} from "@stores/global";
 
-type SongSlide = string[];
+type SongSlide = string; // string with newlines
 
 export interface SongLyrics {
     font: string,
-    content: SongSlide[],
+    slides: SongSlide[],
 }
 
 export interface SongItem {
@@ -36,11 +36,13 @@ export interface SongItem {
     copyright?: string,
     category: string,
     tags: string[],
-    sequence?: number,
+    serial?: number,
     youtube?: string,
     key?: string,
     chords?: string,
     bpm?: number,
+    notes?: string,
+    sequence?: string,
     timestamp: Date,
 }
 
@@ -48,7 +50,7 @@ export enum SearchFilterType {
     ID,
     TITLE,
     LYRICS,
-    SEQUENCE,
+    SERIAL,
     CATEGORY,
     TAGS,
     AUTHOR,
@@ -61,8 +63,8 @@ interface SearchFilterWithID {
     value: number;
 }
 
-interface SearchFilterWithSEQUENCE {
-    type: SearchFilterType.SEQUENCE;
+interface SearchFilterWithSERIAL {
+    type: SearchFilterType.SERIAL;
     value: number;
 }
 
@@ -103,9 +105,9 @@ interface SearchFilterWithBPM {
     value: number;
 }
 
-type SearchFilter = (
+export type SearchFilter = (
     SearchFilterWithID          |
-    SearchFilterWithSEQUENCE    |
+    SearchFilterWithSERIAL      |
     SearchFilterWithCONTENT     |
     SearchFilterWithCATEGORY    |
     SearchFilterWithTAGS        |
@@ -148,6 +150,7 @@ export class _SongManager_ {
 
     private onUpdate: ResultCallback<SongItem[]> = (records) => {
         console.log('[SONGS] Records updated:', records.length);
+
         // for (const record of records) {
         //     console.log(record);
         // }
@@ -221,8 +224,8 @@ export class _SongManager_ {
                     params[`:param_${i}`] = `%${value}%`;
                     break;
                 }
-                case SearchFilterType.SEQUENCE: { // args: {value: number}
-                    wcq.push(`sequence = :param_${i}`);
+                case SearchFilterType.SERIAL: { // args: {value: number}
+                    wcq.push(`serial = :param_${i}`);
                     params[`:param_${i}`] = value;
                     break;
                 }
@@ -270,7 +273,7 @@ export class _SongManager_ {
 
         searchQ.text = qs.join(' ');
 
-        console.log("SQX:", searchQ.text);
+        console.log("SQX:", searchQ.text, searchQ.parameters);
 
         searchQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
             const { data } = searchQ.getResult();
@@ -283,7 +286,7 @@ export class _SongManager_ {
                     id: record.id,
                     name: record.name,
                     title: record.title,
-                    sequence: record.sequence,
+                    serial: record.serial,
                     category: record.category,
                     tags: JSON.parse(record.tags),
                     lyrics: JSON.parse(record.lyrics),
@@ -293,6 +296,8 @@ export class _SongManager_ {
                     chords: record.chords,
                     key: record.key,
                     bpm: record.bpm,
+                    notes: record.notes,
+                    sequence: record.sequence,
                     timestamp: new Date(record.timestamp),
                 }
             }), null);
@@ -360,13 +365,15 @@ export class _SongManager_ {
                 id              INTEGER PRIMARY KEY AUTOINCREMENT,
                 name            TEXT NOT NULL,
                 title           TEXT,
-                sequence        INTEGER,
+                serial          INTEGER,
                 category        TEXT,
                 tags            TEXT,
                 lyrics          TEXT,
                 youtube         TEXT,
                 author          TEXT,
+                notes           TEXT,
                 copyright       TEXT,
+                sequence        TEXT,
                 chords          TEXT,
                 key             TEXT,
                 bpm             INTEGER,
@@ -434,7 +441,7 @@ export class _SongManager_ {
         const categories = [];
 
         for (const record of this._records) {
-            if (categories.indexOf(record.category) !== -1) {
+            if (categories.indexOf(record.category) === -1) {
                 categories.push(record.category);
             }
         }
@@ -447,7 +454,7 @@ export class _SongManager_ {
 
         for (const record of this._records) {
             for (const tag of record.tags) {
-                if (tags.indexOf(tag) !== -1) {
+                if (tags.indexOf(tag) === -1) {
                     tags.push(tag);
                 }
             }
@@ -461,7 +468,7 @@ export class _SongManager_ {
 
         for (const record of this._records) {
             for (const lyric of record.lyrics) {
-                if (fonts.indexOf(lyric.font) !== -1) {
+                if (fonts.indexOf(lyric.font) === -1) {
                     fonts.push(lyric.font);
                 }
             }
@@ -482,11 +489,27 @@ export class _SongManager_ {
         // TODO: impl
     }
 
-    public exportAsJSON(categories: string[] = null, callback: ResultCallback<SongItem[]>): void {
+    public exportAllAsXMLToFile(): void {
         // TODO: impl
     }
 
-    public remoteSearch(query: string, callback: ResultCallback<SongItem[]>) {
+    public exportAllAsDBToFile(): void {
+        // TODO: impl
+    }
+
+    public importDBFromFile(): void {
+        // TODO: impl
+    }
+
+    public importXMLFromFile(): void {
+        // TODO: impl
+    }
+
+    public exportSelectedCategoriesAsXMLToFile(): void {
+        // TODO: impl
+    }
+
+    public exportAsJSON(categories: string[] = null, callback: ResultCallback<SongItem[]>): void {
         // TODO: impl
     }
 
@@ -499,13 +522,15 @@ export class _SongManager_ {
             INSERT INTO songs (
                 name,
                 title,
-                sequence,
+                serial,
                 category,
                 tags,
                 lyrics,
                 youtube,
                 author,
+                notes,
                 copyright,
+                sequence,
                 chords,
                 key,
                 bpm,
@@ -513,13 +538,15 @@ export class _SongManager_ {
             ) VALUES (
                 :name,
                 :title,
-                :sequence,
+                :serial,
                 :category,
                 :tags,
                 :lyrics,
                 :youtube,
                 :author,
+                :notes,
                 :copyright,
+                :sequence,
                 :chords,
                 :key,
                 :bpm,
@@ -529,13 +556,15 @@ export class _SongManager_ {
 
         createRecordQ.parameters[":name"] = song.name;
         createRecordQ.parameters[":title"] = song.title;
-        createRecordQ.parameters[":sequence"] = song.sequence;
+        createRecordQ.parameters[":serial"] = song.serial;
         createRecordQ.parameters[":category"] = song.category;
         createRecordQ.parameters[":tags"] = JSON.stringify(song.tags);
         createRecordQ.parameters[":lyrics"] = JSON.stringify(song.lyrics);
         createRecordQ.parameters[":youtube"] = song.youtube;
         createRecordQ.parameters[":author"] = song.author;
+        createRecordQ.parameters[":notes"] = song.notes;
         createRecordQ.parameters[":copyright"] = song.copyright;
+        createRecordQ.parameters[":sequence"] = song.sequence;
         createRecordQ.parameters[":chords"] = song.chords;
         createRecordQ.parameters[":key"] = song.key;
         createRecordQ.parameters[":bpm"] = song.bpm;
@@ -588,13 +617,15 @@ export class _SongManager_ {
             SET
                 name = :name,
                 title = :title,
-                sequence = :sequence,
+                serial = :serial,
                 category = :category,
                 tags = :tags,
                 lyrics = :lyrics,
                 youtube = :youtube,
                 author = :author,
+                notes = :notes,
                 copyright = :copyright,
+                sequence = :sequence,
                 chords = :chords,
                 key = :key,
                 bpm = :bpm,
@@ -605,13 +636,15 @@ export class _SongManager_ {
 
         updateRecordQ.parameters[":name"] = song.name;
         updateRecordQ.parameters[":title"] = song.title;
-        updateRecordQ.parameters[":sequence"] = song.sequence;
+        updateRecordQ.parameters[":serial"] = song.serial;
         updateRecordQ.parameters[":category"] = song.category;
         updateRecordQ.parameters[":tags"] = JSON.stringify(song.tags);
         updateRecordQ.parameters[":lyrics"] = JSON.stringify(song.lyrics);
         updateRecordQ.parameters[":youtube"] = song.youtube;
         updateRecordQ.parameters[":author"] = song.author;
+        updateRecordQ.parameters[":notes"] = song.notes;
         updateRecordQ.parameters[":copyright"] = song.copyright;
+        updateRecordQ.parameters[":sequence"] = song.sequence;
         updateRecordQ.parameters[":chords"] = song.chords;
         updateRecordQ.parameters[":key"] = song.key;
         updateRecordQ.parameters[":bpm"] = song.bpm;
@@ -705,7 +738,7 @@ export class _SongManager_ {
         ]
         const params = deleteRecordsQ.parameters;
 
-        if (categories) {
+        if (categories && Array.isArray(categories) && categories.length > 0) {
             qs.push('WHERE');
             qs.push(categories.map((cat, i) => {
                 params[`:param_${i}`] = cat;

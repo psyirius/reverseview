@@ -27,6 +27,7 @@ export class Config {
         let m_maxFontSize;
         let m_enableTransition;
         let m_enableShadow;
+        let m_enableFooter;
         let m_enableStroke;
         let m_enableTitle;
         let m_textColor;
@@ -146,6 +147,7 @@ export class Config {
             m_enableTransition = true;
             m_enableShadow = true;
             m_enableStroke = true;
+            m_enableFooter = true;
             m_enableTitle = true;
             m_textColor = "#FFFFFF";
             m_textColor2 = "#FFFFFF";
@@ -253,6 +255,12 @@ export class Config {
                 m_enableShadow = _parse_bool_str(aU.textContent);
             } else {
                 m_enableShadow = true;
+            }
+            var aU = doc.getElementsByTagName("enableFooter")[0];
+            if (aU != null) {
+                m_enableFooter = _parse_bool_str(aU.textContent);
+            } else {
+                m_enableFooter = true;
             }
 
             var aU = doc.getElementsByTagName("enableStroke")[0];
@@ -557,6 +565,7 @@ export class Config {
             aH += "  <maxFontSize>" + m_maxFontSize + "</maxFontSize>\n";
             aH += "  <enableTransition>" + m_enableTransition + "</enableTransition>\n";
             aH += "  <enableShadow>" + m_enableShadow + "</enableShadow>\n";
+            aH += "  <enableFooter>" + m_enableFooter + "</enableFooter>\n";
             aH += "  <enableStroke>" + m_enableStroke + "</enableStroke>\n";
             aH += "  <enableTitle>" + m_enableTitle + "</enableTitle>\n";
             aH += "  <textColor>" + m_textColor + "</textColor>\n";
@@ -735,6 +744,9 @@ export class Config {
         };
         this.get_p_enableShadow = function () {
             return m_enableShadow;
+        };
+        this.get_p_enableFooter = function () {
+            return m_enableFooter;
         };
         this.get_p_enableStroke = function () {
             return m_enableStroke;
@@ -965,6 +977,10 @@ export class Config {
         };
         this.set_p_enableShadow = function (aH) {
             m_enableShadow = aH;
+            return true;
+        };
+        this.set_p_enableFooter = function (aH) {
+            m_enableFooter = aH;
             return true;
         };
         this.set_p_enableStroke = function (aH) {
@@ -1327,6 +1343,7 @@ export function configInit() {
 
     document.getElementById("presentConfigEnableSongTitle").checked = !!$RvW.vvConfigObj.get_p_showTitle();
     document.getElementById("presentConfigEnableShadow").checked = !!$RvW.vvConfigObj.get_p_enableShadow();
+    document.getElementById("presentConfigEnableFooter").checked = !!$RvW.vvConfigObj.get_p_enableFooter();
     document.getElementById("presentConfigEnableOutline").checked = !!$RvW.vvConfigObj.get_p_enableStroke();
     const a = $RvW.vvConfigObj.get_p_align();
     document.getElementById("justify_left").checked = false;

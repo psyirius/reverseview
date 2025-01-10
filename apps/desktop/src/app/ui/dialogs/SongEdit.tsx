@@ -10,6 +10,7 @@ import {Toast} from "@app/toast";
 import {Song} from "@/song/song-obj";
 import {SongPresenter} from "@/song/present";
 import LyricEditDialog from "@app/ui/dialogs/LyricEdit";
+import {songManager} from "@app/glc";
 
 interface LSProps {
     slidesInitial: [string[], string[]];
@@ -154,16 +155,7 @@ export default function SongEditDialog() {
             setSelectedSlide(0);
 
             {
-                const cats = [];
-
-                const {data} = $RvW.songManagerObj.get_sm_cat_records();
-                if (data != null) {
-                    for (const item of data) {
-                        if (cats.indexOf(item.cat) === -1) {
-                            cats.push(item.cat);
-                        }
-                    }
-                }
+                const cats = songManager.getAllCategories();
 
                 cats.sort();
 
@@ -177,7 +169,7 @@ export default function SongEditDialog() {
             }
 
             {
-                const fonts = $RvW.songManagerObj.getFontList();
+                const fonts = songManager.getAllFonts();
 
                 for (const sysFont of $RvW.systemFontList) {
                     if (fonts.indexOf(sysFont) === -1) {

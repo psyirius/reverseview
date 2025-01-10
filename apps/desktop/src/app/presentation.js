@@ -20,28 +20,27 @@ function IsNumeric(v) {
 export function savePresentationMargin() {
     let canSave = true;
 
-    const e = document.getElementById("presentConfigMarginTop").value;
-    const c = document.getElementById("presentConfigMarginBottom").value;
-    const f = document.getElementById("presentConfigMarginLeft").value;
-    const n = document.getElementById("presentConfigMarginRight").value;
+    const mt = document.getElementById("presentConfigMarginTop").value;
+    const mb = document.getElementById("presentConfigMarginBottom").value;
+    const ml = document.getElementById("presentConfigMarginLeft").value;
+    const mr = document.getElementById("presentConfigMarginRight").value;
 
-    if (IsNumeric(e) && IsNumeric(c) && IsNumeric(f) && IsNumeric(n)) {
-        $RvW.vvConfigObj.set_p_topMargin(e);
-        $RvW.vvConfigObj.set_p_bottomMargin(c);
-        $RvW.vvConfigObj.set_p_leftMargin(f);
-        $RvW.vvConfigObj.set_p_rightMargin(n);
+    if (IsNumeric(mt) && IsNumeric(mb) && IsNumeric(ml) && IsNumeric(mr)) {
+        $RvW.vvConfigObj.set_p_topMargin(mt);
+        $RvW.vvConfigObj.set_p_bottomMargin(mb);
+        $RvW.vvConfigObj.set_p_leftMargin(ml);
+        $RvW.vvConfigObj.set_p_rightMargin(mr);
     } else {
         canSave = false;
+
         Toast.error("Error", "Invalid entry for margin");
-        document.getElementById("presentConfigMarginTop").value =
-            $RvW.vvConfigObj.get_p_topMargin();
-        document.getElementById("presentConfigMarginBottom").value =
-            $RvW.vvConfigObj.get_p_bottomMargin();
-        document.getElementById("presentConfigMarginLeft").value =
-            $RvW.vvConfigObj.get_p_leftMargin();
-        document.getElementById("presentConfigMarginRight").value =
-            $RvW.vvConfigObj.get_p_rightMargin();
+
+        document.getElementById("presentConfigMarginTop").value = $RvW.vvConfigObj.get_p_topMargin();
+        document.getElementById("presentConfigMarginBottom").value = $RvW.vvConfigObj.get_p_bottomMargin();
+        document.getElementById("presentConfigMarginLeft").value = $RvW.vvConfigObj.get_p_leftMargin();
+        document.getElementById("presentConfigMarginRight").value = $RvW.vvConfigObj.get_p_rightMargin();
     }
+
     const v = document.getElementById("presentConfigMaxFontSize").value;
     if (IsNumeric(v)) {
         if (withinRange(30, 200, v)) {
@@ -56,14 +55,23 @@ export function savePresentationMargin() {
         Toast.error("Error", "Invalid maximum font size value.");
         document.getElementById("presentConfigMaxFontSize").value = $RvW.vvConfigObj.get_p_maxFontSize();
     }
-    var l = document.getElementById("presentConfigEnableTransition").checked;
-    $RvW.vvConfigObj.set_p_enableTransition(l);
-    var d = document.getElementById("presentConfigEnableSongTitle").checked;
-    $RvW.vvConfigObj.set_p_showTitle(d);
-    var g = document.getElementById("presentConfigEnableShadow").checked;
-    $RvW.vvConfigObj.set_p_enableShadow(g);
-    var z = document.getElementById("presentConfigEnableOutline").checked;
-    $RvW.vvConfigObj.set_p_enableStroke(z);
+
+    $RvW.vvConfigObj.set_p_enableTransition(
+        document.getElementById("presentConfigEnableTransition").checked
+    );
+    $RvW.vvConfigObj.set_p_showTitle(
+        document.getElementById("presentConfigEnableSongTitle").checked
+    );
+    $RvW.vvConfigObj.set_p_enableShadow(
+        document.getElementById("presentConfigEnableShadow").checked
+    );
+    $RvW.vvConfigObj.set_p_enableFooter(
+        document.getElementById("presentConfigEnableFooter").checked
+    );
+    $RvW.vvConfigObj.set_p_enableStroke(
+        document.getElementById("presentConfigEnableOutline").checked
+    );
+
     var q = document.getElementById("justify_left").checked;
     var z = document.getElementById("justify_center").checked;
     var a = document.getElementById("justify_right").checked;
@@ -75,6 +83,7 @@ export function savePresentationMargin() {
         i = "right";
     }
     $RvW.vvConfigObj.set_p_align(i);
+
     var y = document.getElementById("porient_hori").checked;
     var h = document.getElementById("porient_vert").checked;
     var r = "0";
@@ -83,12 +92,14 @@ export function savePresentationMargin() {
     }
     presentationCtx.p_text_orientation = r;
     $RvW.vvConfigObj.set_p_text_orientation(presentationCtx.p_text_orientation);
+
     const p = document.getElementById("showPrimaryFont").checked;
     if (p) {
         $RvW.vvConfigObj.set_song_primaryOnly("true");
     } else {
         $RvW.vvConfigObj.set_song_primaryOnly("false");
     }
+
     var y = document.getElementById("porient_song_hori").checked;
     var h = document.getElementById("porient_song_vert").checked;
     var r = "0";
@@ -96,25 +107,32 @@ export function savePresentationMargin() {
         r = "1";
     }
     $RvW.vvConfigObj.set_song_text_orientation(r);
+
     var x = document.getElementById("customLogoText1").value;
     var w = document.getElementById("customLogoText2").value;
     $RvW.vvConfigObj.set_logoText1(x);
     $RvW.vvConfigObj.set_logoText2(w);
+
     var t = document.getElementById("presentConfigShowDateTime").checked;
     var m = document.getElementById("presentConfigShowVVLogo").checked;
     var s = document.getElementById("presentConfigShowCustomLogo").checked;
     $RvW.vvConfigObj.set_showDateTime(t);
     $RvW.vvConfigObj.set_showVVLogo(m);
     $RvW.vvConfigObj.set_showCustomLogo(s);
+
     var j = document.getElementById("presentConfigOntop").checked;
     $RvW.vvConfigObj.set_presentationOnTop(j);
+
     var jx = document.getElementById("remoteRestoreToggle").checked;
     restoreRemoteStandby.set(!!jx);
     $RvW.rvwPreferences.set("app.settings.remote.restore.standby", !!jx);
+
     var u = document.getElementById("show2LinesSlides").checked;
     $RvW.vvConfigObj.set_show2lines(u);
+
     var o = document.getElementById("hideStanzaNumber").checked;
     $RvW.vvConfigObj.set_hideStanzaNumber(o);
+
     var b = document.getElementById("fitLineSetup").checked;
     $RvW.vvConfigObj.set_pformat_multiplelines(b);
 

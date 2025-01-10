@@ -591,7 +591,7 @@ export default function RightSettingsTab() {
                                             name="example"
                                             id="presentConfigEnableTransition"
                                         />
-                                        <label>Transitions</label>
+                                        <label>Transition</label>
                                     </div>
                                 </div>
                                 <div class="field">
@@ -612,6 +612,16 @@ export default function RightSettingsTab() {
                                             id="presentConfigEnableShadow"
                                         />
                                         <label>Shadow</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input
+                                            type="checkbox"
+                                            name="example"
+                                            id="presentConfigEnableFooter"
+                                        />
+                                        <label>Footer</label>
                                     </div>
                                 </div>
                             </div>
@@ -720,7 +730,7 @@ export default function RightSettingsTab() {
                             <div class="field">
                                 <div class="ui checkbox">
                                     <input type="checkbox" name="example" id="presentConfigShowVVLogo"/>
-                                    <label>ReVerseVIEW Logo</label>
+                                    <label>ReVerseVIEW Branding</label>
                                 </div>
                             </div>
 
@@ -731,7 +741,7 @@ export default function RightSettingsTab() {
                                         name="example"
                                         id="presentConfigShowCustomLogo"
                                     />
-                                    <label>Custom Logo</label>
+                                    <label>Custom Branding</label>
                                 </div>
                             </div>
 
@@ -781,7 +791,7 @@ export default function RightSettingsTab() {
                             <div class="field">
                                 <div class="ui checkbox">
                                     <input type="checkbox" name="example" id="hideStanzaNumber"/>
-                                    <label>Hide stanza number</label>
+                                    <label>Hide verse number</label>
                                 </div>
                             </div>
 

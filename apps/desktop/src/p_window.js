@@ -118,21 +118,22 @@ function passVariable(isStageView, _ = undefined) {
     _.p_showTitle = $RvW.vvConfigObj.get_p_showTitle();
     _.p_enableStroke = $RvW.vvConfigObj.get_p_enableStroke();
     _.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
+    _.p_enableFooter = $RvW.vvConfigObj.get_p_enableFooter();
     _.p_align = $RvW.vvConfigObj.get_p_align();
 
     console.trace(`p_enableTransition: ${_.p_enableTransition}`);
 
     if ($RvW.vvConfigObj.get_showVVLogo()) {
-        _.p_logo = ["ReVerseVIEW", "rvw.github.io"].join("<br>");
+        _.p_brandingText = ["ReVerseVIEW", "rvw.github.io"].join("<br>");
     } else {
-        _.p_logo = `${$RvW.vvConfigObj.get_logoText1()}<br>${$RvW.vvConfigObj.get_logoText2()}`;
+        _.p_brandingText = `${$RvW.vvConfigObj.get_logoText1()}<br>${$RvW.vvConfigObj.get_logoText2()}`;
     }
     if (isStageView === 1) {
         _.p_showDate = $RvW.vvConfigObj.get_svShowDate();
     } else {
         _.p_showDate = $RvW.vvConfigObj.get_showDateTime();
     }
-    _.p_showLogo = $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
+    _.p_showBranding = $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
     _.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
     _.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
     _.p_ver1ScaleFactor = presentationCtx.p_ver1ScaleFactor;

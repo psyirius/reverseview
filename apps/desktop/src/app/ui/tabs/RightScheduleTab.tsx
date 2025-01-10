@@ -1,7 +1,7 @@
 import {$RvW} from "@/rvw";
 import {useStoreState} from "@/utils/hooks";
 import {ScheduleItemType, scheduleList} from "@stores/global";
-import {scheduler, songManager} from "@/app/glc";
+import {presenter, scheduler, songManager} from "@/app/glc";
 import {console} from "@/platform/adapters/air";
 import {Component} from "preact";
 import {SongPresenter} from "@/song/present";
@@ -107,7 +107,7 @@ class _RightScheduleTab extends Component<Props, State> {
 
             this.setState({ currentItem: [item, v] });
         } else {
-            const song = songManager.getSong(item.meta.ref);
+            const song = songManager.getSong(item.meta.ref); // ref is song ID
             // const song = songManager.getSong(207629);
             console.log('SONG ITEM:', song);
 
@@ -120,8 +120,8 @@ class _RightScheduleTab extends Component<Props, State> {
                 for (let k = 0; k < lyx.length; k++) {
                     const lyr = lyx[k];
 
-                    for (let i = 0; i < lyr.content.length; i++) {
-                        const slide = lyr.content[i];
+                    for (let i = 0; i < lyr.slides.length; i++) {
+                        const slide = lyr.slides[i];
 
                         const slx = (lyrics[i] ||= []);
                         slx.push({
@@ -148,15 +148,17 @@ class _RightScheduleTab extends Component<Props, State> {
     presentSlide = (item: any, i: number) => {
         console.log('Presenting slide:', item, i);
 
-        const id = item.meta.ref;
-        const song = $RvW.songManagerObj.getSongObjWithID(id);
+        const id = Number(item.meta.ref);
+        const song = songManager.getSong(id);
 
         if (!song) {
             console.error('Song not found:', id);
             return;
         }
 
-        (new SongPresenter(song)).present(i);
+        presenter.presentSong(song, i);
+        // (new SongPresenter(song)).present(i);
+
     }
 
     render() {

@@ -81,7 +81,7 @@ export const songCategories: Writable<string[]> = writable([]);
 export const songTags: Writable<string[]> = writable([]);
 export const selectedSongCategory: Writable<number | null> = writable(null);
 export const selectedSongTag: Writable<number | null> = writable(null);
-export const selectedSong: Writable<Song | null> = writable(undefined);
+export const selectedSong: Writable<any | null> = writable(undefined);
 
 export const songListState: Writable<any> = writable({
     songs: [],

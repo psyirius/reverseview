@@ -9,6 +9,7 @@ import {
     showRemotePanel,
     showVerseEditPanel
 } from "@stores/global";
+import {songManager} from "@app/glc";
 
 const MAIN_MENU = [
     {
@@ -109,19 +110,24 @@ function song_delete_cat_menu(a) {
     }
 }
 function songDB_Export_all_db() {
-    $RvW.songNavObj.processExportSongDB();
+    // $RvW.songNavObj.processExportSongDB();
+    songManager.exportAllAsXMLToFile();
 }
 function songDB_Export_all_xml() {
-    $RvW.songManagerObj.processExportSongXML();
+    // $RvW.songManagerObj.processExportSongXML();
+    songManager.exportAllAsDBToFile();
 }
 function songDB_Export_cat_xml() {
-    $RvW.songManagerObj.processExportCatXML();
+    // $RvW.songManagerObj.processExportCatXML();
+    songManager.exportSelectedCategoriesAsXMLToFile();
 }
 function songDB_Import_db() {
-    $RvW.songManagerObj.processImportSongDB();
+    // $RvW.songManagerObj.processImportSongDB();
+    songManager.importDBFromFile();
 }
 function songDB_Import_xml() {
-    $RvW.songManagerObj.processImportSongXML();
+    // $RvW.songManagerObj.processImportSongXML();
+    songManager.importXMLFromFile();
 }
 function setup_bible_version() {
     showBibleSelectPanel.set(true);

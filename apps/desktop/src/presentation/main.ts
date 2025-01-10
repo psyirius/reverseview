@@ -1,177 +1,10 @@
 // @ts-nocheck
 
-interface PresentationConfig {
-    /**
-     * List of primary slides (html)
-     * */
-    p_text1_arr: string[];
-    /**
-     * List of secondary slides (html)
-     * */
-    p_text2_arr: string[];
-    /**
-     * Primary text font
-     * */
-    p_text1_font: string;
-    /**
-     * Secondary text font
-     * */
-    p_text2_font: string;
-    /**
-     * Title text
-     * */
-    p_title?: string;
-    /**
-     * Footnote text
-     * */
-    p_footnote?: string;
-    /**
-     * Current index
-     * */
-    p_current_index: number;
-    /**
-     * Last index
-     * */
-    p_last_index: number;
-    /**
-     * Background image filenames
-     * */
-    p_bkgnd_filename: string[];
-    /**
-     * Enable background motion (zoom/pan)
-     * */
-    p_bkgnd_motion: boolean;
-    /**
-     * Text color in hex (primary)
-     * */
-    p_font_color: string;
-    /**
-     * Text color in hex (secondary)
-     * */
-    p_font_color2: string;
-    /**
-     * Inverted text color in hex (primary)
-     * */
-    p_font_color_invert: string;
-    /**
-     * Inverted text color in hex (secondary)
-     * */
-    p_font_color2_invert: string;
-    /**
-     * Window width
-     * */
-    p_window_X: number;
-    /**
-     * Window height
-     * */
-    p_window_Y: number;
-    /**
-     * Top margin
-     * */
-    p_topMargin: number;
-    /**
-     * Bottom margin
-     * */
-    p_bottomMargin: number;
-    /**
-     * Left margin
-     * */
-    p_leftMargin: number;
-    /**
-     * Right margin
-     * */
-    p_rightMargin: number;
-    /**
-     * Text alignment
-     * */
-    p_align: 'left' | 'center' | 'right';
-    /**
-     * Text orientation
-     * */
-    p_text_orientation: number;
-    /**
-     * Maximum font size
-     * */
-    p_maxFontSize: number;
-    /**
-     * Enable transition
-     * */
-    p_enableTransition: boolean;
-    /**
-     * Transition duration
-     * */
-    p_transitionDuration: number;
-    /**
-     * Enable shadow
-     * */
-    p_enableShadow: boolean;
-    /**
-     * Enable stroke
-     * */
-    p_enableStroke: boolean;
-    /**
-     * Background color in hex
-     * */
-    p_bkgnd_color: string;
-    /**
-     * Background color 1 in rgb (gradient)
-     * */
-    p_bkgnd_color1: string;
-    /**
-     * Background color 2 in rgb (gradient)
-     * */
-    p_bkgnd_color2: string;
-    /**
-     * Background gradient orientation (angle)
-     * */
-    p_bkgnd_grad_orient: number;
-    /**
-     * Background type
-     * */
-    p_bkgnd_type: 1 | 2 | 3;
-    /**
-     * Logo text
-     * */
-    p_logo: string;
-    /**
-     * Show title
-     * */
-    p_showTitle: boolean;
-    /**
-     * Show date
-     * */
-    p_showDate: boolean;
-    /**
-     * Shade background
-     * */
-    p_shadeBackground: boolean;
-    /**
-     * Transparent background
-     * */
-    p_transparentBackground: boolean;
-    /**
-     * Is Arabic (primary)
-     * */
-    p_isArabic1: boolean;
-    /**
-     * Is Arabic (secondary)
-     * */
-    p_isArabic2: boolean;
-    /**
-     * Verse 1 scale factor (primary)
-     * */
-    p_ver1ScaleFactor: number;
-    /**
-     * Verse 2 scale factor (secondary)
-     * */
-    p_ver2ScaleFactor: number;
-    /**
-     * Format multiple lines
-     * */
-    p_format_multiplelines: boolean;
-}
+// NOTE: Don't use any imports or exports here
 
 !(function (exports) {
+    type PresentationConfig = import("@/shared/presentation").PresentationConfig;
+
     const _$: PresentationConfig = {
         p_text1_arr: [],
         p_text2_arr: [],
@@ -199,6 +32,7 @@ interface PresentationConfig {
         p_transitionDuration: 150,
         p_enableShadow: true,
         p_enableStroke: true,
+        p_enableFooter: true,
         p_bkgnd_color: "000000",
         p_bkgnd_color1: "00ffa0",
         p_bkgnd_color2: "FacFFF",
@@ -206,10 +40,10 @@ interface PresentationConfig {
         p_motion_bkgnd_index: 0,
         p_bkgnd_type: 3,
         p_text_orientation: '0',
-        p_logo: "",
+        p_brandingText: "",
         p_showTitle: false,
         p_showDate: false,
-        p_showLogo: false,
+        p_showBranding: false,
         p_shadeBackground: null,
         p_transparentBackground: null,
         p_isArabic1: false,
@@ -698,11 +532,15 @@ interface PresentationConfig {
             titleEl.style.visibility = "hidden";
         }
 
-        document.getElementById("footnote").innerHTML = _$.p_footnote;
-        document.getElementById("footnote").style.color = _$.p_font_color;
+        if (_$.p_enableFooter) {
+            document.getElementById("footnote").innerHTML = _$.p_footnote;
+            document.getElementById("footnote").style.color = _$.p_font_color;
+        } else {
+            document.getElementById("footnote").innerHTML = "";
+        }
 
-        if (_$.p_showLogo) {
-            document.getElementById("footer_vv").innerHTML = _$.p_logo;
+        if (_$.p_showBranding) {
+            document.getElementById("footer_vv").innerHTML = _$.p_brandingText;
             document.getElementById("footer_vv").style.color = _$.p_font_color;
             document.getElementById("footer_vv").style.textShadow =
                 "2px 2px 3px #" +
@@ -778,19 +616,15 @@ interface PresentationConfig {
                 _$.p_text1_font
             );
 
-            document.getElementById("content1").style.webkitTextStroke =
-                `${outlineThickness}px #${_$.p_font_color_invert}`;
+            document.getElementById("content1").style.webkitTextStroke = `${outlineThickness}px #${_$.p_font_color_invert}`;
 
             outlineThickness = getOutlineThickness(
                 _$.p_text2_arr[_$.p_current_index],
                 _$.p_text2_font
             );
 
-            document.getElementById("content2").style.webkitTextStroke =
-                `${outlineThickness}px #${_$.p_font_color2_invert}`;
-
-            document.getElementById("presentationTitle").style.webkitTextStroke =
-                `${outlineThickness}px #${_$.p_font_color2_invert}`;
+            document.getElementById("content2").style.webkitTextStroke = `${outlineThickness}px #${_$.p_font_color2_invert}`;
+            document.getElementById("presentationTitle").style.webkitTextStroke = `${outlineThickness}px #${_$.p_font_color2_invert}`;
         }
     }
 
@@ -1062,4 +896,4 @@ interface PresentationConfig {
     exports.showThemeProcess = showThemeProcess;
     exports.clearPresenter = clearPresenter;
     exports.showBlankProcess = showBlankProcess;
-}(window /** @type {any} */));
+}(window as { [key: string]: any }));

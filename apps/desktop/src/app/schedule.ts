@@ -9,6 +9,7 @@ import {console} from "@/platform/adapters/air";
 import {navFontSize, ScheduleItemType, scheduleList} from "@stores/global";
 import {$RvW} from "@/rvw";
 import $ from "jquery";
+import {songManager} from "@app/glc";
 
 type ResultCallback<Result = any, Error = any> = (
     result?: Result,
@@ -49,7 +50,7 @@ export class _Scheduler_ {
             // - by the time we call it, songs might not be finished loading
             const songID = Number(record.ref);
 
-            const song = $RvW.songManagerObj.getSongObjWithID(songID);
+            const song = songManager.getSong(songID);
 
             return song?.name || 'Unknown';
         }
@@ -457,7 +458,7 @@ export class _Scheduler_ {
             // FIXME: not selecting the song, use stores
             const songID = Number(item.ref);
 
-            const song = $RvW.songManagerObj.getSongObjWithID(songID);
+            const song = songManager.getSong(songID);
 
             if (!song) {
                 throw new Error('Song not found');
