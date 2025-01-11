@@ -23,6 +23,7 @@ let new_fname,
 let bibleDB;
 let dbFilename_hold = "";
 let verFile = null;
+
 const __debug = true;
 
 export function loadBibleVersion() {

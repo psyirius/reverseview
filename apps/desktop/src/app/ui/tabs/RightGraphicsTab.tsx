@@ -1,46 +1,93 @@
-import {useEffect, useState} from "preact/hooks";
+import {useEffect, useRef, useState} from "preact/hooks";
 import {$RvW} from "@/rvw";
 import {useStoreState} from "@/utils/hooks";
 import {bgGradientAngle, bgGradientColor1, bgGradientColor2, bgSolidColor} from "@stores/global";
 import Tabs from "@app/ui/Tabz";
 
 const TextColorTab = () => {
+    const colorInput1Ref = useRef<HTMLInputElement>(null);
+    const colorInput2Ref = useRef<HTMLInputElement>(null);
+
+    const [color1, setColor1] = useState($RvW.vvConfigObj.get_p_textColor());
+    const [color2, setColor2] = useState($RvW.vvConfigObj.get_p_textColor2());
+
+    function resetTextColors() {
+        const white = "#ffffff";
+
+        setColor1(white);
+        setColor2(white);
+    }
+
+    useEffect(() => {
+        // @ts-ignore
+        $(colorInput1Ref.current).spectrum('set', color1);
+
+        $RvW.vvConfigObj.set_p_textColor(color1);
+        $RvW.vvConfigObj.save();
+    }, [color1]);
+
+    useEffect(() => {
+        // @ts-ignore
+        $(colorInput2Ref.current).spectrum('set', color2);
+
+        $RvW.vvConfigObj.set_p_textColor2(color2);
+        $RvW.vvConfigObj.save();
+    }, [color2]);
+
+    useEffect(() => {
+        // @ts-ignore
+        $(colorInput1Ref.current).spectrum({
+            color: color1,
+            showAlpha: false,
+            showInitial: true,
+            showInput: true,
+            showButtons: false,
+            preferredFormat: "hex",
+            change: function(color) {
+                setColor1(color.toHexString());
+            }
+        });
+        // @ts-ignore
+        $(colorInput2Ref.current).spectrum({
+            color: color2,
+            showAlpha: false,
+            showInitial: true,
+            showInput: true,
+            showButtons: false,
+            preferredFormat: "hex",
+            change: function(color) {
+                setColor2(color.toHexString());
+            }
+        });
+    }, []);
+
     return (
         <div class="ui form">
-            {/*<h4 class="ui dividing header">Text Colors</h4>*/}
+            <h4 class="ui dividing header">Text Colors</h4>
 
-            <div class="fields">
+            <div class="inline fields">
                 <div class="field">
                     <label>Primary</label>
 
-                    <div id="graphics_text_color_1" class="graphics_selColor"></div>
+                    <input type='text' ref={colorInput1Ref}/>
                 </div>
                 <div class="field">
                     <label>Secondary</label>
 
-                    <div id="graphics_text_color_2" class="graphics_selColor"></div>
+                    <input type='text' ref={colorInput2Ref}/>
                 </div>
-            </div>
 
-            <div class="ui icon buttons">
-                <button
-                    class="ui button"
-                    id="changeTextColorButton"
-                    data-tooltip="Change"
-                    data-position="bottom center"
-                    data-inverted=""
-                >
-                    <i class="eye dropper icon"></i>
-                </button>
-                <button
-                    class="ui button"
-                    id="resetTextColorButton"
-                    data-tooltip="Reset"
-                    data-position="bottom center"
-                    data-inverted=""
-                >
-                    <i class="undo icon"></i>
-                </button>
+                <div class="field">
+                    <div class="ui buttons">
+                        <button
+                            class="ui labeled icon button"
+                            onClick={resetTextColors}
+                        >
+                            <i class="undo icon"></i>
+                            Reset
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -78,11 +125,6 @@ const BackgroundColorTab = () => {
                 meta.triggeredByUser && bgGradientAngle.set(value);
             }
         });
-
-        // @ts-ignore
-        // $("#custom-picket").spectrum({
-        //     color: "#f00"
-        // });
     }, []);
 
     useEffect(() => {

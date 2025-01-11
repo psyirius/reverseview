@@ -2,14 +2,12 @@
 import {Component} from "preact";
 import {useState} from "preact/hooks";
 import {
-    selectedSong,
     selectedTab,
     songCategories,
     songTags
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import debounce from '@/utils/debounce';
-import {$RvW} from "@/rvw";
 
 import {console} from "@/platform/adapters/air";
 import {toast} from "@app/ui/Toaster";
@@ -21,7 +19,7 @@ import Modal from "@app/ui/Modal";
 // import FilterableTable from "@app/ui/widgets/FilterableTable";
 import DataTable from "@app/ui/widgets/Datatable";
 import PaginatedList from "@app/ui/widgets/PaginatedList";
-import {songManager} from "@app/glc";
+import {songManager, songNavigator} from "@app/glc";
 import {SearchFilter, SearchFilterType} from "@/song/song-manager";
 
 const Zapp = () => {
@@ -1510,7 +1508,7 @@ class _LeftSongsTab_ extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.props.searchDebounceDelay ??= 200;
+        this.props.searchDebounceDelay ??= 500;
         this.state = {
             results: {
                 items: [],
@@ -1543,7 +1541,11 @@ class _LeftSongsTab_ extends Component<Props, State> {
                 });
             }
 
-            const opts = { page: this.state.page, limit: this.state.itemsPerPage };
+            // TODO: impl fully
+            const opts = {
+                // page: this.state.page,
+                // limit: this.state.itemsPerPage,
+            };
 
             // @ts-ignore
             songManager.search(filters, opts, (data, err) => {
@@ -1570,7 +1572,7 @@ class _LeftSongsTab_ extends Component<Props, State> {
 
     componentDidMount() {
         // Initialize the results
-        // this.search(null); // don't call it, right tab view wont be ready
+        // this.search(null); // don't call it, right tab view won't be ready
     }
 
     onSearchInput = (e: KeyboardEvent) => {
@@ -1655,9 +1657,8 @@ class _LeftSongsTab_ extends Component<Props, State> {
 
     handleSelect = (item: any) => {
         selectedTab.set(1); // make the lyrics tab active if on another tab
-        selectedSong.set(item);
 
-        console.log(`Selected Song:`, item);
+        songNavigator.select(item);
     };
 
     render() {

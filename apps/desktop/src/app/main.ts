@@ -8,21 +8,14 @@ import $ from 'jquery';
 
 import { WebEngine } from "@/remote/webengine";
 import { WebServer } from "@/remote/webserver";
-import { WordBrain } from "@/words/wordbrain";
-import { WordLearner } from "@/words/wordlearner";
-import { SongManager } from "@/song/song-manager";
-import { SongNumber } from "@/song/number";
-import { SongNav } from "@/song/song-nav";
 import { setupMenu } from "@app/menu";
-import { SongEdit } from "@/song/edit";
 import { NotesManager } from "@/notes/manage";
-import { Notes, PostIt } from "@/notes/notes";
+import { Notes } from "@/notes/notes";
 import { BibleSearch } from "@/bible/search";
 import { GraphicsMgr } from "@/graphics/graphics";
 import {setPrimaryBooknames} from "@/bible/booknames";
 import {BibleRecentRefManager} from "@/bible/recent";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible} from "@/bible/manager";
-import { HelpUiPanel } from "./help";
 import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/version";
 import { Config, configInit, svParameterSaveEvent } from "./config";
 import Preferences from './preferences';
@@ -69,7 +62,7 @@ import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 // import AppState from "@/stores/state";
 import {console} from "@/platform/adapters/air";
-import {ngInit} from "@app/glc";
+import {ngInit, songManager, songNavigator} from "@app/glc";
 
 // import * as dojoDom from 'dojo/dom';
 // console.trace("dojo/dom", dojoDom);
@@ -289,24 +282,17 @@ $RvW.rightTabView = null;
 $RvW.searchObj = null;
 $RvW.notesObj = null;
 $RvW.notesManageObj = null;
-// $RvW.scheduleObj = null;
 $RvW.webServerObj = null;
 $RvW.webEngineObj = null;
 $RvW.bibleRefObj = null;
-$RvW.songManagerObj = null;
-$RvW.songNumberObj = null;
 $RvW.chordsManagerObj = null;
 $RvW.chordsDatabaseObj = null;
 $RvW.chordsImportExportObj = null;
-$RvW.songNavObj = null;
-$RvW.helpObj = null;
 $RvW.enterForSearchActive = true;
 $RvW.enterForBibleRef = false;
 $RvW.vvConfigObj = null;
 $RvW.highlightColor = "#BAD0EF";
 $RvW.scroll_to_view = false;
-$RvW.learner = null;
-$RvW.wordbrain = null;
 $RvW.rvwPreferences = null;
 
 let firstTimeFlag = false;
@@ -883,7 +869,7 @@ function adjustNavWindowsHeight() {
         // song list rows per page
         {
             const rpp = Math.round(((window.innerHeight - 360) / 36));
-            $RvW.songNavObj.setFormats(rpp);
+            songNavigator.setRecordsPerPage(rpp);
         }
     }
 }
@@ -915,10 +901,6 @@ function setupTabContent() {
     $RvW.webServerObj = new WebServer('webroot');
     $RvW.webEngineObj = new WebEngine();
     $RvW.bibleRefObj = new BibleReference();
-    $RvW.songNumberObj = new SongNumber();
-    $RvW.songManagerObj = new SongManager();
-    $RvW.songNavObj = new SongNav();
-    $RvW.helpObj = new HelpUiPanel();
     $RvW.graphicsObj = new GraphicsMgr();
 
     ngInit();
@@ -1324,9 +1306,6 @@ export function start(Y: YUI) {
 
         $RvW.vvConfigObj = new Config();
         $RvW.vvConfigObj.load(vvinit_continue);
-
-        $RvW.learner = new WordLearner();
-        $RvW.wordbrain = new WordBrain();
     }
 
     loadPreferences(() => {

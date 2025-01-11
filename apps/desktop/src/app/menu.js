@@ -1,15 +1,15 @@
-import { BgContext } from '@app/background'
-import {manageVersion, showBrowse} from "@/bible/version";
-import {promoteVV} from "@app/common";
 import {$RvW} from "@/rvw";
+import {manageVersion, showBrowse} from "@/bible/version";
 import {console} from "@/platform/adapters/air";
 import {
     selectedBibleVersionForVerseEdit,
+    selectedSong,
+    selectedSongCategory,
     showBibleSelectPanel,
     showRemotePanel,
     showVerseEditPanel
 } from "@stores/global";
-import {songManager} from "@app/glc";
+import {songManager, songNavigator} from "@app/glc";
 
 const MAIN_MENU = [
     {
@@ -25,7 +25,7 @@ const MAIN_MENU = [
         label: 'Bible',
         items: [
             { label: 'Add', onSelect: add_bible_version },
-            { label: 'Select', onSelect: setup_bible_version },
+            { label: 'Select', onSelect: onClickBibleSelect },
             { label: 'Manage', onSelect: show_bible_manage },
             { type: 'separator' },
             {
@@ -58,7 +58,6 @@ const MAIN_MENU = [
                 ]
             },
             { label: 'Import Lyrics', onSelect: songDB_Import_xml },
-            { label: 'Import Song DB', onSelect: songDB_Import_db },
         ]
     },
     {
@@ -66,7 +65,7 @@ const MAIN_MENU = [
         items: [
             { label: 'About', onSelect: showAbout }
         ]
-    }
+    },
 ];
 
 export function setupMenu() {
@@ -89,47 +88,42 @@ export function setupMenu() {
     // Menu.setAsIconMenu(vvMenu);
 }
 
-function song_new_menu(a) {
-    if ($RvW.songNavObj != null) {
-        $RvW.songNavObj.sn_newSong();
-    }
+function song_new_menu() {
+    songNavigator.showSongCreateDialog();
 }
-function song_edit_menu(a) {
-    if ($RvW.songNavObj != null) {
-        $RvW.songNavObj.sn_editSong();
+function song_edit_menu() {
+    const song = selectedSong.get();
+
+    if (song) {
+        songNavigator.showSongEditDialog(song);
     }
 }
 function song_delete_menu(a) {
-    if ($RvW.songNavObj != null) {
-        $RvW.songNavObj.sn_deleteSong();
+    const song = selectedSong.get();
+
+    if (song) {
+        songNavigator.delete(song);
     }
 }
-function song_delete_cat_menu(a) {
-    if ($RvW.songNavObj != null) {
-        $RvW.songNavObj.sn_deleteSongByCat();
+function song_delete_cat_menu() {
+    const category = selectedSongCategory.get();
+
+    if (category) {
+        songNavigator.deleteByCategory(category);
+    } else {
+        console.log('No Category Selected')
     }
-}
-function songDB_Export_all_db() {
-    // $RvW.songNavObj.processExportSongDB();
-    songManager.exportAllAsXMLToFile();
 }
 function songDB_Export_all_xml() {
-    // $RvW.songManagerObj.processExportSongXML();
-    songManager.exportAllAsDBToFile();
+    songManager.exportSongXML();
 }
 function songDB_Export_cat_xml() {
-    // $RvW.songManagerObj.processExportCatXML();
-    songManager.exportSelectedCategoriesAsXMLToFile();
-}
-function songDB_Import_db() {
-    // $RvW.songManagerObj.processImportSongDB();
-    songManager.importDBFromFile();
+    songManager.exportCatSongsXML();
 }
 function songDB_Import_xml() {
-    // $RvW.songManagerObj.processImportSongXML();
-    songManager.importXMLFromFile();
+    songManager.importFromXML();
 }
-function setup_bible_version() {
+function onClickBibleSelect() {
     showBibleSelectPanel.set(true);
 }
 function add_bible_version() {
@@ -154,19 +148,7 @@ function verseviewExit() {
     $RvW.processExit();
     window.nativeWindow.close();
 }
-function addBkgndMenu() {
-    BgContext.showBrowse();
-}
-function deleteBkgndMenu() {
-    BgContext.delBkgnd();
-}
 function showAbout() {
     // TODO: make it a separate tool window
-    $RvW.helpObj.show();
-}
-function vvPromote_menu1() {
-    promoteVV(1);
-}
-function vvPromote_menu2() {
-    promoteVV(2);
+    // Implement AboutPanel
 }

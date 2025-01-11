@@ -1,4 +1,4 @@
-// TODO: Implement an express fork using air apis
+// TODO: Implement an express/koa/hono like server using air apis
 
 import {getAllVersesFromChapter} from "@/bible/manager";
 import {console} from "@/platform/adapters/air";
@@ -408,21 +408,6 @@ class WebRequestHandler {
 
             // Songs: Search
             case 20: {
-                // $RvW.songManagerObj.getAllTitlesForWeb(args.query, (err, res) => {
-                //     if (err) {
-                //         this._sendJSON({
-                //             ok: false,
-                //             error: err,
-                //         });
-                //     } else {
-                //         console.trace(res);
-                //
-                //         this._sendJSON({
-                //             ok: true,
-                //             data: res,
-                //         });
-                //     }
-                // });
                 songManager.search([{
                     type: SearchFilterType.TITLE,
                     value: args.query,
@@ -446,7 +431,6 @@ class WebRequestHandler {
             }
             // Songs: Get Content
             case 21: {
-                // const song = $RvW.songManagerObj.getSongObjWithID(args.id);
                 const song = songManager.getSong(args.id);
 
                 this._sendJSON({
@@ -477,11 +461,8 @@ class WebRequestHandler {
             }
             // Songs: Present Slide
             case 17: { // Present Song Slide
-                // const song = $RvW.songManagerObj.getSongObjWithID(args.id);
                 const song = songManager.getSong(args.id);
                 console.trace('Song: ', (song));
-                // const spo = new SongPresenter(song);
-                // spo.present(args.index);
                 presenter.presentSong(song, args.index);
 
                 this._sendJSON({
@@ -517,7 +498,6 @@ class WebRequestHandler {
                 }
 
                 const songId = item.ref;
-                // const song = $RvW.songManagerObj.getSongObjWithID(songId);
                 const song = songManager.getSong(songId);
 
                 this._sendJSON({

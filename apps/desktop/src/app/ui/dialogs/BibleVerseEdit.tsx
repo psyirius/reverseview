@@ -113,7 +113,7 @@ export default function BibleVerseEditDialog() {
                             fontFamily: verseFont,
                         }}
                         rows={3}
-                        readOnly={true}
+                        ref={updatedVerseTextRef}
                     >
                         {verseText}
                     </textarea>

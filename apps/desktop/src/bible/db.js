@@ -24,7 +24,7 @@ function getVerseFromArray(d, p, f) {
 export class BibleDB {
     constructor() {
         this.init = init;
-        this.closeDB = v;
+        this.closeDB = closeDB;
         this.isConnectionReady = isConnectionReady;
         this.isDataReady = isDataReady;
         this.isSingleDataReady = isSingleDataReady;
@@ -32,23 +32,23 @@ export class BibleDB {
         this.isConfigDataReady = isConfigDataReady;
         this.getVerse = getVerse;
         this.getChapter = getChapter;
-        this.getFull = H;
-        this.setBookNumber = h;
-        this.setChapterNumber = P;
-        this.setVerseNumber = a;
+        this.getFull = getFull;
+        this.setBookNumber = setBookNumber;
+        this.setChapterNumber = setChapterNumber;
+        this.setVerseNumber = setVerseNumber;
         this.getResultArray = getResultArray;
         this.getResultArray2 = getResultArray2;
         this.getResultFullData = getResultFullData;
         this.getSingleResult = getSingleResult;
         this.getSingleVerseFromBuffer = getSingleVerseFromBuffer;
-        this.getConfigRevision = ac;
-        this.getConfigFonts = R;
-        this.getConfigBooknames = U;
-        this.getConfigTitle = C;
-        this.getConfigDescription = p;
-        this.getConfigCopyrights = s;
-        this.getConfigSizefactor = B;
-        this.updateVerse = f;
+        this.getConfigRevision = getConfigRevision;
+        this.getConfigFonts = getConfigFonts;
+        this.getConfigBooknames = getConfigBooknames;
+        this.getConfigTitle = getConfigTitle;
+        this.getConfigDescription = getConfigDescription;
+        this.getConfigCopyrights = getConfigCopyrights;
+        this.getConfigSizefactor = getConfigSizefactor;
+        this.updateVerse = updateVerse;
 
         var r = false;
         var aa = false;
@@ -126,21 +126,21 @@ export class BibleDB {
         function isConfigDataReady() {
             return c;
         }
-        function h(ai) {
+        function setBookNumber(ai) {
             if (ai != null) {
                 e = ai;
             } else {
                 e = 1;
             }
         }
-        function P(ai) {
+        function setChapterNumber(ai) {
             if (ai != null) {
                 g = ai;
             } else {
                 g = 1;
             }
         }
-        function a(ai) {
+        function setVerseNumber(ai) {
             if (ai != null) {
                 X = ai;
             } else {
@@ -153,7 +153,7 @@ export class BibleDB {
         function getVerse(ai, ak, aj) {
             d(ai, ak, aj);
         }
-        function H() {
+        function getFull() {
             Z();
         }
         function getResultArray() {
@@ -186,7 +186,7 @@ export class BibleDB {
             var ai = W.data[0];
             return ai.word;
         }
-        function v() {
+        function closeDB() {
             G.close();
             if (G != null) {
                 G = null;
@@ -237,31 +237,31 @@ export class BibleDB {
             __debug("Details (create DB):" + ai.error.details);
             r = false;
         }
-        function ac() {
+        function getConfigRevision() {
             return z;
         }
-        function R() {
+        function getConfigFonts() {
             return K;
         }
-        function U() {
+        function getConfigBooknames() {
             return ad;
         }
-        function C() {
+        function getConfigTitle() {
             return w;
         }
-        function p() {
+        function getConfigDescription() {
             return t;
         }
-        function s() {
+        function getConfigCopyrights() {
             return j;
         }
-        function B() {
+        function getConfigSizefactor() {
             return x;
         }
         function F() {
             i = false;
             var ai = new Array();
-            H();
+            getFull();
             var aj = null;
             aj = setInterval(function () {
                 if (ah) {
@@ -341,7 +341,7 @@ export class BibleDB {
                 ah = false;
             }
         }
-        function f(ai, ap, aj, ao) {
+        function updateVerse(ai, ap, aj, ao) {
             var ak = new air.SQLStatement();
             ak.sqlConnection = G;
             var an = "";
@@ -425,31 +425,36 @@ export function loadBibleBookNames(bibleVersionId, callback) {
         }
 
         // Get bible metadata
-        executeSQL(conn, `
-SELECT
-    *
-FROM
-    configuration
-;
-`.trim(), null, function (e, result) {
-            if (e) {
-                return callback(e);
+        executeSQL(
+            conn,
+            `
+            SELECT
+                *
+            FROM
+                configuration
+            ;
+            `.trim(),
+            null,
+            function (e, result) {
+                if (e) {
+                    return callback(e);
+                }
+
+                const rows = result.data;
+
+                // will have only one row
+                const {title, description, booknames, fonts} = rows[0];
+
+                callback(null, {
+                    title,
+                    description,
+                    booknames: JSON.parse('[' + booknames + ']'),
+                    fonts: fonts.split(',').map((font) => font.trim()),
+                });
+
+                closeConn();
             }
-
-            const rows = result.data;
-
-            // will have only one row
-            const {title, description, booknames, fonts} = rows[0];
-
-            callback(null, {
-                title,
-                description,
-                booknames: JSON.parse('[' + booknames + ']'),
-                fonts: fonts.split(',').map((font) => font.trim()),
-            });
-
-            closeConn();
-        });
+        );
 
         return true;
     }, air.SQLMode.READ);

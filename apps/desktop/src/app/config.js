@@ -1,4 +1,3 @@
-import {fillTagsToUI, loadTagsFromConfig} from "@/song/tags";
 import {Toast} from "@app/toast";
 import {saveFileInAppStorage} from "@app/common";
 import {savePresentationMargin} from "@app/presentation";
@@ -6,6 +5,10 @@ import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 import $ from "jquery";
 import {remoteEnabled, restoreRemoteStandby} from "@stores/global";
+
+export const DEFAULT_CONFIG = {
+
+}
 
 export class Config {
     constructor() {
@@ -1444,7 +1447,4 @@ export function configInit() {
     $("#thirdview_alignCenter").change(svParameterSaveEvent);
     $("#thirdview_showTexture").change(svParameterSaveEvent);
     $("#thirdview_alignHorizontal").change(svParameterSaveEvent);
-
-    loadTagsFromConfig();
-    fillTagsToUI();
 }

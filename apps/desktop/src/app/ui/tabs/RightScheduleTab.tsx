@@ -4,7 +4,6 @@ import {ScheduleItemType, scheduleList} from "@stores/global";
 import {presenter, scheduler, songManager} from "@/app/glc";
 import {console} from "@/platform/adapters/air";
 import {Component} from "preact";
-import {SongPresenter} from "@/song/present";
 
 interface Props {
     scheduleList: any[]; // Replace 'any[]' with the actual type of scheduleList if known
@@ -127,7 +126,7 @@ class _RightScheduleTab extends Component<Props, State> {
                         slx.push({
                             index: k,
                             font: lyr.font,
-                            content: slide,
+                            content: slide.trim().replace(/\n/g, '<br>'),
                         });
                     }
                 }
@@ -157,8 +156,6 @@ class _RightScheduleTab extends Component<Props, State> {
         }
 
         presenter.presentSong(song, i);
-        // (new SongPresenter(song)).present(i);
-
     }
 
     render() {
@@ -308,9 +305,9 @@ class _RightScheduleTab extends Component<Props, State> {
                                                         {(j === 0) && (
                                                             <div class="ui top left attached label">{i + 1}</div>
                                                         )}
-                                                        {content.map((line: string, k: number) => (
-                                                            <p class="m-0" key={k}>{line}</p>
-                                                        ))}
+                                                        <p class="m-0" dangerouslySetInnerHTML={{
+                                                            __html: content,
+                                                        }}></p>
                                                     </div>
                                                 ))}
                                             </div>

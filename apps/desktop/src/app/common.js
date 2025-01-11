@@ -349,25 +349,6 @@ export class BibleReference {
     }
 }
 
-export function promoteVV(a) {
-    presentationCtx.p_text1_arr = [];
-    presentationCtx.p_text2_arr = [];
-    presentationCtx.p_text1_font = "";
-    presentationCtx.p_text2_font = "";
-    presentationCtx.p_title = "";
-    presentationCtx.p_footer = "";
-    presentationCtx.p_current_index = 0;
-    presentationCtx.p_last_index = 0;
-    presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
-    if (a === 2) {
-        presentationCtx.p_bkgnd_filename = "./background/promote2.jpg";
-    }
-    presentationCtx.p_bkgnd_color = "black";
-    presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
-    presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
-    presentation();
-}
-
 export function showLogoSlide() {
     $RvW.webServerObj.broadcastWS({event: 'cc:show-logo'});
 

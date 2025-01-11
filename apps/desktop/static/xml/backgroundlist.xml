@@ -1,19 +1,11 @@
 <backgroundlist>
-	<bkg>
-		<name>b2</name>
-		<filename>b2.jpg</filename>
-	</bkg>
-	<bkg>
-		<name>Cross</name>
-		<filename>cross.jpg</filename>
-	</bkg>
+    <bkg>
+        <name>b1</name>
+        <filename>b1.jpg</filename>
+    </bkg>
 	<bkg>
 		<name>b3</name>
 		<filename>b3.jpg</filename>
-	</bkg>
-	<bkg>
-		<name>3cross</name>
-		<filename>3cross.jpg</filename>
 	</bkg>
 	<bkg>
 		<name>lanscape1</name>
@@ -30,10 +22,6 @@
 	<bkg>
 		<name>abs2</name>
 		<filename>abs2.jpg</filename>
-	</bkg>
-	<bkg>
-		<name>b1</name>
-		<filename>b1.jpg</filename>
 	</bkg>
 	<bkg>
 		<name>d4</name>

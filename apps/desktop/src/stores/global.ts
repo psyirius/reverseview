@@ -6,8 +6,6 @@ import {
     readable,
     writable,
 } from '@/utils/_store'
-import {SongSearchType} from "@/const";
-import {Song} from "@/song/song-obj";
 
 export enum ColorTheme {
     LIGHT = 0,
@@ -30,11 +28,6 @@ export type BibleVersion = [
     string, // SelectedFont
     string, // BookNames
 ];
-
-export type SongSearchQuery = {
-    type: SongSearchType,
-    value: string,
-}
 
 
 export enum ScheduleItemType {
@@ -74,34 +67,13 @@ export const selectedVerseList: Writable<BibleVerse[][]> = writable([]);
 export const bibleFont: Writable<string> = writable('');
 export const selectedBookRef: Writable<string> = writable('');
 export const recentBibleRefs: Writable<BibleVerseRef[]> = writable([]);
-export const menuYtLink: Writable<string | null> = writable(null);
 
-export const songSearchQuery: Writable<SongSearchQuery | null> = writable(null);
 export const songCategories: Writable<string[]> = writable([]);
 export const songTags: Writable<string[]> = writable([]);
 export const selectedSongCategory: Writable<number | null> = writable(null);
 export const selectedSongTag: Writable<number | null> = writable(null);
 export const selectedSong: Writable<any | null> = writable(undefined);
-
-export const songListState: Writable<any> = writable({
-    songs: [],
-    total: 0,
-    page: 1,
-    perPage: 10,
-    loading: false,
-    error: null,
-});
-
-export const selectedSongStateObject: Writable<any | null> = writable(null);
-export const selectedSongStateTags: Writable<string[]> = writable([]);
-export const selectedSongStateCategory: Writable<string | null> = writable(null);
-export const selectedSongStateKey: Writable<string | null> = writable(null);
-export const selectedSongStateAuthor: Writable<string | null> = writable(null);
-export const selectedSongStateNotes: Writable<string | null> = writable(null);
-export const selectedSongStateName1: Writable<string | null> = writable(null);
-export const selectedSongStateName2: Writable<string | null> = writable(null);
-export const selectedSongStateSeqNum: Writable<number | null> = writable(null);
-export const selectedSongStateSlides: Writable<any | null> = writable(null);
+export const selectedSong2Edit: Writable<any | null> = writable(null);
 
 export const selectedBibleVersionForVerseEdit: Writable<number> = writable(0);
 export const selectedSongForEdit: Writable<any | null> = writable(null);

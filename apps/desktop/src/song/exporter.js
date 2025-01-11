@@ -1,26 +1,22 @@
-import {addTagList, fillTagsToUI} from "@/song/tags";
-import {fixHTTPS_Link, specialCategory} from "@app/common";
-import {Song} from '@/song/song-obj';
+import {specialCategory} from "@app/common";
 import {Toast} from "@app/toast";
-import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import * as XmlUtils from "@/utils/xml";
+import * as XML from "@/utils/xml";
 
 export class SongExporter {
-    constructor(song, category, s, exportKind) {
+    constructor(song, category, _, exportKind) {
         this.exportAll = exportAll;
         this.exportByCat = exportByCat;
-        this.exportSingle = exportSingle;
-        this.importXML = importXML;
 
         const m_song = song;
         const m_category = category;
-        let m_exportKind = exportKind;
+        let m_exportKind = exportKind; // 1: All, 2: By Category
 
         function exportAll() {
-            const r = new Song();
+            // const r = new Song();
+            const r = {};
 
-            const w = generateExportXmlFilename();
+            const w = _generateExportXmlFilename();
             let u = '<?xml version="1.0" encoding="UTF-8"?>\n';
             u += "<songDB>\n";
             u += "<type>XMLsong</type>\n";
@@ -47,13 +43,13 @@ export class SongExporter {
                     r.slides = m_song[t].lyrics.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "");
                     const x = m_song[t].lyrics2;
                     r.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
-                    u += serializeSongXml(r);
+                    u += _serializeSongXml(r);
                 }
             }
 
             u += "</songDB>\n";
 
-            saveToFile(u, w);
+            _saveToFile(u, w);
         }
 
         function exportByCat() {
@@ -68,7 +64,7 @@ export class SongExporter {
                 return false;
             }
 
-            const filename = generateExportXmlFilename();
+            const filename = _generateExportXmlFilename();
 
             let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n';
             xmlContent += "<songDB>\n";
@@ -102,7 +98,7 @@ export class SongExporter {
                     const x = item.lyrics2;
                     so.slides2 = x != null ? x.replace(/([\x00-\x08\x0B-\x0C\x0E-\x1F\x7F])/g, "") : "";
 
-                    xmlContent += serializeSongXml(so);
+                    xmlContent += _serializeSongXml(so);
                 }
             }
 
@@ -114,73 +110,11 @@ export class SongExporter {
                     "Database contains invalid Category. Contact VerseVIEW"
                 );
             } else {
-                saveToFile(xmlContent, filename);
+                _saveToFile(xmlContent, filename);
             }
         }
 
-        function exportSingle() {
-            Toast.error(
-                "Song Database",
-                "Exporting single song is not supported in XML format."
-            );
-        }
-
-        function importXML() {
-            // TODO: save last open dir
-            const file = air.File.desktopDirectory;
-            const fileFilters = [
-                new air.FileFilter("VerseVIEW Song DB", "*.xml"),
-            ];
-            file.browseForOpen("Select Song DB in XML format.", fileFilters);
-            file.addEventListener(air.Event.SELECT, onSelectFile);
-
-            function onSelectFile(e) {
-                const { FileStream, FileMode } = air;
-
-                /** @type {File} */
-                const selectedFile = e.target;
-
-                const fileStream = new FileStream();
-                fileStream.open(selectedFile, FileMode.READ);
-                const fileContents = fileStream.readMultiByte(fileStream.bytesAvailable, 'utf-8');
-                fileStream.close();
-
-                const songsDoc = XmlUtils.parse(fileContents);
-
-                console.trace('Song DB File:', fileContents.length, songsDoc);
-
-                parseSongDB(songsDoc);
-            }
-
-            function parseSongDB(root) {
-                if (root != null) {
-                    if (root.getElementsByTagName("type")[0] != null) {
-                        const rootTagName = root.getElementsByTagName("type")[0].textContent;
-
-                        if (rootTagName === "XMLsong") {
-                            loadSongs(root);
-                        } else {
-                            Toast.error(
-                                "Song Database",
-                                "Invalid database for VerseVIEW Songs in XML format. (Wrong type field)"
-                            );
-                        }
-                    } else {
-                        Toast.error(
-                            "Song Database",
-                            "Invalid database for VerseVIEW Songs in XML format. (Type field not present)"
-                        );
-                    }
-                } else {
-                    Toast.error(
-                        "Song Database",
-                        "Invalid database for VerseVIEW Songs in XML format. (Invalid XML format)"
-                    );
-                }
-            }
-        }
-
-        function generateExportXmlFilename() {
+        function _generateExportXmlFilename() {
             const suffix = new Date().toDateString();
 
             switch (m_exportKind) {
@@ -195,7 +129,7 @@ export class SongExporter {
             }
         }
 
-        function serializeSongXml(song) {
+        function _serializeSongXml(song) {
             let sx = "";
             sx += "<song>\n";
             sx += "\t<category>" + song.catIndex + "</category>\n";
@@ -222,7 +156,7 @@ export class SongExporter {
             return sx;
         }
 
-        function saveToFile(content, filename) {
+        function _saveToFile(content, filename) {
             const { File, FileStream, FileMode, Event } = air;
             const { desktopDirectory } = File;
 
@@ -249,56 +183,6 @@ export class SongExporter {
                     );
                 }
             });
-        }
-
-        function loadSongs(doc) {
-            let addedSongs = 0;
-
-            const songItems = doc.getElementsByTagName("song");
-
-            console.trace('Total Songs:', songItems.length);
-
-            for (let i = 0; i < songItems.length; ++i) {
-                const item = songItems[i];
-
-                const category = item.getElementsByTagName("category")[0].textContent;
-
-                if (!specialCategory(category)) {
-                    const so = new Song();
-                    so.name = item.getElementsByTagName("name")[0].textContent;
-                    so.catIndex = item.getElementsByTagName("category")[0].textContent;
-                    so.font = item.getElementsByTagName("font")[0].textContent;
-                    so.font2 = w(item.getElementsByTagName("font2")[0]);
-                    so.timestamp = w(item.getElementsByTagName("timestamp")[0]);
-                    const r = item.getElementsByTagName("yvideo")[0];
-                    so.yvideo = r != null ? fixHTTPS_Link(r.textContent) : "";
-                    so.bkgnd_fname = item.getElementsByTagName("bkgnd")[0].textContent;
-                    so.key = item.getElementsByTagName("key")[0].textContent;
-                    so.copyright = item.getElementsByTagName("copyright")[0].textContent;
-                    so.notes = item.getElementsByTagName("notes")[0].textContent;
-                    so.slides = item.getElementsByTagName("slide")[0].textContent;
-                    so.slides2 = w(item.getElementsByTagName("slide2")[0]);
-                    so.name2 = w(item.getElementsByTagName("name2")[0]);
-                    so.tags = w(item.getElementsByTagName("tags")[0]).toUpperCase();
-                    so.slideseq = w(item.getElementsByTagName("slideseq")[0]);
-                    so.subcat = w(item.getElementsByTagName("subcat")[0]);
-
-                    $RvW.songManagerObj.addSong(so, false, true);
-                    addTagList(so.tags);
-
-                    addedSongs++;
-                }
-            }
-
-            if (addedSongs > 0) {
-                fillTagsToUI();
-            } else {
-                Toast.error("No New Songs to add.");
-            }
-
-            function w(D) {
-                return D != null ? D.textContent : "";
-            }
         }
     }
 }

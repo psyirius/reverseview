@@ -1,219 +1,259 @@
-import {SongSearchType} from "@/const";
-import {$RvW} from "@/rvw";
-import {Toast} from "@app/toast";
-import {useStoreState} from "@/utils/hooks";
-import {
-    selectedSong,
-    selectedSongStateAuthor,
-    selectedSongStateCategory,
-    selectedSongStateKey,
-    selectedSongStateName1,
-    selectedSongStateName2,
-    selectedSongStateNotes,
-    selectedSongStateObject,
-    selectedSongStateSeqNum,
-    selectedSongStateSlides,
-    selectedSongStateTags
-} from "@stores/global";
-import {SongPresenter} from "@/song/present";
+import { $RvW } from "@/rvw";
+import { Toast } from "@app/toast";
+import { selectedSong } from "@stores/global";
+import { useStoreState } from "@/utils/hooks";
+import {presenter, songNavigator} from "@app/glc";
+import { SearchFilterType } from "@/song/song-manager";
 
-export default function RightLyricsTab() {
-    const fontSize = $RvW.vvConfigObj.get_navFontSize();
+function _RightLyricsTab_({song}) {
+    const navFontSize = $RvW.vvConfigObj.get_navFontSize();
 
-    const song = useStoreState(selectedSong);
-
-    const obj = useStoreState(selectedSongStateObject);
-
-    const slides = useStoreState(selectedSongStateSlides);
-    const name1 = useStoreState(selectedSongStateName1);
-    const name2 = useStoreState(selectedSongStateName2);
-    const seqNum = useStoreState(selectedSongStateSeqNum);
-
-    const author = useStoreState(selectedSongStateAuthor);
-    const category = useStoreState(selectedSongStateCategory);
-    const songKey = useStoreState(selectedSongStateKey);
-    const songTags = useStoreState(selectedSongStateTags);
-    const notes = useStoreState(selectedSongStateNotes);
+    const {
+        name,
+        title,
+        serial,
+        author,
+        category,
+        key,
+        tags,
+        notes,
+        lyrics = [],
+    } = song || {};
 
     function onClickEdit() {
-        $RvW.songNavObj.sn_editSong();
+        songNavigator.showSongEditDialog();
     }
 
     function onClickAddToSchedule() {
-        $RvW.learner.finishLearning();
-        $RvW.songNavObj.sn_add2schedule();
-
-        Toast.success(undefined, "Added verse to schedule");
-    }
-
-    function onClickPresent() {
-        $RvW.songNavObj.sn_presentSong();
+        songNavigator.addToSchedule(song, (result, error) => {
+            if (error) {
+                Toast.error('Error', error);
+            } else {
+                Toast.success(undefined, "Added verse to schedule");
+            }
+        });
     }
 
     function filterByTag(tag: string) {
-        $RvW.songManagerObj.searchRecords(`%${tag}%`, SongSearchType.TAGS);
+        songNavigator.applyFilters([
+            {
+                type: SearchFilterType.TAGS,
+                value: [tag],
+            },
+        ], (result, error) => {
+            if (error) {
+                Toast.error('Error', error);
+            } else {
+                Toast.success(undefined, "Filtered by tag");
+            }
+        });
     }
 
     function filterByCategory(category: string) {
-        $RvW.songManagerObj.searchRecords(`%${category}%`, SongSearchType.CATEGORY);
+        songNavigator.applyFilters([
+            {
+                type: SearchFilterType.CATEGORY,
+                value: category,
+            },
+        ], (result, error) => {
+            if (error) {
+                Toast.error('Error', error);
+            } else {
+                Toast.success(undefined, "Filtered by category");
+            }
+        });
     }
 
     function filterByAuthor(author: string) {
-        $RvW.songManagerObj.searchRecords(`%${author}%`, SongSearchType.AUTHOR);
+        songNavigator.applyFilters([
+            {
+                type: SearchFilterType.AUTHOR,
+                value: author,
+            },
+        ], (result, error) => {
+            if (error) {
+                Toast.error('Error', error);
+            } else {
+                Toast.success(undefined, "Filtered by author");
+            }
+        });
     }
 
     function filterByKey(key: string) {
-        $RvW.songManagerObj.searchRecords(`%${key}%`, SongSearchType.KEY);
+        songNavigator.applyFilters([
+            {
+                type: SearchFilterType.KEY,
+                value: key,
+            },
+        ], (result, error) => {
+            if (error) {
+                Toast.error('Error', error);
+            } else {
+                Toast.success(undefined, "Filtered by key");
+            }
+        });
     }
 
     function presentSlide(index: number) {
-        (new SongPresenter(obj)).present(index);
+        presenter.presentSong(song, index);
     }
 
     const actions = [
         { label: 'Edit', icon: 'edit', onClick: onClickEdit },
-        { label: 'Present', icon: 'play', onClick: onClickPresent },
+        { label: 'Present', icon: 'play', onClick: () => presentSlide(0) },
         { label: 'Schedule', icon: 'plus square', onClick: onClickAddToSchedule },
     ]
 
     return (
         <div class="flex flex-col h-full w-full overflow-auto">
-            <div>
-                {song ? (
-                    <h2 class="ui header">{song.name}</h2>
-                ) : (
-                    <h2 class="ui header">No song selected</h2>
-                )}
-            </div>
-
-            {/* TITLE SEQUENCE */}
-            <div class="ui vertical segment">
-                {seqNum && <div class="ui top right attached label">{seqNum}</div>}
-                <h3 class="ui header">
-                    {name1}
-                    <div class="sub header">
-                        {name2}
+            {song ? (
+                <>
+                    {/* TITLE SEQUENCE */}
+                    <div class="ui vertical segment">
+                        {serial && <div class="ui top right attached label">{serial}</div>}
+                        <h3 class="ui header">
+                            {name}
+                            <div class="sub header">
+                                {title}
+                            </div>
+                        </h3>
                     </div>
-                </h3>
-            </div>
 
-            {/* BUTTONS */}
-            <div class="ui vertical segment">
-                {actions.map((action, i) => (
-                    <button class="ui labeled icon button compact" onClick={action.onClick} key={i}>
-                        <i class={"icon " + action.icon}></i>
-                        {action.label}
-                    </button>
-                ))}
-            </div>
+                    {/* BUTTONS */}
+                    <div class="ui vertical segment">
+                        {actions.map((action, i) => (
+                            <button class="ui labeled icon button compact" onClick={action.onClick} key={i}>
+                                <i class={"icon " + action.icon}></i>
+                                {action.label}
+                            </button>
+                        ))}
+                    </div>
 
-            {/* SLIDES */}
-            <div class="flex-1 h-full w-full relative">
-                <div class="absolute h-full w-full m-0 p-2 overflow-auto" style={{
-                    border: '1px solid #d4d4d5',
-                    borderRadius: '0.28571429rem',
-                    fontSize: fontSize + 'px',
-                }}>
-                    {/* TODO: chunked listing */}
-                    {slides && <div class="ui cards">
-                        {slides[0].map((slide: string, i: number) => (
-                            <div class="card cursor-pointer" role="button" tabIndex={0} onClick={() => presentSlide(i)}>
-                                <div class="content">
-                                    <div class="header">{i + 1}</div>
-                                    <div class="meta"></div>
-                                    <div class="description">
-                                        <div
-                                            class="context"
-                                            dangerouslySetInnerHTML={{__html: slide}}
-                                            style={{
-                                                padding: '10px',
-                                                borderRadius: '0.28571429rem',
-                                                backgroundColor: $RvW.highlightColor,
-                                                fontFamily: obj.font,
-                                            }}
-                                        >
-                                        </div>
+                    {/* SLIDES */}
+                    <div class="flex-1 h-full w-full relative">
+                        <div class="absolute h-full w-full m-0 p-2 overflow-auto" style={{
+                            border: '1px solid #d4d4d5',
+                            borderRadius: '0.28571429rem',
+                            fontSize: navFontSize + 'px',
+                        }}>
+                            {/* TODO: chunked listing */}
+                            {lyrics && (
+                                <div class="ui cards">
+                                    {lyrics[0].slides.map((_slide: string, i: number) => (
+                                        <div class="card cursor-pointer" role="button" tabIndex={0} onClick={() => presentSlide(i)}>
+                                            <div class="content">
+                                                <div class="header">{i + 1}</div>
+                                                <div class="meta"></div>
+                                                <div class="description">
+                                                    <div
+                                                        class="context"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: (lyrics[0].slides[i]).replace(/\n/g, '<br>'),
+                                                        }}
+                                                        style={{
+                                                            padding: '10px',
+                                                            borderRadius: '0.28571429rem',
+                                                            backgroundColor: $RvW.highlightColor,
+                                                            fontFamily: lyrics[0].font,
+                                                        }}
+                                                    ></div>
 
-                                        {slides[1]?.[i] && (
-                                            <>
-                                                <div class="h-2"></div>
+                                                    {lyrics[1]?.slides[i] && (
+                                                        <>
+                                                            <div class="h-2"></div>
 
-                                                <div
-                                                    class="context"
-                                                    dangerouslySetInnerHTML={{__html: slides[1]?.[i]}}
-                                                    style={{
-                                                        padding: '10px',
-                                                        borderRadius: '0.28571429rem',
-                                                        backgroundColor: $RvW.highlightColor,
-                                                        fontFamily: obj.font2,
-                                                    }}
-                                                >
+                                                            <div
+                                                                class="context"
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: (lyrics[1]?.slides[i]).replace(/\n/g, '<br>'),
+                                                                }}
+                                                                style={{
+                                                                    padding: '10px',
+                                                                    borderRadius: '0.28571429rem',
+                                                                    backgroundColor: $RvW.highlightColor,
+                                                                    fontFamily: lyrics[1].font,
+                                                                }}
+                                                            ></div>
+                                                        </>
+                                                    )}
                                                 </div>
-                                            </>
-                                        )}
-                                    </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* ADDITIONAL INFO */}
+                    <div class="flex flex-col pt-2">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="eight wide field">
+                                    <label>Tags</label>
+                                    {tags.map((tag, i) => (
+                                        <a key={i} class="ui label" onClick={() => filterByTag(tag)}>
+                                            {tag}
+                                        </a>
+                                    ))}
                                 </div>
                             </div>
-                        ))}
-                    </div>}
+                            <div class="inline fields">
+                                <div class="eight wide field">
+                                    <label>Category</label>
+                                    {category && (
+                                        <a class="ui label" onClick={() => filterByCategory(category)}>
+                                            {category}
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                            <div class="inline fields">
+                                <div class="eight wide field">
+                                    <label>Key</label>
+                                    {key && (
+                                        <a class="ui label" onClick={() => filterByKey(key)}>
+                                            {key}
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                            <div class="inline fields">
+                                <div class="eight wide field">
+                                    <label>Author</label>
+                                    {author && (
+                                        <a class="ui label" onClick={() => filterByAuthor(author)}>
+                                            {author}
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                            <div class="inline fields">
+                                <div class="eight wide field">
+                                    <label>Notes</label>
+                                    {notes && (
+                                        <p class="ui message">
+                                            {notes}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div class="flex flex-col items-center justify-center h-full w-full">
+                    <div class="text-2xl">No song selected</div>
                 </div>
-            </div>
-
-            {/* ADDITIONAL INFO */}
-            <div class="flex flex-col pt-2">
-                <div class="ui form">
-                    <div class="inline fields">
-                        <div class="eight wide field">
-                            <label>Tags</label>
-                            {songTags.map((tag, i) => (
-                                <a key={i} class="ui label" onClick={() => filterByTag(tag)}>
-                                    {tag}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                    <div class="inline fields">
-                        <div class="eight wide field">
-                            <label>Category</label>
-                            {category && (
-                                <a class="ui label" onClick={() => filterByCategory(category)}>
-                                    {category}
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                    <div class="inline fields">
-                        <div class="eight wide field">
-                            <label>Key</label>
-                            {songKey && (
-                                <a class="ui label" onClick={() => filterByKey(songKey)}>
-                                    {songKey}
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                    <div class="inline fields">
-                        <div class="eight wide field">
-                            <label>Author</label>
-                            {author && (
-                                <a class="ui label" onClick={() => filterByAuthor(author)}>
-                                    {author}
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                    <div class="inline fields">
-                        <div class="eight wide field">
-                            <label>Notes</label>
-                            {notes && (
-                                <p class="ui message">
-                                    {notes}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            )}
         </div>
+    )
+}
+
+export default function RightLyricsTab() {
+    const song = useStoreState(selectedSong);
+
+    return (
+        <_RightLyricsTab_ song={song} />
     )
 }

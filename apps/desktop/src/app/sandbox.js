@@ -1,3 +1,5 @@
+// used by the sandbox app to communicate with the parent app
+
 function sandboxLoaded() {
     air.trace("sandboxLoaded");
 

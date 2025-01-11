@@ -2,18 +2,27 @@ import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, call_showTheme, call_closePresentation} from "@/p_window";
 import BibleRefSelect from "@app/ui/BibleRefSelect";
-import {menuYtLink, selectedBookRef, selectedTab, showRemotePanel} from "@stores/global";
+import {selectedBookRef, selectedSong, selectedTab, showRemotePanel} from "@stores/global";
 import {$RvW} from "@/rvw";
 import {Toast} from "@app/toast";
-import {scheduler} from "@app/glc";
+import {presenter, scheduler} from "@app/glc";
 
 const handlers = {
     present: () => {
         if ($RvW.leftTabView.getSelectedTab() === 1) {
-            $RvW.songNavObj.sn_presentSong();
+            const song = selectedSong.get();
+
+            if (song) {
+                presenter.presentSong(song);
+            }
         } else {
-            $RvW.present();
+            const b = $RvW.getBookValue();
+            const c = $RvW.getChapterValue();
+            const v = $RvW.getVerseValue();
+
+            presenter.presentVerse(b, c, v);
         }
+        console.log("Presenting...");
     },
     blank: () => {
         blankSlide();
@@ -37,14 +46,17 @@ const handlers = {
         const b = $RvW.getBookValue();
         const c = $RvW.getChapterValue();
         const v = $RvW.getVerseValue();
+
         scheduler.addVerse(b, c, v);
-        // $RvW.scheduleObj.processAddVerse(b, c, v);
 
         Toast.success("Verse", "Added verse to schedule");
     },
     addSongToSchedule: () => {
-        $RvW.learner.finishLearning();
-        $RvW.songNavObj.sn_add2schedule();
+        const song = selectedSong.get();
+
+        if (song) {
+            scheduler.addSong(song);
+        }
 
         Toast.success("Song", "Added song to schedule");
     },
@@ -67,7 +79,9 @@ const menuItems = [
 export default function MenuBar() {
     const activeTabIndex = useStoreState(selectedTab);
     const activeBookRef = useStoreState(selectedBookRef);
-    const ytLink = useStoreState(menuYtLink);
+    const selSong = useStoreState(selectedSong);
+
+    const ytLink = selSong?.youtube || null;
 
     return (
         <div style={{
