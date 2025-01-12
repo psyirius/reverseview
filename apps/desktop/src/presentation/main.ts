@@ -29,7 +29,7 @@
         p_align: "left",
         p_maxFontSize: 100,
         p_enableTransition: true,
-        p_transitionDuration: 150,
+        p_transitionDuration: 150, // unused
         p_enableShadow: true,
         p_enableStroke: true,
         p_enableFooter: true,
@@ -54,8 +54,6 @@
     };
 
     const DEBUG_ENABLED = true;
-
-    let transitionDuration = 0;
 
     let imageMotionActive = false;
     let outlineThickness = 3;
@@ -89,8 +87,6 @@
         window.passVariable(0, _$);
 
         imageMotionActive = false;
-
-        initTransition(!!_$.p_enableTransition);
 
         setupEvents();
 
@@ -432,13 +428,19 @@
     }
 
     function updateContentWithAnimation() {
-        const contentContainer = $("#presentationContent");
+        const cc = $("#presentationContent");
 
-        contentContainer.animate(
-            {opacity: '0'}, transitionDuration, "swing", () => {
-                updateContent2();
-                contentContainer.animate({opacity: '1'}, transitionDuration, "swing");
-            });
+        if (_$.p_enableTransition) {
+            cc.addClass('elementToFadeOut');
+            cc.removeClass('elementToFadeIn');
+        }
+
+        updateContent2();
+
+        if (_$.p_enableTransition) {
+            cc.addClass('elementToFadeIn');
+            cc.removeClass('elementToFadeOut');
+        }
     }
 
     function updateDate() {
@@ -463,11 +465,12 @@
         if (mm < 10) {
             mm = "0" + mm;
         }
+        const ss = now.getSeconds();
 
-        document.getElementById("footer_date").innerHTML = `${now.toDateString()}&nbsp;&nbsp;${hh}:${mm}${pp}`;
+        document.getElementById("footer_date").innerHTML = `${now.toDateString()}&nbsp;&nbsp;${hh}:${mm}:${ss}${pp}`;
 
-        // update every 5 seconds
-        setTimeout(updateDate, 5000);
+        // update every .5 seconds
+        setTimeout(updateDate, 500);
     }
 
     function updateContent2() {
