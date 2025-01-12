@@ -9,7 +9,8 @@ import {
     presentationMainEnabled,
     presentationMainScreen,
     presentationStageEnabled,
-    presentationStageScreen, restoreRemoteStandby,
+    presentationStageScreen,
+    restoreRemoteStandby,
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {console} from "@/platform/adapters/air";

@@ -45,6 +45,8 @@ export default function BibleSelectorDialog() {
             selectedBibleVersion2.get(),
             bookNameStyle,
         );
+
+        handleCloseModal();
     }
 
     function onClickVer2Enable(e: Event) {

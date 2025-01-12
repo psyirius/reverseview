@@ -161,6 +161,7 @@ class _RightScheduleTab extends Component<Props, State> {
     render() {
         const { scheduleList } = this.props;
         const { selectedItem, currentItem } = this.state;
+        const navFontSize = $RvW.vvConfigObj.get_navFontSize();
 
         return (
             <div class="flex flex-row h-full w-full">
@@ -251,11 +252,11 @@ class _RightScheduleTab extends Component<Props, State> {
 
                 <div class="flex-1 overflow-y-auto h-full w-full relative">
                     <div
-                        id="sch_verseTextID"
                         class="absolute h-full w-full m-0 p-0 overflow-hidden overflow-y-auto"
                         style={{
                             border: '1px solid #d4d4d5',
                             borderRadius: '0.28571429rem',
+                            fontSize: navFontSize + 'px',
                         }}
                     >
                         {!currentItem ? (
@@ -299,17 +300,17 @@ class _RightScheduleTab extends Component<Props, State> {
                                                 tabIndex={0}
                                                 onClick={() => this.presentSlide(currentItem[0], i)}
                                             >
-                                                {/*<p>Slide {k + 1}</p>*/}
-                                                {slide.map(({font, content}: any, j: number) => (
-                                                    <div key={j} style={{fontFamily: font}} class="ui segment">
-                                                        {(j === 0) && (
-                                                            <div class="ui top left attached label">{i + 1}</div>
-                                                        )}
-                                                        <p class="m-0" dangerouslySetInnerHTML={{
-                                                            __html: content,
-                                                        }}></p>
-                                                    </div>
-                                                ))}
+                                                <>
+                                                    {/*<p>Slide {k + 1}</p>*/}
+                                                    {slide.map(({font, content}: any, j: number) => (
+                                                        <div key={j} style={{fontFamily: font}} class="ui segment">
+                                                            <p class="m-0" dangerouslySetInnerHTML={{
+                                                                __html: content,
+                                                            }}></p>
+                                                        </div>
+                                                    ))}
+                                                    <div class="ui left floating label font-mono">{i + 1}</div>
+                                                </>
                                             </div>
                                         ))}
                                     </div>

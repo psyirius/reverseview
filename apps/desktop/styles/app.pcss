@@ -762,6 +762,25 @@ td.navtd {
     }
 }
 
+.ui.floating.label {
+    position: absolute;
+    z-index: 100;
+    top: -1em;
+    margin: 0;
+
+    &.right {
+        left: 100%;
+        right: auto;
+        margin: 0em 0em 0em -1.5em !important;
+    }
+
+    &.left {
+        left: auto;
+        right: 100%;
+        margin: 0em -1.5em 0em 0em !important;
+    }
+}
+
 .xui {
     /*&.data-table-container {
         width: 100%;

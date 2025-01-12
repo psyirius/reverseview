@@ -1,7 +1,7 @@
 import {$RvW} from "@/rvw";
 
 // TODO: clean up this file
-export let version_number = 14;
+let version_number = 14;
 
 let task1 = false; // song db update task
 let task2 = true; // webroot copy task
@@ -17,14 +17,8 @@ export function checkVerUpdateFlags() {
     }
 }
 
-export function task1Complete() {
-    task1 = true;
-}
 export function task2Complete() {
     task2 = true;
-}
-export function task1Status() {
-    return task1;
 }
 export function task2Status() {
     return task2;

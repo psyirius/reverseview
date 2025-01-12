@@ -572,8 +572,8 @@ export class _SongManager_ {
                 const notes = getTagValue(item, "notes", null);
                 const key = getTagValue(item, "key", null);
                 const sequence = getTagValue(item, "slideseq", null);
-                const slides1 = getTagValue(item, "slide", '');
-                const slides2 = getTagValue(item, "slide2", '');
+                const _slides1 = getTagValue(item, "slide", '');
+                const _slides2 = getTagValue(item, "slide2", '');
                 const timestamp = getTagValue(item, "timestamp", null);
 
                 // TODO: impl a proper merging strategy with overwrite prompts
@@ -583,6 +583,14 @@ export class _SongManager_ {
                     console.log('Skipping Import:', name);
                     continue;
                 }
+
+                const slides1 = _slides1.split('<slide>')
+                    .map((s: string) => s.replace(/<br>/gi, '\n').trim())
+                    .filter(Boolean);
+
+                const slides2 = _slides2.split('<slide>')
+                    .map((s: string) => s.replace(/<br>/gi, '\n').trim())
+                    .filter(Boolean);
 
                 const song: Omit<SongItem, 'id'> = {
                     name,
@@ -601,11 +609,11 @@ export class _SongManager_ {
                     lyrics: [
                         {
                             font: font1,
-                            slides: slides1.split('<slide>').map((s: string) => s.trim().replace(/<br>/gi, '\n')),
+                            slides: slides1,
                         },
                         {
                             font: font2,
-                            slides: slides2.split('<slide>').map((s: string) => s.trim().replace(/<br>/gi, '\n')),
+                            slides: slides2,
                         },
                     ],
                     timestamp: new Date(),

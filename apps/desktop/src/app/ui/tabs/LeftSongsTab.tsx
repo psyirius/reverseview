@@ -1535,10 +1535,17 @@ class _LeftSongsTab_ extends Component<Props, State> {
             const filters = [...this.state.searchFilters];
 
             if (query) {
-                filters.push({
-                    type: SearchFilterType.TITLE,
-                    value: query,
-                });
+                if (!isNaN(parseInt(String(query).trim()))) {
+                    filters.push({
+                        type: SearchFilterType.SERIAL,
+                        value: parseInt(String(query).trim()),
+                    });
+                } else {
+                    filters.push({
+                        type: SearchFilterType.TITLE,
+                        value: query,
+                    });
+                }
             }
 
             // TODO: impl fully
