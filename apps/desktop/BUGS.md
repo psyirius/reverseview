@@ -1,4 +1,2 @@
 - Proper filtering using Tags and Categories in Song Search
-- Crash on Add to Schedule
-- Double Pagination in Song Search
 - Graphics tab Overlay issue when switched to another tab from BG tab

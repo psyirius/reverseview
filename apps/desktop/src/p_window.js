@@ -470,10 +470,3 @@ export function call_prevSlide() {
     }
     updatePresentationContent(false);
 }
-
-export function call_showTheme() {
-    $RvW.webServerObj.broadcastWS({event: 'cc:show-theme'});
-    if ($RvW.presentationWindow != null) {
-        $RvW.presentationWindow.window.showThemeProcess();
-    }
-}

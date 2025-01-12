@@ -1,6 +1,6 @@
 import {useStoreState} from "@/utils/hooks";
 import {blankSlide, showLogoSlide} from "@app/common";
-import {call_nextSlide, call_prevSlide, call_showTheme, call_closePresentation} from "@/p_window";
+import {call_nextSlide, call_prevSlide, call_closePresentation} from "@/p_window";
 import BibleRefSelect from "@app/ui/BibleRefSelect";
 import {selectedBookRef, selectedSong, selectedTab, showRemotePanel} from "@stores/global";
 import {$RvW} from "@/rvw";
@@ -26,9 +26,6 @@ const handlers = {
     },
     blank: () => {
         blankSlide();
-    },
-    theme: () => {
-        call_showTheme();
     },
     logo: () => {
         showLogoSlide();
@@ -69,7 +66,6 @@ const handlers = {
 const menuItems = [
     { tooltip: 'Present',               iconClass: 'play circle',           onClick: handlers.present },
     { tooltip: 'Blank Presentation',    iconClass: 'square',                onClick: handlers.blank },
-    // { tooltip: 'Show Theme',            iconClass: 'fire',                  onClick: handlers.theme },
     { tooltip: 'Show Logo',             iconClass: 'image',                 onClick: handlers.logo },
     { tooltip: 'Close Presentation',    iconClass: 'times circle',          onClick: handlers.close },
     { tooltip: 'Previous Slide',        iconClass: 'arrow circle left',     onClick: handlers.prev },

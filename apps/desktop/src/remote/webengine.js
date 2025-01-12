@@ -1,4 +1,4 @@
-import {call_closePresentation, call_nextSlide, call_prevSlide, call_showTheme} from "@/p_window";
+import {call_closePresentation, call_nextSlide, call_prevSlide} from "@/p_window";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {$RvW} from "@/rvw";
 
@@ -7,7 +7,6 @@ export class WebEngine {
         this.nextSlide = nextSlide;
         this.prevSlide = prevSlide;
         this.closePresentation = closePresentation;
-        this.themePresentation = themePresentation;
         this.logoPresentation = logoPresentation;
         this.blankPresentation = blankPresentation;
         this.processVerses = processVerses;
@@ -24,10 +23,6 @@ export class WebEngine {
 
         function closePresentation() {
             call_closePresentation();
-        }
-
-        function themePresentation() {
-            call_showTheme();
         }
 
         function logoPresentation() {

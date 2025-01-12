@@ -32,7 +32,6 @@ import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/ver
 import {
     call_nextSlide,
     call_prevSlide,
-    call_showTheme,
     call_closePresentation,
     presentation,
     presentWindowClosed
@@ -41,7 +40,6 @@ import {
     apple,
     backupWebroot,
     BibleReference,
-    clearSelectList,
     copyFile2AppStorage,
     createFolder,
     fileExist,
@@ -49,7 +47,6 @@ import {
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
 import {
-    availableFonts,
     bookList,
     bibleFont,
     chapterList, selectedBible,
@@ -296,8 +293,6 @@ $RvW.scroll_to_view = false;
 $RvW.rvwPreferences = null;
 
 let firstTimeFlag = false;
-let previousSelVerse = 0;
-let themeState = false;
 
 $RvW.getBookValue = function() {
     return selectedBible.get()[0];
@@ -397,7 +392,6 @@ $RvW.present = function() {
     presentationCtx.p_footer = $RvW.getFooter();
     presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
-    themeState = false;
 }
 $RvW.present_external = function(a, h, e) {
     var g = $RvW.bookIndex;
@@ -410,7 +404,6 @@ $RvW.present_external = function(a, h, e) {
     presentationCtx.p_footer = $RvW.getFooter();
     presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
     $RvW.launch($RvW.verseIndex);
-    themeState = false;
     $RvW.bookIndex = g;
     $RvW.chapterIndex = f;
     $RvW.verseIndex = d;
@@ -447,25 +440,6 @@ $RvW.getFooter = function() {
         }
     }
     return b;
-}
-function presentTheme() {
-    if (themeState) {
-        $RvW.present();
-    } else {
-        themeState = true;
-        presentationCtx.p_title = "";
-        presentationCtx.p_footer = "";
-        presentationCtx.p_last_index = 0;
-        $RvW.content1[0] = "";
-        $RvW.content2[0] = "";
-        presentationCtx.p_current_index = 0;
-        presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-        presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
-        presentationCtx.p_bkgnd_color = "black";
-        presentationCtx.p_font_color = "white";
-        presentationCtx.p_font_color2 = "white";
-        presentation();
-    }
 }
 $RvW.setFontForList = function() {
     const a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
@@ -874,19 +848,6 @@ function adjustNavWindowsHeight() {
     }
 }
 
-function setupTheme() {
-    const a = document.getElementById("themeList").value;
-    switch (a) {
-        case "1":
-            document.body.style.backgroundImage = "url(graphics/background2.png)";
-            break;
-        case "2":
-            document.body.style.backgroundImage = "url(graphics/background3.png)";
-            break;
-        default:
-    }
-}
-
 function setupTabContent() {
     // Right Tab
     setupSettingsTab();
@@ -1227,11 +1188,6 @@ function onMainWindowKeyUp(evt) {
         case 38: /* ArrowUp */
             if (b == null) {
                 call_prevSlide();
-            }
-            break;
-        case 84: /* T */
-            if (b == null) {
-                call_showTheme();
             }
             break;
         case 119: /* F8 */

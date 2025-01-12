@@ -58,7 +58,6 @@
     let imageMotionActive = false;
     let outlineThickness = 3;
     let initialRenderDelay = 100;
-    let showingTheme = false;
     let firstTime = true;
 
     let titleAllocation = 0.1;
@@ -400,12 +399,7 @@
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
         setupContentPosition();
-        if (!showingTheme) {
-            updateContentWithAnimation();
-        } else {
-            showThemeProcess();
-            updateContent2();
-        }
+        updateContentWithAnimation();
     }
 
     function prevSlide() {
@@ -413,18 +407,11 @@
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
         setupContentPosition();
-        if (!showingTheme) {
-            updateContentWithAnimation();
-        } else {
-            showThemeProcess();
-            updateContent2();
-        }
+        updateContentWithAnimation();
     }
 
     function updateContent() {
-        if (!showingTheme) {
-            updateContentWithAnimation();
-        }
+        updateContentWithAnimation();
     }
 
     function updateContentWithAnimation() {
@@ -661,22 +648,6 @@
         }
     }
 
-    function showThemeProcess() {
-        if (!showingTheme) {
-            showingTheme = true;
-            $("#presentationTitle").hide();
-            $("#content1").hide();
-            $("#content2").hide();
-            $("#footnote").hide();
-        } else {
-            showingTheme = false;
-            $("#presentationTitle").show();
-            $("#content1").show();
-            $("#content2").show();
-            $("#footnote").show();
-        }
-    }
-
     function showBlankProcess() {
         document.getElementById("presentationTitle").innerHTML = "";
         document.getElementById("content1").innerHTML = "";
@@ -699,23 +670,15 @@
             case 39:
             case 40:
             case 34: {
-                if (!showingTheme) {
-                    nextSlide();
-                    window.parent.goToNextSlide();
-                }
+                nextSlide();
+                window.parent.goToNextSlide();
                 break;
             }
             case 37:
             case 38:
             case 33: {
-                if (!showingTheme) {
-                    prevSlide();
-                    window.parent.goToPrevSlide();
-                }
-                break;
-            }
-            case 84: {
-                showThemeProcess();
+                prevSlide();
+                window.parent.goToPrevSlide();
                 break;
             }
             default:
@@ -896,7 +859,6 @@
     exports.updateContent = updateContent;
     exports.nextSlide = nextSlide;
     exports.prevSlide = prevSlide;
-    exports.showThemeProcess = showThemeProcess;
     exports.clearPresenter = clearPresenter;
     exports.showBlankProcess = showBlankProcess;
 }(window as { [key: string]: any }));
