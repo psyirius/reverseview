@@ -155,7 +155,9 @@ function _RightLyricsTab_({song}) {
                     </div>
 
                     {/* BUTTONS */}
-                    <div class="ui vertical segment">
+                    <div class="ui vertical segment" style={{
+                        borderBottom: 'none',
+                    }}>
                         {actions.map((action, i) => (
                             <button class="ui labeled icon button compact" onClick={action.onClick} key={i}>
                                 <i class={"icon " + action.icon}></i>
@@ -203,11 +205,11 @@ function _RightLyricsTab_({song}) {
                             <div class="inline fields">
                                 <div class="eight wide field">
                                     <label>Category</label>
-                                    {category && (
+                                    {category ? (
                                         <a class="ui label" onClick={() => filterByCategory(category)}>
                                             {category}
                                         </a>
-                                    )}
+                                    ) : null}
                                 </div>
                                 <div class="eight wide field">
                                     <label>Tags</label>
@@ -221,37 +223,37 @@ function _RightLyricsTab_({song}) {
                             <div class="inline fields">
                                 <div class="eight wide field">
                                     <label>Key</label>
-                                    {key && (
+                                    {key ? (
                                         <a class="ui label" onClick={() => filterByKey(key)}>
                                             {key}
                                         </a>
-                                    )}
+                                    ) : null}
                                 </div>
                                 <div class="eight wide field">
                                     <label>BPM</label>
-                                    {bpm && (
+                                    {bpm ? (
                                         <a class="ui label">
                                             {bpm}
                                         </a>
-                                    )}
+                                    ) : null}
                                 </div>
                             </div>
                             <div class="inline fields">
                                 <div class="eight wide field">
                                     <label>Author</label>
-                                    {author && (
+                                    {author ? (
                                         <a class="ui label" onClick={() => filterByAuthor(author)}>
                                             {author}
                                         </a>
-                                    )}
+                                    ) : null}
                                 </div>
                                 <div class="eight wide field">
                                     <label>Copyright</label>
-                                    {copyright && (
+                                    {copyright ? (
                                         <a class="ui label">
                                             {copyright}
                                         </a>
-                                    )}
+                                    ) : null}
                                 </div>
                             </div>
                             <div class="inline fields">
