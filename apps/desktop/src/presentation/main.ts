@@ -29,7 +29,7 @@
         p_align: "left",
         p_maxFontSize: 100,
         p_enableTransition: true,
-        p_transitionDuration: 150, // unused
+        p_transitionDuration: 150,
         p_enableShadow: true,
         p_enableStroke: true,
         p_enableFooter: true,
@@ -414,19 +414,30 @@
         updateContentWithAnimation();
     }
 
+    let transitionTimer = null;
+
     function updateContentWithAnimation() {
         const cc = $("#presentationContent");
 
+        debug("Updating content with animation...", _$.p_enableTransition);
+
         if (_$.p_enableTransition) {
+            // fade out
             cc.addClass('elementToFadeOut');
             cc.removeClass('elementToFadeIn');
-        }
 
-        updateContent2();
+            clearTimeout(transitionTimer);
 
-        if (_$.p_enableTransition) {
-            cc.addClass('elementToFadeIn');
-            cc.removeClass('elementToFadeOut');
+            transitionTimer = setTimeout(() => {
+                // update content
+                updateContent2();
+
+                // fade in
+                cc.addClass('elementToFadeIn');
+                cc.removeClass('elementToFadeOut');
+            }, _$.p_transitionDuration);
+        } else {
+            updateContent2();
         }
     }
 
@@ -834,9 +845,9 @@
         return a(d);
     }
 
-    function debug(msg) {
+    function debug(...msgs) {
         if (DEBUG_ENABLED) {
-            // console.trace("[presentation.js]: " + msg);
+            window.parent.log(...msgs);
         }
     }
 
@@ -851,6 +862,7 @@
     // exports.parent.onWindowUnload = null;
     // exports.parent.goToPrevSlide = null;
     // exports.parent.goToNextSlide = null;
+    // exports.parent.log = null;
 
     // DON'T SET IT
     // exports.passVariable = null; // sync func

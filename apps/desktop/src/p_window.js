@@ -290,6 +290,11 @@ export function presentation() {
             }
             updatePresentationContent(false);
         };
+        $RvW.presentationWindow.window.log = function () {
+            const args = Array.prototype.slice.call(arguments);
+            args.unshift("[Presentation]:");
+            console.log(...args);
+        };
         // end of global functions
 
         if ($RvW.stageView) {
