@@ -3319,3 +3319,104 @@ td.navtd {
         }
     }
 }
+
+.swx {
+    .flex {
+        display: -webkit-box; /* Safari 3.1-6 */
+        display: -moz-box; /* Firefox 1.5-26 */
+        display: -ms-flexbox; /* IE 10 */
+        display: flex;
+    }
+
+    .items-center {
+        -webkit-box-align: center; /* Safari 3.1-6 */
+        -moz-box-align: center; /* Firefox 1.5-26 */
+        -ms-flex-align: center; /* IE 10 */
+        align-items: center;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .relative {
+        position: relative;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+    .block {
+        display: block;
+    }
+    .bg-gray-200 {
+        background-color: #e5e7eb; /* Tailwind gray-200 */
+    }
+    .bg-white {
+        background-color: #fff;
+    }
+    .w-14 {
+        width: 3.5rem; /* Tailwind w-14 */
+    }
+    .h-8 {
+        height: 2rem; /* Tailwind h-8 */
+    }
+    .w-6 {
+        width: 1.5rem; /* Tailwind w-6 */
+    }
+    .h-6 {
+        height: 1.5rem; /* Tailwind h-6 */
+    }
+    .rounded-full {
+        -webkit-border-radius: 9999px; /* Safari */
+        -moz-border-radius: 9999px; /* Firefox */
+        border-radius: 9999px;
+    }
+
+    .absolute {
+        position: absolute;
+    }
+    .top-1 {
+        top: 0.25rem; /* Tailwind top-1 */
+    }
+    .left-1 {
+        left: 0.25rem; /* Tailwind left-1 */
+    }
+    .ml-3 {
+        margin-left: 0.75rem; /* Tailwind ml-3 */
+    }
+    .text-gray-700 {
+        color: #374151; /* Tailwind gray-700 */
+    }
+    .font-medium {
+        font-weight: 500;
+    }
+    .transition-transform { /* This one might not be perfect */
+        -webkit-transition-property: -webkit-transform; /* Safari */
+        -moz-transition-property: -moz-transform; /* Firefox */
+        transition-property: transform;
+        -webkit-transition-duration: 150ms;
+        -moz-transition-duration: 150ms;
+        transition-duration: 150ms;
+        -webkit-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        -moz-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+    }
+    .transform {
+        transform: translate3d(0,0,0); /* Forces acceleration, might not always help in Safari 5 */
+    }
+    .translate-x-6 {
+        -webkit-transform: translateX(1.5rem); /* Tailwind translate-x-6 */
+        -moz-transform: translateX(1.5rem); /* Tailwind translate-x-6 */
+        transform: translateX(1.5rem);
+    }
+}

@@ -14,6 +14,8 @@ interface Props {
 const App = ({dev}: Props) => {
     return (
         <>
+            {/* ------------------------------------------------ */}
+
             {dev && (
                 <div
                     className=""
@@ -46,6 +48,7 @@ const App = ({dev}: Props) => {
 
             {/* ------------------------------------------------ */}
 
+            {/* App Shell */}
             <div class="x-u-i app">
                 <div class="app-content">
                     <header class="">

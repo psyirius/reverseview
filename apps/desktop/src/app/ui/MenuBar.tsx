@@ -80,9 +80,7 @@ export default function MenuBar() {
     const ytLink = selSong?.youtube || null;
 
     return (
-        <div style={{
-            width: '100%'
-        }}>
+        <div style={{ width: '100%' }}>
             <div class="ui clearing small attached segment" style={{
                 borderTop: 'none',
                 // borderBottom: 'none',
@@ -117,6 +115,8 @@ export default function MenuBar() {
                             ))}
                         </div>
                     </div>
+
+                    <div class="item w-2"></div>
 
                     {/* Verse Menu */}
                     {(activeTabIndex == 0) && <>

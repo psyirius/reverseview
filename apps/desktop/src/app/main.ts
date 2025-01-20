@@ -28,7 +28,7 @@ import {
     bibleRefFocus,
     processNavBibleRef,
 } from "@/bible/navigation";
-import {checkVerUpdateFlags, isUpToDate, task2Complete, task2Status} from "@/versionupdate";
+import {updateCfgVersion, isSameCfgVersion} from "@app/version-update";
 import {
     call_nextSlide,
     call_prevSlide,
@@ -37,13 +37,11 @@ import {
     presentWindowClosed
 } from "@/p_window";
 import {
-    apple,
     backupWebroot,
     BibleReference,
     copyFile2AppStorage,
     createFolder,
     fileExist,
-    pluckapple,
 } from "@app/common";
 import {presentationCtx} from "@app/presentation";
 import {
@@ -57,7 +55,6 @@ import {
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
-// import AppState from "@/stores/state";
 import {console} from "@/platform/adapters/air";
 import {ngInit, songManager, songNavigator} from "@app/glc";
 
@@ -866,43 +863,19 @@ function setupTabContent() {
 
     ngInit();
 
-    versionFill(true); configInit();
+    versionFill(true);
+    configInit();
 
-    if (!isUpToDate() && !task2Status()) {
+    if (!isSameCfgVersion()) {
         console.trace("About to copy webroot files...");
 
         if (backupWebroot()) {
             copyFile2AppStorage("webroot", "webroot");
-            task2Complete();
         }
-        checkVerUpdateFlags();
+
+        updateCfgVersion();
     }
 }
-
-// const loadViewTemplate = function (name) {
-//     const filepath = `./views/${name}.html`;
-//
-//     const { File, FileStream, FileMode } = air;
-//     const { applicationDirectory: appDir } = File;
-//
-//     const file = appDir.resolvePath(filepath);
-//
-//     const prefsFS = new FileStream();
-//     prefsFS.open(file, FileMode.READ);
-//     const data = prefsFS.readMultiByte(prefsFS.bytesAvailable, 'utf-8');
-//     prefsFS.close();
-//
-//     return data;
-// }
-
-// function setupTabView(name, mountPoint) {
-//     const html = VIEWS[name];
-//     if (!html) {
-//         console.trace(`[!] View template not found: ${name}`);
-//     }
-//     document.getElementById(mountPoint).innerHTML = html;
-//     fillTabs(mountPoint);
-// }
 
 function setupSettingsTab() {
     document.getElementById("thirdview_opacity").value =
@@ -1191,9 +1164,8 @@ function onMainWindowKeyUp(evt) {
             }
             break;
         case 119: /* F8 */
-            if (!apple) {
-                pluckapple();
-            }
+            console.trace("F8 pressed");
+            break;
     }
 }
 
@@ -1218,10 +1190,11 @@ $RvW.english_booknames = [];
 
 // FIXME: fix the callback hell
 export function start(Y: YUI) {
-    const NativeApplication = air.NativeApplication;
+    const { NativeApplication } = air;
+    const { nativeApplication } = NativeApplication;
 
-    NativeApplication.nativeApplication.addEventListener(air.Event.CLOSING, onClosing);
-    NativeApplication.nativeApplication.addEventListener(air.Event.EXITING, onExiting);
+    nativeApplication.addEventListener(air.Event.CLOSING, onClosing);
+    nativeApplication.addEventListener(air.Event.EXITING, onExiting);
 
     document.body.addEventListener("keyup", onMainWindowKeyUp);
 

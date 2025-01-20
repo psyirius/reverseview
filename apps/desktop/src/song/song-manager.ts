@@ -699,7 +699,7 @@ export class _SongManager_ {
                 :key,
                 :bpm,
                 :timestamp       
-            )
+            );
         `;
 
         createRecordQ.parameters[":name"] = song.name;
@@ -720,6 +720,8 @@ export class _SongManager_ {
 
         createRecordQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
             const { lastInsertRowID } = createRecordQ.getResult();
+
+            console.log('DB add record result:', lastInsertRowID);
 
             if (!reload) {
                 callback({

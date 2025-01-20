@@ -3,9 +3,6 @@ import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import $ from "jquery";
-
-export let apple = false;
 
 export function saveFileInAppStorage(content, filename) {
     // fs.writeFileSync(
@@ -18,8 +15,9 @@ export function saveFileInAppStorage(content, filename) {
         FileStream,
         FileMode,
     } = air;
+    const { applicationStorageDirectory: appStorageDir } = File;
 
-    const b = File.applicationStorageDirectory.resolvePath(filename);
+    const b = appStorageDir.resolvePath(filename);
     const e = new FileStream();
     e.open(b, FileMode.WRITE);
     e.writeMultiByte(content, "utf-8");
@@ -40,16 +38,21 @@ export function saveVVExportInDesktop(content, name) {
     fz.close();
 }
 
-export function fileExist(b, a) {
-    let c = (a === 1)
-        ? air.File.applicationStorageDirectory
-        : air.File.applicationDirectory;
-    c = c.resolvePath(b);
+export function fileExist(path, kind) {
+    const { File } = air;
+    const { applicationDirectory: appDir } = File;
+    const { applicationStorageDirectory: appStorageDir } = File;
+
+    let c = (kind === 1) ? appStorageDir : appDir;
+    c = c.resolvePath(path);
     return c.exists;
 }
 
 export function createFolder(b) {
-    const a = air.File.applicationStorageDirectory.resolvePath(b);
+    const { File } = air;
+    const { applicationStorageDirectory: appStorageDir } = File;
+
+    const a = appStorageDir.resolvePath(b);
     if (!a.exists) {
         a.createDirectory();
         console.trace("Directory Created..");
@@ -67,27 +70,34 @@ export function clearSelectList(a) {
     }
 }
 
-export function copyFile2AppStorage(d, c) {
-    let b = air.File.applicationDirectory.resolvePath(d);
-    let a = air.File.applicationStorageDirectory.resolvePath(c);
-    b.copyTo(a, true);
-    return a.exists;
+export function copyFile2AppStorage(appDirSrc, appStorageDirDst) {
+    const { File } = air;
+    const { applicationDirectory: appDir } = File;
+    const { applicationStorageDirectory: appStorageDir } = File;
+
+    const src = appDir.resolvePath(appDirSrc);
+    const dst = appStorageDir.resolvePath(appStorageDirDst);
+
+    src.copyTo(dst, true);
+
+    return dst.exists;
 }
 
 export function backupWebroot() {
+    const { File } = air;
+    const { applicationStorageDirectory: appStorageDir } = File;
+
     console.trace("Came to backup Webroot...");
-    const c = air.File.applicationStorageDirectory.resolvePath("webroot");
-    if (c.exists) {
-        const a = air.File.applicationStorageDirectory.resolvePath("webroot_backup6");
-        if (!a.exists) {
+
+    const wr = appStorageDir.resolvePath("webroot");
+    if (wr.exists) {
+        const wrb = appStorageDir.resolvePath("webroot_backup6");
+        if (!wrb.exists) {
             try {
-                c.moveTo(a, true);
+                wr.moveTo(wrb, true);
                 return true;
             } catch (b) {
-                Toast.error(
-                    "Creating Webroot Backup",
-                    b.message + " Files in use by another application"
-                );
+                Toast.error("Creating Webroot Backup", b.message);
                 return false;
             }
         } else {
@@ -113,59 +123,6 @@ export function IsNumeric(v) {
         }
     }
     return true;
-}
-
-/**
- * A simple stopwatch class.
- */
-class Stopwatch {
-    /**
-     * @type {number} The timestamp when the stopwatch was started.
-     * @private
-     */
-    #startTime = 0;
-
-    /**
-     * @type {number} The timestamp when the stopwatch was stopped.
-     * @private
-     */
-    #stopTime = 0;
-
-    /**
-     * Starts the stopwatch.
-     */
-    start() {
-        this.#startTime = Date.now();
-    }
-
-    /**
-     * Stops the stopwatch.
-     */
-    stop() {
-        this.#stopTime = Date.now();
-    }
-
-    /**
-     * Resets the stopwatch, setting both start and stop times to 0.
-     */
-    reset() {
-        this.#startTime = 0;
-        this.#stopTime = 0;
-    }
-
-    /**
-     * Calculates the time difference between when the stopwatch was started and stopped.
-     * Logs the time difference with a custom message to the console.
-     *
-     * @param {string} message - A custom message to log along with the delta time.
-     * @returns {number} The time difference in milliseconds or 0 if not started/stopped.
-     */
-    delta(message) {
-        this.stop();
-        const elapsedTime = this.#stopTime - this.#startTime;
-        console.trace(`${message} ${elapsedTime}`);
-        return elapsedTime;
-    }
 }
 
 export class BibleReference {
@@ -380,40 +337,7 @@ export function blankSlide() {
     $RvW.presentationContent = "";
 }
 
-function getDate() {
-    const e = new Date();
-    const c = e.getMonth() + 1;
-    const b = e.getDate();
-    return e.getFullYear() +
-        "/" +
-        (("" + c).length < 2 ? "0" : "") +
-        c +
-        "/" +
-        (("" + b).length < 2 ? "0" : "") +
-        b;
-}
-
 export function specialCategory(d) {
-    if (apple) {
-        return false;
-    }
     let b = d.toLowerCase().split(" ");
     return b[0] === "vv";
-}
-
-export function pluckapple() {
-    const a = $("#nav_bibleRefID").val();
-    if (a === "admin") {
-        apple = true;
-        $("#nav_bibleRefID").val("");
-    }
-}
-
-export function fixHTTPS_Link(a) {
-    return a.replace("http:", "https:");
-}
-
-export function isBlank(b) {
-    const a = b.replace(/\s/g, "").replace(/<BR>/g, "");
-    return a.length <= 0;
 }
