@@ -52,7 +52,7 @@ const handlers = {
         const song = selectedSong.get();
 
         if (song) {
-            scheduler.addSong(song);
+            scheduler.addSong(song.id);
         }
 
         Toast.success("Song", "Added song to schedule");

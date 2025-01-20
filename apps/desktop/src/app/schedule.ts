@@ -319,7 +319,7 @@ export class _Scheduler_ {
         addRecordQ.parameters[":vRef"] = null;
         addRecordQ.parameters[":lRef"] = songID;
 
-        console.log('DB schedule insert song:', addRecordQ.text, addRecordQ.parameters);
+        // console.log('DB schedule insert song:', addRecordQ.text, addRecordQ.parameters);
 
         addRecordQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
             // console.log('DB schedule insert lyric data:');
