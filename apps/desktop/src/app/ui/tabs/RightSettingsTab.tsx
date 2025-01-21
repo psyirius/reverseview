@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import {useEffect, useRef, useState} from "preact/hooks";
 import {getAvailableScreens, getAvailableFonts} from "@/p_window";
 import {$RvW} from "@/rvw";
@@ -16,6 +15,9 @@ import {useStoreState} from "@/utils/hooks";
 import {console} from "@/platform/adapters/air";
 import {withinRange} from "@app/presentation";
 import {Toast} from "@app/toast";
+import SelectDropdown from "@app/ui/widgets/SelectDropdown";
+// @ts-ignore
+import $ from 'jquery';
 
 enum TextJustification {
     Left    = 'left',
@@ -500,6 +502,28 @@ function MainPresentationSetup() {
                                 {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
                                 <label>Font Override: Primary</label>
                                 <div class="ui action input" style={{width: '100%'}}>
+                                    <SelectDropdown
+                                        placeholder="None"
+                                        items={availableFonts.map((e, i) => ({
+                                            id: i,
+                                            text: e.name,
+                                            item: e,
+                                        }))}
+                                        onItemSelected={(item) => {
+                                            console.log('Selected:', item);
+                                            updatePrimaryFontOverride(item?.item.value ?? null);
+                                        }}
+                                        renderItem={({item}) => {
+                                            return (
+                                                <span
+                                                    // style={{fontFamily: item.value}}
+                                                    class="text">{item.name}</span>
+                                            )
+                                        }}
+                                        searchable
+                                        clearable
+                                    />
+
                                     <div
                                         class="ui selection dropdown"
                                         role="listbox"
@@ -544,6 +568,28 @@ function MainPresentationSetup() {
                                 {/* TODO: fix: dropdown not visible until window is resized horizontally  */}
                                 <label>Font Override: Secondary</label>
                                 <div class="ui action input" style={{width: '100%'}}>
+                                    <SelectDropdown
+                                        placeholder="None"
+                                        items={availableFonts.map((e, i) => ({
+                                            id: i,
+                                            text: e.name,
+                                            item: e,
+                                        }))}
+                                        onItemSelected={(item) => {
+                                            console.log('Selected:', item);
+                                            updateSecondaryFontOverride(item?.item.value ?? null);
+                                        }}
+                                        renderItem={({item}) => {
+                                            return (
+                                                <span
+                                                    // style={{fontFamily: item.value}}
+                                                    class="text">{item.name}</span>
+                                            )
+                                        }}
+                                        searchable
+                                        clearable
+                                    />
+
                                     <div
                                         class="ui selection dropdown"
                                         role="listbox"
@@ -1518,6 +1564,20 @@ export default function RightSettingsTab() {
                             {/*</div>*/}
 
                             <div class="ui action input" style={{width: '100%'}}>
+                                <SelectDropdown
+                                    placeholder="Select a screen"
+                                    items={availableScreens.map((e, i) => ({
+                                        id: i,
+                                        text: e.name,
+                                        item: e,
+                                    }))}
+                                    onItemSelected={(item) => {
+                                        console.log('Selected:', item);
+                                        updateMainScreenSelection(item.id);
+                                    }}
+                                    selectedItemId={mainScreen}
+                                />
+
                                 <div
                                     class="ui selection dropdown"
                                     role="listbox"
@@ -1580,6 +1640,20 @@ export default function RightSettingsTab() {
                             <label>Screen</label>
 
                             <div class="ui action input" style={{width: '100%'}}>
+                                <SelectDropdown
+                                    placeholder="Select a screen"
+                                    items={availableScreens.map((e, i) => ({
+                                        id: i,
+                                        text: e.name,
+                                        item: e,
+                                    }))}
+                                    onItemSelected={(item) => {
+                                        console.log('Selected:', item);
+                                        updateStageScreenSelection(item.id);
+                                    }}
+                                    selectedItemId={stageScreen}
+                                />
+
                                 <div
                                     class="ui selection dropdown"
                                     role="listbox"

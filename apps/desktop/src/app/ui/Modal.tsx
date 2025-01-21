@@ -75,9 +75,7 @@ class Modal extends Component<Props, State> {
                     <div class="modal" style={{ width, height }}>
                         <div class="modal-header">
                             {title && <h2 class="modal-title">{title}</h2>}
-                            <button class="modal-close-button" onClick={onClose}>
-                                <i class="ui times circle icon"></i>
-                            </button>
+                            <button class="modal-close-button" onClick={onClose}>×</button>
                         </div>
                         <div class="modal-content">
                             {children}

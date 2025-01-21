@@ -1,6 +1,8 @@
 import {Component, ComponentChildren, createRef, JSX} from "preact";
 import {console} from "@/platform/adapters/air";
 import {useRef, useState} from "preact/hooks";
+import ScrollableSelect from "@app/ui/widgets/ScrollableSelect";
+import SelectDropdown from "@app/ui/widgets/SelectDropdown";
 
 function GridComponent() {
     interface GridItem {
@@ -236,195 +238,48 @@ function GridComponent() {
 //     </>;
 // }
 
-// function SelectComponent() {
-//     interface Item {
-//         id: number;
-//         text: string;
-//     }
-//
-//     interface Props {
-//         items: Item[];
-//         onItemSelected: (itemId: number | null) => void;
-//         selectedItemId?: number | null;
-//         placeholder?: string;
-//         clearable?: boolean;
-//         searchable?: boolean;
-//     }
-//
-//     interface State {
-//         isOpen: boolean;
-//         selectedItemId: number | null;
-//         searchText: string;
-//     }
-//
-//     class SelectDropdown extends Component<Props, State> {
-//         state: State = {
-//             isOpen: false,
-//             selectedItemId: this.props.selectedItemId || null,
-//             searchText: "",
-//         };
-//         dropdownRef = createRef<HTMLDivElement>();
-//         listRef = createRef<HTMLDivElement>();
-//         searchRef = createRef<HTMLInputElement>();
-//
-//         toggleDropdown = () => {
-//             this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
-//             if (this.props.searchable && this.state.isOpen === false && this.searchRef.current) {
-//                 this.searchRef.current.focus();
-//             }
-//         };
-//         clearSelection = (e: MouseEvent) => {
-//             e.stopPropagation();
-//             this.setState({ selectedItemId: null, searchText: "" }, () => {
-//                 if (this.props.onItemSelected) {
-//                     this.props.onItemSelected(null);
-//                 }
-//             });
-//         };
-//
-//         handleItemClick = (itemId: number) => {
-//             this.setState({ selectedItemId: itemId, isOpen: false, searchText: "" });
-//             this.props.onItemSelected(itemId);
-//         };
-//
-//         handleOutsideClick = (e: MouseEvent) => {
-//             if (
-//                 this.dropdownRef.current &&
-//                 !this.dropdownRef.current.contains(e.target as Node)
-//             ) {
-//                 this.setState({ isOpen: false });
-//             }
-//         };
-//         handleSearchChange = (e: Event) => {
-//             this.setState({ searchText: (e.target as HTMLInputElement).value });
-//         };
-//         componentDidMount() {
-//             document.addEventListener("mousedown", this.handleOutsideClick);
-//             if (this.listRef.current) {
-//                 this.listRef.current.scrollTop = 0;
-//             }
-//         }
-//         componentWillUnmount() {
-//             document.removeEventListener("mousedown", this.handleOutsideClick);
-//         }
-//
-//         getDisplayText = () => {
-//             const { items, placeholder } = this.props;
-//             const { selectedItemId } = this.state;
-//
-//             if (selectedItemId === null) {
-//                 return placeholder || "Select an Item";
-//             }
-//             let selectedItem = null;
-//             for (let i = 0; i < items.length; i++) {
-//                 if (items[i].id === selectedItemId) {
-//                     selectedItem = items[i];
-//                     break;
-//                 }
-//             }
-//
-//             return selectedItem ? selectedItem.text : placeholder || "Select an Item";
-//         };
-//         filterItems = (items: Item[]): Item[] => {
-//             const { searchText } = this.state;
-//             if (!searchText) {
-//                 return items;
-//             }
-//             const lowercasedSearchText = searchText.toLowerCase();
-//             return items.filter(item => {
-//                 return item.text.toLowerCase().indexOf(lowercasedSearchText) !== -1;
-//             })
-//         };
-//
-//         render() {
-//             const { items, placeholder, clearable, searchable } = this.props;
-//             const { isOpen, selectedItemId, searchText } = this.state;
-//             const filteredItems = this.filterItems(items);
-//             return (
-//                 <div className="select-dropdown" ref={this.dropdownRef}>
-//                     <div className="select-dropdown-header" onClick={this.toggleDropdown}>
-//                         {this.getDisplayText()}
-//                         {clearable && selectedItemId !== null && (
-//                             <span className="select-dropdown-clear" onClick={this.clearSelection}>
-//               ×
-//             </span>
-//                         )}
-//                     </div>
-//
-//                     {isOpen && (
-//                         <div className="select-dropdown-list-container">
-//                             {searchable && (
-//                                 <div className="select-dropdown-search">
-//                                     <input
-//                                         type="text"
-//                                         placeholder="Search items"
-//                                         value={searchText}
-//                                         onInput={this.handleSearchChange}
-//                                         ref={this.searchRef}
-//                                     />
-//                                 </div>
-//                             )}
-//                             <div className="select-dropdown-list" ref={this.listRef}>
-//                                 {filteredItems.map((item) => (
-//                                     <div
-//                                         key={item.id}
-//                                         className={`select-dropdown-item ${
-//                                             selectedItemId === item.id ? 'selected' : ''
-//                                         }`}
-//                                         onClick={() => this.handleItemClick(item.id)}
-//                                     >
-//                                         {item.text}
-//                                     </div>
-//                                 ))}
-//                             </div>
-//                         </div>
-//                     )}
-//                 </div>
-//             );
-//         }
-//     }
-//
-//     const items: Item[] = [];
-//
-//     for (let i = 0; i < 1000; i++) {
-//         items.push({ id: i, text: `Item ${i + 1}` });
-//     }
-//
-//
-//     const handleItemSelected = (itemId: number) => {
-//         console.log('Selected item ID:', itemId);
-//         // Your code to handle the selected item
-//     };
-//
-//     return (
-//         <>
-//             <SelectDropdown
-//                 items={items}
-//                 onItemSelected={handleItemSelected}
-//                 placeholder="Choose an item"
-//             />
-//             <SelectDropdown
-//                 items={items}
-//                 onItemSelected={handleItemSelected}
-//                 placeholder="Choose an item"
-//                 clearable
-//             />
-//             <SelectDropdown
-//                 items={items}
-//                 onItemSelected={handleItemSelected}
-//                 placeholder="Choose an item"
-//                 searchable
-//             />
-//             <SelectDropdown
-//                 items={items}
-//                 onItemSelected={handleItemSelected}
-//                 placeholder="Choose an item"
-//                 clearable
-//                 searchable
-//             />
-//         </>
-//     )
-// }
+function SelectComponent() {
+    const items = [];
+
+    for (let i = 0; i < 1000; i++) {
+        items.push({ id: i, text: `Item ${i + 1}` });
+    }
+
+
+    const handleItemSelected = (itemId: number) => {
+        console.log('Selected item ID:', itemId);
+        // Your code to handle the selected item
+    };
+
+    return (
+        <>
+            <SelectDropdown
+                items={items}
+                onItemSelected={handleItemSelected}
+                placeholder="Choose an item"
+            />
+            <SelectDropdown
+                items={items}
+                onItemSelected={handleItemSelected}
+                placeholder="Choose an item"
+                clearable
+            />
+            <SelectDropdown
+                items={items}
+                onItemSelected={handleItemSelected}
+                placeholder="Choose an item"
+                searchable
+            />
+            <SelectDropdown
+                items={items}
+                onItemSelected={handleItemSelected}
+                placeholder="Choose an item"
+                clearable
+                searchable
+            />
+        </>
+    )
+}
 
 // function ToolTipComponent() {
 //     interface Props {
@@ -1348,8 +1203,11 @@ function GridComponent() {
 // }
 
 function NewComponent() {
+
     return (
         <>
+            <SelectComponent />
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae corporis culpa ea hic incidunt iure libero magni mollitia natus nemo, nihil obcaecati odio quam quo reprehenderit saepe vero voluptates!</p>
         </>
     );
 }
