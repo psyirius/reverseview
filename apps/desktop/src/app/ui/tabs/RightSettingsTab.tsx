@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import {useEffect, useRef, useState} from "preact/hooks";
 import {getAvailableScreens, getAvailableFonts} from "@/p_window";
 import {$RvW} from "@/rvw";
@@ -15,7 +16,6 @@ import {useStoreState} from "@/utils/hooks";
 import {console} from "@/platform/adapters/air";
 import {withinRange} from "@app/presentation";
 import {Toast} from "@app/toast";
-import $ from "jquery";
 
 enum TextJustification {
     Left    = 'left',

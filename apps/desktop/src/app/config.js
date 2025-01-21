@@ -72,12 +72,6 @@ export class Config {
         this.get_p_showTitle = function () {
             return $RvW.rvwPreferences.get("$.p_enableTitle", false);
         };
-        this.get_p_textColor = function () {
-            return $RvW.rvwPreferences.get("$.p_textColor", "#FFFFFF");
-        };
-        this.get_p_textColor2 = function () {
-            return $RvW.rvwPreferences.get("$.p_textColor2", "#FFFFFF");
-        };
         this.get_p_solidBkgndColor = function () {
             return $RvW.rvwPreferences.get("$.p_solidBkgndColor", "#000000");
         };
@@ -282,12 +276,6 @@ export class Config {
         }
         this.set_p_showTitle = function (aH) {
             $RvW.rvwPreferences.set("$.p_enableTitle", aH);
-        };
-        this.set_p_textColor = function (aH) {
-            $RvW.rvwPreferences.set("$.p_textColor", aH);
-        };
-        this.set_p_textColor2 = function (aH) {
-            $RvW.rvwPreferences.set("$.p_textColor2", aH);
         };
         this.set_p_solidBkgndColor = function (aH) {
             $RvW.rvwPreferences.set("$.p_solidBkgndColor", aH);

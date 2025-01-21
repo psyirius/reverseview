@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Component, VNode} from 'preact';
 
 /// https://github.com/developit/preact-virtual-list
