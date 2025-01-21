@@ -11,7 +11,7 @@ import Modal from "@/app/ui/Modal";
 import {useEffect, useRef, useState} from "preact/hooks";
 
 export default function BibleSelectorDialog() {
-    const navFontSizeSliderRef = useRef(null);
+    const navFontSizeSliderRef = useRef<HTMLDivElement>(null);
 
     const open = useStoreState(showBibleSelectPanel);
 

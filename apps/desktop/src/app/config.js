@@ -1,10 +1,9 @@
 import {Toast} from "@app/toast";
 import {saveFileInAppStorage} from "@app/common";
-import {savePresentationMargin} from "@app/presentation";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import $ from "jquery";
 import {remoteEnabled, restoreRemoteStandby} from "@stores/global";
+import $ from "jquery";
 
 export const DEFAULT_CONFIG = {
 
@@ -1209,44 +1208,6 @@ function showLogoChangeEvent() {
 }
 
 export function svParameterSaveEvent() {
-    const e = $("#thirdview_opacity").val();
-    const g = $("#thirdview_height").val();
-    const l = $("#thirdview_fcolor").val();
-    const f = $("#thirdview_primary").is(":checked");
-    const q = $("#thirdview_secondary").is(":checked");
-    const k = $("#stageviewWindow").is(":checked");
-    const m = $("#stageviewGreenWindow").is(":checked");
-    const j = $("#thirdview_position").val();
-    const p = $("#thirdview_maxFontSize").val();
-    const d = $("#thirdview_bcolor").val();
-    const c = $("#thirdview_outline").is(":checked");
-    const b = $("#thirdview_shadow").is(":checked");
-    const a = $("#stageSettingShowTime").is(":checked");
-    const o = $("#thirdview_alignLeft").is(":checked");
-    const n = $("#thirdview_alignCenter").is(":checked");
-    const i = $("#thirdview_showTexture").is(":checked");
-    const h = $("#thirdview_alignHorizontal").is(":checked");
-
-    {
-        $RvW.vvConfigObj.set_svOpacity(e);
-        $RvW.vvConfigObj.set_svHeight(g);
-        $RvW.vvConfigObj.set_svFcolor(l);
-        $RvW.vvConfigObj.set_svShowPrimary(f);
-        $RvW.vvConfigObj.set_svShowSecondary(q);
-        $RvW.vvConfigObj.set_svWindow(k);
-        $RvW.vvConfigObj.set_svGreenWindow(m);
-        $RvW.vvConfigObj.set_svPosition(j);
-        $RvW.vvConfigObj.set_svMaxFontSize(p);
-        $RvW.vvConfigObj.set_svBcolor(d);
-        $RvW.vvConfigObj.set_svTextOutline(c);
-        $RvW.vvConfigObj.set_svTextShadow(b);
-        $RvW.vvConfigObj.set_svAlignLeft(o);
-        $RvW.vvConfigObj.set_svAlignCenter(n);
-        $RvW.vvConfigObj.set_svAddTexture(i);
-        $RvW.vvConfigObj.set_svShowHorizontal(h);
-        $RvW.vvConfigObj.set_svShowDate(a);
-    }
-    $RvW.vvConfigObj.save();
 }
 
 function svPassMessage() {
@@ -1262,61 +1223,13 @@ function svClearMessage() {
     }
 }
 
-function stageStyleChangeEvent() {
-    console.trace("stage Style change.. ");
-    const a = $("#selectStageStyle").val();
-    setupStageViewOptions();
-    $RvW.vvConfigObj.set_stageStyleVal(a);
-    $RvW.vvConfigObj.save();
-}
-
-function setupStageViewOptions() {
-    $("#stageviewOpacityDiv").hide();
-    $("#stageviewHeightDiv").hide();
-    $("#stageviewPrimaryDiv").show();
-    $("#stageviewSecondaryDiv").hide();
-    $("#stageviewOutlineDiv").hide();
-    $("#stageviewTimeDiv").hide();
-    $("#stageMessageDivID").hide();
-    $("#stageviewAlignCenterDiv").hide();
-    $("#stageviewShowTextureDiv").hide();
-    $("#stageviewAlignHorizontalDiv").hide();
-    $("#stageviewBackgroundColorDiv").hide();
-    $("#stageviewPositionDiv").hide();
-    switch ($("#selectStageStyle").val()) {
-        case "0":
-        case "1":
-        default:
-            $("#stageviewTimeDiv").show();
-            $("#stageMessageDivID").show();
-            break;
-        case "3":
-            $("#stageviewOpacityDiv").show();
-            $("#stageviewHeightDiv").show();
-            $("#stageviewOutlineDiv").show();
-            $("#stageviewAsWindowDiv").show();
-            $("#stageviewBackgroundColorDiv").show();
-            $("#stageviewAlignCenterDiv").show();
-            $("#stageviewSecondaryDiv").show();
-            $("#stageviewAlignHorizontalDiv").show();
-            break;
-    }
-}
-
-function stageShowTimeChangeEvent() {}
-
 export function configInit() {
-    document
-        .getElementById("presentConfigSaveButton")
-        .addEventListener("click", savePresentationMargin);
     document
         .getElementById("presentConfigShowVVLogo")
         .addEventListener("change", showLogoChangeEvent);
     document
         .getElementById("presentConfigShowCustomLogo")
         .addEventListener("change", showLogoChangeEvent);
-    $("#selectStageStyle").change(stageStyleChangeEvent);
-    $("#stageSettingShowTime").change(stageShowTimeChangeEvent);
     document.getElementById("presentConfigMarginTop").value =
         $RvW.vvConfigObj.get_p_topMargin();
     document.getElementById("presentConfigMarginBottom").value =
@@ -1327,12 +1240,7 @@ export function configInit() {
         $RvW.vvConfigObj.get_p_rightMargin();
     document.getElementById("presentConfigMaxFontSize").value =
         $RvW.vvConfigObj.get_p_maxFontSize();
-    if ($RvW.vvConfigObj.get_stageStyleVal() != null) {
-        $("#selectStageStyle").val($RvW.vvConfigObj.get_stageStyleVal());
-    } else {
-        $("#selectStageStyle").val(0);
-    }
-    setupStageViewOptions();
+
     document.getElementById("presentConfigEnableTransition").checked = !!$RvW.vvConfigObj.get_p_enableTransition();
     document.getElementById("presentConfigOntop").checked = !!$RvW.vvConfigObj.get_presentationOnTop();
 
@@ -1379,72 +1287,22 @@ export function configInit() {
     if (f === 1) {
         document.getElementById("porient_song_vert").checked = true;
     }
-    const h = $RvW.vvConfigObj.get_song_primaryOnly();
-    document.getElementById("showPrimaryFont").checked = h == "true";
+
+    document.getElementById("showPrimaryFont").checked = $RvW.vvConfigObj.get_song_primaryOnly() == "true";
     document.getElementById("show2LinesSlides").checked = !!$RvW.vvConfigObj.get_show2lines();
     document.getElementById("hideStanzaNumber").checked = !!$RvW.vvConfigObj.get_hideStanzaNumber();
     document.getElementById("fitLineSetup").checked = $RvW.vvConfigObj.get_pformat_multiplelines();
     document.getElementById("customLogoText1").value = $RvW.vvConfigObj.get_logoText1();
     document.getElementById("customLogoText2").value = $RvW.vvConfigObj.get_logoText2();
-    var k = $RvW.vvConfigObj.get_showDateTime();
-    var g = $RvW.vvConfigObj.get_showVVLogo();
-    var b = $RvW.vvConfigObj.get_showCustomLogo();
 
-    document.getElementById("presentConfigShowDateTime").checked = k === true;
+    const k = $RvW.vvConfigObj.get_showDateTime();
+    const g = $RvW.vvConfigObj.get_showVVLogo();
+    const b = $RvW.vvConfigObj.get_showCustomLogo();
+
+    document.getElementById("presentConfigShowDateTime").checked = !!k;
     document.getElementById("presentConfigShowVVLogo").checked = !!g;
     document.getElementById("presentConfigShowCustomLogo").checked = !!b;
 
-    document.getElementById("thirdview_opacity").value =
-        $RvW.vvConfigObj.get_svOpacity();
-    document.getElementById("thirdview_height").value =
-        $RvW.vvConfigObj.get_svHeight();
-    document.getElementById("thirdview_fcolor").value =
-        $RvW.vvConfigObj.get_svFcolor();
-    document.getElementById("thirdview_position").value =
-        $RvW.vvConfigObj.get_svPosition();
-    document.getElementById("thirdview_maxFontSize").value =
-        $RvW.vvConfigObj.get_svMaxFontSize();
-    document.getElementById("thirdview_bcolor").value =
-        $RvW.vvConfigObj.get_svBcolor();
-    document.getElementById("thirdview_primary").checked =
-        $RvW.vvConfigObj.get_svShowPrimary();
-    document.getElementById("thirdview_secondary").checked =
-        $RvW.vvConfigObj.get_svShowSecondary();
-    document.getElementById("stageSettingShowTime").checked =
-        $RvW.vvConfigObj.get_svShowDate();
-    document.getElementById("stageConfigMessage").value =
-        $RvW.vvConfigObj.get_svMessage();
-
-    $("#thirdview_opacity").change(svParameterSaveEvent);
-    $("#thirdview_height").change(svParameterSaveEvent);
-    $("#thirdview_fcolor").change(svParameterSaveEvent);
-
-    $("#thirdview_primary").change(function () {
-        if (!$RvW.vvConfigObj.get_svShowPrimary()) {
-            document.getElementById("thirdview_secondary").checked = false;
-        }
-        svParameterSaveEvent();
-    });
-
-    $("#thirdview_secondary").change(function () {
-        if (!$RvW.vvConfigObj.get_svShowSecondary()) {
-            document.getElementById("thirdview_primary").checked = false;
-        }
-        svParameterSaveEvent();
-    });
-
-    $("#stageviewWindow").change(svParameterSaveEvent);
-    $("#stageviewGreenWindow").change(svParameterSaveEvent);
-    $("#thirdview_position").change(svParameterSaveEvent);
-    $("#thirdview_maxFontSize").change(svParameterSaveEvent);
-    $("#thirdview_bcolor").change(svParameterSaveEvent);
-    $("#thirdview_shadow").change(svParameterSaveEvent);
-    $("#thirdview_outline").change(svParameterSaveEvent);
-    $("#stageSettingShowTime").change(svParameterSaveEvent);
     $("#stageMessageShow").click(svPassMessage);
     $("#stageMessageHide").click(svClearMessage);
-    $("#thirdview_alignLeft").change(svParameterSaveEvent);
-    $("#thirdview_alignCenter").change(svParameterSaveEvent);
-    $("#thirdview_showTexture").change(svParameterSaveEvent);
-    $("#thirdview_alignHorizontal").change(svParameterSaveEvent);
 }

@@ -32,7 +32,7 @@
         p_bkgnd_grad_orient: 0,
         p_motion_bkgnd_index: 0,
         p_bkgnd_type: 3,
-        p_text_orientation: '0',
+        p_text_orientation: [],
         p_brandingText: "",
         p_showTitle: false,
         p_showDate: true,
@@ -91,27 +91,34 @@
         if (C > 2.5) {
             o = true;
         }
-        const b = 10;
-        const i = _$.p_text_orientation.split("|");
-        let p_text_orientation_local = i[0];
-        const p = i[1];
-        const h = i[4];
-        const z = i[5];
-        const k = i[6];
-        const F = parseInt(i[2]) / 100;
-        const E = i[8] == "true";
-        const d = i[7] == "true";
-        const A = i[9] == "true";
-        const H = i[10] == "true";
-        const G = i[11] == "true";
-        const e = i[12] == "true";
-        const u = i[13] == "true";
+        const [
+            layout,
+            opacity,
+            height,
+            primaryOnly,
+            secondaryOnly,
+            bgColour,
+            position,
+            maxFontSize,
+            textOutline,
+            textShadow,
+            greenScreen,
+            alignLeft,
+            alignCenter,
+            addTexture,
+            showHorizontal,
+        ] = _$.p_text_orientation;
+
+        const F = parseInt(height) / 100;
+
+        let p_text_orientation_local = layout;
+
         let c = false;
-        if (i[3] == "true") {
+        if (primaryOnly == "true") {
             c = true;
         }
         let q = false;
-        if (i[14] == "true") {
+        if (secondaryOnly == "true") {
             q = true;
         }
         if (_$.p_text2_arr[0] == null || _$.p_text2_arr[0].length < 2) {
@@ -133,7 +140,7 @@
         $("#backgroundLayer").show();
         $("#backgroundLayer3rd").hide();
         $("#backgroundLayer3rdBorder").hide();
-        if (H) {
+        if (alignLeft) {
             $("#content1Container").removeClass("textCenter textLeft textRight");
             $("#content1Container").addClass("textLeft");
             $("#content2Container").removeClass("textCenter textLeft textRight");
@@ -257,8 +264,8 @@
                 $("#presentationTitle2").hide();
                 $("#backgroundLayer3rd").show();
                 $("#backgroundLayer3rdBorder").show();
-                $("#backgroundLayer3rd").css("background-color", h);
-                $("#backgroundLayer3rd").css("opacity", p);
+                $("#backgroundLayer3rd").css("background-color", bgColour);
+                $("#backgroundLayer3rd").css("opacity", opacity);
                 $("#backgroundLayer3rdBorder").css("z-index", 6);
                 $("#backgroundLayer3rdBorder").css({
                     "border-color": "#white",
@@ -290,7 +297,7 @@
                         content2_height = content1_height;
                     } else {
                         $("#content2Container").show();
-                        if (u) {
+                        if (showHorizontal) {
                             var t = parseInt(_$.p_window_Y * F);
                             var y = parseInt(t / 2);
                             var x = _$.p_window_Y - t;
@@ -304,7 +311,7 @@
                             content2_width = _$.p_window_X;
                             content2_height = y;
                         } else {
-                            if (G) {
+                            if (alignCenter) {
                                 $("#content1Container").removeClass(
                                     "textCenter textLeft textRight"
                                 );
@@ -345,8 +352,8 @@
 
         $("#content1").show();
         $("#content2").show();
-        if (A) {
-            if (h == "26FF2A") {
+        if (greenScreen) {
+            if (bgColour == "26FF2A") {
                 $("#backgroundLayer").css("background-color", "#26ff2a");
             } else {
                 $("#backgroundLayer").css("background-color", "#00b140");
@@ -393,13 +400,13 @@
         $("#content2Container").removeClass("contentTextShadow contentTextOutline");
         $("#presentationTitle").removeClass("contentTextShadow contentTextOutline");
         $("#presentationTitle2").removeClass("contentTextShadow contentTextOutline");
-        if (d) {
+        if (textOutline) {
             $("#content1Container").addClass("contentTextOutline");
             $("#content2Container").addClass("contentTextOutline");
             $("#presentationTitle").addClass("contentTextOutline");
             $("#presentationTitle2").addClass("contentTextOutline");
         }
-        if (E) {
+        if (textShadow) {
             $("#content1Container").addClass("contentTextShadow");
             $("#content2Container").addClass("contentTextShadow");
             $("#presentationTitle").addClass("contentTextShadow");
@@ -423,8 +430,8 @@
             D = 10;
             $("#content1").css("font-size", D + "px");
         }
-        if (D > k) {
-            D = k;
+        if (D > maxFontSize) {
+            D = maxFontSize;
             $("#content1").css("font-size", D + "px");
         }
         $("#content2Container").css({
@@ -455,8 +462,8 @@
                     B = 10;
                     $("#content2").css("font-size", B + "px");
                 }
-                if (B > k) {
-                    B = k;
+                if (B > maxFontSize) {
+                    B = maxFontSize;
                     $("#content2").css("font-size", B + "px");
                 }
             } else {
@@ -481,7 +488,7 @@
                 n = true;
             }
         }
-        if (d) {
+        if (textOutline) {
             if (n) {
                 $("#content1Container").removeClass("contentTextOutline");
                 $("#content2Container").removeClass("contentTextOutline");

@@ -10,6 +10,7 @@ import {
     presentationSecondaryFontOverride
 } from "@stores/global";
 import {loadInstalledFonts} from "@app/main";
+import {StageViewStyle} from "@app/ui/tabs/RightSettingsTab";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
@@ -63,13 +64,14 @@ function passVariable(isStageView, _ = undefined) {
     _.p_bkgnd_filename = presentationCtx.p_bkgnd_filename;
     _.p_bkgnd_motion = presentationCtx.p_bkgnd_motion;
     _.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();
-    _.p_font_color = presentationCtx.p_font_color;
-    _.p_font_color2 = presentationCtx.p_font_color2;
     _.p_format_multiplelines = $RvW.vvConfigObj.get_pformat_multiplelines();
     if (isStageView === 1) {
-        const f = $("#thirdview_fcolor").val();
-        _.p_font_color = $RvW.colorChart[f];
-        _.p_font_color2 = $RvW.colorChart[f];
+        const textColor = $RvW.rvwPreferences.get("app.settings.stage.fg_color");
+        _.p_font_color = textColor;
+        _.p_font_color2 = textColor;
+    } else {
+        _.p_font_color = presentationCtx.p_font_color;
+        _.p_font_color2 = presentationCtx.p_font_color2;
     }
     _.p_bkgnd_color1 = $RvW.vvConfigObj.get_p_bkgnd_color1();
     _.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
@@ -78,27 +80,44 @@ function passVariable(isStageView, _ = undefined) {
     _.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
     {
         if (isStageView === 1) {
-            let v = $RvW.vvConfigObj.get_stageStyleVal();
-            if (v !== "3") {
-                if (presentationCtx.p_text_orientation === "2") {
-                    v = "2";
-                }
+            let layout = $RvW.rvwPreferences.get("app.settings.stage.layout");
+            if (layout === StageViewStyle.LowerThird) {
+                layout = "3";
+            } else if (presentationCtx.p_text_orientation === "2") {
+                layout = "2";
             }
-            const j = $("#thirdview_opacity").val();
-            const r = $("#thirdview_height").val();
-            const s = $("#thirdview_primary").prop("checked");
-            const l = $("#thirdview_secondary").prop("checked");
-            const g = $RvW.vvConfigObj.get_svBcolor();
-            const p = $RvW.vvConfigObj.get_svPosition();
-            const i = $RvW.vvConfigObj.get_svMaxFontSize();
-            const d = $RvW.vvConfigObj.get_svTextOutline();
-            const e = $RvW.vvConfigObj.get_svTextShadow();
-            const c = $RvW.vvConfigObj.get_svGreenWindow();
-            const n = $RvW.vvConfigObj.get_svAlignLeft();
-            const k = $RvW.vvConfigObj.get_svAlignCenter();
-            const q = $RvW.vvConfigObj.get_svAddTexture();
-            const h = $RvW.vvConfigObj.get_svShowHorizontal();
-            _.p_text_orientation = `${v}|${j}|${r}|${s}|${$RvW.colorChart[g]}|${p}|${i}|${d}|${e}|${c}|${n}|${k}|${q}|${h}|${l}`;
+            const opacity = $RvW.rvwPreferences.get("app.settings.stage.opacity");
+            const height = $RvW.rvwPreferences.get("app.settings.stage.height");
+            const primaryOnly = $RvW.rvwPreferences.get("app.settings.stage.primary_only");
+            const secondaryOnly = $RvW.rvwPreferences.get("app.settings.stage.secondary_only");
+            const bgColor = $RvW.rvwPreferences.get("app.settings.stage.bg_color");
+            const position = $RvW.rvwPreferences.get("app.settings.stage.position");
+            const maxFontSize = $RvW.rvwPreferences.get("app.settings.stage.max_font_size");
+            const textOutline = $RvW.rvwPreferences.get("app.settings.stage.text_outline");
+            const textShadow = $RvW.rvwPreferences.get("app.settings.stage.text_shadow");
+            const greenScreen = $RvW.rvwPreferences.get("app.settings.stage.green_screen");
+            const alignLeft = $RvW.rvwPreferences.get("app.settings.stage.align_left");
+            const alignCenter = $RvW.rvwPreferences.get("app.settings.stage.align_center");
+            const addTexture = $RvW.rvwPreferences.get("app.settings.stage.show_texture");
+            const showHorizontal = $RvW.rvwPreferences.get("app.settings.stage.align_horizontal");
+
+            _.p_text_orientation = [
+                layout,
+                opacity,
+                height,
+                primaryOnly,
+                secondaryOnly,
+                bgColor,
+                position,
+                maxFontSize,
+                textOutline,
+                textShadow,
+                greenScreen,
+                alignLeft,
+                alignCenter,
+                addTexture,
+                showHorizontal,
+            ];
         } else {
             _.p_text_orientation = presentationCtx.p_text_orientation;
         }
@@ -301,13 +320,13 @@ export function presentation() {
             const { NativeWindowInitOptions, HTMLLoader, Event, URLRequest } = air;
 
             const windowInitOptions = new NativeWindowInitOptions();
-            const svWindow = $RvW.vvConfigObj.get_svWindow();
+            const svWindow = $RvW.rvwPreferences.get("app.settings.stage.window_view");
             const svBounds = screens[stageViewScreenIndex].bounds;
             if (svWindow) {
                 windowInitOptions.resizable = false;
                 windowInitOptions.maximizable = false;
                 windowInitOptions.minimizable = false;
-                const f = $("#stageviewMiniWindow").is(":checked");
+                const f = $RvW.rvwPreferences.get("app.settings.stage.mini_window");
                 if (screens[stageViewScreenIndex].bounds.width < 1900) {
                     svBounds.width = 1280 / 2;
                     svBounds.height = 720 / 2;

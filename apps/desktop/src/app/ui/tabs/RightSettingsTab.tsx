@@ -14,6 +14,7 @@ import {
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {console} from "@/platform/adapters/air";
+import {savePresentationMargin} from "@app/presentation";
 
 function Switch({ label = 'Toggle Me', onChange = null }) {
     const [checked, setChecked] = useState(true);
@@ -571,28 +572,272 @@ function MainPresentationSetup() {
 
                 {/* Save/Discard */}
                 <div class="ui basic buttons">
-                    <button id="presentConfigSaveButton" class="ui blue button">Save</button>
-                    <button id="presentConfigDiscardButton" class="ui red button">Discard</button>
+                    <button
+                        id="presentConfigSaveButton"
+                        onClick={savePresentationMargin}
+                        class="ui blue button">Save</button>
+                    <button
+                        id="presentConfigDiscardButton"
+                        class="ui red button">Discard</button>
                 </div>
             </div>
         </>
     );
 }
 
+export enum StageViewStyle {
+    Horizontal  = 0,
+    Vertical    = 1,
+    LowerThird  = 2,
+}
+
 function StagePresentationSetup() {
+    const svStyles = [
+        { value: StageViewStyle.Horizontal, label: 'Horizontal'  },
+        { value: StageViewStyle.Vertical,   label: 'Vertical'    },
+        { value: StageViewStyle.LowerThird, label: 'Lower Third' },
+    ];
+
+    const opacitySliderRef = useRef<HTMLDivElement>(null);
+    const heightSliderRef = useRef<HTMLDivElement>(null);
+    const vertPosSliderRef = useRef<HTMLDivElement>(null);
+    const maxFontSizeSliderRef = useRef<HTMLDivElement>(null);
+
+    const colorInputFGRef = useRef<HTMLInputElement>(null);
+    const colorInputBGRef = useRef<HTMLInputElement>(null);
+
+    const [layout, setLayout] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.layout", StageViewStyle.Horizontal)
+    );
+    const [svWindowView, setSvWindowView] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.window_view", false)
+    );
+    const [svMiniWindow, setSvMiniWindow] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.mini_window", false)
+    );
+    const [svGreenWindow, setSvGreenWindow] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.green_screen", false)
+    );
+
+    const [opacity, setOpacity] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.opacity", 1)
+    );
+    const [height, setHeight] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.height", 30)
+    );
+    const [vertPos, setVertPos] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.position", 0)
+    );
+    const [maxFontSize, setMaxFontSize] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.max_font_size", 50)
+    );
+    const [fgColor, setFgColor] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.fg_color", '#ffffff')
+    );
+    const [bgColor, setBgColor] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.bg_color", '#000000')
+    );
+    
+    const [primaryOnly, setPrimaryOnly] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.primary_only", false)
+    );
+    const [secondaryOnly, setSecondaryOnly] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.secondary_only", false)
+    );
+    const [alignLeft, setAlignLeft] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.align_left", false)
+    );
+    const [alignCenter, setAlignCenter] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.align_center", false)
+    );
+    const [alignHorizontal, setAlignHorizontal] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.align_horizontal", false)
+    );
+    const [textOutline, setTextOutline] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.text_outline", false)
+    );
+    const [textShadow, setTextShadow] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.text_shadow", false)
+    );
+    const [showTexture, setShowTexture] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.show_texture", false)
+    );
+    const [showDatetime, setShowDatetime] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.show_datetime", false)
+    );
+
+    useEffect(() => {
+        // @ts-ignore
+        $(opacitySliderRef.current).range({
+            min: 0,
+            max: 100,
+            start: Math.round(opacity * 100),
+            onChange: function (value: number) {
+                value /= 100;
+                setOpacity(value);
+                $RvW.rvwPreferences.set("app.settings.stage.opacity", value);
+                $RvW.rvwPreferences.commit();
+            },
+        });
+        // @ts-ignore
+        $(heightSliderRef.current).range({
+            min: 0,
+            max: 100,
+            start: height,
+            onChange: function (value: number) {
+                setHeight(value);
+                $RvW.rvwPreferences.set("app.settings.stage.height", value);
+                $RvW.rvwPreferences.commit();
+            },
+        });
+        // @ts-ignore
+        $(vertPosSliderRef.current).range({
+            min: 0,
+            max: 100,
+            start: vertPos,
+            onChange: function (value: number) {
+                setVertPos(value);
+                $RvW.rvwPreferences.set("app.settings.stage.position", value);
+                $RvW.rvwPreferences.commit();
+            },
+        });
+        // @ts-ignore
+        $(maxFontSizeSliderRef.current).range({
+            min: 10,
+            max: 100,
+            start: maxFontSize,
+            onChange: function (value: number) {
+                setMaxFontSize(value);
+                $RvW.rvwPreferences.set("app.settings.stage.max_font_size", value);
+                $RvW.rvwPreferences.commit();
+            },
+        });
+
+        // @ts-ignore
+        $(colorInputFGRef.current).spectrum({
+            color: fgColor,
+            showAlpha: false,
+            showInitial: true,
+            showInput: true,
+            showButtons: false,
+            preferredFormat: "hex",
+            change: function(color: any) {
+                const value = color.toHexString();
+                setFgColor(value);
+                $RvW.rvwPreferences.set("app.settings.stage.fg_color", value);
+                $RvW.rvwPreferences.commit();
+            }
+        });
+        // @ts-ignore
+        $(colorInputBGRef.current).spectrum({
+            color: bgColor,
+            showAlpha: false,
+            showInitial: true,
+            showInput: true,
+            showButtons: false,
+            preferredFormat: "hex",
+            change: function(color: any) {
+                const value = color.toHexString();
+                setBgColor(value);
+                $RvW.rvwPreferences.set("app.settings.stage.bg_color", value);
+                $RvW.rvwPreferences.commit();
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.layout", layout);
+        $RvW.rvwPreferences.commit();
+    }, [layout]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.window_view", svWindowView);
+        $RvW.rvwPreferences.commit();
+    }, [svWindowView]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.mini_window", svMiniWindow);
+        $RvW.rvwPreferences.commit();
+    }, [svMiniWindow]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.green_screen", svGreenWindow);
+        $RvW.rvwPreferences.commit();
+    }, [svGreenWindow]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.primary_only", primaryOnly);
+        $RvW.rvwPreferences.commit();
+    }, [primaryOnly]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.secondary_only", secondaryOnly);
+        $RvW.rvwPreferences.commit();
+    }, [secondaryOnly]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.align_left", alignLeft);
+        $RvW.rvwPreferences.commit();
+    }, [alignLeft]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.align_center", alignCenter);
+        $RvW.rvwPreferences.commit();
+    }, [alignCenter]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.align_horizontal", alignHorizontal);
+        $RvW.rvwPreferences.commit();
+    }, [alignHorizontal]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.text_outline", textOutline);
+        $RvW.rvwPreferences.commit();
+    }, [textOutline]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.text_shadow", textShadow);
+        $RvW.rvwPreferences.commit();
+    }, [textShadow]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.show_texture", showTexture);
+        $RvW.rvwPreferences.commit();
+    }, [showTexture]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.show_datetime", showDatetime);
+        $RvW.rvwPreferences.commit();
+    }, [showDatetime]);
+
+    function isLowerThird() {
+        return layout === StageViewStyle.LowerThird;
+    }
+
+    function isVerticalOrHorizontal() {
+        return layout === StageViewStyle.Vertical || layout === StageViewStyle.Horizontal;
+    }
+
     return (
         <>
             <div class="ui basic segment">
                 <h4 class="ui dividing header">Presentation: Stage</h4>
 
-                {/* StageVIEW style */}
+                {/* Layout */}
+                {/* TODO: make it radio btn and tab view */}
                 <div class="field">
-                    <label>Style</label>
+                    <label>Layout</label>
 
-                    <select id="selectStageStyle" class="selectboxStyle">
-                        <option value="0">Horizontal</option>
-                        <option value="1">Vertical</option>
-                        <option value="3">1/3rd View</option>
+                    <select
+                        id="selectStageStyle"
+                        value={layout}
+                        onChange={event => {
+                            setLayout(parseInt((event.target as HTMLSelectElement).value))
+                        }}
+                    >
+                        {svStyles.map(({value, label}, i) => (
+                            <option key={i} value={value}>{label}</option>
+                        ))}
                     </select>
                 </div>
 
@@ -603,67 +848,91 @@ function StagePresentationSetup() {
                     <div class="fields">
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="stageviewWindow"/>
+                                <input
+                                    type="checkbox"
+                                    checked={svWindowView}
+                                    onChange={(e) => setSvWindowView((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Window View</label>
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="stageviewMiniWindow"/>
+                                <input
+                                    type="checkbox"
+                                    checked={svMiniWindow}
+                                    onChange={(e) => setSvMiniWindow((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Small Window</label>
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="stageviewGreenWindow"/>
+                                <input
+                                    type="checkbox"
+                                    checked={svGreenWindow}
+                                    onChange={(e) => setSvGreenWindow((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Green Screen</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="ui grid">
-                    <div class="six wide column">
-                        {/* Opacity of the 1/3rd view strip */}
-                        <div id="stageviewOpacityDiv">Opacity<input type="text" id="thirdview_opacity"
-                                                                    value="0.6" size={6}/>
-                            <div class="ui range" id="thirdview_opacity_range"></div>
-                        </div>
+                {/* Sliders */}
+                <div class="field">
+                    <label>Style Options</label>
 
-                        {/* Height of 1/3rd View */}
-                        <div id="stageviewHeightDiv">Height<input type="text" id="thirdview_height"
-                                                                  value="33"
-                                                                  size={6}/>
-                            <div class="ui range" id="thirdview_height_range"></div>
-                        </div>
+                    <div class="fields">
+                        <div class="eight wide field">
+                            {/* Opacity of the 1/3rd view strip */}
+                            <label>Strip Background Opacity</label>
 
-                        {/* Vertical Position of 1/3rd View */}
-                        <div id="stageviewPositionDiv">Vertical Position<input type="text"
-                                                                               id="thirdview_position"
-                                                                               value="33" size={6}/>
-                            <div class="ui range" id="thirdview_position_range"></div>
+                            <input type="text" disabled value={opacity} />
+                            <div class="h-1"></div>
+                            <div class="ui range" ref={opacitySliderRef}></div>
+                        </div>
+                        <div class="eight wide field">
+                            {/* Height of 1/3rd View */}
+                            <label>Strip Height</label>
+
+                            <input type="text" disabled value={height} />
+                            <div class="h-1"></div>
+                            <div class="ui range" ref={heightSliderRef}></div>
                         </div>
                     </div>
-                    <div class="six wide column">
-                        {/* Maximum font size 1/3rd View */}
-                        <div id="stageviewMaxFontsizeDiv">Maximum Font Size<input type="text"
-                                                                                  id="thirdview_maxFontSize"
-                                                                                  value="33" size={6}/>
-                            <div class="ui range" id="thirdview_maxFontSize_range"></div>
-                        </div>
 
-                        {/* Color of Text in StageVIEW */}
-                        <div id="stageviewForegroundColorDiv">Text Color<input type="text"
-                                                                               id="thirdview_fcolor"
-                                                                               value="" size={6}/>
-                            <div class="ui range" id="thirdview_fcolor_range"></div>
-                        </div>
+                    <div class="fields">
+                        <div class="eight wide field">
+                            {/* Vertical Position of 1/3rd View */}
+                            <label>Vertical Position</label>
 
-                        {/* Background color of strip */}
-                        <div id="stageviewBackgroundColorDiv">Background Color<input type="text"
-                                                                                     id="thirdview_bcolor"
-                                                                                     value="" size={6}/>
-                            <div class="ui range" id="thirdview_bcolor_range"></div>
+                            <input type="text" disabled value={vertPos} />
+                            <div class="h-1"></div>
+                            <div class="ui range" ref={vertPosSliderRef}></div>
+                        </div>
+                        <div class="eight wide field">
+                            {/* Maximum font size 1/3rd View */}
+                            <label>Maximum Font Size</label>
+
+                            <input type="text" disabled value={maxFontSize} />
+                            <div class="h-1"></div>
+                            <div class="ui range" ref={maxFontSizeSliderRef}></div>
+                        </div>
+                    </div>
+
+                    <div class="fields">
+                        <div class="eight wide field">
+                            {/* Color of Text */}
+                            <label>Text Color</label>
+
+                            <input type="text" ref={colorInputFGRef} />
+                        </div>
+                        <div class="eight wide field">
+                            {/* Background color of strip */}
+                            <label>Strip Background Color</label>
+
+                            <input type="text" ref={colorInputBGRef} />
                         </div>
                     </div>
                 </div>
@@ -675,13 +944,19 @@ function StagePresentationSetup() {
                     <div class="fields">
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_primary"/>
+                                <input type="checkbox" checked={primaryOnly} onChange={(e) => {
+                                    setPrimaryOnly((e.target as HTMLInputElement).checked);
+                                    setSecondaryOnly(false);
+                                }}/>
                                 <label>Show primary only</label>
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_secondary"/>
+                                <input type="checkbox" checked={secondaryOnly} onChange={(e) => {
+                                    setSecondaryOnly((e.target as HTMLInputElement).checked);
+                                    setPrimaryOnly(false);
+                                }}/>
                                 <label>Show secondary only</label>
                             </div>
                         </div>
@@ -690,19 +965,21 @@ function StagePresentationSetup() {
                     <div class="fields">
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_alignLeft"/>
+                                <input type="checkbox" checked={alignLeft} onChange={(e) => setAlignLeft((e.target as HTMLInputElement).checked)}/>
                                 <label>Align Left</label>
                             </div>
                         </div>
+
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_alignCenter"/>
+                                <input type="checkbox" checked={alignCenter} onChange={(e) => setAlignCenter((e.target as HTMLInputElement).checked)}/>
                                 <label>Align Center</label>
                             </div>
                         </div>
+
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_alignHorizontal"/>
+                                <input type="checkbox" checked={alignHorizontal} onChange={(e) => setAlignHorizontal((e.target as HTMLInputElement).checked)}/>
                                 <label>Align Horizontal</label>
                             </div>
                         </div>
@@ -711,13 +988,14 @@ function StagePresentationSetup() {
                     <div class="fields">
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_outline"/>
+                                <input type="checkbox" checked={textOutline} onChange={(e) => setTextOutline((e.target as HTMLInputElement).checked)}/>
                                 <label>Text Outline</label>
                             </div>
                         </div>
+
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_shadow"/>
+                                <input type="checkbox" checked={textShadow} onChange={(e) => setTextShadow((e.target as HTMLInputElement).checked)}/>
                                 <label>Text Shadow</label>
                             </div>
                         </div>
@@ -726,29 +1004,28 @@ function StagePresentationSetup() {
                     <div class="fields">
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="thirdview_showTexture"/>
+                                <input type="checkbox" checked={showTexture} onChange={(e) => setShowTexture((e.target as HTMLInputElement).checked)}/>
                                 <label>Add Texture</label>
                             </div>
                         </div>
+
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" id="stageSettingShowTime"/>
+                                <input type="checkbox" checked={showDatetime} onChange={(e) => setShowDatetime((e.target as HTMLInputElement).checked)}/>
                                 <label>Show date and time</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Save/Discard */}
-                <div class="ui basic buttons">
-                    <button id="presentConfigSaveButton2" class="ui blue button">Save</button>
-                    <button id="presentConfigDiscardButton2" class="ui red button">Discard</button>
-                </div>
-
-                <h4 class="ui dividing header">Message Setup</h4>
+                <div class="h-2"></div>
 
                 <div class="field">
-                    <textarea rows={4} cols={50} id="stageConfigMessage"></textarea>
+                    <label>Message</label>
+
+                    <textarea rows={4} id="stageConfigMessage"></textarea>
+
+                    <div class="h-2"></div>
 
                     <div class="ui basic buttons">
                         <button id="stageMessageShow" class="ui button">Show</button>

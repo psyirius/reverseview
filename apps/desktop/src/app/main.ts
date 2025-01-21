@@ -129,91 +129,8 @@ $RvW.numofch = [
     /* BookNum: [NumChapters, ...VersesForEachChapter] */
     // filled by loading from a bible version
 ];
-$RvW.colorChart = [
-    "FFFFFF",
-    "800000",
-    "A52A2A",
-    "DC143C",
-    "FF0000",
-    "FF6347",
-    "FF7F50",
-    "CD5C5C",
-    "FA8072",
-    "FFA07A",
-    "FF4500",
-    "FF8C00",
-    "FFD700",
-    "B8860B",
-    "DAA520",
-    "BDB76B",
-    "F0E68C",
-    "808000",
-    "FFFF00",
-    "9ACD32",
-    "7CFC00",
-    "ADFF2F",
-    "006400",
-    "228B22",
-    "00FF00",
-    "32CD32",
-    "98FB98",
-    "8FBC8F",
-    "00FA9A",
-    "00FF7F",
-    "2E8B57",
-    "3CB371",
-    "20B2AA",
-    "2F4F4F",
-    "008080",
-    "00FFFF",
-    "E0FFFF",
-    "AFEEEE",
-    "B0E0E6",
-    "5F9EA0",
-    "6495ED",
-    "00BFFF",
-    "1E90FF",
-    "000080",
-    "0000FF",
-    "4169E1",
-    "8A2BE2",
-    "4B0082",
-    "483D8B",
-    "7B68EE",
-    "8B008B",
-    "9400D3",
-    "BA55D3",
-    "D8BFD8",
-    "DDA0DD",
-    "EE82EE",
-    "FF00FF",
-    "C71585",
-    "DB7093",
-    "FF1493",
-    "FFC0CB",
-    "FAEBD7",
-    "FFE4C4",
-    "F5DEB3",
-    "8B4513",
-    "A0522D",
-    "D2691E",
-    "CD853F",
-    "F4A460",
-    "DEB887",
-    "FFE4B5",
-    "FFF0F5",
-    "F5FFFA",
-    "778899",
-    "B0C4DE",
-    "F0F8FF",
-    "000000",
-    "696969",
-    "A9A9A9",
-    "D3D3D3",
-    "FFFFFF",
-    "26FF2A",
-];
 
+// TODO: build it dynamically
 $RvW.systemFontList = [
     "Impact",
     "Tahoma",
@@ -253,6 +170,8 @@ $RvW.systemFontList = [
     "Meera Malayalam",
     "Tenali Telugu"
 ];
+
+// TODO: build it dynamically
 $RvW.specialFontList = [
     "JC_Malayalam",
     "JC_Hindi",
@@ -878,110 +797,6 @@ function setupTabContent() {
 }
 
 function setupSettingsTab() {
-    document.getElementById("thirdview_opacity").value =
-        $RvW.vvConfigObj.get_svOpacity();
-    document.getElementById("thirdview_height").value =
-        $RvW.vvConfigObj.get_svHeight();
-    document.getElementById("thirdview_fcolor").value =
-        $RvW.vvConfigObj.get_svFcolor();
-    document.getElementById("thirdview_position").value =
-        $RvW.vvConfigObj.get_svPosition();
-    document.getElementById("thirdview_maxFontSize").value =
-        $RvW.vvConfigObj.get_svMaxFontSize();
-    document.getElementById("thirdview_bcolor").value =
-        $RvW.vvConfigObj.get_svBcolor();
-    $("#thirdview_primary").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svShowPrimary() == "true" ? true : false
-    );
-    $("#thirdview_secondary").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svShowSecondary() == "true" ? true : false
-    );
-    $("#stageviewWindow").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svWindow() == "true" ? true : false
-    );
-    $("#stageviewGreenWindow").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svGreenWindow() == "true" ? true : false
-    );
-    $("#thirdview_outline").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svTextOutline() == "true" ? true : false
-    );
-    $("#thirdview_shadow").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svTextShadow() == "true" ? true : false
-    );
-    $("#stageSettingShowTime").prop(
-        "checked",
-        $RvW.vvConfigObj.get_svShowDate() == "true" ? true : false
-    );
-    $("#thirdview_opacity_range").range({
-        min: 0,
-        max: 10,
-        start: $RvW.vvConfigObj.get_svOpacity() * 10,
-        onChange: function (b) {
-            $("#thirdview_opacity").val(b / 10);
-            svParameterSaveEvent();
-        },
-    });
-    $("#thirdview_opacity").prop("disabled", true);
-    $("#thirdview_height_range").range({
-        min: 0,
-        max: 100,
-        start: $RvW.vvConfigObj.get_svHeight(),
-        onChange: function (b) {
-            $("#thirdview_height").val(b);
-            svParameterSaveEvent();
-        },
-    });
-    $("#thirdview_height").prop("disabled", true);
-    $("#thirdview_position_range").range({
-        min: 0,
-        max: 100,
-        start: $RvW.vvConfigObj.get_svPosition(),
-        onChange: function (b) {
-            $("#thirdview_position").val(b);
-            svParameterSaveEvent();
-        },
-    });
-    $("#thirdview_position").prop("disabled", true);
-    $("#thirdview_maxFontSize_range").range({
-        min: 10,
-        max: 100,
-        start: $RvW.vvConfigObj.get_svMaxFontSize(),
-        onChange: function (b) {
-            $("#thirdview_maxFontSize").val(b);
-            svParameterSaveEvent();
-        },
-    });
-    $("#thirdview_maxFontSize").prop("disabled", true);
-    $("#thirdview_fcolor_range").range({
-        min: 0,
-        max: 80,
-        start: $RvW.vvConfigObj.get_svFcolor(),
-        onChange: function (b) {
-            $("#thirdview_fcolor").val(b);
-            svParameterSaveEvent();
-            var c = "#" + $RvW.colorChart[$("#thirdview_fcolor").val()];
-            $("#thirdview_fcolor").css({ "background-color": c });
-        },
-    });
-    $("#thirdview_fcolor").prop("disabled", true);
-    $("#thirdview_bcolor_range").range({
-        min: 0,
-        max: 81,
-        start: $RvW.vvConfigObj.get_svBcolor(),
-        onChange: function (b) {
-            $("#thirdview_bcolor").val(b);
-            svParameterSaveEvent();
-            var c = "#" + $RvW.colorChart[$("#thirdview_bcolor").val()];
-            $("#thirdview_bcolor").css({ "background-color": c });
-        },
-    });
-    $("#thirdview_bcolor").prop("disabled", true);
 }
 
 function updateBookNameVar() {
