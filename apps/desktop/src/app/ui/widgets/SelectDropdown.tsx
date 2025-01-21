@@ -32,6 +32,7 @@ class SelectDropdown extends Component<Props, State> {
     listRef = createRef<HTMLDivElement>();
     dropdownRef = createRef<HTMLDivElement>();
     searchRef = createRef<HTMLInputElement>();
+    selectedItemRef = createRef<HTMLDivElement>();
 
     constructor(props: Props) {
         super(props);
@@ -43,7 +44,11 @@ class SelectDropdown extends Component<Props, State> {
     }
 
     toggleDropdown = () => {
-        this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+        this.setState((prevState) => ({ isOpen: !prevState.isOpen }), () => {
+            if (this.state.isOpen && this.selectedItemRef.current) {
+                this.selectedItemRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+        });
         if (this.props.searchable && this.state.isOpen === false && this.searchRef.current) {
             this.searchRef.current.focus();
         }
@@ -154,6 +159,7 @@ class SelectDropdown extends Component<Props, State> {
                                         selectedItemId === item.id ? 'selected' : ''
                                     }`}
                                     onClick={() => this.handleItemClick(item)}
+                                    ref={selectedItemId === item.id ? this.selectedItemRef : null}
                                 >
                                     {this.renderItem(item)}
                                 </div>
