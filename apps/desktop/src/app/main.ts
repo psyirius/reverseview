@@ -866,11 +866,7 @@ function firstTimeCheck() {
     if (!d) {
         b = setupVBkgnd();
     }
-    var c = fileExist("xml/config.xml", 1);
-    if (!c) {
-        b = setupVConfig();
-    }
-    if (!a && !d && !c) {
+    if (!a && !d) {
         firstTimeFlag = true;
     }
     console.trace("First time check: " + b);
@@ -956,14 +952,6 @@ function onMainWindowKeyUp(evt) {
             console.trace("F8 pressed");
             break;
     }
-}
-
-function setupVConfig() {
-    const a = copyFile2AppStorage("xml/config.xml", "xml/config.xml");
-    if (!a) {
-        return a;
-    }
-    return a;
 }
 
 function onExiting() {
