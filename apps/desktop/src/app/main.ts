@@ -272,7 +272,7 @@ $RvW.launch = function(g) {
     presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
     presentationCtx.p_bkgnd_color = "blue";
     presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
-    presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color1');
+    presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color2');
     presentationCtx.p_ver1ScaleFactor = 1;
     presentationCtx.p_ver2ScaleFactor = 1;
     if ($RvW.vvConfigObj.get_singleVersion()) {
