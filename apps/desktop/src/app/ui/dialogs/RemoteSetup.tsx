@@ -5,7 +5,6 @@ import {
     remoteEnabled,
     remoteCustomHostname,
     remoteListenPort,
-    restoreRemoteStandby
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";
@@ -119,7 +118,6 @@ export default function RemoteSetupDialog({}: Props) {
     const open = useStoreState(showRemotePanel);
     const ipList = useStoreState(localIpList);
     const enabled = useStoreState(remoteEnabled);
-    // const restoreStandby = useStoreState(restoreRemoteStandby);
     const customHostname = useStoreState(remoteCustomHostname);
     const port = useStoreState(remoteListenPort);
 
@@ -131,7 +129,6 @@ export default function RemoteSetupDialog({}: Props) {
     // TODO: fix this later
     useEffect(() => {
         const restoreStandby = $RvW.rvwPreferences.get("app.settings.remote.restore.standby", false);
-        // restoreRemoteStandby.set(restoreStandby);
 
         const enabled = $RvW.rvwPreferences.get("app.settings.remote.enabled", false);
         // remoteEnabled.set(enabled);

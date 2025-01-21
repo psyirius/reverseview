@@ -10,47 +10,22 @@ import {
     presentationMainScreen,
     presentationStageEnabled,
     presentationStageScreen,
-    restoreRemoteStandby,
 } from "@stores/global";
 import {useStoreState} from "@/utils/hooks";
 import {console} from "@/platform/adapters/air";
-import {savePresentationMargin} from "@app/presentation";
+import {withinRange} from "@app/presentation";
+import {Toast} from "@app/toast";
+import $ from "jquery";
 
-function Switch({ label = 'Toggle Me', onChange = null }) {
-    const [checked, setChecked] = useState(true);
+enum TextJustification {
+    Left    = 'left',
+    Center  = 'center',
+    Right   = 'right',
+}
 
-    function _onChange(e: Event) {
-        const { checked } = (e.target as HTMLInputElement);
-
-        setChecked(checked);
-        onChange?.(checked);
-    }
-
-    return (
-        <>
-            <div class="relative inline-block">
-                <label for="toggle" class="relative inline-flex cursor-pointer items-center">
-                    <input type="checkbox" id="toggle" class="peer sr-only" />
-                    <div class="peer h-6 w-11 rounded-full bg-gray-200 outline-none transition-all duration-300 peer-checked:bg-blue-600"></div>
-                    <span class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-300 peer-checked:translate-x-5"></span>
-                </label>
-            </div>
-
-            <div class="swx">
-                <div class="flex items-center">
-                    <label for="toggle" class="flex cursor-pointer items-center">
-                        <div class="relative">
-                            <input id="toggle" type="checkbox" class="sr-only" onChange={_onChange}/>
-                            <div
-                                class={`block h-8 w-14 rounded-full transition-colors  ${checked ? 'bg-blue-400' : 'bg-gray-200'}`}></div>
-                            <div class={`absolute left-1 top-1 h-6 w-6 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : ''}`}></div>
-                        </div>
-                        <span class="ml-3 font-medium text-gray-700">{label}</span>
-                    </label>
-                </div>
-            </div>
-        </>
-    )
+enum TextOrientation {
+    Horizontal  = 0,
+    Vertical    = 1,
 }
 
 function MainPresentationSetup() {
@@ -61,6 +36,208 @@ function MainPresentationSetup() {
 
     const fontOverridePrimary = useStoreState(presentationPrimaryFontOverride);
     const fontOverrideSecondary = useStoreState(presentationSecondaryFontOverride);
+
+    const [marginTop, setMarginTop] = useState(
+        $RvW.vvConfigObj.get_p_topMargin()
+    );
+    const [marginLeft, setMarginLeft] = useState(
+        $RvW.vvConfigObj.get_p_leftMargin()
+    );
+    const [marginBottom, setMarginBottom] = useState(
+        $RvW.vvConfigObj.get_p_bottomMargin()
+    );
+    const [marginRight, setMarginRight] = useState(
+        $RvW.vvConfigObj.get_p_rightMargin()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_topMargin(marginTop);
+        $RvW.vvConfigObj.set_p_bottomMargin(marginBottom);
+        $RvW.vvConfigObj.set_p_leftMargin(marginLeft);
+        $RvW.vvConfigObj.set_p_rightMargin(marginRight);
+        $RvW.vvConfigObj.save();
+    }, [
+        marginTop,
+        marginLeft,
+        marginBottom,
+        marginRight,
+    ]);
+
+    function validateMargin(value: string, fallback: number = 0) {
+        const v = parseInt(value);
+        if (isNaN(v)) {
+            Toast.error("Error", `Invalid number value: ${value}`);
+            return fallback;
+        }
+        return v;
+    }
+
+    const [maxFontSize, setMaxFontSize] = useState(
+        $RvW.vvConfigObj.get_p_maxFontSize()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_maxFontSize(maxFontSize);
+        $RvW.vvConfigObj.save();
+    }, [maxFontSize]);
+
+    function validateMaxFontSize(value: string, fallback: number = 0) {
+        const v = parseInt(value);
+        if (isNaN(v)) {
+            Toast.error("Error", `Invalid maximum font size: ${value}`);
+            return fallback;
+        }
+        if (!withinRange(30, 200, v)) {
+            Toast.error("Error", "Maximum font size value out of Range");
+            return fallback;
+        }
+        return v;
+    }
+
+    const [justification, setJustification] = useState(
+        $RvW.vvConfigObj.get_p_align()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_align(justification);
+        $RvW.vvConfigObj.save();
+    }, [justification]);
+
+    const [textOrientation, setTextOrientation] = useState(
+        $RvW.vvConfigObj.get_p_text_orientation()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_text_orientation(textOrientation);
+        $RvW.vvConfigObj.save();
+    }, [textOrientation]);
+
+    const [lyricTextOrientation, setLyricTextOrientation] = useState(
+        $RvW.vvConfigObj.get_song_text_orientation()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_song_text_orientation(textOrientation);
+        $RvW.vvConfigObj.save();
+    }, [lyricTextOrientation]);
+
+    const [enableTransition, setEnableTransition] = useState(
+        $RvW.vvConfigObj.get_p_enableTransition()
+    );
+    const [showTitle, setShowTitle] = useState(
+        $RvW.vvConfigObj.get_p_showTitle()
+    );
+    const [enableShadow, setEnableShadow] = useState(
+        $RvW.vvConfigObj.get_p_enableShadow()
+    );
+    const [enableFooter, setEnableFooter] = useState(
+        $RvW.vvConfigObj.get_p_enableFooter()
+    );
+    const [enableStroke, setEnableStroke] = useState(
+        $RvW.vvConfigObj.get_p_enableStroke()
+    );
+    const [presentationOnTop, setPresentationOnTop] = useState(
+        $RvW.vvConfigObj.get_presentationOnTop()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_enableTransition(enableTransition);
+        $RvW.vvConfigObj.save();
+    }, [enableTransition]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_showTitle(showTitle);
+        $RvW.vvConfigObj.save();
+    }, [showTitle]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_enableShadow(enableShadow);
+        $RvW.vvConfigObj.save();
+    }, [enableShadow]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_enableFooter(enableFooter);
+        $RvW.vvConfigObj.save();
+    }, [enableFooter]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_p_enableStroke(enableStroke);
+        $RvW.vvConfigObj.save();
+    }, [enableStroke]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_presentationOnTop(presentationOnTop);
+        $RvW.vvConfigObj.save();
+    }, [presentationOnTop]);
+
+    const [showDatetime, setShowDatetime] = useState(
+        $RvW.vvConfigObj.get_showDateTime()
+    );
+    const [showVVLogo, setShowVVLogo] = useState(
+        $RvW.vvConfigObj.get_showVVLogo()
+    );
+    const [showCustomLogo, setShowCustomLogo] = useState(
+        $RvW.vvConfigObj.get_showCustomLogo()
+    );
+    const [logoText1, setLogoText1] = useState(
+        $RvW.vvConfigObj.get_logoText1()
+    );
+    const [logoText2, setLogoText2] = useState(
+        $RvW.vvConfigObj.get_logoText2()
+    );
+    const [primaryLyricOnly, setPrimaryLyricOnly] = useState(
+        $RvW.vvConfigObj.get_song_primaryOnly()
+    );
+    const [showTwoLines, setShowTwoLines] = useState(
+        $RvW.vvConfigObj.get_show2lines()
+    );
+    const [hideStanzaNumber, setHideStanzaNumber] = useState(
+        $RvW.vvConfigObj.get_hideStanzaNumber()
+    );
+    const [formatMultilines, setFormatMultilines] = useState(
+        $RvW.vvConfigObj.get_pformat_multiplelines()
+    );
+
+    useEffect(() => {
+        $RvW.vvConfigObj.set_showDateTime(showDatetime);
+        $RvW.vvConfigObj.save();
+    }, [showDatetime]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_showVVLogo(showVVLogo);
+        $RvW.vvConfigObj.save();
+    }, [showVVLogo]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_showCustomLogo(showCustomLogo);
+        $RvW.vvConfigObj.save();
+    }, [showCustomLogo]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_logoText1(logoText1);
+        $RvW.vvConfigObj.save();
+    }, [logoText1]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_logoText2(logoText2);
+        $RvW.vvConfigObj.save();
+    }, [logoText2]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_song_primaryOnly(primaryLyricOnly);
+        $RvW.vvConfigObj.save();
+    }, [primaryLyricOnly]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_show2lines(showTwoLines);
+        $RvW.vvConfigObj.save();
+    }, [showTwoLines]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_hideStanzaNumber(hideStanzaNumber);
+        $RvW.vvConfigObj.save();
+    }, [hideStanzaNumber]);
+    useEffect(() => {
+        $RvW.vvConfigObj.set_pformat_multiplelines(formatMultilines);
+        $RvW.vvConfigObj.save();
+    }, [formatMultilines]);
+
+    const [remoteRestore, setRemoteRestore] = useState(
+        $RvW.rvwPreferences.get("app.settings.remote.restore.standby", false)
+    );
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.remote.restore.standby", remoteRestore);
+        $RvW.rvwPreferences.commit();
+    }, [remoteRestore]);
 
     useEffect(() => {
         console.trace('[INIT]');
@@ -125,13 +302,13 @@ function MainPresentationSetup() {
     function updatePrimaryFontOverride(value: string | null) {
         presentationPrimaryFontOverride.set(value);
         $RvW.rvwPreferences.set("app.settings.font.primary.override", value || null);
-        $RvW.vvConfigObj.save();
+        $RvW.rvwPreferences.commit();
     }
 
     function updateSecondaryFontOverride(value: string | null) {
         presentationSecondaryFontOverride.set(value);
         $RvW.rvwPreferences.set("app.settings.font.secondary.override", value || null);
-        $RvW.vvConfigObj.save();
+        $RvW.rvwPreferences.commit();
     }
 
     function onRefreshFonts() {
@@ -179,33 +356,65 @@ function MainPresentationSetup() {
                         <div class="four wide field">
                             <label>Top</label>
                             <input
-                                name="presentConfigMarginTop"
-                                type="text"
                                 id="presentConfigMarginTop"
+                                type="text"
+                                value={marginTop}
+                                onChange={(e) => {
+                                    setMarginTop(
+                                        validateMargin(
+                                            (e.target as HTMLInputElement).value,
+                                            marginTop
+                                        )
+                                    )
+                                }}
                             />
                         </div>
                         <div class="four wide field">
                             <label>Left</label>
                             <input
-                                name="presentConfigMarginLeft"
-                                type="text"
                                 id="presentConfigMarginLeft"
+                                type="text"
+                                value={marginLeft}
+                                onChange={(e) => {
+                                    setMarginLeft(
+                                        validateMargin(
+                                            (e.target as HTMLInputElement).value,
+                                            marginLeft
+                                        )
+                                    )
+                                }}
                             />
                         </div>
                         <div class="four wide field">
                             <label>Bottom</label>
                             <input
-                                name="presentConfigMarginBottom"
-                                type="text"
                                 id="presentConfigMarginBottom"
+                                type="text"
+                                value={marginBottom}
+                                onChange={(e) => {
+                                    setMarginBottom(
+                                        validateMargin(
+                                            (e.target as HTMLInputElement).value,
+                                            marginBottom
+                                        )
+                                    )
+                                }}
                             />
                         </div>
                         <div class="four wide field">
                             <label>Right</label>
                             <input
-                                name="presentConfigMarginRight"
-                                type="text"
                                 id="presentConfigMarginRight"
+                                type="text"
+                                value={marginRight}
+                                onChange={(e) => {
+                                    setMarginRight(
+                                        validateMargin(
+                                            (e.target as HTMLInputElement).value,
+                                            marginRight
+                                        )
+                                    )
+                                }}
                             />
                         </div>
                     </div>
@@ -217,9 +426,18 @@ function MainPresentationSetup() {
                         <div class="inline fields">
                             <div class="field">
                                 <label>Max Font Size</label>
+
                                 <input
                                     type="text"
-                                    id="presentConfigMaxFontSize"
+                                    value={maxFontSize}
+                                    onChange={(e) => {
+                                        setMaxFontSize(
+                                            validateMaxFontSize(
+                                                (e.target as HTMLInputElement).value,
+                                                maxFontSize
+                                            )
+                                        )
+                                    }}
                                 />
                             </div>
                         </div>
@@ -233,19 +451,34 @@ function MainPresentationSetup() {
 
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="justify_left" type="radio" name="text-justification"/>
+                                    <input
+                                        type="radio"
+                                        name="text-justification"
+                                        checked={justification === TextJustification.Left}
+                                        onChange={() => setJustification(TextJustification.Left)}
+                                    />
                                     <label>Left</label>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="justify_center" type="radio" name="text-justification"/>
+                                    <input
+                                        type="radio"
+                                        name="text-justification"
+                                        checked={justification === TextJustification.Center}
+                                        onChange={() => setJustification(TextJustification.Center)}
+                                    />
                                     <label>Center</label>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="justify_right" type="radio" name="text-justification"/>
+                                    <input
+                                        type="radio"
+                                        name="text-justification"
+                                        checked={justification === TextJustification.Right}
+                                        onChange={() => setJustification(TextJustification.Right)}
+                                    />
                                     <label>Right</label>
                                 </div>
                             </div>
@@ -354,8 +587,8 @@ function MainPresentationSetup() {
                                 <div class="ui checkbox">
                                     <input
                                         type="checkbox"
-                                        name="example"
-                                        id="presentConfigEnableTransition"
+                                        checked={enableTransition}
+                                        onChange={(e) => setEnableTransition((e.target as HTMLInputElement).checked)}
                                     />
                                     <label>Transition</label>
                                 </div>
@@ -364,8 +597,8 @@ function MainPresentationSetup() {
                                 <div class="ui checkbox">
                                     <input
                                         type="checkbox"
-                                        name="example"
-                                        id="presentConfigEnableOutline"
+                                        checked={enableStroke}
+                                        onChange={(e) => setEnableStroke((e.target as HTMLInputElement).checked)}
                                     />
                                     <label>Outline</label>
                                 </div>
@@ -374,8 +607,8 @@ function MainPresentationSetup() {
                                 <div class="ui checkbox">
                                     <input
                                         type="checkbox"
-                                        name="example"
-                                        id="presentConfigEnableShadow"
+                                        value={enableShadow}
+                                        onChange={(e) => setEnableShadow((e.target as HTMLInputElement).checked)}
                                     />
                                     <label>Shadow</label>
                                 </div>
@@ -384,8 +617,8 @@ function MainPresentationSetup() {
                                 <div class="ui checkbox">
                                     <input
                                         type="checkbox"
-                                        name="example"
-                                        id="presentConfigEnableFooter"
+                                        value={enableFooter}
+                                        onChange={(e) => setEnableFooter((e.target as HTMLInputElement).checked)}
                                     />
                                     <label>Footer</label>
                                 </div>
@@ -399,7 +632,11 @@ function MainPresentationSetup() {
                         <div class="inline fields">
                             <div class="field">
                                 <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="presentConfigOntop"/>
+                                    <input
+                                        type="checkbox"
+                                        value={presentationOnTop}
+                                        onChange={(e) => setPresentationOnTop((e.target as HTMLInputElement).checked)}
+                                    />
                                     <label>Stay on Top</label>
                                 </div>
                             </div>
@@ -415,25 +652,16 @@ function MainPresentationSetup() {
                         <div class="fields">
                             <div class="field">
                                 <div class="ui checkbox">
-                                    <input type="checkbox" name="example" id="remoteRestoreToggle"/>
+                                    <input
+                                        type="checkbox"
+                                        checked={remoteRestore}
+                                        onChange={(e) => setRemoteRestore((e.target as HTMLInputElement).checked)}
+                                    />
                                     <label>Restore Standby on Startup</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    {/*<div class="field">*/}
-                    {/*    <label>Misc</label>*/}
-
-                    {/*    <div class="inline fields">*/}
-                    {/*        <div class="field">*/}
-                    {/*            <div class="ui checkbox">*/}
-                    {/*                <input type="checkbox" name="example" id="presentConfigOntop"/>*/}
-                    {/*                <label>Stay on Top</label>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
 
                 {/* Orientation */}
@@ -446,13 +674,23 @@ function MainPresentationSetup() {
 
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="porient_hori" type="radio" name="verse-orientation"/>
+                                    <input
+                                        type="radio"
+                                        name="verse-orientation"
+                                        checked={textOrientation === TextOrientation.Horizontal}
+                                        onChange={() => setTextOrientation(TextOrientation.Horizontal)}
+                                    />
                                     <label>Horizontal</label>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="porient_vert" type="radio" name="verse-orientation"/>
+                                    <input
+                                        type="radio"
+                                        name="verse-orientation"
+                                        checked={textOrientation === TextOrientation.Vertical}
+                                        onChange={() => setTextOrientation(TextOrientation.Vertical)}
+                                    />
                                     <label>Vertical</label>
                                 </div>
                             </div>
@@ -467,13 +705,23 @@ function MainPresentationSetup() {
 
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="porient_song_hori" type="radio" name="lyric-orientation"/>
+                                    <input
+                                        type="radio"
+                                        name="lyric-orientation"
+                                        checked={lyricTextOrientation === TextOrientation.Horizontal}
+                                        onChange={() => setLyricTextOrientation(TextOrientation.Horizontal)}
+                                    />
                                     <label>Horizontal</label>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input id="porient_song_vert" type="radio" name="lyric-orientation"/>
+                                    <input
+                                        type="radio"
+                                        name="lyric-orientation"
+                                        checked={lyricTextOrientation === TextOrientation.Vertical}
+                                        onChange={() => setLyricTextOrientation(TextOrientation.Vertical)}
+                                    />
                                     <label>Vertical</label>
                                 </div>
                             </div>
@@ -488,14 +736,25 @@ function MainPresentationSetup() {
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="presentConfigShowDateTime"/>
+                                <input
+                                    type="checkbox"
+                                    checked={showDatetime}
+                                    onChange={(e) => setShowDatetime((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Digital Clock</label>
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="presentConfigShowVVLogo"/>
+                                <input
+                                    type="checkbox"
+                                    checked={showVVLogo}
+                                    onChange={(e) => {
+                                        setShowCustomLogo(false)
+                                        setShowVVLogo((e.target as HTMLInputElement).checked)
+                                    }}
+                                />
                                 <label>ReVerseVIEW Branding</label>
                             </div>
                         </div>
@@ -504,8 +763,11 @@ function MainPresentationSetup() {
                             <div class="ui checkbox">
                                 <input
                                     type="checkbox"
-                                    name="example"
-                                    id="presentConfigShowCustomLogo"
+                                    checked={showCustomLogo}
+                                    onChange={(e) => {
+                                        setShowVVLogo(false)
+                                        setShowCustomLogo((e.target as HTMLInputElement).checked)
+                                    }}
                                 />
                                 <label>Custom Branding</label>
                             </div>
@@ -513,19 +775,19 @@ function MainPresentationSetup() {
 
                         <div class="field">
                             <input
-                                name="customLogoText1"
                                 class="ui input fluid"
                                 type="text"
-                                id="customLogoText1"
+                                value={logoText1}
+                                onChange={(e) => setLogoText1((e.target as HTMLInputElement).value)}
                             />
                         </div>
 
                         <div class="field">
                             <input
-                                name="customLogoText2"
                                 class="ui input fluid"
                                 type="text"
-                                id="customLogoText2"
+                                value={logoText2}
+                                onChange={(e) => setLogoText2((e.target as HTMLInputElement).value)}
                             />
                         </div>
                     </div>
@@ -535,50 +797,59 @@ function MainPresentationSetup() {
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="presentConfigEnableSongTitle"/>
+                                <input
+                                    type="checkbox"
+                                    checked={showTitle}
+                                    onChange={(e) => setShowTitle((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Show Song Title</label>
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="showPrimaryFont"/>
+                                <input
+                                    type="checkbox"
+                                    checked={primaryLyricOnly}
+                                    onChange={(e) => setPrimaryLyricOnly((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Show lyrics in primary language</label>
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="show2LinesSlides"/>
+                                <input
+                                    type="checkbox"
+                                    checked={showTwoLines}
+                                    onChange={(e) => setShowTwoLines((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Two (2) lines per slide</label>
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="hideStanzaNumber"/>
+                                <input
+                                    type="checkbox"
+                                    checked={hideStanzaNumber}
+                                    onChange={(e) => setHideStanzaNumber((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Hide verse number</label>
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="ui checkbox">
-                                <input type="checkbox" name="example" id="fitLineSetup"/>
+                                <input
+                                    type="checkbox"
+                                    checked={formatMultilines}
+                                    onChange={(e) => setFormatMultilines((e.target as HTMLInputElement).checked)}
+                                />
                                 <label>Enable Line Wrap</label>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                {/* Save/Discard */}
-                <div class="ui basic buttons">
-                    <button
-                        id="presentConfigSaveButton"
-                        onClick={savePresentationMargin}
-                        class="ui blue button">Save</button>
-                    <button
-                        id="presentConfigDiscardButton"
-                        class="ui red button">Discard</button>
                 </div>
             </div>
         </>
@@ -818,6 +1089,16 @@ function StagePresentationSetup() {
         return layout === StageViewStyle.Vertical || layout === StageViewStyle.Horizontal;
     }
 
+    const [message, setMessage] = useState('');
+
+    function svPassMessage() {
+        $RvW.stageWindow?.window.postMessage(message);
+    }
+
+    function svClearMessage() {
+        $RvW.stageWindow?.window.postMessage('');
+    }
+
     return (
         <>
             <div class="ui basic segment">
@@ -829,7 +1110,6 @@ function StagePresentationSetup() {
                     <label>Layout</label>
 
                     <select
-                        id="selectStageStyle"
                         value={layout}
                         onChange={event => {
                             setLayout(parseInt((event.target as HTMLSelectElement).value))
@@ -1023,13 +1303,19 @@ function StagePresentationSetup() {
                 <div class="field">
                     <label>Message</label>
 
-                    <textarea rows={4} id="stageConfigMessage"></textarea>
+                    <textarea
+                        rows={4}
+                        value={message}
+                        onChange={(e) => {
+                            setMessage((e.target as HTMLTextAreaElement).value);
+                        }}
+                    ></textarea>
 
                     <div class="h-2"></div>
 
                     <div class="ui basic buttons">
-                        <button id="stageMessageShow" class="ui button">Show</button>
-                        <button id="stageMessageHide" class="ui button">Clear</button>
+                        <button onClick={svPassMessage} class="ui button">Show</button>
+                        <button onClick={svClearMessage} class="ui button">Clear</button>
                     </div>
                 </div>
             </div>

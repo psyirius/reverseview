@@ -1,8 +1,6 @@
 import {presentationCtx} from "@app/presentation";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-
-import $ from "jquery";
 import {
     presentationPrimaryFontOverride,
     presentationMainEnabled,
@@ -52,6 +50,7 @@ function passVariable(isStageView, _ = undefined) {
         presentationCtx.p_text1_arr[presentationCtx.p_current_index],
         presentationCtx.p_text2_arr[presentationCtx.p_current_index]
     );
+    presentationCtx.p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
     index_for_presentationContent = presentationCtx.p_current_index;
     _.p_text1_arr = presentationCtx.p_text1_arr;
     _.p_text2_arr = presentationCtx.p_text2_arr;

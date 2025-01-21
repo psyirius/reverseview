@@ -17,7 +17,7 @@ import {setPrimaryBooknames} from "@/bible/booknames";
 import {BibleRecentRefManager} from "@/bible/recent";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible} from "@/bible/manager";
 import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/version";
-import { Config, configInit, svParameterSaveEvent } from "./config";
+import { Config, configInit } from "./config";
 import Preferences from './preferences';
 import SplashScreen from './splash';
 import {Prompt} from "@app/prompt";
@@ -765,9 +765,6 @@ function adjustNavWindowsHeight() {
 }
 
 function setupTabContent() {
-    // Right Tab
-    setupSettingsTab();
-
     // Left Tab
     fillNav();
 
@@ -794,29 +791,6 @@ function setupTabContent() {
 
         updateCfgVersion();
     }
-}
-
-function setupSettingsTab() {
-}
-
-function updateBookNameVar() {
-    const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState < 4) {
-            console.trace("BOOK NAME: Loading...");
-        }
-
-        if (xhr.readyState === 4) {
-            const e = xhr.responseXML.documentElement;
-            console.trace("********Processing bookname");
-            const d = e.getElementsByTagName("b").length;
-            for (let c = 0; c < d; c++) {
-                $RvW.booknames[c] = e.getElementsByTagName("b")[c].textContent;
-            }
-        }
-    };
-    xhr.open("GET", "./xml/booknames.xml", false);
-    xhr.send(null);
 }
 
 function fillNav() {

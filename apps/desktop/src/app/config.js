@@ -2,8 +2,7 @@ import {Toast} from "@app/toast";
 import {saveFileInAppStorage} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import {remoteEnabled, restoreRemoteStandby} from "@stores/global";
-import $ from "jquery";
+import {remoteEnabled} from "@stores/global";
 
 export const DEFAULT_CONFIG = {
 
@@ -1200,109 +1199,8 @@ export class Config {
     }
 }
 
-function showLogoChangeEvent() {
-    const a = document.getElementById("presentConfigShowCustomLogo").checked;
-    if (a) {
-        document.getElementById("presentConfigShowVVLogo").checked = false;
-    }
-}
-
-export function svParameterSaveEvent() {
-}
-
-function svPassMessage() {
-    const a = $("#stageConfigMessage").val();
-    if ($RvW.stageWindow != null) {
-        $RvW.stageWindow.window.postMessage(a);
-    }
-}
-
-function svClearMessage() {
-    if ($RvW.stageWindow != null) {
-        $RvW.stageWindow.window.postMessage("");
-    }
-}
-
 export function configInit() {
-    document
-        .getElementById("presentConfigShowVVLogo")
-        .addEventListener("change", showLogoChangeEvent);
-    document
-        .getElementById("presentConfigShowCustomLogo")
-        .addEventListener("change", showLogoChangeEvent);
-    document.getElementById("presentConfigMarginTop").value =
-        $RvW.vvConfigObj.get_p_topMargin();
-    document.getElementById("presentConfigMarginBottom").value =
-        $RvW.vvConfigObj.get_p_bottomMargin();
-    document.getElementById("presentConfigMarginLeft").value =
-        $RvW.vvConfigObj.get_p_leftMargin();
-    document.getElementById("presentConfigMarginRight").value =
-        $RvW.vvConfigObj.get_p_rightMargin();
-    document.getElementById("presentConfigMaxFontSize").value =
-        $RvW.vvConfigObj.get_p_maxFontSize();
-
-    document.getElementById("presentConfigEnableTransition").checked = !!$RvW.vvConfigObj.get_p_enableTransition();
-    document.getElementById("presentConfigOntop").checked = !!$RvW.vvConfigObj.get_presentationOnTop();
-
     const zzz = $RvW.rvwPreferences.get("app.settings.remote.enabled", false);
     remoteEnabled.set(zzz);
     remoteEnabled.subscribe((v) => $RvW.rvwPreferences.set("app.settings.remote.enabled", v));
-
-    const xxx = $RvW.rvwPreferences.get("app.settings.remote.restore.standby", false);
-    restoreRemoteStandby.set(xxx);
-    document.getElementById("remoteRestoreToggle").checked = xxx;
-
-    document.getElementById("presentConfigEnableSongTitle").checked = !!$RvW.vvConfigObj.get_p_showTitle();
-    document.getElementById("presentConfigEnableShadow").checked = !!$RvW.vvConfigObj.get_p_enableShadow();
-    document.getElementById("presentConfigEnableFooter").checked = !!$RvW.vvConfigObj.get_p_enableFooter();
-    document.getElementById("presentConfigEnableOutline").checked = !!$RvW.vvConfigObj.get_p_enableStroke();
-    const a = $RvW.vvConfigObj.get_p_align();
-    document.getElementById("justify_left").checked = false;
-    document.getElementById("justify_center").checked = false;
-    document.getElementById("justify_right").checked = false;
-    if (a === "left") {
-        document.getElementById("justify_left").checked = true;
-    }
-    if (a === "center") {
-        document.getElementById("justify_center").checked = true;
-    }
-    if (a === "right") {
-        document.getElementById("justify_right").checked = true;
-    }
-    const j = $RvW.vvConfigObj.get_p_text_orientation();
-    document.getElementById("porient_hori").checked = false;
-    document.getElementById("porient_vert").checked = false;
-    if (j === 0) {
-        document.getElementById("porient_hori").checked = true;
-    }
-    if (j === 1) {
-        document.getElementById("porient_vert").checked = true;
-    }
-    const f = $RvW.vvConfigObj.get_song_text_orientation();
-    document.getElementById("porient_song_hori").checked = false;
-    document.getElementById("porient_song_vert").checked = false;
-    if (f === 0) {
-        document.getElementById("porient_song_hori").checked = true;
-    }
-    if (f === 1) {
-        document.getElementById("porient_song_vert").checked = true;
-    }
-
-    document.getElementById("showPrimaryFont").checked = $RvW.vvConfigObj.get_song_primaryOnly() == "true";
-    document.getElementById("show2LinesSlides").checked = !!$RvW.vvConfigObj.get_show2lines();
-    document.getElementById("hideStanzaNumber").checked = !!$RvW.vvConfigObj.get_hideStanzaNumber();
-    document.getElementById("fitLineSetup").checked = $RvW.vvConfigObj.get_pformat_multiplelines();
-    document.getElementById("customLogoText1").value = $RvW.vvConfigObj.get_logoText1();
-    document.getElementById("customLogoText2").value = $RvW.vvConfigObj.get_logoText2();
-
-    const k = $RvW.vvConfigObj.get_showDateTime();
-    const g = $RvW.vvConfigObj.get_showVVLogo();
-    const b = $RvW.vvConfigObj.get_showCustomLogo();
-
-    document.getElementById("presentConfigShowDateTime").checked = !!k;
-    document.getElementById("presentConfigShowVVLogo").checked = !!g;
-    document.getElementById("presentConfigShowCustomLogo").checked = !!b;
-
-    $("#stageMessageShow").click(svPassMessage);
-    $("#stageMessageHide").click(svClearMessage);
 }
