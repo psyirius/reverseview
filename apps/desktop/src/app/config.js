@@ -1,1200 +1,434 @@
-import {Toast} from "@app/toast";
-import {saveFileInAppStorage} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 import {remoteEnabled} from "@stores/global";
 
-export const DEFAULT_CONFIG = {
-
-}
-
 export class Config {
     constructor() {
-        let m_version1;
-        let m_version2;
-        let m_bkgndIndex;
-        let m_topMargin;
-        let m_bottomMargin;
-        let m_leftMargin;
-        let m_rightMargin;
-        let m_singleVersion;
-        let m_navduallang;
-        let m_mainScreenEnable;
-        let m_navFontSize;
-        let m_screensel;
-        let m_stagescreensel;
-        let m_stageScreenEnable;
-        let m_stagescreenstyle;
-        let m_maxFontSize;
-        let m_enableTransition;
-        let m_enableShadow;
-        let m_enableFooter;
-        let m_enableStroke;
-        let m_enableTitle;
-        let m_textColor;
-        let m_textColor2;
-        let m_solidBkgndColor;
-        let m_gradColor1;
-        let m_gradColor2;
-        let m_gradOrient;
-        let m_motionBkgndIndex;
-        let m_bkgndType;
-        let m_textOrient;
-        let m_justification;
-        let m_version6;
-        let m_songDBVersion;
-        let m_bibleDBVersion;
-        let m_chordsDBVersion;
-        let m_versionNumber;
-        let m_showdatetime;
-        let m_showvvlogo;
-        let m_showcustomlogo;
-        let m_logotext1;
-        let m_logotext2;
-        let m_logoFilename;
-        let m_songtextorient;
-        let m_showprimaryfont;
-        let m_svOpacity;
-        let m_svHeight;
-        let m_svFcolor;
-        let m_svShowPrimary;
-        let m_svShowSecondary;
-        let m_svTextOutline;
-        let m_svTextShadow;
-        let m_svShowDate;
-        let m_svMessage;
-        let m_svWindow;
-        let m_svGreenWindow;
-        let m_svPosition;
-        let m_svMaxFontSize;
-        let m_svBcolor;
-        let m_svAlignLeft;
-        let m_svAlignCenter;
-        let m_svAddTexture;
-        let m_svShowHorizontal;
-        let m_booknamestyle;
-        let m_listinenglish;
-        let m_presentationOnTop;
-        let m_transparentEnable;
-        let m_show2lines;
-        let m_hideStanzaNumber;
-        let m_p_format_multiplelines = true;
-        let m_myhostname = "localhost";
-        let m_taglist;
-        let m_lastCheckForUpdateDate = null;
-
-        let m_save_xyz_flag = true;
-        let m_xv_interval = 1000;
-        let m_saveCtr = 0;
-
-        /*
-        * Loads preferences from config.xml file.
-        */
-        this.load = function(callback, retry = 0) {
-            const { File } = air;
-            const { applicationStorageDirectory: appStorageDir } = File;
-
-            _loadDefaults();
-
-            // %APPDATA%\ReVerseVIEW\Local Store\xml\config.xml
-            // it was copied there from app:/xml/config.xml
-            const configPath = appStorageDir.resolvePath("xml/config.xml");
-
-            $Y.io(configPath.url, {
-                on: {
-                    success: (x, o) => {
-                        try {
-                            const doc = $Y.XML.parse(o.responseText);
-                            _loadFromDocument(doc);
-                            (typeof callback === 'function') && callback();
-                        } catch (e) {
-                            if (retry < 2) {
-                                this.save();
-                                this.load(callback, retry + 1);
-                            } else {
-                                Toast.error(
-                                    "ReVerseVIEW",
-                                    "Error parsing ReVerseVIEW config. Please restart VerseVIEW."
-                                );
-                            }
-                        }
-                    },
-                    failure: (x, o) => {
-                        Toast.error(
-                            "ReVerseVIEW",
-                            "Error loading VerseVIEW database. Please restart VerseVIEW."
-                        );
-                    }
-                }
-            });
-        }
-        function _loadDefaults() {
-            m_version1 = 1;
-            m_version2 = 2;
-            m_bkgndIndex = 0;
-            m_topMargin = 50;
-            m_bottomMargin = 50;
-            m_leftMargin = 50;
-            m_rightMargin = 50;
-            m_singleVersion = false;
-            m_navduallang = true;
-            m_navFontSize = 14;
-            m_mainScreenEnable = true;
-            m_screensel = 0;
-            m_stagescreensel = 0;
-            m_stageScreenEnable = false;
-            m_stagescreenstyle = 0;
-            m_maxFontSize = 100;
-            m_enableTransition = true;
-            m_enableShadow = true;
-            m_enableStroke = true;
-            m_enableFooter = true;
-            m_enableTitle = true;
-            m_textColor = "#FFFFFF";
-            m_textColor2 = "#FFFFFF";
-            m_solidBkgndColor = "#000000";
-            m_gradColor1 = "#000000";
-            m_gradColor2 = "#FFFFFF";
-            m_gradOrient = 0;
-            m_motionBkgndIndex = 0;
-            m_bkgndType = 1;
-            m_textOrient = "0";
-            m_justification = "center";
-            m_version6 = 0;
-            m_showdatetime = true;
-            m_showvvlogo = true;
-            m_showcustomlogo = false;
-            m_logotext1 = "";
-            m_logotext2 = "";
-            m_logoFilename = "";
-            m_songtextorient = "0";
-            m_showprimaryfont = false;
-            m_svOpacity = 0.3;
-            m_svHeight = 20;
-            m_svFcolor = 0;
-            m_svWindow = true;
-            m_svGreenWindow = true;
-            m_svPosition = 0;
-            m_svMaxFontSize = 30;
-            m_svBcolor = 0;
-            m_svShowPrimary = false;
-            m_svShowSecondary = false;
-            m_svTextOutline = true;
-            m_svTextShadow = false;
-            m_svShowDate = true;
-            m_svMessage = "";
-            m_svAlignLeft = false;
-            m_svAlignCenter = false;
-            m_svAddTexture = false;
-            m_svShowHorizontal = false;
-            m_songDBVersion = 2;
-            m_bibleDBVersion = 2;
-            m_chordsDBVersion = 2;
-            m_versionNumber = 0;
-            m_booknamestyle = 1;
-            m_listinenglish = true;
-            m_presentationOnTop = true;
-            m_transparentEnable = false;
-            m_show2lines = false;
-            m_hideStanzaNumber = false;
-            m_p_format_multiplelines = true;
-            m_taglist = "";
-            m_myhostname = "localhost";
-            m_lastCheckForUpdateDate = null;
-            m_save_xyz_flag = true;
-            m_xv_interval = 1000;
-            m_saveCtr = 0;
-        }
-        function _loadFromDocument(doc) {
-            m_version1 = doc.getElementsByTagName("version1")[0].textContent;
-            m_version2 = doc.getElementsByTagName("version2")[0].textContent;
-            m_bkgndIndex = doc.getElementsByTagName("bkgndIndex")[0].textContent;
-            m_topMargin = doc.getElementsByTagName("topMargin")[0].textContent;
-            m_bottomMargin = doc.getElementsByTagName("bottomMargin")[0].textContent;
-            m_leftMargin = doc.getElementsByTagName("leftMargin")[0].textContent;
-            m_rightMargin = doc.getElementsByTagName("rightMargin")[0].textContent;
-            m_singleVersion = _parse_bool_str(doc.getElementsByTagName("singleVersion")[0].textContent);
-            m_navduallang = _parse_bool_str(doc.getElementsByTagName("navduallang")[0].textContent);
-            m_navFontSize = doc.getElementsByTagName("navFontSize")[0].textContent;
-            m_screensel = doc.getElementsByTagName("screensel")[0].textContent;
-            m_stagescreensel = doc.getElementsByTagName("stagescreensel")[0];
-            if (m_stagescreensel == null) {
-                m_stagescreensel = 0;
-            } else {
-                m_stagescreensel = m_stagescreensel.textContent;
-            }
-            const stageScreenStyleValue = doc.getElementsByTagName("stagescreenstyle")[0];
-            if (stageScreenStyleValue == null) {
-                m_stagescreenstyle = 0;
-            } else {
-                m_stagescreenstyle = stageScreenStyleValue.textContent;
-            }
-            var aZ = doc.getElementsByTagName("mainScreenEnable")[0];
-            if (aZ != null) {
-                m_mainScreenEnable = _parse_bool_str(aZ.textContent);
-            } else {
-                m_mainScreenEnable = true;
-            }
-            var bj = doc.getElementsByTagName("stageScreenEnable")[0];
-            if (bj != null) {
-                m_stageScreenEnable = _parse_bool_str(bj.textContent);
-            } else {
-                m_stageScreenEnable = false;
-            }
-            var bg = doc.getElementsByTagName("maxFontSize")[0];
-            if (bg != null) {
-                m_maxFontSize = bg.textContent;
-            }
-            var aH = doc.getElementsByTagName("enableTransition")[0];
-            if (aH != null) {
-                m_enableTransition = _parse_bool_str(aH.textContent);
-            } else {
-                m_enableTransition = true;
-            }
-            var aU = doc.getElementsByTagName("enableShadow")[0];
-            if (aU != null) {
-                m_enableShadow = _parse_bool_str(aU.textContent);
-            } else {
-                m_enableShadow = true;
-            }
-            var aU = doc.getElementsByTagName("enableFooter")[0];
-            if (aU != null) {
-                m_enableFooter = _parse_bool_str(aU.textContent);
-            } else {
-                m_enableFooter = true;
-            }
-
-            var aU = doc.getElementsByTagName("enableStroke")[0];
-            if (aU != null) {
-                m_enableStroke = _parse_bool_str(aU.textContent);
-            } else {
-                m_enableStroke = true;
-            }
-
-            var a1 = doc.getElementsByTagName("enableTitle")[0];
-            if (a1 != null) {
-                m_enableTitle = _parse_bool_str(a1.textContent);
-            } else {
-                m_enableTitle = true;
-            }
-            var a5 = doc.getElementsByTagName("textColor")[0];
-            if (a5 != null) {
-                m_textColor = a5.textContent;
-            } else {
-                m_textColor = "FFFFFF";
-            }
-            var a5 = doc.getElementsByTagName("textColor2")[0];
-            if (a5 != null) {
-                m_textColor2 = a5.textContent;
-            } else {
-                m_textColor2 = "FFFFFF";
-            }
-            var aY = doc.getElementsByTagName("solidBkgndColor")[0];
-            if (aY != null) {
-                m_solidBkgndColor = aY.textContent;
-            } else {
-                m_solidBkgndColor = "000000";
-            }
-            var a7 = doc.getElementsByTagName("gradColor1")[0];
-            if (a7 != null) {
-                m_gradColor1 = a7.textContent;
-            } else {
-                m_gradColor1 = "000000";
-            }
-            var a9 = doc.getElementsByTagName("gradColor2")[0];
-            if (a9 != null) {
-                m_gradColor2 = a9.textContent;
-            } else {
-                m_gradColor2 = "FFFFFF";
-            }
-            var bd = doc.getElementsByTagName("gradOrient")[0];
-            if (a9 != null) {
-                m_gradOrient = bd.textContent;
-            } else {
-                m_gradOrient = 0;
-            }
-            var bf = doc.getElementsByTagName("motionBkgndIndex")[0];
-            if (a9 != null) {
-                m_motionBkgndIndex = bf.textContent;
-            } else {
-                m_motionBkgndIndex = 0;
-            }
-            var aQ = doc.getElementsByTagName("bkgndType")[0];
-            if (a9 != null) {
-                m_bkgndType = aQ.textContent;
-            } else {
-                m_bkgndType = 3;
-            }
-            var aS = doc.getElementsByTagName("textOrient")[0];
-            if (a9 != null) {
-                m_textOrient = aS.textContent;
-            } else {
-                m_textOrient = "0";
-            }
-            var aT = doc.getElementsByTagName("justification")[0];
-            if (aT != null) {
-                m_justification = aT.textContent;
-            } else {
-                m_justification = "center";
-            }
-            var aX = doc.getElementsByTagName("version6")[0];
-            if (aX != null) {
-                m_version6 = aX.textContent;
-            } else {
-                m_version6 = 0;
-            }
-            var aK = doc.getElementsByTagName("showdatetime")[0];
-            if (aK != null) {
-                if (aK.textContent == "false") {
-                    m_showdatetime = false;
-                } else {
-                    m_showdatetime = true;
-                }
-            } else {
-                m_showdatetime = true;
-            }
-            var ba = doc.getElementsByTagName("showvvlogo")[0];
-            if (ba != null) {
-                if (ba.textContent == "false") {
-                    m_showvvlogo = false;
-                } else {
-                    m_showvvlogo = true;
-                }
-            } else {
-                m_showvvlogo = true;
-            }
-            var aO = doc.getElementsByTagName("showcustomlogo")[0];
-            if (aO != null) {
-                if (aO.textContent == "false") {
-                    m_showcustomlogo = false;
-                } else {
-                    m_showcustomlogo = true;
-                }
-            } else {
-                m_showcustomlogo = true;
-            }
-            var bc = doc.getElementsByTagName("logotext1")[0];
-            if (bc != null) {
-                m_logotext1 = bc.textContent;
-            } else {
-                m_logotext1 = "";
-            }
-            var aW = doc.getElementsByTagName("logotext2")[0];
-            if (aW != null) {
-                m_logotext2 = aW.textContent;
-            } else {
-                m_logotext2 = "";
-            }
-            var aJ = doc.getElementsByTagName("logoFilename")[0];
-            if (aJ != null) {
-                m_logoFilename = aJ.textContent;
-            } else {
-                m_logoFilename = "";
-            }
-            var a6 = doc.getElementsByTagName("songtextorient")[0];
-            if (a6 != null) {
-                m_songtextorient = a6.textContent;
-            } else {
-                m_songtextorient = "0";
-            }
-            var aN = doc.getElementsByTagName("showprimaryfont")[0];
-            if (aN != null) {
-                m_showprimaryfont = aN.textContent;
-            } else {
-                m_showprimaryfont = false;
-            }
-            var a0 = doc.getElementsByTagName("svParameters")[0];
-            if (a0 != null) {
-                _loadSvParameters(a0.textContent);
-            } else {
-                m_svOpacity = 0.3;
-                m_svHeight = 20;
-                m_svFcolor = 0;
-                m_svShowPrimary = false;
-                m_svShowSecondary = false;
-                m_svTextOutline = true;
-                m_svTextShadow = false;
-                m_svShowDate = true;
-                m_svMessage = "";
-                m_svWindow = false;
-                m_svGreenWindow = true;
-                m_svPosition = 0;
-                m_svMaxFontSize = 30;
-                m_svBcolor = 0;
-                m_svAlignLeft = false;
-                m_svAlignCenter = false;
-                m_svAddTexture = false;
-                m_svShowHorizontal = false;
-            }
-            var be = doc.getElementsByTagName("svMessage")[0];
-            if (be != null) {
-                m_svMessage = be.textContent;
-            } else {
-                m_svMessage = "";
-            }
-            var aL = doc.getElementsByTagName("songDBVersion")[0];
-            if (aL != null) {
-                m_songDBVersion = parseInt(aL.textContent);
-            } else {
-                m_songDBVersion = 1;
-            }
-            var bh = doc.getElementsByTagName("bibleDBVersion")[0];
-            if (bh != null) {
-                m_bibleDBVersion = parseInt(bh.textContent);
-            } else {
-                m_bibleDBVersion = 1;
-            }
-            var aV = doc.getElementsByTagName("chordsDBVersion")[0];
-            if (aV != null) {
-                m_chordsDBVersion = parseInt(aV.textContent);
-            } else {
-                m_chordsDBVersion = 1;
-            }
-            var aP = doc.getElementsByTagName("versionNumber")[0];
-            if (aP != null) {
-                m_versionNumber = parseInt(aP.textContent);
-            } else {
-                m_versionNumber = 0;
-            }
-            var a3 = doc.getElementsByTagName("booknamestyle")[0];
-            if (a3 != null) {
-                m_booknamestyle = parseInt(a3.textContent);
-            } else {
-                m_booknamestyle = 1;
-            }
-            var aM = doc.getElementsByTagName("listinenglish")[0];
-            if (aM != null) {
-                var a4 = aM.textContent;
-                if (a4 == "true") {
-                    m_listinenglish = true;
-                } else {
-                    m_listinenglish = false;
-                }
-            } else {
-                m_listinenglish = true;
-            }
-            var bk = doc.getElementsByTagName("presentationOnTop")[0];
-            if (bk != null) {
-                var a8 = bk.textContent;
-                if (a8 == "true") {
-                    m_presentationOnTop = true;
-                } else {
-                    m_presentationOnTop = false;
-                }
-            } else {
-                m_presentationOnTop = true;
-            }
-            var aR = doc.getElementsByTagName("transparentEnable")[0];
-            if (aR != null) {
-                var a8 = aR.textContent;
-                if (a8 == "true") {
-                    m_transparentEnable = true;
-                } else {
-                    m_transparentEnable = false;
-                }
-            } else {
-                m_transparentEnable = false;
-            }
-            var bi = doc.getElementsByTagName("show2lines")[0];
-            if (bi != null) {
-                var a8 = bi.textContent;
-                if (a8 == "true") {
-                    m_show2lines = true;
-                } else {
-                    m_show2lines = false;
-                }
-            } else {
-                m_show2lines = false;
-            }
-            var aI = doc.getElementsByTagName("hideStanzaNumber")[0];
-            if (aI != null) {
-                var a8 = aI.textContent;
-                if (a8 == "true") {
-                    m_hideStanzaNumber = true;
-                } else {
-                    m_hideStanzaNumber = false;
-                }
-            } else {
-                m_hideStanzaNumber = false;
-            }
-            var bb = doc.getElementsByTagName("taglist")[0];
-            if (bb != null) {
-                m_taglist = bb.textContent;
-            } else {
-                m_taglist = "";
-            }
-            m_p_format_multiplelines = _parse_pref_fb(doc, "p_format_multiplelines", true);
-            m_myhostname = _parse_pref_fb(doc, "myhostname", "localhost");
-            m_lastCheckForUpdateDate = _parse_pref_fb(doc, "lastCheckForUpdateDate", null);
-        }
-        function _parse_pref_fb(m_elDoc, aH, aJ) {
-            var aI = m_elDoc.getElementsByTagName(aH)[0];
-            if (aI != null) {
-                var aK = aI.textContent;
-                if (aK == "true" || aK == "false") {
-                    aK = _parse_bool_str(aK);
-                }
-                if (aK == "null") {
-                    aK = aJ;
-                }
-                return aK;
-            } else {
-                return aJ;
-            }
-        }
-        function _parse_bool_str(aH) {
-            return aH != "false";
-        }
-        function _toXML() {
-            let aH = '<?xml version="1.0" encoding="UTF-8"?>\n';
-            aH += "<configuration>\n";
-            aH += "  <version1>" + m_version1 + "</version1>\n";
-            aH += "  <version2>" + m_version2 + "</version2>\n";
-            aH += "  <bkgndIndex>" + m_bkgndIndex + "</bkgndIndex>\n";
-            aH += "  <topMargin>" + m_topMargin + "</topMargin>\n";
-            aH += "  <bottomMargin>" + m_bottomMargin + "</bottomMargin>\n";
-            aH += "  <leftMargin>" + m_leftMargin + "</leftMargin>\n";
-            aH += "  <rightMargin>" + m_rightMargin + "</rightMargin>\n";
-            aH += "  <singleVersion>" + m_singleVersion + "</singleVersion>\n";
-            aH += "  <navduallang>" + m_navduallang + "</navduallang>\n";
-            aH += "  <navFontSize>" + m_navFontSize + "</navFontSize>\n";
-            aH += "  <stageScreenEnable>" + m_stageScreenEnable + "</stageScreenEnable>\n";
-            aH += "  <mainScreenEnable>" + m_mainScreenEnable + "</mainScreenEnable>\n";
-            aH += "  <stagescreenstyle>" + m_stagescreenstyle + "</stagescreenstyle>\n";
-            aH += "  <screensel>" + m_screensel + "</screensel>\n";
-            aH += "  <stagescreensel>" + m_stagescreensel + "</stagescreensel>\n";
-            aH += "  <maxFontSize>" + m_maxFontSize + "</maxFontSize>\n";
-            aH += "  <enableTransition>" + m_enableTransition + "</enableTransition>\n";
-            aH += "  <enableShadow>" + m_enableShadow + "</enableShadow>\n";
-            aH += "  <enableFooter>" + m_enableFooter + "</enableFooter>\n";
-            aH += "  <enableStroke>" + m_enableStroke + "</enableStroke>\n";
-            aH += "  <enableTitle>" + m_enableTitle + "</enableTitle>\n";
-            aH += "  <textColor>" + m_textColor + "</textColor>\n";
-            aH += "  <textColor2>" + m_textColor2 + "</textColor2>\n";
-            aH += "  <solidBkgndColor>" + m_solidBkgndColor + "</solidBkgndColor>\n";
-            aH += "  <gradColor1>" + m_gradColor1 + "</gradColor1>\n";
-            aH += "  <gradColor2>" + m_gradColor2 + "</gradColor2>\n";
-            aH += "  <gradOrient>" + m_gradOrient + "</gradOrient>\n";
-            aH += "  <motionBkgndIndex>" + m_motionBkgndIndex + "</motionBkgndIndex>\n";
-            aH += "  <bkgndType>" + m_bkgndType + "</bkgndType>\n";
-            aH += "  <textOrient>" + m_textOrient + "</textOrient>\n";
-            aH += "  <justification>" + m_justification + "</justification>\n";
-            aH += "  <version6>" + m_version6 + "</version6>\n";
-            aH += "  <showdatetime>" + m_showdatetime + "</showdatetime>\n";
-            aH += "  <showvvlogo>" + m_showvvlogo + "</showvvlogo>\n";
-            aH += "  <showcustomlogo>" + m_showcustomlogo + "</showcustomlogo>\n";
-            aH += "  <logotext1>" + m_logotext1 + "</logotext1>\n";
-            aH += "  <logotext2>" + m_logotext2 + "</logotext2>\n";
-            aH += "  <logoFilename>" + m_logoFilename + "</logoFilename>\n";
-            aH += "  <songtextorient>" + m_songtextorient + "</songtextorient>\n";
-            aH += "  <showprimaryfont>" + m_showprimaryfont + "</showprimaryfont>\n";
-            aH += "  <svParameters>" + _toPipeString() + "</svParameters>\n";
-            aH += "  <svMessage>" + m_svMessage + "</svMessage>\n";
-            aH += "  <songDBVersion>" + m_songDBVersion + "</songDBVersion>\n";
-            aH += "  <bibleDBVersion>" + m_bibleDBVersion + "</bibleDBVersion>\n";
-            aH += "  <chordsDBVersion>" + m_chordsDBVersion + "</chordsDBVersion>\n";
-            aH += "  <versionNumber>" + m_versionNumber + "</versionNumber>\n";
-            aH += "  <booknamestyle>" + m_booknamestyle + "</booknamestyle>\n";
-            aH += "  <listinenglish>" + m_listinenglish + "</listinenglish>\n";
-            aH += "  <presentationOnTop>" + m_presentationOnTop + "</presentationOnTop>\n";
-            aH += "  <transparentEnable>" + m_transparentEnable + "</transparentEnable>\n";
-            aH += "  <show2lines>" + m_show2lines + "</show2lines>\n";
-            aH += "  <hideStanzaNumber>" + m_hideStanzaNumber + "</hideStanzaNumber>\n";
-            aH += "  <p_format_multiplelines>" + m_p_format_multiplelines + "</p_format_multiplelines>\n";
-            aH += "  <taglist>" + m_taglist + "</taglist>\n";
-            aH += "  <myhostname>" + m_myhostname + "</myhostname>\n";
-            aH += "  <lastCheckForUpdateDate>" + m_lastCheckForUpdateDate + "</lastCheckForUpdateDate>\n";
-            aH += "</configuration>\n";
-            return aH;
-        }
-        function _toPipeString() {
-            let aH = "";
-            aH = aH + m_svOpacity + "|" + m_svHeight + "|" + m_svShowPrimary + "|" + m_svTextOutline + "|" + m_svShowDate + "|" + m_svFcolor;
-            aH = aH + "|" + m_svWindow + "|" + m_svPosition + "|" + m_svMaxFontSize + "|" + m_svBcolor;
-            aH = aH + "|" + m_svGreenWindow + "|" + m_svTextShadow;
-            aH = aH + "|" + m_svAlignLeft + "|" + m_svAlignCenter + "|" + m_svAddTexture + "|" + m_svShowHorizontal;
-            aH = aH + "|" + m_svShowSecondary;
-            return aH;
-        }
-        function _loadSvParameters(ps) {
-            const aI = ps.split("|");
-            m_svOpacity = aI[0];
-            m_svHeight = aI[1];
-            m_svShowPrimary = aI[2];
-            m_svTextOutline = aI[3];
-            m_svShowDate = aI[4];
-            m_svFcolor = aI[5];
-            if (aI[6] == null) {
-                aI[6] = false;
-            }
-            if (aI[7] == null) {
-                aI[7] = 0;
-            }
-            if (aI[8] == null) {
-                aI[8] = 30;
-            }
-            if (aI[9] == null) {
-                aI[9] = 0;
-            }
-            if (aI[10] == null) {
-                aI[10] = true;
-            }
-            if (aI[11] == null) {
-                aI[11] = false;
-            }
-            if (aI[12] == null) {
-                aI[12] = false;
-            }
-            if (aI[13] == null) {
-                aI[13] = false;
-            }
-            if (aI[14] == null) {
-                aI[14] = false;
-            }
-            if (aI[15] == null) {
-                aI[15] = false;
-            }
-            if (aI[16] == null) {
-                aI[16] = false;
-            }
-            m_svWindow = aI[6];
-            m_svPosition = aI[7];
-            m_svMaxFontSize = aI[8];
-            m_svBcolor = aI[9];
-            m_svGreenWindow = aI[10];
-            m_svTextShadow = aI[11];
-            m_svAlignLeft = aI[12];
-            m_svAlignCenter = aI[13];
-            m_svAddTexture = aI[14];
-            m_svShowHorizontal = aI[15];
-            m_svShowSecondary = aI[16];
-        }
-
         this.save = function() {
-            m_saveCtr++;
-            if (m_save_xyz_flag) {
-                m_save_xyz_flag = false;
-                setTimeout(() => {
-                    if (m_saveCtr > 0) {
-                        _dumpXML();
-                        m_saveCtr = 0;
-                    }
-                    m_save_xyz_flag = true;
-                }, m_xv_interval);
-                _dumpXML();
-            }
-        }
-
-        function _dumpXML() {
-            saveFileInAppStorage(_toXML(), "./xml/config.xml");
-            m_saveCtr--;
+            $RvW.rvwPreferences.commit();
         }
 
         /* Getters and setters */
-
         this.get_version1 = function () {
-            return m_version1;
+            return $RvW.rvwPreferences.get("$.version1", 1);
         };
         this.get_version2 = function () {
-            return m_version2;
+            return $RvW.rvwPreferences.get("$.version2", 2);
         };
         this.get_bkgndIndex = function () {
-            return m_bkgndIndex;
+            return $RvW.rvwPreferences.get("$.bkgndIndex", 0);
         };
         this.get_p_topMargin = function () {
-            return m_topMargin;
+            return $RvW.rvwPreferences.get("$.p_topMargin", 50);
         };
         this.get_p_bottomMargin = function () {
-            return m_bottomMargin;
+            return $RvW.rvwPreferences.get("$.p_bottomMargin", 50);
         };
         this.get_p_leftMargin = function () {
-            return m_leftMargin;
+            return $RvW.rvwPreferences.get("$.p_leftMargin", 50);
         };
         this.get_p_rightMargin = function () {
-            return m_rightMargin;
+            return $RvW.rvwPreferences.get("$.p_rightMargin", 50);
         };
         this.get_singleVersion = function () {
-            return m_singleVersion;
+            return $RvW.rvwPreferences.get("$.singleVersion", false);
         };
         this.get_navDualLanguage = function () {
-            return m_navduallang;
+            return $RvW.rvwPreferences.get("$.navDualLanguage", true);
         };
         this.get_mainConfigEnable = function () {
-            return m_mainScreenEnable;
+            return $RvW.rvwPreferences.get("$.mainScreenEnable", true);
         };
         this.get_navFontSize = function () {
-            return m_navFontSize;
+            return $RvW.rvwPreferences.get("$.navFontSize", 14);
         };
         this.get_selectedScreenIndex = function () {
-            return m_screensel;
+            return $RvW.rvwPreferences.get("$.selectedScreenIndex", 1);
         };
         this.get_selectedStageScreenIndex = function () {
-            return m_stagescreensel;
+            return $RvW.rvwPreferences.get("$.selectedStageScreenIndex", 0);
         };
         this.get_stageConfigEnable = function () {
-            return m_stageScreenEnable;
+            return $RvW.rvwPreferences.get("$.stageScreenEnable", false);
         };
         this.get_stageStyleVal = function () {
-            return m_stagescreenstyle;
+            return $RvW.rvwPreferences.get("$.stageScreenStyle", 0);
         };
         this.get_p_maxFontSize = function () {
-            return m_maxFontSize;
+            return $RvW.rvwPreferences.get("$.p_maxFontSize", 80);
         };
         this.get_p_enableTransition = function () {
-            return m_enableTransition;
+            return $RvW.rvwPreferences.get("$.p_enableTransition", true);
         };
         this.get_p_enableShadow = function () {
-            return m_enableShadow;
+            return $RvW.rvwPreferences.get("$.p_enableShadow", true);
         };
         this.get_p_enableFooter = function () {
-            return m_enableFooter;
+            return $RvW.rvwPreferences.get("$.p_enableFooter", true);
         };
         this.get_p_enableStroke = function () {
-            return m_enableStroke;
+            return $RvW.rvwPreferences.get("$.p_enableStroke", true);
         };
         this.get_p_showTitle = function () {
-            return m_enableTitle;
+            return $RvW.rvwPreferences.get("$.p_enableTitle", false);
         };
         this.get_p_textColor = function () {
-            return m_textColor;
+            return $RvW.rvwPreferences.get("$.p_textColor", "#FFFFFF");
         };
         this.get_p_textColor2 = function () {
-            return m_textColor2;
+            return $RvW.rvwPreferences.get("$.p_textColor2", "#FFFFFF");
         };
         this.get_p_solidBkgndColor = function () {
-            return m_solidBkgndColor;
+            return $RvW.rvwPreferences.get("$.p_solidBkgndColor", "#000000");
         };
         this.get_p_bkgnd_color1 = function () {
-            return m_gradColor1;
+            return $RvW.rvwPreferences.get("$.p_bkgnd_color1", "#000000");
         };
         this.get_p_bkgnd_color2 = function () {
-            return m_gradColor2;
+            return $RvW.rvwPreferences.get("$.p_bkgnd_color2", "#FFFFFF");
         };
         this.get_p_bkgnd_grad_orient = function () {
-            return m_gradOrient;
+            return $RvW.rvwPreferences.get("$.p_bkgnd_grad_orient", 0);
         };
         this.get_p_motion_bkgnd_index = function () {
-            return m_motionBkgndIndex;
+            return $RvW.rvwPreferences.get("$.p_motion_bkgnd_index", 0);
         };
         this.get_p_bkgnd_type = function () {
-            return m_bkgndType;
+            return $RvW.rvwPreferences.get("$.p_bkgnd_type", 3);
         };
         this.get_p_text_orientation = function () {
-            return m_textOrient;
+            return $RvW.rvwPreferences.get("$.p_text_orientation", 0);
         };
         this.get_p_align = function () {
-            return m_justification;
+            return $RvW.rvwPreferences.get("$.p_align", "center");
         };
         this.get_version6 = function () {
-            return m_version6;
+            return $RvW.rvwPreferences.get("$.version6", 0);
         };
         this.get_showDateTime = function () {
-            return m_showdatetime;
+            return $RvW.rvwPreferences.get("$.showDateTime", true);
         };
         this.get_showVVLogo = function () {
-            return m_showvvlogo;
+            return $RvW.rvwPreferences.get("$.showVVLogo", true);
         };
         this.get_showCustomLogo = function () {
-            return m_showcustomlogo;
+            return $RvW.rvwPreferences.get("$.showCustomLogo", false);
         };
         this.get_logoText1 = function () {
-            return m_logotext1;
+            return $RvW.rvwPreferences.get("$.logoText1", "");
         };
         this.get_logoText2 = function () {
-            return m_logotext2;
+            return $RvW.rvwPreferences.get("$.logoText2", "");
         };
         this.get_logoFilename = function () {
-            return m_logoFilename;
+            return $RvW.rvwPreferences.get("$.logoFilename", "");
         };
         this.get_song_text_orientation = function () {
-            return m_songtextorient;
+            return $RvW.rvwPreferences.get("$.songTextOrientation", 0);
         };
         this.get_song_primaryOnly = function () {
-            return m_showprimaryfont;
+            return $RvW.rvwPreferences.get("$.songPrimaryOnly", false);
         };
         this.get_svOpacity = function () {
-            return m_svOpacity;
+            return $RvW.rvwPreferences.get("$.svOpacity", 0.3);
         };
         this.get_svHeight = function () {
-            return m_svHeight;
+            return $RvW.rvwPreferences.get("$.svHeight", 20);
         };
         this.get_svWindow = function () {
-            return m_svWindow;
+            return $RvW.rvwPreferences.get("$.svWindow", false);
         };
         this.get_svGreenWindow = function () {
-            return m_svGreenWindow;
+            return $RvW.rvwPreferences.get("$.svGreenWindow", true);
         };
         this.get_svPosition = function () {
-            return m_svPosition;
+            return $RvW.rvwPreferences.get("$.svPosition", 0);
         };
         this.get_svMaxFontSize = function () {
-            return m_svMaxFontSize;
+            return $RvW.rvwPreferences.get("$.svMaxFontSize", 30);
         };
         this.get_svBcolor = function () {
-            return m_svBcolor;
+            return $RvW.rvwPreferences.get("$.svBcolor", '#000000');
         };
         this.get_svFcolor = function () {
-            return m_svFcolor;
+            return $RvW.rvwPreferences.get("$.svFcolor", '#FFFFFF');
         };
         this.get_svShowPrimary = function () {
-            return m_svShowPrimary;
+            return $RvW.rvwPreferences.get("$.svShowPrimary", false);
         };
         this.get_svShowSecondary = function () {
-            return m_svShowSecondary;
+            return $RvW.rvwPreferences.get("$.svShowSecondary", false);
         };
         this.get_svTextOutline = function () {
-            return m_svTextOutline;
+            return $RvW.rvwPreferences.get("$.svTextOutline", true);
         };
         this.get_svTextShadow = function () {
-            return m_svTextShadow;
+            return $RvW.rvwPreferences.get("$.svTextShadow", false);
         };
         this.get_svShowDate = function () {
-            return m_svShowDate;
+            return $RvW.rvwPreferences.get("$.svShowDate", true);
         };
         this.get_svMessage = function () {
-            return m_svMessage;
+            return $RvW.rvwPreferences.get("$.svMessage", "");
         };
         this.get_songDBVersion = function () {
-            return m_songDBVersion;
+            return $RvW.rvwPreferences.get("$.songDBVersion", 2);
         };
         this.get_bibleDBVersion = function () {
-            return m_bibleDBVersion;
+            return $RvW.rvwPreferences.get("$.bibleDBVersion", 2);
         };
         this.get_chordsDBVersion = function () {
-            return m_chordsDBVersion;
+            return $RvW.rvwPreferences.get("$.chordsDBVersion", 2);
         };
         this.get_versionNum = function () {
-            return m_versionNumber;
+            return $RvW.rvwPreferences.get("$.versionNumber", 7);
         };
         this.get_booknamestyle = function () {
-            return m_booknamestyle;
+            return $RvW.rvwPreferences.get("$.booknamestyle", 4);
         };
         this.get_listinenglish = function () {
-            return m_listinenglish;
+            return $RvW.rvwPreferences.get("$.listinenglish", true);
         };
         this.get_presentationOnTop = function () {
-            return m_presentationOnTop;
+            return $RvW.rvwPreferences.get("$.presentationOnTop", false);
         };
         this.get_transparentEnable = function () {
-            return m_transparentEnable;
+            return $RvW.rvwPreferences.get("$.transparentEnable", false);
         };
         this.get_show2lines = function () {
-            return m_show2lines;
+            return $RvW.rvwPreferences.get("$.show2lines", false);
         };
         this.get_hideStanzaNumber = function () {
-            return m_hideStanzaNumber;
+            return $RvW.rvwPreferences.get("$.hideStanzaNumber", false);
         };
         this.get_svAlignLeft = function () {
-            return m_svAlignLeft;
+            return $RvW.rvwPreferences.get("$.svAlignLeft", false);
         };
         this.get_svAlignCenter = function () {
-            return m_svAlignCenter;
+            return $RvW.rvwPreferences.get("$.svAlignCenter", false);
         };
         this.get_svAddTexture = function () {
-            return m_svAddTexture;
+            return $RvW.rvwPreferences.get("$.svAddTexture", false);
         };
         this.get_svShowHorizontal = function () {
-            return m_svShowHorizontal;
-        };
-        this.get_taglist = function () {
-            return m_taglist;
+            return $RvW.rvwPreferences.get("$.svShowHorizontal", false);
         };
         this.get_pformat_multiplelines = function () {
-            return m_p_format_multiplelines;
+            return $RvW.rvwPreferences.get("$.p_format_multiplelines", true);
         };
         this.get_myhostname = function () {
-            return m_myhostname;
+            return $RvW.rvwPreferences.get("$.myhostname", "localhost");
         };
-        this.get_lastCheckForUpdateDate = function () {
-            return m_lastCheckForUpdateDate;
-        };
+
         this.set_version1 = function (aH) {
-            m_version1 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.version1", aH);
         };
         this.set_version2 = function (aH) {
-            m_version2 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.version2", aH);
         };
         this.set_bkgndIndex = function (aH) {
-            m_bkgndIndex = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.bkgndIndex", aH);
         };
         this.set_p_topMargin = function (aH) {
-            m_topMargin = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_topMargin", aH);
         };
         this.set_p_bottomMargin = function (aH) {
-            m_bottomMargin = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_bottomMargin", aH);
         };
         this.set_p_leftMargin = function (aH) {
-            m_leftMargin = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_leftMargin", aH);
         };
         this.set_p_rightMargin = function (aH) {
-            m_rightMargin = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_rightMargin", aH);
         };
         this.set_singleVersion = function (aH) {
-            m_singleVersion = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.singleVersion", aH);
         };
         this.set_navDualLanguage = function (aH) {
-            m_navduallang = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.navDualLanguage", aH);
         };
         this.set_mainConfigEnable = function (aH) {
-            m_mainScreenEnable = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.mainScreenEnable", aH);
         };
         this.set_navFontSize = function (aH) {
-            m_navFontSize = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.navFontSize", aH);
         };
         this.set_selectedScreenIndex = function (aH) {
-            m_screensel = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.selectedScreenIndex", aH);
         };
         this.set_selectedStageScreenIndex = function (aH) {
-            m_stagescreensel = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.selectedStageScreenIndex", aH);
         };
         this.set_stageConfigEnable = function (aH) {
-            m_stageScreenEnable = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.stageScreenEnable", aH);
         };
         this.set_stageStyleVal = function (aH) {
-            m_stagescreenstyle = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.stageScreenStyle", aH);
         };
         this.set_p_maxFontSize = function (aH) {
-            m_maxFontSize = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_maxFontSize", aH);
         };
         this.set_p_enableTransition = function (aH) {
-            m_enableTransition = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_enableTransition", aH);
         };
         this.set_p_enableShadow = function (aH) {
-            m_enableShadow = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_enableShadow", aH);
         };
         this.set_p_enableFooter = function (aH) {
-            m_enableFooter = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_enableFooter", aH);
         };
         this.set_p_enableStroke = function (aH) {
-            m_enableStroke = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_enableStroke", aH);
         }
         this.set_p_showTitle = function (aH) {
-            m_enableTitle = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_enableTitle", aH);
         };
         this.set_p_textColor = function (aH) {
-            m_textColor = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_textColor", aH);
         };
         this.set_p_textColor2 = function (aH) {
-            m_textColor2 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_textColor2", aH);
         };
         this.set_p_solidBkgndColor = function (aH) {
-            m_solidBkgndColor = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_solidBkgndColor", aH);
         };
         this.set_p_bkgnd_color1 = function (aH) {
-            m_gradColor1 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_bkgnd_color1", aH);
         };
         this.set_p_bkgnd_color2 = function (aH) {
-            m_gradColor2 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_bkgnd_color2", aH);
         };
         this.set_p_bkgnd_grad_orient = function (aH) {
-            m_gradOrient = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_bkgnd_grad_orient", aH);
         };
         this.set_p_motion_bkgnd_index = function (aH) {
-            m_motionBkgndIndex = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_motion_bkgnd_index", aH);
         };
         this.set_p_bkgnd_type = function (aH) {
-            m_bkgndType = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_bkgnd_type", aH);
         };
         this.set_p_text_orientation = function (aH) {
-            m_textOrient = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_text_orientation", aH);
         };
         this.set_p_align = function (aH) {
-            m_justification = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_align", aH);
         };
         this.set_version6 = function (aH) {
-            m_version6 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.version6", aH);
         };
         this.set_showDateTime = function (aH) {
-            m_showdatetime = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.showDateTime", aH);
         };
         this.set_showVVLogo = function (aH) {
-            m_showvvlogo = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.showVVLogo", aH);
         };
         this.set_showCustomLogo = function (aH) {
-            m_showcustomlogo = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.showCustomLogo", aH);
         };
         this.set_logoText1 = function (aH) {
-            m_logotext1 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.logoText1", aH);
         };
         this.set_logoText2 = function (aH) {
-            m_logotext2 = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.logoText2", aH);
         };
         this.set_logoFilename = function (aH) {
-            m_logoFilename = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.logoFilename", aH);
         };
         this.set_song_text_orientation = function (aH) {
-            m_songtextorient = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.songTextOrientation", aH);
         };
         this.set_song_primaryOnly = function (aH) {
-            m_showprimaryfont = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.songPrimaryOnly", aH);
         };
         this.set_svOpacity = function (aH) {
-            m_svOpacity = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svOpacity", aH);
         };
         this.set_svHeight = function (aH) {
-            m_svHeight = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svHeight", aH);
         };
         this.set_svWindow = function (aH) {
-            m_svWindow = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svWindow", aH);
         };
         this.set_svGreenWindow = function (aH) {
-            m_svGreenWindow = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svGreenWindow", aH);
         };
         this.set_svPosition = function (aH) {
-            m_svPosition = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svPosition", aH);
         };
         this.set_svMaxFontSize = function (aH) {
-            m_svMaxFontSize = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svMaxFontSize", aH);
         };
         this.set_svBcolor = function (aH) {
-            m_svBcolor = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svBcolor", aH);
         };
         this.set_svFcolor = function (aH) {
-            m_svFcolor = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svFcolor", aH);
         };
         this.set_svShowPrimary = function (aH) {
-            m_svShowPrimary = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svShowPrimary", aH);
         };
         this.set_svShowSecondary = function (aH) {
-            m_svShowSecondary = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svShowSecondary", aH);
         };
         this.set_svTextOutline = function (aH) {
-            m_svTextOutline = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svTextOutline", aH);
         };
         this.set_svTextShadow = function (aH) {
-            m_svTextShadow = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svTextShadow", aH);
         };
         this.set_svShowDate = function (aH) {
-            m_svShowDate = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svShowDate", aH);
         };
         this.set_svMessage = function (aH) {
-            m_svMessage = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svMessage", aH);
         };
         this.set_songDBVersion = function (aH) {
-            m_songDBVersion = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.songDBVersion", aH);
         };
         this.set_bibleDBVersion = function (aH) {
-            m_bibleDBVersion = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.bibleDBVersion", aH);
         };
         this.set_chordsDBVersion = function (aH) {
-            m_chordsDBVersion = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.chordsDBVersion", aH);
         };
         this.set_versionNum = function (aH) {
-            m_versionNumber = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.versionNumber", aH);
         };
         this.set_booknamestyle = function (aH) {
-            m_booknamestyle = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.booknamestyle", aH);
         };
         this.set_listinenglish = function (aH) {
-            m_listinenglish = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.listinenglish", aH);
         };
         this.set_presentationOnTop = function (aH) {
-            m_presentationOnTop = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.presentationOnTop", aH);
         };
         this.set_transparentEnable = function (aH) {
-            m_transparentEnable = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.transparentEnable", aH);
         };
         this.set_show2lines = function (aH) {
-            m_show2lines = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.show2lines", aH);
         };
         this.set_hideStanzaNumber = function (aH) {
-            m_hideStanzaNumber = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.hideStanzaNumber", aH);
         };
         this.set_svAlignLeft = function (aH) {
-            m_svAlignLeft = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svAlignLeft", aH);
         };
         this.set_svAlignCenter = function (aH) {
-            m_svAlignCenter = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svAlignCenter", aH);
         };
         this.set_svAddTexture = function (aH) {
-            m_svAddTexture = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svAddTexture", aH);
         };
         this.set_svShowHorizontal = function (aH) {
-            m_svShowHorizontal = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.svShowHorizontal", aH);
         };
         this.set_pformat_multiplelines = function (aH) {
-            m_p_format_multiplelines = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.p_format_multiplelines", aH);
         };
         this.set_myhostname = function (aH) {
-            m_myhostname = aH;
-            return true;
-        };
-        this.set_lastCheckForUpdateDate = function (aH) {
-            m_lastCheckForUpdateDate = aH;
-            return true;
-        };
-        this.set_taglist = function (aH) {
-            m_taglist = aH;
-            return true;
+            $RvW.rvwPreferences.set("$.myhostname", aH);
         };
     }
 }

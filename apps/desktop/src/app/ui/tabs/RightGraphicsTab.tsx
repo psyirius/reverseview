@@ -8,8 +8,12 @@ const TextColorTab = () => {
     const colorInput1Ref = useRef<HTMLInputElement>(null);
     const colorInput2Ref = useRef<HTMLInputElement>(null);
 
-    const [color1, setColor1] = useState($RvW.vvConfigObj.get_p_textColor());
-    const [color2, setColor2] = useState($RvW.vvConfigObj.get_p_textColor2());
+    const [color1, setColor1] = useState(
+        $RvW.rvwPreferences.get('app.settings.text.color1', '#ffffff')
+    );
+    const [color2, setColor2] = useState(
+        $RvW.rvwPreferences.get('app.settings.text.color2', '#ffffff')
+    );
 
     function resetTextColors() {
         const white = "#ffffff";
@@ -22,16 +26,16 @@ const TextColorTab = () => {
         // @ts-ignore
         $(colorInput1Ref.current).spectrum('set', color1);
 
-        $RvW.vvConfigObj.set_p_textColor(color1);
-        $RvW.vvConfigObj.save();
+        $RvW.rvwPreferences.set('app.settings.text.color1', color1)
+        $RvW.rvwPreferences.commit()
     }, [color1]);
 
     useEffect(() => {
         // @ts-ignore
         $(colorInput2Ref.current).spectrum('set', color2);
 
-        $RvW.vvConfigObj.set_p_textColor2(color2);
-        $RvW.vvConfigObj.save();
+        $RvW.rvwPreferences.set('app.settings.text.color2', color2)
+        $RvW.rvwPreferences.commit()
     }, [color2]);
 
     useEffect(() => {
@@ -101,7 +105,9 @@ const BackgroundColorTab = () => {
         MOTION = 4,
     }
 
-    const [selectedTab, setSelectedTab] = useState(parseInt($RvW.vvConfigObj.get_p_bkgnd_type()) || BgType.STILL);
+    const [selectedTab, setSelectedTab] = useState(
+        $RvW.rvwPreferences.get('app.settings.background.type', BgType.STILL)
+    );
 
     const solidColor = useStoreState(bgSolidColor)
 
@@ -111,8 +117,8 @@ const BackgroundColorTab = () => {
     const gradientAngle = useStoreState(bgGradientAngle)
 
     useEffect(() => {
-        $RvW.vvConfigObj.set_p_bkgnd_type(selectedTab);
-        $RvW.vvConfigObj.save();
+        $RvW.rvwPreferences.set('app.settings.background.type', selectedTab)
+        $RvW.rvwPreferences.commit();
     }, [selectedTab]);
 
     useEffect(() => {

@@ -76,7 +76,7 @@ function passVariable(isStageView, _ = undefined) {
     _.p_bkgnd_color2 = $RvW.vvConfigObj.get_p_bkgnd_color2();
     _.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
     _.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
-    _.p_bkgnd_type = $RvW.vvConfigObj.get_p_bkgnd_type();
+    _.p_bkgnd_type = $RvW.rvwPreferences.get('app.settings.background.type');
     {
         if (isStageView === 1) {
             let layout = $RvW.rvwPreferences.get("app.settings.stage.layout");

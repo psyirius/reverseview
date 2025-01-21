@@ -1212,8 +1212,8 @@ export class _Presenter_ {
         presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
         presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
         presentationCtx.p_bkgnd_color = "blue";
-        presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
-        presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+        presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
+        presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color2')
         presentationCtx.p_ver1ScaleFactor = 2;
         presentationCtx.p_ver2ScaleFactor = 2;
 

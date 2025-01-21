@@ -18,11 +18,11 @@ import {BibleRecentRefManager} from "@/bible/recent";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible} from "@/bible/manager";
 import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/version";
 import { Config, configInit } from "./config";
+import { setup as setupUI } from './ui/main';
 import Preferences from './preferences';
 import SplashScreen from './splash';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
-import { setup as setupUI } from './ui/main';
 import {
     bibleRefBlur,
     bibleRefFocus,
@@ -56,7 +56,7 @@ import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 import {console} from "@/platform/adapters/air";
-import {ngInit, songManager, songNavigator} from "@app/glc";
+import {ngInit, songNavigator} from "@app/glc";
 
 // import * as dojoDom from 'dojo/dom';
 // console.trace("dojo/dom", dojoDom);
@@ -271,8 +271,8 @@ $RvW.launch = function(g) {
     presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
     presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
     presentationCtx.p_bkgnd_color = "blue";
-    presentationCtx.p_font_color = $RvW.vvConfigObj.get_p_textColor();
-    presentationCtx.p_font_color2 = $RvW.vvConfigObj.get_p_textColor2();
+    presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
+    presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color1');
     presentationCtx.p_ver1ScaleFactor = 1;
     presentationCtx.p_ver2ScaleFactor = 1;
     if ($RvW.vvConfigObj.get_singleVersion()) {
@@ -583,9 +583,9 @@ function loadPreferences(callback) {
     const appStorageDir = air.File.applicationStorageDirectory;
     const prefsFile = appStorageDir.resolvePath("settings/prefs.json");
 
-    const _cb = (e, store) => {
-        if (e) {
-            throw new Error("[!] LoadPreferences: " + e);
+    const _cb = (err, store) => {
+        if (err) {
+            throw new Error("[!] LoadPreferences: " + err);
         }
 
         $RvW.rvwPreferences = store;
@@ -1018,22 +1018,16 @@ export function start(Y: YUI) {
         break TEST;
     }
 
-    function proceed() {
-        $RvW.booknames = $RvW.english_booknames;
-        $RvW.default_booknames = $RvW.english_booknames;
-
-        $RvW.vvConfigObj = new Config();
-        $RvW.vvConfigObj.load(vvinit_continue);
-    }
-
     loadPreferences(() => {
+        $RvW.vvConfigObj = new Config();
+
         $RvW.systemFontList = $RvW.systemFontList.concat([
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
 
-        loadBibleInfo('en-US', function (e, data) {
-            if (e) {
-                throw new Error("[!] LoadBibleInfo: " + e);
+        loadBibleInfo('en-US', function (err, data) {
+            if (err) {
+                throw new Error("[!] LoadBibleInfo: " + err);
             }
 
             const [numChMap] = data;
@@ -1048,9 +1042,9 @@ export function start(Y: YUI) {
             for (const bibleId of Object.keys(bookNamesMap)) {
                 const bookNamesKey = bookNamesMap[bibleId];
 
-                loadBibleBookNames(bibleId, function (e, data) {
-                    if (e) {
-                        throw new Error("[!] LoadBibleBookNames: " + e);
+                loadBibleBookNames(bibleId, function (err, data) {
+                    if (err) {
+                        throw new Error("[!] LoadBibleBookNames: " + err);
                     }
 
                     const { booknames } = data;
@@ -1059,7 +1053,10 @@ export function start(Y: YUI) {
                     done.push(data);
 
                     if (done.length === Object.keys(bookNamesMap).length) {
-                        proceed();
+                        $RvW.booknames = $RvW.english_booknames;
+                        $RvW.default_booknames = $RvW.english_booknames;
+
+                        vvinit_continue();
                     }
                 });
             }

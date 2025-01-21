@@ -28,6 +28,12 @@ enum TextOrientation {
     Vertical    = 1,
 }
 
+export enum StageViewStyle {
+    Horizontal  = 0,
+    Vertical    = 1,
+    LowerThird  = 2,
+}
+
 function MainPresentationSetup() {
     const fontSelectOverridePrimary = useRef<HTMLDivElement>(null);
     const fontSelectOverrideSecondary = useRef<HTMLDivElement>(null);
@@ -854,12 +860,6 @@ function MainPresentationSetup() {
             </div>
         </>
     );
-}
-
-export enum StageViewStyle {
-    Horizontal  = 0,
-    Vertical    = 1,
-    LowerThird  = 2,
 }
 
 function StagePresentationSetup() {
