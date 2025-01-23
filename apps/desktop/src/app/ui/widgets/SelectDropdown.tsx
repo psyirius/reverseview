@@ -46,7 +46,7 @@ class SelectDropdown extends Component<Props, State> {
     toggleDropdown = () => {
         this.setState((prevState) => ({ isOpen: !prevState.isOpen }), () => {
             if (this.state.isOpen && this.selectedItemRef.current) {
-                this.selectedItemRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                this.selectedItemRef.current.scrollIntoView({ behavior: "instant", block: "nearest" });
             }
         });
         if (this.props.searchable && this.state.isOpen === false && this.searchRef.current) {

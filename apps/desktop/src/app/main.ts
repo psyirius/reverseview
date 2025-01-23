@@ -16,7 +16,11 @@ import { GraphicsMgr } from "@/graphics/graphics";
 import {setPrimaryBooknames} from "@/bible/booknames";
 import {BibleRecentRefManager} from "@/bible/recent";
 import {getdata, getdataONLY, getVerseFromArray, loadSQLBible} from "@/bible/manager";
-import {getVersion1Filename, loadBibleVersion, versionFill} from "@/bible/version";
+import {
+    loadBibleVersions,
+    versionFill,
+    getPrimaryBibleVersion, getSecondaryBibleVersion
+} from "@/bible/version";
 import { Config, configInit } from "./config";
 import { setup as setupUI } from './ui/main';
 import Preferences from './preferences';
@@ -24,8 +28,6 @@ import SplashScreen from './splash';
 import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {
-    bibleRefBlur,
-    bibleRefFocus,
     processNavBibleRef,
 } from "@/bible/navigation";
 import {updateCfgVersion, isSameCfgVersion} from "@app/version-update";
@@ -46,11 +48,11 @@ import {
 import {presentationCtx} from "@app/presentation";
 import {
     bookList,
-    bibleFont,
+    bibleFont1,
     chapterList, selectedBible,
     selectedBookRef,
     selectedTab,
-    verseList, selectedVerseList, BibleVerse, twoVersesPerSlide
+    verseList, selectedVerseList, BibleVerse, twoVersesPerSlide, bibleFont2
 } from "@stores/global";
 import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
@@ -224,48 +226,53 @@ $RvW.launch = function(g) {
 
     const twoVerses = twoVersesPerSlide.get();
 
-    let j;
     let e = 1;
     if (twoVerses) {
         e = 2;
     }
-    var b;
-    var a;
+
     presentationCtx.p_last_index = $RvW.content1.length - 1;
-    var h = 0;
-    h = presentationCtx.p_last_index + 1;
-    j = presentationCtx.p_last_index;
-    b = $RvW.content1;
-    a = $RvW.content2;
+
+    let j = presentationCtx.p_last_index;
+    let h = j + 1;
+
+    let b = $RvW.content1;
+    let a = $RvW.content2;
+
     if (e == 2) {
-        var l = h % 2;
+        const l = h % 2;
+
         if (l == 0) {
             j = parseInt(h / 2) - 1;
-            for (var f = 0; f <= j; f++) {
+
+            for (let f = 0; f <= j; f++) {
                 b[f] = $RvW.content1[f * 2] + "<BR>" + $RvW.content1[f * 2 + 1];
                 a[f] = $RvW.content2[f * 2] + "<BR>" + $RvW.content2[f * 2 + 1];
             }
         } else {
             j = parseInt(h / 2);
-            for (var f = 0; f < j; f++) {
+
+            for (let f = 0; f < j; f++) {
                 b[f] = $RvW.content1[f * 2] + "<BR>" + $RvW.content1[f * 2 + 1];
                 a[f] = $RvW.content2[f * 2] + "<BR>" + $RvW.content2[f * 2 + 1];
             }
+
             b[f] = $RvW.content1[f * 2];
             a[f] = $RvW.content2[f * 2];
         }
     }
-    var k = parseInt(g / e);
+
+    const k = parseInt(g / e);
     if ($RvW.vvConfigObj.get_singleVersion()) {
-        var d = a.length;
-        for (f = 0; f < d; f++) {
+        for (let f = 0; f < a.length; f++) {
             a[f] = "";
         }
     }
+
     presentationCtx.p_text1_arr = b;
     presentationCtx.p_text2_arr = a;
-    presentationCtx.p_text1_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    presentationCtx.p_text2_font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    presentationCtx.p_text1_font = getPrimaryBibleVersion().selectedFont;
+    presentationCtx.p_text2_font = getSecondaryBibleVersion().selectedFont;
     presentationCtx.p_current_index = k;
     presentationCtx.p_last_index = j;
     presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
@@ -275,16 +282,20 @@ $RvW.launch = function(g) {
     presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color2');
     presentationCtx.p_ver1ScaleFactor = 1;
     presentationCtx.p_ver2ScaleFactor = 1;
+
     if ($RvW.vvConfigObj.get_singleVersion()) {
         presentationCtx.p_text_orientation = 2;
     } else {
         presentationCtx.p_text_orientation = $RvW.vvConfigObj.get_p_text_orientation();
     }
+
     presentation();
 }
+
 $RvW.loadBookNames = function(a) {
     setPrimaryBooknames();
 }
+
 $RvW.getSingleVerse = function(j, f, k, e) {
     let l;
     const g = j * 1 + 1;
@@ -292,12 +303,13 @@ $RvW.getSingleVerse = function(j, f, k, e) {
     const h = k * 1 + 1;
     const d = getVerseFromArray(g, a, h);
     if (e == 1) {
-        l = $RvW.bibledbObj[1].getSingleVerseFromBuffer(d - 1);
+        l = $RvW.bibledbObj[0].getSingleVerseFromBuffer(d - 1);
     } else {
-        l = $RvW.bibledbObj[2].getSingleVerseFromBuffer(d - 1);
+        l = $RvW.bibledbObj[1].getSingleVerseFromBuffer(d - 1);
     }
     return l;
 }
+
 $RvW.present = function() {
     $RvW.bookIndex = $RvW.getBookValue();
     $RvW.chapterIndex = $RvW.getChapterValue();
@@ -309,26 +321,27 @@ $RvW.present = function() {
     presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex + 1);
     $RvW.launch($RvW.verseIndex);
 }
+
 $RvW.present_external = function(a, h, e) {
-    var g = $RvW.bookIndex;
-    var f = $RvW.chapterIndex;
-    var d = $RvW.verseIndex;
+    const bi = $RvW.bookIndex;
+    const ci = $RvW.chapterIndex;
+    const vi = $RvW.verseIndex;
     $RvW.bookIndex = a;
     $RvW.chapterIndex = h;
     $RvW.verseIndex = e;
     getdataONLY();
     presentationCtx.p_footer = $RvW.getFooter();
-    presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + ($RvW.chapterIndex * 1 + 1);
+    presentationCtx.p_title = $RvW.booknames[$RvW.bookIndex] + " " + (parseInt($RvW.chapterIndex) + 1);
     $RvW.launch($RvW.verseIndex);
-    $RvW.bookIndex = g;
-    $RvW.chapterIndex = f;
-    $RvW.verseIndex = d;
+    $RvW.bookIndex = bi;
+    $RvW.chapterIndex = ci;
+    $RvW.verseIndex = vi;
     getdataONLY();
 }
 $RvW.getFooter = function() {
     var b;
-    var a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][3];
-    var c = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][3];
+    var a = getPrimaryBibleVersion().copyright;
+    var c = getSecondaryBibleVersion().copyright;
     b = a + " / " + c;
     if (a == "public") {
         a = "Public Domain";
@@ -358,8 +371,10 @@ $RvW.getFooter = function() {
     return b;
 }
 $RvW.setFontForList = function() {
-    const a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    bibleFont.set(a);
+    const a = getPrimaryBibleVersion().selectedFont;
+    bibleFont1.set(a);
+    const b = getSecondaryBibleVersion().selectedFont;
+    bibleFont2.set(b);
 }
 
 /**
@@ -497,6 +512,7 @@ function updateRefMenu() {
     const e = $RvW.booknames[bi] + " " + (ci + 1) + ":" + (vi + 1);
     selectedBookRef.set(e);
 }
+let previousSelVerse;
 $RvW.highlightVerse = function(a) {
     console.trace("Highlight Verse:", a);
     // TODO: Highlight the selected verse in the list
@@ -515,8 +531,8 @@ $RvW.highlightVerse = function(a) {
 $RvW.updateVerseContainer = function() {
     previousSelVerse = 0;
 
-    $RvW.priFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-    $RvW.secFontName = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+    $RvW.priFontName = getPrimaryBibleVersion().selectedFont;
+    $RvW.secFontName = getSecondaryBibleVersion().selectedFont;
 
     $RvW.bookIndex = $RvW.getBookValue();
     $RvW.chapterIndex = $RvW.getChapterValue();
@@ -533,7 +549,7 @@ $RvW.updateVerseContainer_continue = function() {
             const vmx : BibleVerse[] = [];
 
             const verseText1 = $RvW.content1[i];
-            const verseFont1 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+            const verseFont1 = getPrimaryBibleVersion().selectedFont;
 
             vmx.push({
                 ref: [
@@ -547,7 +563,7 @@ $RvW.updateVerseContainer_continue = function() {
 
             if ($RvW.vvConfigObj.get_navDualLanguage()) {
                 const verseText2 = $RvW.content2[i];
-                const verseFont2 = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+                const verseFont2 = getSecondaryBibleVersion().selectedFont;
 
                 vmx.push({
                     ref: [
@@ -606,7 +622,7 @@ function activateMainWindow() {
 
     const windowState = $RvW.rvwPreferences.get("app.state.window");
     if (windowState) {
-        const { NativeWindowDisplayState, Screen, Rectangle } = air;
+        const { Screen, NativeWindowDisplayState } = air;
         const { bounds, maximized } = windowState;
 
         // check if the stored window bounds are within the screen bounds
@@ -686,36 +702,28 @@ function vvinit_continue() {
     Prompt.setup();
 
     setTimeout(function () {
-        const a = $RvW.vvConfigObj.get_bibleDBVersion() * 1;
+        const a = $RvW.vvConfigObj.get_bibleDBVersion();
 
         if (a === 1 && !firstTimeFlag) {
-            let c = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
-            if (c) {
-                c = copyFile2AppStorage("bible", "bible");
-                if (c) {
-                    $RvW.vvConfigObj.set_version1(1);
-                    $RvW.vvConfigObj.set_version2(2);
-                    $RvW.vvConfigObj.set_bibleDBVersion(2);
-                    Toast.info("ReVerseVIEW", "Bible Database update process completed.");
-                } else {
-                    Toast.error(
-                        "ReVerseVIEW",
-                        "Bible Database update failed. Please contact verseview@yahoo.com"
-                    );
-                }
+            const ok = copyFile2AppStorage("bible", "bible");
+            if (ok) {
+                $RvW.vvConfigObj.set_version1(0);
+                $RvW.vvConfigObj.set_version2(1);
+
+                $RvW.vvConfigObj.set_bibleDBVersion(2);
+
+                Toast.info("ReVerseVIEW", "Bible Database update process completed.");
             } else {
                 Toast.error(
                     "ReVerseVIEW",
-                    "Bible Database update failed. Please contact verseview@yahoo.com"
+                    "Bible Database update failed. Please create an issue on GitHub."
                 );
             }
         }
-        loadBibleVersion();
-        loadSQLBible($RvW.vvConfigObj.get_version1(), 1);
-        loadSQLBible($RvW.vvConfigObj.get_version2(), 2);
+        loadBibleVersions();
+        loadSQLBible($RvW.vvConfigObj.get_version1(), 0);
+        loadSQLBible($RvW.vvConfigObj.get_version2(), 1);
         setupTabContent();
-
-        SplashScreen.close();
 
         activateMainWindow();
         adjustNavWindowsHeight();
@@ -725,16 +733,17 @@ function vvinit_continue() {
         window.nativeWindow.addEventListener("resize", adjustNavWindowsHeight);
         window.nativeWindow.addEventListener("close", () => $RvW.processExit());
         window.nativeWindow.addEventListener("closing", beforeExit);
+
+        SplashScreen.close();
     }, 500);
 
-    setTimeout(function () {
-        window.scroll(0, 0);
-    }, 3000);
+    // setTimeout(function () {
+    //     window.scroll(0, 0);
+    // }, 3000);
 }
 
 function adjustNavWindowsHeight() {
     // Note: this function is called when the window is resized
-    // it stores the previous state as properties of this function
 
     {
         document.body.style.overflow = "hidden";
@@ -771,7 +780,7 @@ function setupTabContent() {
     // $RvW.scheduleObj = new Scheduler();
     $RvW.notesManageObj = new NotesManager(firstTimeFlag);
     $RvW.notesObj = new Notes();
-    $RvW.searchObj = new BibleSearch(`./bible/${getVersion1Filename()}`);
+    $RvW.searchObj = new BibleSearch(`./bible/${getPrimaryBibleVersion().file}`);
     $RvW.webServerObj = new WebServer('webroot');
     $RvW.webEngineObj = new WebEngine();
     $RvW.bibleRefObj = new BibleReference();
@@ -779,7 +788,7 @@ function setupTabContent() {
 
     ngInit();
 
-    versionFill(true);
+    versionFill();
     configInit();
 
     if (!isSameCfgVersion()) {
@@ -796,9 +805,6 @@ function setupTabContent() {
 function fillNav() {
     $RvW.putbook();
     $RvW.putch();
-
-    document.getElementById("nav_bibleRefID").addEventListener("blur", () => bibleRefBlur(), false);
-    document.getElementById("nav_bibleRefID").addEventListener("focus", () => bibleRefFocus(), false);
 
     $RvW.enterForSearchActive = true;
 
@@ -857,31 +863,36 @@ $RvW.processExit = function processExit() {
     }
 }
 function firstTimeCheck() {
-    var b = true;
-    var a = fileExist("xml/version.xml", 1);
+    let res = true;
+
+    const a = fileExist("bible/versions.json", 1);
     if (!a) {
-        b = setupVVersion();
+        res = setupVVersion();
     }
-    var d = fileExist("xml/backgroundlist.xml", 1);
+
+    const d = fileExist("xml/backgroundlist.xml", 1);
     if (!d) {
-        b = setupVBkgnd();
+        res = setupVBkgnd();
     }
+
     if (!a && !d) {
         firstTimeFlag = true;
     }
-    console.trace("First time check: " + b);
-    return b;
+
+    console.trace("First time check: " + res);
+
+    return res;
 }
+
 function setupVVersion() {
     createFolder("xml");
     createFolder("bible");
     createFolder("notes");
     createFolder("song");
     createFolder("webroot");
-    let a = copyFile2AppStorage("xml/version.xml", "xml/version.xml");
-    if (!a) {
-        return a;
-    }
+
+    let a;
+
     a = copyFile2AppStorage("bible", "bible");
     if (!a) {
         return a;
@@ -890,20 +901,13 @@ function setupVVersion() {
     if (!a) {
         return a;
     }
-    a = copyFile2AppStorage("song/default.db", "song/default.db");
-    if (!a) {
-        return a;
-    }
-    a = copyFile2AppStorage("song/songs.db", "song/songs.db");
-    if (!a) {
-        return a;
-    }
-    a = copyFile2AppStorage("song/words.db", "song/words.db");
+    a = copyFile2AppStorage("song", "song");
     if (!a) {
         return a;
     }
     return a;
 }
+
 function setupVBkgnd() {
     let a = copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
     if (!a) {
@@ -1013,6 +1017,7 @@ export function start(Y: YUI) {
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
 
+        // TODO: remove it and use a static nameSet for english
         loadBibleInfo('en-US', function (err, data) {
             if (err) {
                 throw new Error("[!] LoadBibleInfo: " + err);

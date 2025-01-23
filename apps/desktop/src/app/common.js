@@ -3,6 +3,7 @@ import {presentation} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
+import {getPrimaryBibleVersion} from "@/bible/version";
 
 export function saveFileInAppStorage(content, filename) {
     // fs.writeFileSync(
@@ -278,7 +279,7 @@ export class BibleReference {
         }
 
         function getVerseFont() {
-            return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+            return getPrimaryBibleVersion().selectedFont;
         }
 
         function getErrorMessage() {

@@ -1,4 +1,7 @@
-import {getVersion1Filename, getVersion1Name, updateVersionXML} from "@/bible/version";
+import {
+    updateBibleVersionsJSON,
+    getPrimaryBibleVersion
+} from "@/bible/version";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 
@@ -55,7 +58,7 @@ function indexWords2Array() {
 }
 
 function getIndexFilepath() {
-    const a = getVersion1Filename();
+    const a = getPrimaryBibleVersion().file;
     const b = a.split(".");
     return b[0] + ".db";
 }
@@ -132,10 +135,10 @@ export function insertResult(e) {
         const now = new Date();
         endTime = now.getTime();
         const f = endTime - startTime;
-        $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][5] = getIndexFilepath();
-        updateVersionXML();
+        getPrimaryBibleVersion().searchFile = getIndexFilepath();
+        updateBibleVersionsJSON();
         alert(
-            `Completed indexing ${getVersion1Name()} Bible. Please restart VerseVIEW.`
+            `Completed indexing ${getPrimaryBibleVersion().name} Bible. Please restart VerseVIEW.`
         );
     }
     addIndexData();

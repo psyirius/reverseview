@@ -1,4 +1,5 @@
 import {$RvW} from "@/rvw";
+import {getPrimaryBibleVersion, getSecondaryBibleVersion} from "@/bible/version";
 
 const bibleVersionInfo = [
     {
@@ -63,13 +64,13 @@ export function setPrimaryBooknames() {
             break;
         }
         case 2: { /* Primary */
-            $RvW.booknames = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
+            $RvW.booknames = getPrimaryBibleVersion().bookNames
                 .replace(/["']/g, "")
                 .split(",");
             break;
         }
         case 3: { /* Primary with English */
-            let d = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
+            let d = getPrimaryBibleVersion().bookNames
                 .replace(/["']/g, "")
                 .split(",");
             if (d[0] === $RvW.default_booknames[0]) {
@@ -83,10 +84,10 @@ export function setPrimaryBooknames() {
             break;
         }
         case 4: { /* Primary with Secondary */
-            const c = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][7]
+            const c = getPrimaryBibleVersion().bookNames
                 .replace(/["']/g, "")
                 .split(",");
-            const a = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][7]
+            const a = getSecondaryBibleVersion().bookNames
                 .replace(/["']/g, "")
                 .split(",");
             if (c[0] === a[0] || a[0] === "") {

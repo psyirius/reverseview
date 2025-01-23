@@ -5,7 +5,8 @@ import {verseChange} from "@app/main";
 import {console} from "@/platform/adapters/air";
 import {$RvW} from "@/rvw";
 import {
-    bibleFont,
+    bibleFont1, bibleFont2,
+    bibleNavSearch,
     bookList,
     chapterList,
     recentBibleRefs,
@@ -27,7 +28,8 @@ export default function LeftBibleTab() {
     const _chapterList = useStoreState(chapterList);
     const _verseList = useStoreState(verseList);
 
-    const _bibleFont = useStoreState(bibleFont);
+    const _bibleFont1 = useStoreState(bibleFont1);
+    const _bibleFont2 = useStoreState(bibleFont2);
 
     const _recentRefs = useStoreState(recentBibleRefs);
 
@@ -120,6 +122,19 @@ export default function LeftBibleTab() {
         setActiveRecentVerse(i);
     }
 
+    const navSearch = useStoreState(bibleNavSearch);
+
+    function _renderBibleNavListItem(item: any) {
+        return (
+            <div class="content">
+                <div class="header" style={{ fontFamily: _bibleFont1 }}>{item.label}</div>
+                {item.meta && (
+                    <div class="meta" style={{ fontFamily: _bibleFont2 }}>{item.meta}</div>
+                )}
+            </div>
+        )
+    }
+
     return (
         /* Bible Nav */
         <>
@@ -131,12 +146,20 @@ export default function LeftBibleTab() {
                             <input
                                 type="text"
                                 placeholder="Psa 23 1"
-                                id="nav_bibleRefID"
+                                value={navSearch}
+                                onInput={(e) => {
+                                    bibleNavSearch.set(e.currentTarget.value);
+                                }}
+                                onBlur={(e) => {
+                                    $RvW.enterForBibleRef = false;
+                                }}
+                                onFocus={(e) => {
+                                    $RvW.enterForBibleRef = true;
+                                }}
                             />
 
                             <button
                                 class="ui icon button"
-                                id="bible-ref-find"
                                 data-tooltip="Find"
                                 onClick={processNavBibleRefFind}
                             >
@@ -145,7 +168,6 @@ export default function LeftBibleTab() {
 
                             <button
                                 class="ui icon button"
-                                id="bible-quick-present"
                                 data-tooltip="Quick Present"
                                 onClick={processNavBibleRef}
                             >
@@ -159,20 +181,30 @@ export default function LeftBibleTab() {
                     {/* Bible Select */}
                     <div class="flex-[1] relative h-full w-full">
                         <div class="absolute h-full w-full">
-                            <div class="ui three column padded grid font-medium h-full min-w-full" style={{
-                                fontFamily: _bibleFont
-                            }}>
+                            <div class="ui three column padded grid font-medium h-full min-w-full">
                                 <div class="ten wide column" style={{padding: 0}}>
-                                    <ScrollableSelect items={bookListItems} onSelectItem={onBookChange}
-                                                      selectedItem={activeBook}/>
+                                    <ScrollableSelect
+                                        items={bookListItems}
+                                        onSelectItem={onBookChange}
+                                        selectedItem={activeBook}
+                                        renderItem={_renderBibleNavListItem}
+                                    />
                                 </div>
                                 <div class="three wide column" style={{padding: 0}}>
-                                    <ScrollableSelect items={chapterListItems} onSelectItem={onChapterChange}
-                                                      selectedItem={activeChapter}/>
+                                    <ScrollableSelect
+                                        items={chapterListItems}
+                                        onSelectItem={onChapterChange}
+                                        selectedItem={activeChapter}
+                                        renderItem={_renderBibleNavListItem}
+                                    />
                                 </div>
                                 <div class="three wide column" style={{padding: 0}}>
-                                    <ScrollableSelect items={verseListItems} onSelectItem={onVerseChange}
-                                                      selectedItem={activeVerse}/>
+                                    <ScrollableSelect
+                                        items={verseListItems}
+                                        onSelectItem={onVerseChange}
+                                        selectedItem={activeVerse}
+                                        renderItem={_renderBibleNavListItem}
+                                    />
                                 </div>
                             </div>
                         </div>

@@ -85,6 +85,10 @@ export interface PresentationConfig {
      * */
     p_align: 'left' | 'center' | 'right';
     /**
+     * Enable touch gestures
+     * */
+    p_enableGestures: boolean;
+    /**
      * Text orientation
      * */
     p_text_orientation: number;

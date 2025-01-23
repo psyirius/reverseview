@@ -6,6 +6,7 @@ import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 
 import $ from "jquery";
+import {getPrimaryBibleVersion, getSecondaryBibleVersion} from "@/bible/version";
 
 export class BibleSearch {
     constructor(O) {
@@ -35,13 +36,14 @@ export class BibleSearch {
 
         init();
 
-        function getVersion1Font() {
-            return $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][2];
-        }
-
         function init() {
-            // $("#searchID").css("font-family", getVersion1Font());
-            $("#adSearch").css("font-family", getVersion1Font());
+            const ffx = [
+                ...getPrimaryBibleVersion().fonts
+            ].map((f) => JSON.stringify(f)).join(", ");
+
+            // $("#searchID").css("font-family", ffx);
+            $("#adSearch").css("font-family", ffx);
+
             D();
             attachEvtListeners();
             G();
@@ -166,13 +168,13 @@ export class BibleSearch {
             if (I.data == null) {
             } else {
                 var X = I.data.length;
-                u = new Array();
-                s = new Array();
+                u = [];
+                s = [];
                 for (var Z = 0; Z < X; Z++) {
                     var aa = I.data[Z];
                     u.push(aa.word);
                     var Y = getVerseFromArray(aa.bookNum, aa.chNum, aa.verseNum);
-                    s.push($RvW.bibledbObj[2].getSingleVerseFromBuffer(Y - 1));
+                    s.push($RvW.bibledbObj[1].getSingleVerseFromBuffer(Y - 1));
                 }
             }
             k();
@@ -255,7 +257,7 @@ export class BibleSearch {
                         an.verseNum +
                         "</font><br>" +
                         Z;
-                    var ah = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+                    var ah = getPrimaryBibleVersion().selectedFont;
                     ad[i] = new verseClass(aj, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
 
                     var ai = '<font face="Arial, Helvetica, sans-serif">' +
@@ -266,7 +268,7 @@ export class BibleSearch {
                         an.verseNum +
                         "</font><br>" +
                         X;
-                    var ah = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+                    var ah = getSecondaryBibleVersion().selectedFont;
                     ac[i] = new verseClass(ae, ai, an.bookNum, an.chNum, an.verseNum, ah, false);
                 }
                 if (C > L) {
@@ -329,8 +331,8 @@ export class BibleSearch {
                         ak.verseNum;
                     var ac = u[ai];
                     var ab = s[ai];
-                    var ag = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-                    var af = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+                    var ag = getPrimaryBibleVersion().selectedFont;
+                    var af = getSecondaryBibleVersion().selectedFont;
                     aj = aj + "<tr>\n";
                     aj = aj + "<td width=14%>" + ae + "</td>\n";
                     aj =

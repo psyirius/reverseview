@@ -2,7 +2,7 @@
 
 import {processNavBibleRefFind} from "@/bible/navigation";
 import {console} from "@/platform/adapters/air";
-import {ScheduleItemType, scheduleList} from "@stores/global";
+import {bibleNavSearch, ScheduleItemType, scheduleList} from "@stores/global";
 import {songManager, songNavigator} from "@app/glc";
 import {$RvW} from "@/rvw";
 
@@ -445,9 +445,7 @@ export class _Scheduler_ {
         if (item.type === ScheduleItemType.VERSE) {
             const [book, chapter, verse] = String(item.ref).split(':').map(Number);
 
-            $("#nav_bibleRefID").val(
-                [$RvW.english_booknames[book], chapter + 1, verse + 1].join(' ')
-            );
+            bibleNavSearch.set([$RvW.english_booknames[book], chapter + 1, verse + 1].join(' '));
 
             processNavBibleRefFind();
 

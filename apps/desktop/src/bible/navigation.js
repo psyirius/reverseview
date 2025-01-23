@@ -1,13 +1,12 @@
 import {Toast} from "@/app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
-import {selectedBible} from "@stores/global";
+import {bibleNavSearch, selectedBible} from "@stores/global";
 
 function getNumofVerses() {
     return $RvW.numofch[$RvW.bookIndex + 1][$RvW.chapterIndex + 1];
 }
 function processNextButton() {
-    console.trace("navigation.js: processNextButton()");
     var a;
     var b = getNumofVerses();
     if ($RvW.verseIndex + 1 === b) {
@@ -30,7 +29,7 @@ function processPrevButton() {
     $RvW.launch($RvW.verseIndex);
 }
 export function processNavBibleRef() {
-    var d = document.getElementById("nav_bibleRefID").value;
+    var d = bibleNavSearch.get();
     var e = $RvW.bibleRefObj.init(d);
     if (e) {
         var c = $RvW.bibleRefObj.getBook();
@@ -45,7 +44,7 @@ export function processNavBibleRef() {
         $RvW.putch(b - 1, true);
         $RvW.putver(a - 1);
         const f = setInterval(function () {
-            if ($RvW.bibledbObj[1].isFullDataReady() && $RvW.bibledbObj[2].isFullDataReady()) {
+            if ($RvW.bibledbObj[0].isFullDataReady() && $RvW.bibledbObj[1].isFullDataReady()) {
                 clearTimeout(f);
                 $RvW.bibleRefObj.present();
                 $RvW.scroll_to_view = true;
@@ -58,7 +57,7 @@ export function processNavBibleRef() {
     }
 }
 export function processNavBibleRefFind() {
-    var d = document.getElementById("nav_bibleRefID").value;
+    var d = bibleNavSearch.get();
     var e = $RvW.bibleRefObj.init(d);
     if (e) {
         const c = $RvW.bibleRefObj.getBook();
@@ -80,10 +79,4 @@ export function setBookChVer(a, e, d) {
     });
     $RvW.putch(e - 1, true);
     $RvW.putver(d - 1);
-}
-export function bibleRefBlur() {
-    $RvW.enterForBibleRef = false;
-}
-export function bibleRefFocus() {
-    $RvW.enterForBibleRef = true;
 }

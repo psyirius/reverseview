@@ -18,6 +18,7 @@ import {Toast} from "@app/toast";
 import SelectDropdown from "@app/ui/widgets/SelectDropdown";
 // @ts-ignore
 import $ from 'jquery';
+import ColorInput from "@app/ui/widgets/ColorInput";
 
 enum TextJustification {
     Left    = 'left',
@@ -147,6 +148,9 @@ function MainPresentationSetup() {
     const [presentationOnTop, setPresentationOnTop] = useState(
         $RvW.vvConfigObj.get_presentationOnTop()
     );
+    const [enableGestures, setEnableGestures] = useState(
+        $RvW.rvwPreferences.get("app.settings.main.enable_gestures", true)
+    );
 
     useEffect(() => {
         $RvW.vvConfigObj.set_p_enableTransition(enableTransition);
@@ -172,6 +176,10 @@ function MainPresentationSetup() {
         $RvW.vvConfigObj.set_presentationOnTop(presentationOnTop);
         $RvW.vvConfigObj.save();
     }, [presentationOnTop]);
+    useEffect(() => {
+        $RvW.rvwPreferences.get("app.settings.main.enable_gestures", enableGestures);
+        $RvW.rvwPreferences.commit();
+    }, [enableGestures]);
 
     const [showDatetime, setShowDatetime] = useState(
         $RvW.vvConfigObj.get_showDateTime()
@@ -692,6 +700,16 @@ function MainPresentationSetup() {
                                     <label>Stay on Top</label>
                                 </div>
                             </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        value={enableGestures}
+                                        onChange={(e) => setEnableGestures((e.target as HTMLInputElement).checked)}
+                                    />
+                                    <label>Enable Touch Gestures</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -920,9 +938,6 @@ function StagePresentationSetup() {
     const vertPosSliderRef = useRef<HTMLDivElement>(null);
     const maxFontSizeSliderRef = useRef<HTMLDivElement>(null);
 
-    const colorInputFGRef = useRef<HTMLInputElement>(null);
-    const colorInputBGRef = useRef<HTMLInputElement>(null);
-
     const [layout, setLayout] = useState(
         $RvW.rvwPreferences.get("app.settings.stage.layout", StageViewStyle.Horizontal)
     );
@@ -932,8 +947,17 @@ function StagePresentationSetup() {
     const [svMiniWindow, setSvMiniWindow] = useState(
         $RvW.rvwPreferences.get("app.settings.stage.mini_window", false)
     );
+    const [svFramedWindow, setSvFramedWindow] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.framed_window", false)
+    );
+    const [svTransparentWindow, setSvTransparentWindow] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.transparent_window", false)
+    );
     const [svGreenWindow, setSvGreenWindow] = useState(
         $RvW.rvwPreferences.get("app.settings.stage.green_screen", false)
+    );
+    const [svStayOnTop, setSvStayOnTop] = useState(
+        $RvW.rvwPreferences.get("app.settings.stage.stay_on_top", false)
     );
 
     const [opacity, setOpacity] = useState(
@@ -1029,38 +1053,17 @@ function StagePresentationSetup() {
                 $RvW.rvwPreferences.commit();
             },
         });
-
-        // @ts-ignore
-        $(colorInputFGRef.current).spectrum({
-            color: fgColor,
-            showAlpha: false,
-            showInitial: true,
-            showInput: true,
-            showButtons: false,
-            preferredFormat: "hex",
-            change: function(color: any) {
-                const value = color.toHexString();
-                setFgColor(value);
-                $RvW.rvwPreferences.set("app.settings.stage.fg_color", value);
-                $RvW.rvwPreferences.commit();
-            }
-        });
-        // @ts-ignore
-        $(colorInputBGRef.current).spectrum({
-            color: bgColor,
-            showAlpha: false,
-            showInitial: true,
-            showInput: true,
-            showButtons: false,
-            preferredFormat: "hex",
-            change: function(color: any) {
-                const value = color.toHexString();
-                setBgColor(value);
-                $RvW.rvwPreferences.set("app.settings.stage.bg_color", value);
-                $RvW.rvwPreferences.commit();
-            }
-        });
     }, []);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.fg_color", fgColor);
+        $RvW.rvwPreferences.commit();
+    }, [fgColor]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.bg_color", bgColor);
+        $RvW.rvwPreferences.commit();
+    }, [bgColor]);
 
     useEffect(() => {
         $RvW.rvwPreferences.set("app.settings.stage.layout", layout);
@@ -1078,9 +1081,24 @@ function StagePresentationSetup() {
     }, [svMiniWindow]);
 
     useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.framed_window", svFramedWindow);
+        $RvW.rvwPreferences.commit();
+    }, [svFramedWindow]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.transparent_window", svTransparentWindow);
+        $RvW.rvwPreferences.commit();
+    }, [svTransparentWindow]);
+
+    useEffect(() => {
         $RvW.rvwPreferences.set("app.settings.stage.green_screen", svGreenWindow);
         $RvW.rvwPreferences.commit();
     }, [svGreenWindow]);
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.stage.stay_on_top", svStayOnTop);
+        $RvW.rvwPreferences.commit();
+    }, [svStayOnTop]);
 
     useEffect(() => {
         $RvW.rvwPreferences.set("app.settings.stage.primary_only", primaryOnly);
@@ -1196,10 +1214,44 @@ function StagePresentationSetup() {
                             <div class="ui checkbox">
                                 <input
                                     type="checkbox"
+                                    checked={svFramedWindow}
+                                    disabled={svTransparentWindow}
+                                    onChange={(e) => setSvFramedWindow((e.target as HTMLInputElement).checked)}
+                                />
+                                <label>Framed Window</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input
+                                    type="checkbox"
+                                    checked={svTransparentWindow}
+                                    onChange={(e) => {
+                                        setSvTransparentWindow((e.target as HTMLInputElement).checked);
+                                        setSvFramedWindow(false);
+                                    }}
+                                />
+                                <label>Transparent Window</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input
+                                    type="checkbox"
                                     checked={svGreenWindow}
                                     onChange={(e) => setSvGreenWindow((e.target as HTMLInputElement).checked)}
                                 />
                                 <label>Green Screen</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input
+                                    type="checkbox"
+                                    checked={svStayOnTop}
+                                    onChange={(e) => setSvStayOnTop((e.target as HTMLInputElement).checked)}
+                                />
+                                <label>Stay on Top</label>
                             </div>
                         </div>
                     </div>
@@ -1248,17 +1300,25 @@ function StagePresentationSetup() {
                     </div>
 
                     <div class="fields">
-                        <div class="eight wide field">
+                        <div class="field">
                             {/* Color of Text */}
                             <label>Text Color</label>
 
-                            <input type="text" ref={colorInputFGRef} />
+                            <ColorInput
+                                value={fgColor}
+                                resetValue='#ffffff'
+                                onChange={(color) => setFgColor(color)}
+                            />
                         </div>
-                        <div class="eight wide field">
+                        <div class="field">
                             {/* Background color of strip */}
                             <label>Strip Background Color</label>
 
-                            <input type="text" ref={colorInputBGRef} />
+                            <ColorInput
+                                value={bgColor}
+                                resetValue='#000000'
+                                onChange={(color) => setBgColor(color)}
+                            />
                         </div>
                     </div>
                 </div>

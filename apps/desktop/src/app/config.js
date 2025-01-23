@@ -10,10 +10,10 @@ export class Config {
 
         /* Getters and setters */
         this.get_version1 = function () {
-            return $RvW.rvwPreferences.get("$.version1", 1);
+            return $RvW.rvwPreferences.get("$.version1", 0);
         };
         this.get_version2 = function () {
-            return $RvW.rvwPreferences.get("$.version2", 2);
+            return $RvW.rvwPreferences.get("$.version2", 1);
         };
         this.get_bkgndIndex = function () {
             return $RvW.rvwPreferences.get("$.bkgndIndex", 0);

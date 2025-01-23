@@ -1467,6 +1467,7 @@ function DTComp({results, onSelect}) {
             height: '100%',
         }}>
             <PaginatedList
+                // data={{count: total}}
                 items={items}
                 itemsPerPage={perPage}
                 renderItem={(item: any) => (
@@ -1601,6 +1602,8 @@ class _LeftSongsTab_ extends Component<Props, State> {
         this.setState({
             searchQuery: '',
             searchFilters: [],
+            selectedTag: -1,
+            selectedCategory: -1,
         });
     };
 
@@ -1653,7 +1656,9 @@ class _LeftSongsTab_ extends Component<Props, State> {
     removeSearchFilter = (index: number) => {
         const filters = [...this.state.searchFilters];
         filters.splice(index, 1);
-        this.setState({ searchFilters: filters });
+        this.setState({
+            searchFilters: filters,
+        });
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot: any) {

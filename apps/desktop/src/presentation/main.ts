@@ -27,6 +27,7 @@
         p_leftMargin: 50,
         p_rightMargin: 50,
         p_align: "left",
+        p_enableGestures: true,
         p_maxFontSize: 100,
         p_enableTransition: true,
         p_transitionDuration: 150,
@@ -100,29 +101,31 @@
 
     function setupEvents() {
         // setup swipe event
-        $("#presentationContent").swipe({
-            swipe: function (c, e, f, d, b) {
-                switch (e) {
-                    case "up":
-                    case "down": {
-                        clearPresenter();
-                        break;
+        if (_$.p_enableGestures) {
+            $("#presentationContent").swipe({
+                swipe: function (c, e, f, d, b) {
+                    switch (e) {
+                        case "up":
+                        case "down": {
+                            clearPresenter();
+                            break;
+                        }
+                        case "right": {
+                            prevSlide();
+                            window.parent.goToPrevSlide();
+                            break;
+                        }
+                        case "left": {
+                            nextSlide();
+                            window.parent.goToNextSlide();
+                            break;
+                        }
                     }
-                    case "right": {
-                        prevSlide();
-                        window.parent.goToPrevSlide();
-                        break;
-                    }
-                    case "left": {
-                        nextSlide();
-                        window.parent.goToNextSlide();
-                        break;
-                    }
-                }
-            },
-        });
+                },
+            });
+        }
 
-        window.onunload = function (evt) {
+        window.onunload = function () {
             window.parent.onWindowUnload();
         };
     }
@@ -320,6 +323,7 @@
         document.getElementById("content1").style.top = c1_top;
         document.getElementById("content1").style.width = c1_width;
         document.getElementById("content1").style.height = c1_height;
+
         document.getElementById("content2").style.left = c2_left;
         document.getElementById("content2").style.top = c2_top;
         document.getElementById("content2").style.width = c2_width;
@@ -396,16 +400,14 @@
 
     function nextSlide() {
         _$.p_current_index = get_next_index();
-        document.getElementById("content1").style.textShadow = null;
-        document.getElementById("content2").style.textShadow = null;
+
         setupContentPosition();
         updateContentWithAnimation();
     }
 
     function prevSlide() {
         _$.p_current_index = get_prev_index();
-        document.getElementById("content1").style.textShadow = null;
-        document.getElementById("content2").style.textShadow = null;
+
         setupContentPosition();
         updateContentWithAnimation();
     }
@@ -463,7 +465,10 @@
         if (mm < 10) {
             mm = "0" + mm;
         }
-        const ss = now.getSeconds();
+        let ss = now.getSeconds();
+        if (ss < 10) {
+            ss = "0" + ss;
+        }
 
         document.getElementById("footer_date").innerHTML = `${now.toDateString()}&nbsp;&nbsp;${hh}:${mm}:${ss}${pp}`;
 
@@ -694,13 +699,6 @@
             }
             default:
                 break;
-        }
-    }
-
-    function initTransition(enabled) {
-        transitionDuration = 0;
-        if (enabled) {
-            transitionDuration = _$.p_transitionDuration;
         }
     }
 

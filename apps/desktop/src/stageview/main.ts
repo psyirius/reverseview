@@ -1,7 +1,9 @@
 // @ts-nocheck
 
 !(function (exports) {
-    const _$ = {
+    type PresentationConfig = import("@/shared/presentation").PresentationConfig;
+
+    const _$: PresentationConfig = {
         p_text1_arr: [],
         p_text2_arr: [],
         p_text1_font: "",
@@ -73,15 +75,16 @@
     let footer_message = "";
     let messageFromMain = "";
     let calculateFontSize = false;
-    let MIN_FONT_FOR_OUTLINE = 22;
 
-    const IS_DEBUG = true;
+    const MIN_FONT_FOR_OUTLINE = 22;
+
+    const DEBUG_ENABLED = true;
 
     function initStageView() {
-        _debug_log('initStageView');
+        debug('initStageView');
         passVariable(1, ctx);
-        getDate();
         p_window_Y_org = _$.p_window_Y;
+        updateDate();
         updatePresentation();
     }
 
@@ -140,6 +143,7 @@
         $("#backgroundLayer").show();
         $("#backgroundLayer3rd").hide();
         $("#backgroundLayer3rdBorder").hide();
+
         if (alignLeft) {
             $("#content1Container").removeClass("textCenter textLeft textRight");
             $("#content1Container").addClass("textLeft");
@@ -156,9 +160,12 @@
             case "0": default: {
                 var l = _$.p_text1_arr[_$.p_current_index].length;
                 var j = _$.p_text2_arr[_$.p_current_index].length;
+
                 var w = l + j;
+
                 var g = (l / w) * 0.8;
                 var f = (j / w) * 0.8;
+
                 header_top = 0;
                 header_left = 0;
                 header_width = _$.p_window_X;
@@ -175,17 +182,20 @@
                 footer_left = header_left;
                 footer_width = _$.p_window_X;
                 footer_height = parseInt(_$.p_window_Y * 0.1);
+
                 if (c) {
                     $("#content2Container").hide();
                     content1_height = parseInt(_$.p_window_Y * 0.8);
                 } else {
                     $("#content2Container").show();
                 }
+
                 $("#presentationTitle").show();
                 $("#presentationTitle2").hide();
                 $("#footer").show();
                 $("#footerL").hide();
                 $("#footerR").hide();
+
                 break;
             }
             case "1": {
@@ -201,6 +211,7 @@
                 content2_left = header_left + content1_width + 1;
                 content2_width = parseInt(_$.p_window_X * 0.5);
                 content2_height = parseInt(_$.p_window_Y * 0.8);
+
                 if (o) {
                     footerL_top = content2_top + content2_height + 1;
                     footerL_left = header_left;
@@ -210,6 +221,7 @@
                     footerR_left = header_left + footerL_width + 1;
                     footerR_width = parseInt(_$.p_window_X * 0.5);
                     footerR_height = parseInt(_$.p_window_Y * 0.1);
+
                     $("#footer").hide();
                     $("#footerL").show();
                     $("#footerR").show();
@@ -218,6 +230,7 @@
                     footer_left = header_left;
                     footer_width = _$.p_window_X;
                     footer_height = parseInt(_$.p_window_Y * 0.1);
+
                     $("#footer").show();
                     $("#footerL").hide();
                     $("#footerR").hide();
@@ -225,10 +238,12 @@
                 if (c) {
                     $("#content2Container").hide();
                     $("#presentationTitle2").hide();
+
                     content1_width = parseInt(_$.p_window_X);
                 } else {
                     $("#content2Container").show();
                 }
+
                 $("#presentationTitle").show();
                 $("#presentationTitle2").show();
                 break;
@@ -251,6 +266,7 @@
                     footer_left = header_left;
                     footer_width = _$.p_window_X;
                     footer_height = parseInt(_$.p_window_Y * 0.1);
+
                     $("#footer").show();
                     $("#footerL").hide();
                     $("#footerR").hide();
@@ -262,8 +278,10 @@
                 $("#footerL").hide();
                 $("#footerR").hide();
                 $("#presentationTitle2").hide();
+
                 $("#backgroundLayer3rd").show();
                 $("#backgroundLayer3rdBorder").show();
+
                 $("#backgroundLayer3rd").css("background-color", bgColour);
                 $("#backgroundLayer3rd").css("opacity", opacity);
                 $("#backgroundLayer3rdBorder").css("z-index", 6);
@@ -272,6 +290,7 @@
                     "border-width": "5px",
                     "border-style": "solid",
                 });
+
                 var m = 1 - F;
                 _$.p_window_Y = p_window_Y_org - 40;
                 header_top = parseInt(_$.p_window_Y * m);
@@ -286,6 +305,7 @@
                 content2_left = parseInt(_$.p_window_X * 0.5);
                 content2_width = parseInt(_$.p_window_X * 0.5);
                 content2_height = parseInt(_$.p_window_Y * F);
+
                 if (c) {
                     $("#content2Container").hide();
                     content1_width = parseInt(_$.p_window_X);
@@ -297,6 +317,7 @@
                         content2_height = content1_height;
                     } else {
                         $("#content2Container").show();
+
                         if (showHorizontal) {
                             var t = parseInt(_$.p_window_Y * F);
                             var y = parseInt(t / 2);
@@ -343,6 +364,7 @@
                 footer_left = 0;
                 footer_width = _$.p_window_X;
                 footer_height = 0;
+
                 $("#footer").hide();
                 $("#footerL").hide();
                 $("#footerR").hide();
@@ -352,6 +374,7 @@
 
         $("#content1").show();
         $("#content2").show();
+
         if (greenScreen) {
             if (bgColour == "26FF2A") {
                 $("#backgroundLayer").css("background-color", "#26ff2a");
@@ -361,18 +384,26 @@
         } else {
             $("#backgroundLayer").css("background-color", "black");
         }
+
         $("#content1").css("color", _$.p_font_color);
         $("#content2").css("color", _$.p_font_color);
+
         $("#presentationTitle").css("color", _$.p_font_color);
         $("#presentationTitle2").css("color", _$.p_font_color);
+
         $("#presentationTitle").css({
             top: header_top,
             left: header_left,
             position: "absolute",
         });
+
         $("#presentationTitle").css("font-family", _$.p_text1_font);
-        var s = formatReferenceWithFonts(_$.p_title, _$.p_text1_font, _$.p_text2_font);
+
+        const s = formatReferenceWithFonts(_$.p_title, _$.p_text1_font, _$.p_text2_font);
+
+        // Title (primary)
         $("#presentationTitle").html(s);
+
         $("#presentationTitle").css("padding-left", "50px");
         $("#presentationTitle2").css({
             top: header_top,
@@ -381,7 +412,10 @@
         });
         $("#presentationTitle2").css("font-family", "Arial, Helvetica, Sans-Serif");
         $("#presentationTitle2").css("font-size", "60px");
+
+        // Title (secondary)
         $("#presentationTitle2").html(_$.p_title);
+
         $("#presentationTitle2").css("padding-left", "50px");
         $("#content1Container").css({
             top: content1_top,
@@ -395,11 +429,14 @@
         $("#content1").css("font-size", "120px");
         $("#content1").css("padding-left", "50px");
         $("#content1").css("padding-right", "50px");
+
+        // Content (primary)
         $("#content1").html(_$.p_text1_arr[_$.p_current_index]);
         $("#content1Container").removeClass("contentTextShadow contentTextOutline");
         $("#content2Container").removeClass("contentTextShadow contentTextOutline");
         $("#presentationTitle").removeClass("contentTextShadow contentTextOutline");
         $("#presentationTitle2").removeClass("contentTextShadow contentTextOutline");
+
         if (textOutline) {
             $("#content1Container").addClass("contentTextOutline");
             $("#content2Container").addClass("contentTextOutline");
@@ -412,6 +449,8 @@
             $("#presentationTitle").addClass("contentTextShadow");
             $("#presentationTitle2").addClass("contentTextShadow");
         }
+
+        // Content (secondary)
         var D = 120;
         var B = 120;
         var l = 0;
@@ -488,6 +527,8 @@
                 n = true;
             }
         }
+
+        // Text outline
         if (textOutline) {
             if (n) {
                 $("#content1Container").removeClass("contentTextOutline");
@@ -518,8 +559,10 @@
             $("#presentationTitle").removeClass("contentTextOutlineSmall");
             $("#presentationTitle2").removeClass("contentTextOutlineSmall");
         }
+
         $("#presentationTitle").css("font-size", "40px");
         $("#presentationTitle2").css("font-size", "40px");
+
         var r = (parseInt(D) + parseInt(B)) / 2;
         if (p_text_orientation_local == "3") {
             if (!c) {
@@ -621,7 +664,7 @@
     }
 
     function get_next_index() {
-        var a = _$.p_current_index * 1 + 1;
+        let a = parseInt(_$.p_current_index) + 1;
         if (_$.p_current_index == _$.p_last_index) {
             a = 0;
         }
@@ -629,7 +672,7 @@
     }
 
     function get_prev_index() {
-        var a = _$.p_current_index * 1 - 1;
+        let a = parseInt(_$.p_current_index) - 1;
         if (_$.p_current_index == 0) {
             a = _$.p_last_index;
         }
@@ -638,15 +681,19 @@
 
     function nextSlide() {
         _$.p_current_index = get_next_index();
+
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
+
         updatePresentation();
     }
 
     function prevSlide() {
         _$.p_current_index = get_prev_index();
+
         document.getElementById("content1").style.textShadow = null;
         document.getElementById("content2").style.textShadow = null;
+
         updatePresentation();
     }
 
@@ -668,49 +715,54 @@
         $("#content2").hide();
     }
 
-    function clearPresenter() {
+    function closePresenter() {
         window.close();
     }
 
-    function onBodyKeyUp(a) {
-        key = a.keyCode;
-        switch (key) {
-            case 27:
-                clearPresenter();
+    function onBodyKeyUp(e: Event) {
+        switch (e.keyCode) {
+            case 27: { // ESC
+                closePresenter();
                 break;
+            }
         }
-        window.onunload = function (b) {
-            window.parent.iamclosingPresentation();
+
+        window.onunload = function () {
+            window.parent.onWindowUnload();
         };
     }
 
-    function getDate() {
-        var d = new Date();
-        var c = d.getHours();
-        var b = "";
-        var a = " AM";
-        if (c == 0) {
-            b = 12;
+    function updateDate() {
+        const now = new Date();
+        const hours = now.getHours();
+
+        let hh: number;
+        let pp = " AM";
+        if (hours === 0) {
+            hh = 12;
+        } else if (hours <= 11) {
+            hh = hours;
+        } else if (hours === 12) {
+            hh = 12;
+            pp = " PM";
         } else {
-            if (c <= 11) {
-                b = c;
-            } else {
-                if (c == 12) {
-                    b = 12;
-                    a = " PM";
-                } else {
-                    b = c - 12;
-                    a = " PM";
-                }
-            }
+            hh = hours - 12;
+            pp = " PM";
         }
-        var f = d.getMinutes();
-        if (f < 10) {
-            f = "0" + f;
+
+        let mm = now.getMinutes();
+        if (mm < 10) {
+            mm = "0" + mm;
         }
-        var e = d.toDateString() + " &nbsp;&nbsp; " + b + ":" + f + a;
-        writeFooter(e);
-        var e = setTimeout(getDate, 5000);
+        let ss = now.getSeconds();
+        if (ss < 10) {
+            ss = "0" + ss;
+        }
+
+        writeFooter(`${now.toDateString()}&nbsp;&nbsp;${hh}:${mm}:${ss}${pp}`);
+
+        // update every .5 seconds
+        setTimeout(updateDate, 500);
     }
 
     function writeFooter(a) {
@@ -737,22 +789,21 @@
         $("#footerL").html(footer_message);
         $("#footerR").html(footer_message);
         if (calculateFontSize) {
-            var b = 50;
+            let b = 50;
             while (
                 $("#footer").prop("scrollHeight") > $("#footer").prop("clientHeight")
                 ) {
                 $("#footer").css("font-size", b + "px");
-                // console.trace(b);
                 b = b - 5;
             }
-            var b = 40;
+            let bb = 40;
             while (
                 $("#footerL").prop("scrollHeight") > $("#footerL").prop("clientHeight")
                 ) {
-                $("#footerL").css("font-size", b + "px");
-                b = b - 1;
+                $("#footerL").css("font-size", bb + "px");
+                bb = bb - 1;
             }
-            $("#footerR").css("font-size", b + "px");
+            $("#footerR").css("font-size", bb + "px");
             calculateFontSize = false;
         }
     }
@@ -774,9 +825,9 @@
         return h;
     }
 
-    function _debug_log(msg) {
-        if (IS_DEBUG) {
-            // console.trace('StageView:....' + msg);
+    function debug(...msgs) {
+        if (DEBUG_ENABLED) {
+            window.parent.log(...msgs);
         }
     }
 
@@ -794,7 +845,8 @@
     exports.ctx = _$;
 
     // set by parent
-    // exports.parent.iamclosingPresentation = null;
+    // exports.parent.onWindowUnload = null;
+    // exports.parent.log = null;
 
     // DON'T SET IT
     // exports.passVariable = null; // sync func
@@ -803,7 +855,7 @@
     exports.updateContent = updateContent;
     exports.nextSlide = nextSlide;
     exports.prevSlide = prevSlide;
-    exports.clearPresenter = clearPresenter;
+    exports.clearPresenter = closePresenter;
     exports.showBlankProcess = showBlankProcess;
     exports.postMessage = postMessage;
-}(window /** @type {any} */));
+}(window as any));

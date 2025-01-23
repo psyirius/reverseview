@@ -246,7 +246,7 @@ function SelectComponent() {
     }
 
 
-    const handleItemSelected = (itemId: number) => {
+    const handleItemSelected = (itemId: any) => {
         console.log('Selected item ID:', itemId);
         // Your code to handle the selected item
     };

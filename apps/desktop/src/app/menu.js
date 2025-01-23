@@ -1,10 +1,10 @@
 import {$RvW} from "@/rvw";
-import {manageVersion, showBrowse} from "@/bible/version";
+import {importBible} from "@/bible/version";
 import {console} from "@/platform/adapters/air";
 import {
     selectedBibleVersionForVerseEdit,
     selectedSong,
-    selectedSongCategory,
+    selectedSongCategory, showBibleManagePanel,
     showBibleSelectPanel,
     showRemotePanel,
     showVerseEditPanel
@@ -127,11 +127,11 @@ function onClickBibleSelect() {
     showBibleSelectPanel.set(true);
 }
 function add_bible_version() {
-    manageVersion();
-    showBrowse();
+    showBibleManagePanel.set(true);
+    importBible();
 }
 function show_bible_manage() {
-    manageVersion();
+    showBibleManagePanel.set(true);
 }
 function show_editVerse_UI_1() {
     selectedBibleVersionForVerseEdit.set(0);

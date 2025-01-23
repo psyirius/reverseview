@@ -6,6 +6,7 @@ import {
     readable,
     writable,
 } from '@/utils/_store'
+import type {BibleVersion} from "@/bible/version";
 
 export enum ColorTheme {
     LIGHT = 0,
@@ -17,18 +18,6 @@ export interface NetworkInterfaceInfo {
     addr: string;
     mac?: string;
 }
-
-export type BibleVersion = [
-    string, // Name
-    string, // File
-    string, // Font
-    string, // Copyright
-    string, // FontSize
-    string, // SearchFile
-    string, // SelectedFont
-    string, // BookNames
-];
-
 
 export enum ScheduleItemType {
     LYRIC = 0,
@@ -64,8 +53,10 @@ export const bookList: Writable<(string | string[])[]> = writable([]);
 export const chapterList: Writable<string[]> = writable([]);
 export const verseList: Writable<string[]> = writable([]);
 export const selectedVerseList: Writable<BibleVerse[][]> = writable([]);
-export const bibleFont: Writable<string> = writable('');
+export const bibleFont1: Writable<string> = writable('');
+export const bibleFont2: Writable<string> = writable('');
 export const selectedBookRef: Writable<string> = writable('');
+export const bibleNavSearch: Writable<string> = writable('');
 export const recentBibleRefs: Writable<BibleVerseRef[]> = writable([]);
 
 export const songCategories: Writable<string[]> = writable([]);

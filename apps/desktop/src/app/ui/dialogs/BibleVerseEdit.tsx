@@ -3,6 +3,7 @@ import {selectedBibleVersionForVerseEdit, showVerseEditPanel} from "@stores/glob
 import {useStoreState} from "@/utils/hooks";
 import Modal from "@app/ui/Modal";
 import {$RvW} from "@/rvw";
+import {getPrimaryBibleVersion, getSecondaryBibleVersion} from "@/bible/version";
 
 export default function BibleVerseEditDialog() {
     const open = useStoreState(showVerseEditPanel);
@@ -31,11 +32,11 @@ export default function BibleVerseEditDialog() {
 
         switch (version2Edit) {
             case 0: {
-                $RvW.bibledbObj[1].updateVerse(b + 1, c + 1, v + 1, verseText);
+                $RvW.bibledbObj[0].updateVerse(b + 1, c + 1, v + 1, verseText);
                 break;
             }
             case 1: {
-                $RvW.bibledbObj[2].updateVerse(b + 1, c + 1, v + 1, verseText);
+                $RvW.bibledbObj[1].updateVerse(b + 1, c + 1, v + 1, verseText);
                 break;
             }
             default: {
@@ -59,12 +60,12 @@ export default function BibleVerseEditDialog() {
             let verseText: string;
             switch (version2Edit) {
                 case 0: {
-                    font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
+                    font = getPrimaryBibleVersion().selectedFont;
                     verseText = $RvW.getSingleVerse(b, c, v, 1);
                     break;
                 }
                 case 1: {
-                    font = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+                    font = getSecondaryBibleVersion().selectedFont;
                     verseText = $RvW.getSingleVerse(b, c, v, 2);
                     break;
                 }

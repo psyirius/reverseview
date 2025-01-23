@@ -1,6 +1,15 @@
 import {Component, ComponentChildren} from "preact";
 
+interface Page<T> {
+    id: number;
+    items: T[];
+}
+
 interface Props<T> {
+    // data: {
+    //     count: number;
+    // },
+    // getPage: (page: number, size: number) => T[];
     items: T[];
     itemsPerPage: number;
     renderItem: (item: T) => ComponentChildren;
@@ -9,7 +18,9 @@ interface Props<T> {
 }
 
 interface State<T> {
+    loading: boolean;
     currentPage: number;
+    // _currentPageItems: Page<T>;
     internalSelectedItem?: T;
 }
 
@@ -17,7 +28,12 @@ class PaginatedList<T> extends Component<Props<T>, State<T>> {
     constructor(props: Props<T>) {
         super(props);
         this.state = {
+            loading: false,
             currentPage: 1,
+            // _currentPageItems: {
+            //     id: 1,
+            //     items: [],
+            // },
             internalSelectedItem: props.selectedItem,
         };
     }
@@ -52,8 +68,9 @@ class PaginatedList<T> extends Component<Props<T>, State<T>> {
         });
     };
 
-    private renderPaginationControls = (): ComponentChildren => {
+    private Paginator = () => {
         const pageCount = this.getPageCount();
+
         if (pageCount <= 1) {
             return null;
         }
@@ -117,7 +134,7 @@ class PaginatedList<T> extends Component<Props<T>, State<T>> {
                         </li>
                     ))}
                 </ul>
-                {this.renderPaginationControls()}
+                {this.Paginator()}
             </div>
         );
     }

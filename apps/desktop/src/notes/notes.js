@@ -1,6 +1,7 @@
 import {$RvW} from "@/rvw";
 import {selectedBible, showBibleNotesEditPanel} from "@stores/global";
 import {console} from "@/platform/adapters/air";
+import {getPrimaryBibleVersion, getSecondaryBibleVersion} from "@/bible/version";
 
 // BibleNotes
 export class Notes {
@@ -58,8 +59,8 @@ export class Notes {
             var W = j - 1;
             var Q = n - 1;
 
-            var T = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][6];
-            var V = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][6];
+            var T = getPrimaryBibleVersion().selectedFont;
+            var V = getSecondaryBibleVersion().selectedFont;
 
             const S = $RvW.content1[Q];
             const R = $RvW.content2[Q];

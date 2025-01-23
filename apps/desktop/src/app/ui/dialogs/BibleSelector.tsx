@@ -102,10 +102,6 @@ export default function BibleSelectorDialog() {
             <form class="ui form">
                 <h4 class="ui dividing header">Primary</h4>
 
-                {/*<a class="ui basic label">{*/}
-                {/*    bibleVersions[bibleVersion1]*/}
-                {/*}</a>*/}
-
                 <div class="field">
                     <label>Bible Version</label>
 
@@ -115,16 +111,12 @@ export default function BibleSelectorDialog() {
                         onChange={(e) => selectedBibleVersion1.set((e.target as HTMLSelectElement).selectedIndex)}
                     >
                         {bibleVersions.map((version, i) => (
-                            <option value={i} key={i}>{version}</option>
+                            <option value={i} key={i}>{version.name}</option>
                         ))}
                     </select>
                 </div>
 
                 <h4 class="ui dividing header">Secondary</h4>
-
-                {/*<a class="ui basic label">{*/}
-                {/*    bibleVersions[bibleVersion2]*/}
-                {/*}</a>*/}
 
                 <div class="field">
                     <label>Bible Version</label>
@@ -136,7 +128,7 @@ export default function BibleSelectorDialog() {
                         disabled={!version2Enable}
                     >
                         {bibleVersions.map((version, i) => (
-                            <option value={i} key={i}>{version}</option>
+                            <option value={i} key={i}>{version.name}</option>
                         ))}
                     </select>
                 </div>

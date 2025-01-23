@@ -1,2 +1,2 @@
 - Proper filtering using Tags and Categories in Song Search
-- Graphics tab Overlay issue when switched to another tab from BG tab
+- Bible Name Fonts

@@ -9,6 +9,7 @@ import {
 } from "@stores/global";
 import {loadInstalledFonts} from "@app/main";
 import {StageViewStyle} from "@app/ui/tabs/RightSettingsTab";
+import {getPrimaryBibleVersion, getSecondaryBibleVersion} from "@/bible/version";
 
 $RvW.presentWindowOpen = false;
 $RvW.presentationContent = '';
@@ -77,6 +78,7 @@ function passVariable(isStageView, _ = undefined) {
     _.p_bkgnd_grad_orient = $RvW.vvConfigObj.get_p_bkgnd_grad_orient();
     _.p_motion_bkgnd_index = $RvW.vvConfigObj.get_p_motion_bkgnd_index();
     _.p_bkgnd_type = $RvW.rvwPreferences.get('app.settings.background.type');
+
     {
         if (isStageView === 1) {
             let layout = $RvW.rvwPreferences.get("app.settings.stage.layout");
@@ -121,6 +123,7 @@ function passVariable(isStageView, _ = undefined) {
             _.p_text_orientation = presentationCtx.p_text_orientation;
         }
     }
+
     _.p_window_X = pWindowX;
     _.p_window_Y = pWindowY;
     if (isStageView === 1) {
@@ -138,6 +141,7 @@ function passVariable(isStageView, _ = undefined) {
     _.p_enableShadow = $RvW.vvConfigObj.get_p_enableShadow();
     _.p_enableFooter = $RvW.vvConfigObj.get_p_enableFooter();
     _.p_align = $RvW.vvConfigObj.get_p_align();
+    _.p_enableGestures = $RvW.rvwPreferences.get("app.settings.main.enable_gestures");
 
     console.trace(`p_enableTransition: ${_.p_enableTransition}`);
 
@@ -159,14 +163,14 @@ function passVariable(isStageView, _ = undefined) {
     _.p_isArabic1 = false;
     _.p_isArabic2 = false;
     {
-        const t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version1()][0];
+        const t = getPrimaryBibleVersion().name;
         const u = t.indexOf("Arabic");
         if (u !== -1) {
             _.p_isArabic1 = true;
         }
     }
     {
-        const t = $RvW.bibleVersionArray[$RvW.vvConfigObj.get_version2()][0];
+        const t = getSecondaryBibleVersion().name;
         const u = t.indexOf("Arabic");
         if (u !== -1) {
             _.p_isArabic2 = true;
@@ -320,12 +324,13 @@ export function presentation() {
 
             const windowInitOptions = new NativeWindowInitOptions();
             const svWindow = $RvW.rvwPreferences.get("app.settings.stage.window_view");
+            const svStayOnTop = $RvW.rvwPreferences.get("app.settings.stage.stay_on_top");
             const svBounds = screens[stageViewScreenIndex].bounds;
             if (svWindow) {
-                windowInitOptions.resizable = false;
-                windowInitOptions.maximizable = false;
-                windowInitOptions.minimizable = false;
-                const f = $RvW.rvwPreferences.get("app.settings.stage.mini_window");
+                const mini = $RvW.rvwPreferences.get("app.settings.stage.mini_window");
+                const framed = $RvW.rvwPreferences.get("app.settings.stage.framed_window");
+                const transparent = $RvW.rvwPreferences.get("app.settings.stage.transparent_window");
+
                 if (screens[stageViewScreenIndex].bounds.width < 1900) {
                     svBounds.width = 1280 / 2;
                     svBounds.height = 720 / 2;
@@ -333,16 +338,25 @@ export function presentation() {
                     svBounds.width = 1280;
                     svBounds.height = 720;
                 }
-                if (f) {
+                if (mini) {
                     svBounds.width /= 1.5;
                     svBounds.height /= 1.5;
                 }
+
+                windowInitOptions.systemChrome = (!framed || transparent) ? "none" : "standard";
+                windowInitOptions.transparent = transparent;
+                windowInitOptions.resizable = false;
+                windowInitOptions.maximizable = false;
+                windowInitOptions.minimizable = false;
+                // windowInitOptions.type = windowInitOptions.systemChrome === 'none' ? 'lightweight' : 'utility';
             } else {
+                // full screen
                 windowInitOptions.systemChrome = "none";
                 windowInitOptions.type = "lightweight";
                 windowInitOptions.transparent = true;
                 windowInitOptions.renderMode = "direct";
             }
+
             stageViewWindowX = screens[stageViewScreenIndex].bounds.width;
             stageViewWindowY = screens[stageViewScreenIndex].bounds.height;
 
@@ -351,8 +365,8 @@ export function presentation() {
             );
             sv.addEventListener("htmlDOMInitialize", DOMIntializeStageViewCallback);
             sv.window.nativeWindow.addEventListener(Event.CLOSING, call_closePresentation);
-            sv.window.nativeWindow.alwaysInFront = false;
-            sv.window.nativeWindow.stage.frameRate = 30;
+            sv.window.nativeWindow.alwaysInFront = svStayOnTop;
+            sv.window.nativeWindow.stage.frameRate = 60;
 
             sv.load(new URLRequest("app:/stageview.html"));
 
@@ -378,10 +392,15 @@ export function presentation() {
             //                 loader.loadString(sandboxWrapperHtml.trim());
             //             }
 
-            sv.window.iamclosingPresentation = function () {
+            sv.window.onWindowUnload = function () {
                 if ($RvW.presentationWindow != null) {
                     $RvW.presentationWindow.window.nativeWindow.close();
                 }
+            };
+            sv.window.log = function () {
+                const args = Array.prototype.slice.call(arguments);
+                args.unshift("[StageView]:");
+                console.log(...args);
             };
         } else {
             $RvW.stageWindow = null;

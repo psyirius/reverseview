@@ -13,6 +13,8 @@ import {Toast} from "@app/toast";
 import {console} from "@/platform/adapters/air";
 import Modal from "@app/ui/Modal";
 
+// use the following listener to refresh the network interfaces
+// NetworkInfo.networkInfo.addEventListener(Event.NETWORK_CHANGE, onNetworkChange);
 function getAvailableNwIfs() {
     function getNetworkInterfaceList() {
         const { NetworkInfo } = air;

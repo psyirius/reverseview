@@ -327,7 +327,7 @@ export class _SongManager_ {
         console.error('DB Open error:', evt);
     }
 
-    private getRecordByIdCached(id: string): SongItem | null {
+    private getCachedRecordById(id: string): Nullable<SongItem> {
         for (const record of this._records) {
             if (record.id === id) {
                 return record;
@@ -337,7 +337,7 @@ export class _SongManager_ {
         return null;
     }
 
-    private getRecordIndexByIdCached(id: string): number {
+    private getCachedRecordIndexById(id: string): number {
         for (let i = 0; i < this._records.length; i++) {
             if (this._records[i].id === id) {
                 return i;
@@ -348,7 +348,7 @@ export class _SongManager_ {
     }
 
     public getSong(id: number) {
-        return this.getRecordByIdCached(id);
+        return this.getCachedRecordById(id);
     }
 
     private _ensureDBSchema() {
@@ -387,13 +387,13 @@ export class _SongManager_ {
         ensureSchemaQ.execute();
     }
 
-    private getCount(callback: ResultCallback<number>) {
+    private getCount(callback: ResultCallback<number>): void {
         const countQ = new air.SQLStatement();
         countQ.sqlConnection = this._dbConnection;
 
         // Count Query
         countQ.text = `
-            SELECT COUNT(*) as count FROM songs
+            SELECT COUNT(*) as count FROM songs;
         `;
 
         countQ.addEventListener(air.SQLEvent.RESULT, (evt: air.SQLEvent) => {
@@ -744,7 +744,7 @@ export class _SongManager_ {
                 songTags.set(this.getAllTags());
 
                 {
-                    const record = this.getRecordByIdCached(lastInsertRowID);
+                    const record = this.getCachedRecordById(lastInsertRowID);
 
                     if (!record) {
                         throw new Error('Record not found in the cache');
@@ -822,7 +822,7 @@ export class _SongManager_ {
                 songTags.set(this.getAllTags());
 
                 {
-                    const record = this.getRecordByIdCached(id);
+                    const record = this.getCachedRecordById(id);
 
                     if (!record) {
                         throw new Error('Record not found in the cache');
@@ -861,7 +861,7 @@ export class _SongManager_ {
 
             // cost-effective way to remove the record cache
             {
-                const itemIndex = this.getRecordIndexByIdCached(id);
+                const itemIndex = this.getCachedRecordIndexById(id);
 
                 if (itemIndex === -1) {
                     throw new Error('Record not found in the list');
@@ -961,7 +961,7 @@ export class _SongNavigator_ {
         showSongEditPanel.set(true);
     }
 
-    public showSongEditDialog(item: SongItem = null) {
+    public showSongEditDialog(item?: SongItem = null) {
         selectedSong2Edit.set(item ?? this._activeItem);
         showSongEditPanel.set(true);
     }
