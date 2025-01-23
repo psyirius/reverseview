@@ -61,18 +61,18 @@ export class BibleDB {
         var ag = null;
         var S = null;
         var W = null;
-        var M = null;
+        var _res = null;
         var q = [];
         var e = 1;
         var g = 1;
         var X = 1;
-        var z;
-        var K;
-        var ad;
-        var w;
-        var t;
-        var j;
-        var x;
+        var _revision;
+        var _fonts;
+        var _booknames;
+        var _title;
+        var _description;
+        var _copyrights;
+        var _sizefactor;
         var k = false;
         var O = 500;
         var __is_debug = false;
@@ -210,21 +210,20 @@ export class BibleDB {
         function n() {
             var ai = new air.SQLStatement();
             ai.sqlConnection = G;
-            var ak = "SELECT * FROM configuration";
-            ai.text = ak;
+            ai.text = "SELECT * FROM configuration";
             ai.addEventListener(air.SQLEvent.RESULT, aj);
             ai.addEventListener(air.SQLErrorEvent.ERROR, al);
             ai.execute();
             function aj(am) {
                 __debug("Query successful. Data in searchResult");
-                M = ai.getResult();
-                z = M.data[0].revision;
-                K = M.data[0].fonts;
-                ad = M.data[0].booknames;
-                w = M.data[0].title;
-                t = M.data[0].description;
-                j = M.data[0].copyrights;
-                x = M.data[0].sizefactor;
+                _res = ai.getResult();
+                _revision = _res.data[0].revision;
+                _fonts = _res.data[0].fonts.split(",");
+                _booknames = _res.data[0].booknames.split(",");
+                _title = _res.data[0].title;
+                _description = _res.data[0].description;
+                _copyrights = _res.data[0].copyrights;
+                _sizefactor = _res.data[0].sizefactor;
                 c = true;
             }
             function al() {
@@ -238,25 +237,25 @@ export class BibleDB {
             r = false;
         }
         function getConfigRevision() {
-            return z;
+            return _revision;
         }
         function getConfigFonts() {
-            return K;
+            return _fonts;
         }
         function getConfigBooknames() {
-            return ad;
+            return _booknames;
         }
         function getConfigTitle() {
-            return w;
+            return _title;
         }
         function getConfigDescription() {
-            return t;
+            return _description;
         }
         function getConfigCopyrights() {
-            return j;
+            return _copyrights;
         }
         function getConfigSizefactor() {
-            return x;
+            return _sizefactor;
         }
         function F() {
             i = false;
@@ -448,7 +447,7 @@ export function loadBibleBookNames(bibleVersionId, callback) {
                 callback(null, {
                     title,
                     description,
-                    booknames: JSON.parse('[' + booknames + ']'),
+                    booknames: booknames.split(',').map((book) => book.trim()),
                     fonts: fonts.split(',').map((font) => font.trim()),
                 });
 

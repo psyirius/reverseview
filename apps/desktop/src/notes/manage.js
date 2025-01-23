@@ -1,9 +1,9 @@
 import {insertError, insertResult} from "@/song/indexing";
-import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {clearSelectList, extractFileName} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
+import {showPrompt} from "@app/ui/Prompt";
 
 function notesInfo(db) {
     let conn = new air.SQLConnection();
@@ -109,23 +109,26 @@ export class NotesManager {
                         ab + " is the active notes file and can not be deleted."
                     );
                 } else {
-                    var Z = "Bible Notes";
-                    var ac = "Are you sure you want to delete " + ab;
-                    Prompt.exec(Z, ac, Y);
-                    function Y() {
-                        V(X);
-                        ab = "./notes/" + ab;
-                        var ae = air.File.applicationStorageDirectory.resolvePath(ab);
-                        try {
-                            ae.deleteFile();
-                            Toast.info("Bible Notes", "Deleted Notes file " + ab);
-                        } catch (ad) {
-                            Toast.info(
-                                "Bible Notes",
-                                " Please restart ReVerseVIEW to update the notes list"
-                            );
-                        }
-                    }
+                    showPrompt({
+                        title: "Bible Notes",
+                        message: "Are you sure you want to delete " + ab,
+                        onOk: () => {
+                            V(X);
+                            ab = "./notes/" + ab;
+                            const ae = air.File.applicationStorageDirectory.resolvePath(ab);
+                            try {
+                                ae.deleteFile();
+                                Toast.info("Bible Notes", "Deleted Notes file " + ab);
+                            } catch (ad) {
+                                Toast.info(
+                                    "Bible Notes",
+                                    " Please restart ReVerseVIEW to update the notes list"
+                                );
+                            }
+                        },
+                        onCancel: () => {}
+                    });
+
                 }
             }
         }

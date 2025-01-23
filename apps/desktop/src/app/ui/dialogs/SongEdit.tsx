@@ -3,13 +3,13 @@ import {selectedSong2Edit, showLyricEditPanel, showSongEditPanel} from "@stores/
 import {useStoreState} from "@/utils/hooks";
 import {$RvW} from "@/rvw";
 import Modal from "@app/ui/Modal";
-import {Prompt} from "@app/prompt";
 import Tabs from "@app/ui/Tabz";
 import {console} from "@/platform/adapters/air";
 import {Toast} from "@app/toast";
 import LyricEditDialog from "@app/ui/dialogs/LyricEdit";
 import {presenter, songManager} from "@app/glc";
 import {SongItem} from "@/song/song-manager";
+import {showPrompt} from "@app/ui/Prompt";
 
 interface LSProps {
     slidesInitial: [string[], string[]];
@@ -329,11 +329,12 @@ export default function SongEditDialog() {
         e.preventDefault();
 
         if (dirty) {
-            Prompt.exec(
-                "Song Add/Edit",
-                "Do you want to CANCEL from Add/Edit Song panel?",
-                handleCloseModal
-            );
+            showPrompt({
+                title: "Song Add/Edit",
+                message: "Are you sure you want to cancel and discard the changes?",
+                onOk: handleCloseModal,
+                onCancel: () => {},
+            });
         } else {
             handleCloseModal();
         }

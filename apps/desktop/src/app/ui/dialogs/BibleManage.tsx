@@ -12,9 +12,8 @@ import Modal from "@app/ui/Modal";
 import ScrollableSelect from "@app/ui/widgets/ScrollableSelect";
 import {Toast} from "@app/toast";
 import {console} from "@/platform/adapters/air";
-import SelectDropdown from "@app/ui/widgets/SelectDropdown";
 import {$RvW} from "@/rvw";
-import {Prompt} from "@app/prompt";
+import {showPrompt} from "@app/ui/Prompt";
 
 export default function BibleManageDialog() {
     const open = useStoreState(showBibleManagePanel);
@@ -51,14 +50,12 @@ export default function BibleManageDialog() {
         const version = versions[selectedVersion];
 
         if (version) {
-            console.log("Selected version:", version);
+            // console.log("Selected version:", version);
 
             setBvName(version.name);
             setBvLang(version.lang);
             {
-                const fonts = version.fonts.split(',')
-                    .map((f: string) => f.trim())
-                    .filter((f: string) => !!f);
+                const fonts = [...version.fonts];
 
                 fonts.sort();
                 setBvFonts([...fonts]);
@@ -133,8 +130,6 @@ export default function BibleManageDialog() {
             const v1 = $RvW.vvConfigObj.get_version1();
             const v2 = $RvW.vvConfigObj.get_version2();
 
-            console.log("Selected version:", {bvi, v1, v2});
-
             if ((bvi === v1) || (bvi === v2)) {
                 Toast.error(
                     "Bible Version Manager",
@@ -151,10 +146,10 @@ export default function BibleManageDialog() {
                     "English KJV version can not be deleted.",
                 );
             } else {
-                Prompt.exec(
-                    "Delete Version",
-                    "Are you sure you want to delete version?",
-                    function () {
+                showPrompt({
+                    title: 'Bible Version Manager',
+                    message: 'Are you sure you want to delete the selected version?',
+                    onOk: () => {
                         if (deleteBibleVersion(bvi)) {
                             setVersions(
                                 [...BIBLE_VERSIONS]
@@ -172,8 +167,9 @@ export default function BibleManageDialog() {
                                 "Failed to delete version."
                             );
                         }
-                    }
-                );
+                    },
+                    onCancel: () => {},
+                });
             }
         }
     }
@@ -184,7 +180,7 @@ export default function BibleManageDialog() {
         if (version) {
             version.name = bvName;
             version.lang = bvLang;
-            version.fonts = bvFonts.join(',');
+            version.fonts = [...bvFonts];
             version.selectedFont = bvSelectedFont;
             version.copyright = bvCopyright;
 

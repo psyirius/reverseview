@@ -18,6 +18,7 @@ export type BibleVersion = {
     copyright: string, // Copyright
     fontSizeFactor: string, // Font Size Factor
     searchFile: string, // Search File
+    rtl: boolean, // Right to Left
     bookNames: string, // Book Names
 }
 
@@ -222,6 +223,7 @@ function continueLoadingZephania() {
         fontSizeFactor: new_sizefactor,
         searchFile: "",
         selectedFont: new_font,
+        rtl: false,
         bookNames: new_booknames,
     });
 
@@ -309,6 +311,7 @@ function continueLoadingDB() {
         fontSizeFactor: '1',
         searchFile: '',
         selectedFont: new_sel_font,
+        rtl: false,
         bookNames: new_booknames,
     })
 

@@ -25,7 +25,6 @@ import { Config, configInit } from "./config";
 import { setup as setupUI } from './ui/main';
 import Preferences from './preferences';
 import SplashScreen from './splash';
-import {Prompt} from "@app/prompt";
 import {Toast} from "@app/toast";
 import {
     processNavBibleRef,
@@ -59,6 +58,7 @@ import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 import {console} from "@/platform/adapters/air";
 import {ngInit, songNavigator} from "@app/glc";
+import {ENGLISH_BOOKNAMES} from "@app/const";
 
 // import * as dojoDom from 'dojo/dom';
 // console.trace("dojo/dom", dojoDom);
@@ -699,8 +699,6 @@ function vvinit_continue() {
     setupMenu();
     setupConsole();
 
-    Prompt.setup();
-
     setTimeout(function () {
         const a = $RvW.vvConfigObj.get_bibleDBVersion();
 
@@ -1017,42 +1015,21 @@ export function start(Y: YUI) {
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
 
-        // TODO: remove it and use a static nameSet for english
+        $RvW.english_booknames = ENGLISH_BOOKNAMES;
+
         loadBibleInfo('en-US', function (err, data) {
             if (err) {
                 throw new Error("[!] LoadBibleInfo: " + err);
             }
 
+            // TODO: remove it and use a static nameSet for english
             const [numChMap] = data;
             $RvW.numofch = numChMap;
 
-            const bookNamesMap = {
-                'en-US': 'english_booknames',
-            };
+            $RvW.booknames = $RvW.english_booknames;
+            $RvW.default_booknames = $RvW.english_booknames;
 
-            const done = [];
-
-            for (const bibleId of Object.keys(bookNamesMap)) {
-                const bookNamesKey = bookNamesMap[bibleId];
-
-                loadBibleBookNames(bibleId, function (err, data) {
-                    if (err) {
-                        throw new Error("[!] LoadBibleBookNames: " + err);
-                    }
-
-                    const { booknames } = data;
-                    $RvW[bookNamesKey] = booknames;
-
-                    done.push(data);
-
-                    if (done.length === Object.keys(bookNamesMap).length) {
-                        $RvW.booknames = $RvW.english_booknames;
-                        $RvW.default_booknames = $RvW.english_booknames;
-
-                        vvinit_continue();
-                    }
-                });
-            }
+            vvinit_continue();
         });
     });
 }

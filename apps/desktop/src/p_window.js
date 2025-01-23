@@ -146,7 +146,7 @@ function passVariable(isStageView, _ = undefined) {
     console.trace(`p_enableTransition: ${_.p_enableTransition}`);
 
     if ($RvW.vvConfigObj.get_showVVLogo()) {
-        _.p_brandingText = ["ReVerseVIEW", "rvw.github.io"].join("<br>");
+        _.p_brandingText = ["ReVerseVIEW", "rvw.pages.dev"].join("<br>");
     } else {
         _.p_brandingText = `${$RvW.vvConfigObj.get_logoText1()}<br>${$RvW.vvConfigObj.get_logoText2()}`;
     }

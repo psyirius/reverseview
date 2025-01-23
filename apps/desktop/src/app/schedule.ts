@@ -6,8 +6,6 @@ import {bibleNavSearch, ScheduleItemType, scheduleList} from "@stores/global";
 import {songManager, songNavigator} from "@app/glc";
 import {$RvW} from "@/rvw";
 
-import $ from "jquery";
-
 type ResultCallback<Result = any, Error = any> = (
     result?: Result,
     error?: Error,
