@@ -52,7 +52,7 @@ function cacheAndCollectAppFiles() {
     function flattenIncludes(dirMap, directory) {
         const flat = [];
 
-        const items = dirMap.get(directory);
+        const items = dirMap.get(directory) || [] /* in case of empty dir */;
 
         for (const item of ig.filter(items)) {
             if (isDirectory(item)) {
