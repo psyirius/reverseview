@@ -339,6 +339,20 @@ function BgVideoTab() {
 
         removeBgClipAtIndex(selectedClip);
 
+        if (selectedBg === selectedClip) {
+            updateBgVideoOptions({
+                input: null,
+                inputIndex: null,
+            });
+        }
+
+        if (selectedLogo === selectedClip) {
+            updateBgVideoOptions({
+                logoInput: null,
+                logoInputIndex: null,
+            });
+        }
+
         const _clips = $RvW.rvwPreferences.get("app.settings.background.video.clips", []);
         setVideoClips(_clips);
 
