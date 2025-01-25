@@ -18,5 +18,6 @@ export const presentationCtx = {
     p_ver1ScaleFactor: 1,
     p_ver2ScaleFactor: 1,
     p_bkgnd_color: "000000",
-    p_text_orientation: "0"
+    p_text_orientation: "0",
+    p_logo_mode: false,
 };

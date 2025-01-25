@@ -321,6 +321,7 @@ export function showLogoSlide() {
     presentationCtx.p_current_index = 0;
     presentationCtx.p_last_index = 0;
     presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getLogoFilename();
+    presentationCtx.p_logo_mode = true;
     presentationCtx.p_bkgnd_color = "black";
     presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
     presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color2');

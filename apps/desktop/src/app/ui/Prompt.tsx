@@ -2,12 +2,17 @@ import {render} from "preact";
 import {useEffect, useState} from "preact/hooks";
 import Modal from "@app/ui/Modal";
 
-function AlertBox({ open, onCancel, onOk, title, message }) {
+function AlertBox({ open, onCancel, onOk, title, message, showInput, input = undefined }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [inputValue, setInputValue] = useState(input);
 
     useEffect(() => {
         setIsOpen(open);
     }, [open]);
+
+    useEffect(() => {
+        setInputValue(input);
+    }, [input]);
 
     return (
         <Modal
@@ -20,10 +25,16 @@ function AlertBox({ open, onCancel, onOk, title, message }) {
             <div class="ui form">
                 <div class="field">
                     <label>{message}</label>
+
+                    {showInput && (
+                        <input type="text" value={inputValue} onChange={(e) => {
+                            setInputValue(e.currentTarget.value)
+                        }} />
+                    )}
                 </div>
 
                 <div class="ui basic buttons">
-                    <button class="ui primary icon button" tabIndex={0} onClick={() => onOk()}>
+                    <button class="ui primary icon button" tabIndex={0} onClick={() => onOk(inputValue)}>
                         OK
                     </button>
                     <button class="ui secondary icon button" tabIndex={0} onClick={() => onCancel()}>
@@ -37,7 +48,7 @@ function AlertBox({ open, onCancel, onOk, title, message }) {
 
 let promptContainer = null; // Keep track of the container
 
-function showPrompt({ title, message, onOk, onCancel }) {
+function showPrompt({ title, message, onOk, onCancel, showInput = false, input = undefined }) {
     // Create a container element if it doesn't exist
     if (!promptContainer) {
         promptContainer = document.createElement('div');
@@ -45,8 +56,8 @@ function showPrompt({ title, message, onOk, onCancel }) {
         document.body.appendChild(promptContainer);
     }
 
-    const handleOk = () => {
-        onOk?.();
+    const handleOk = (value?: any) => {
+        onOk?.(value);
         removePrompt();
     };
 
@@ -62,6 +73,8 @@ function showPrompt({ title, message, onOk, onCancel }) {
             onOk={handleOk}
             onCancel={handleCancel}
             open={true}
+            showInput={showInput}
+            input={input}
         />,
         promptContainer
     );

@@ -18,16 +18,17 @@ export const BgContext = {
         BgContext.loadList();
         BgContext.randomBkgnd = true;
     },
-    getBkgndFilename() {
-        var b = [];
-        var a = BgContext.filename.length;
-        b[0] = "./background/" + BgContext.filename[BgContext.selectedIndex];
+    getBkgndFilename: function () {
+        const res = [];
+        res[0] = "./background/" + BgContext.filename[BgContext.selectedIndex];
+
         if (BgContext.randomBkgnd) {
-            for (let d = 0; d < a; d++) {
-                b[d + 1] = "./background/" + BgContext.filename[d];
+            for (let i = 0; i < BgContext.filename.length; i++) {
+                res[i + 1] = "./background/" + BgContext.filename[i];
             }
         }
-        return b;
+
+        return res;
     },
     loadList: function getBkgListFromFile() {
         let d;

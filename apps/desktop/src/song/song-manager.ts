@@ -1210,6 +1210,7 @@ export class _Presenter_ {
         presentationCtx.p_current_index = slideIndex;
         presentationCtx.p_last_index = presentationCtx.p_text1_arr.length - 1;
         presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
+        presentationCtx.p_logo_mode = false;
         presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
         presentationCtx.p_bkgnd_color = "blue";
         presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');

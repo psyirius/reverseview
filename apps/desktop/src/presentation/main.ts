@@ -71,6 +71,154 @@
     let c2_top, c2_left, c2_height, c2_width;
     let f_top, f_left, f_height, f_width;
 
+    function playWithFFMPEG(ffmpegPath, videoPath, vid) {
+        if (!ffmpegPath.exists) {
+            debug("FFMpeg not found.");
+            return;
+        }
+        if (!videoPath.exists) {
+            debug("Video file not found.");
+            return;
+        }
+
+        const { NativeProcess, NativeProcessStartupInfo } = window.runtime.flash.desktop;
+        const { NetConnection, NetStream } = window.runtime.flash.net;
+        const { ByteArray } = window.runtime.flash.utils;
+        const { NetStatusEvent, ProgressEvent, NativeProcessExitEvent } = window.runtime.flash.events;
+
+        const nc = new NetConnection();
+        nc.addEventListener(NetStatusEvent.NET_STATUS, (e) => {
+            debug("NetStatusEvent:", e.info.code);
+
+            switch (e.info.code) {
+                case "NetConnection.Connect.Success": {
+                    startStreaming();
+                    break;
+                }
+            }
+        });
+        nc.connect(null);
+
+        let ns;
+
+        function startStreaming() {
+            ns = new NetStream(nc);
+            ns.client = {
+                onMetaData() {},
+                onCuePoint() {},
+            }
+            vid.attachNetStream(ns);
+            vid.smoothing = true;
+
+            ns.play(null);
+
+            startFFMpeg();
+        }
+
+        let np;
+
+        function startFFMpeg() {
+            const nsi = new NativeProcessStartupInfo();
+            nsi.executable = ffmpegPath;
+
+            const procArgs = new window.runtime['Vector.<String>']();
+            procArgs.push(
+                "-stream_loop", "-1", // loop input stream
+                "-i", videoPath.nativePath,
+
+                "-r", "60", // output framerate
+                "-s", "1920x1080", // output resolution
+                // "-s", "3840x2160", // output resolution
+                "-b:v", "80M", // video bitrate (1M = 1mbps, 512k = 512kbps)
+                "-vf", "yadif", // de-interlace
+                // "-vcodec", "flv", // video codec
+                // "-level", "3.0", // for streaming
+
+                "-an", // no audio
+
+                // "-ar", "44100", // audio sample rate
+                // "-ac", "2", // audio channels
+                // "-ab", "192k", // audio bitrate
+                // "-acodec", "aac_mf", // audio codec
+
+                "-f", "flv", // output format
+                // "-f", "h264", // output format
+
+                "pipe:1" // or "-" output to stdout
+            );
+            nsi.arguments = procArgs;
+
+            np = new NativeProcess();
+            np.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData);
+            np.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onStandardErrorData);
+            np.addEventListener(NativeProcessExitEvent.EXIT, onExit);
+
+            np.start(nsi);
+        }
+
+        function onOutputData(e) {
+            const vs = new ByteArray();
+            const stdOut = np.standardOutput;
+            stdOut.readBytes(vs, 0, stdOut.bytesAvailable);
+
+            ns.appendBytes(vs);
+        }
+
+        function onStandardErrorData(e) {
+            const stdErr = np.standardError;
+            const s = stdErr.readUTFBytes(stdErr.bytesAvailable);
+
+            // stuff for finding timecodes
+            debug('[FFMPEG]', s);
+        }
+
+        function onExit(e) {
+            debug("FFMpeg exited with code: ", e.exitCode);
+        }
+
+        window.addEventListener('unload', function() {
+            debug('Stopping FFMpeg...');
+            np.running && np.exit(true);
+        });
+    }
+
+    function initBGX(_ffmpegPath, _videoPath, options = {}) {
+        const { nativeWindow } = window;
+        const { stage } = nativeWindow;
+
+        const { File } = air;
+        const { Video } = window.runtime.flash.media;
+        const { StageAlign, StageScaleMode } = window.runtime.flash.display;
+
+        stage.align = StageAlign.TOP_LEFT;
+        stage.scaleMode = StageScaleMode.NO_SCALE;
+
+        // debug('NativeWindow:', nativeWindow);
+        // debug('Stage:', stage);
+
+        const file = File.applicationDirectory;
+        const ffmpegPath = file.resolvePath(_ffmpegPath);
+        const videoPath = file.resolvePath(_videoPath);
+
+        const vid = new Video();
+
+        // stage.addChild(vid);
+        // add to the backmost layer
+        stage.addChildAt(vid, 0);
+
+        vid.width = stage.stageWidth;
+        vid.height = stage.stageHeight;
+
+        vid.alpha = options.alpha ?? 1;
+
+        stage.addEventListener("resize", function () {
+            vid.width = stage.stageWidth;
+            vid.height = stage.stageHeight;
+        });
+
+        playWithFFMPEG(ffmpegPath, videoPath, vid);
+    }
+
     // INIT
     function initPresentation() {
         debug("*** Init Presentation****");
@@ -234,6 +382,49 @@
 
                     animateZoomPan("#backgroundLayer", bgImgFile.url);
                 }
+
+                break;
+            }
+            case 4: { // Video
+                const {
+                    path = "D:\\Apps\\CLI\\ffmpeg\\bin\\ffmpeg.exe",
+                    options = {},
+                } = _$.p_ffmpeg;
+                const ffmpegPath = path;
+
+                const {
+                    type: videoSourceType, // file, stream, videoCapture, screenCapture
+                    mode,
+                    options: videoSourceOptions = {},
+                } = _$.p_bg_video;
+                const logoMode = mode === 'logo';
+
+                let videoPath = logoMode ? videoSourceOptions.logoInput : videoSourceOptions.input;
+                
+                // videoPath = "E:\\GYC2025\\ASSETS\\BGS\\MOTION LOOPS\\CM\\Vol 2\\Soda- Apple.mp4";
+                // videoPath = "E:\\GYC2025\\ASSETS\\BGS\\MOTION LOOPS\\overlays sampler\\Hand Drawn\\soft chalk blooms.mp4";
+
+                // TODO: Impl
+
+                // options.alpha
+                // options.loop
+                // options.bitrate
+                // options.fps
+                // options.smoothing
+                // options.deinterlace
+                // options.mute
+
+                debug({
+                    videoPath: videoPath,
+                    ffmpegPath: ffmpegPath,
+                    options: options,
+                });
+
+                initBGX(
+                    ffmpegPath,
+                    videoPath,
+                    options,
+                );
 
                 break;
             }

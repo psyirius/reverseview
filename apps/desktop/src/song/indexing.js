@@ -4,6 +4,7 @@ import {
 } from "@/bible/version";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
+import {Toast} from "@app/toast";
 
 let indexConn = null;
 let insertStmt = null;
@@ -40,7 +41,7 @@ function indexWords2Array() {
                     [h - 1].getElementsByTagName("c")
                     [g - 1].getElementsByTagName("v")[m - 1];
                 if (l != null) {
-                    var i = l.textContent;
+                    const i = l.textContent;
                     wordA[e] = i;
                     bookA[e] = h;
                     chapterA[e] = g;
@@ -137,7 +138,8 @@ export function insertResult(e) {
         const f = endTime - startTime;
         getPrimaryBibleVersion().searchFile = getIndexFilepath();
         updateBibleVersionsJSON();
-        alert(
+        Toast.info(
+            'Bible Indexing',
             `Completed indexing ${getPrimaryBibleVersion().name} Bible. Please restart VerseVIEW.`
         );
     }

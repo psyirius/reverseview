@@ -61,6 +61,15 @@ function passVariable(isStageView, _ = undefined) {
     _.p_footnote = presentationCtx.p_footer;
     _.p_current_index = presentationCtx.p_current_index;
     _.p_last_index = presentationCtx.p_last_index;
+    _.p_ffmpeg = {
+        path: $RvW.rvwPreferences.get("app.settings.addons.ffmpeg.path"),
+        options: $RvW.rvwPreferences.get("app.settings.addons.ffmpeg.options"),
+    };
+    _.p_bg_video = {
+        type: $RvW.rvwPreferences.get("app.settings.background.video.type"),
+        mode: presentationCtx.p_logo_mode ? "logo" : "background",
+        options: $RvW.rvwPreferences.get("app.settings.background.video.options"),
+    };
     _.p_bkgnd_filename = presentationCtx.p_bkgnd_filename;
     _.p_bkgnd_motion = presentationCtx.p_bkgnd_motion;
     _.p_bkgnd_color = $RvW.vvConfigObj.get_p_solidBkgndColor();

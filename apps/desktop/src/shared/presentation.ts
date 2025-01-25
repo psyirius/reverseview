@@ -1,3 +1,9 @@
+export enum BackgroundVideoSourceType {
+    FILE = 'file',
+    STREAM = 'stream',
+    VIDEO_CAPTURE = 'video_capture',
+    SCREEN_CAPTURE = 'screen_capture',
+}
 
 export interface PresentationConfig {
     /**
@@ -36,6 +42,36 @@ export interface PresentationConfig {
      * Background image filenames
      * */
     p_bkgnd_filename: string[];
+    /**
+     * Background video
+     * */
+    p_bg_video: {
+        /**
+         * Source type
+         * */
+        type: BackgroundVideoSourceType;
+        /**
+         * Mode
+         * */
+        mode: 'logo' | 'background';
+        /**
+         * URL
+         * */
+        options: Record<string, any>;
+    };
+    /**
+     * p_ffmpeg
+     * */
+    p_ffmpeg: {
+        /**
+         * ffmpeg path
+         * */
+        path: string;
+        /**
+         * options
+         * */
+        options: Record<string, any>
+    };
     /**
      * Enable background motion (zoom/pan)
      * */
@@ -135,7 +171,7 @@ export interface PresentationConfig {
     /**
      * Background type
      * */
-    p_bkgnd_type: 1 | 2 | 3;
+    p_bkgnd_type: 1 | 2 | 3 | 4;
     /**
      * Show Branding Text
      * */

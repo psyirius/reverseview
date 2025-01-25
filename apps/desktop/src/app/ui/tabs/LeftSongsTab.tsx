@@ -92,7 +92,7 @@ const Zapp = () => {
 
     const handleRowSelect = (row) => {
         console.log("Selected row:", row);
-        // alert(`Selected item: ID: ${row.id}, Name: ${row.name}, Value: ${row.value}`)
+        // Toast.info(`Selected item: ID: ${row.id}, Name: ${row.name}, Value: ${row.value}`)
     };
 
     return (
@@ -178,7 +178,7 @@ const Zapp = () => {
 //     const columns = [{ header: "Title", field: "title" }];
 //     const handleRowSelect = (row) => {
 //         console.log("Selected row:", row);
-//         // alert(`Selected item: ${row.title}`)
+//         // Toast.info(`Selected item: ${row.title}`)
 //     };
 //
 //     return (

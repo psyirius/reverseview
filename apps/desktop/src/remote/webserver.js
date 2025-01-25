@@ -6,6 +6,7 @@ import {$RvW} from "@/rvw";
 import {presenter, scheduler, songManager} from "@app/glc";
 import {ScheduleItemType} from "@stores/global";
 import {SearchFilterType} from "@/song/song-manager";
+import {Toast} from "@app/toast";
 
 const MIME_TYPES = {
     '.txt'  : 'text/plain',
@@ -662,7 +663,7 @@ export class WebServer {
             } else {
                 this.m_serverSocket.close();
                 this.m_serverWebSocket.close();
-                alert("Remote VerseVIEW failed to initialize.");
+                Toast.info("Remote VerseVIEW failed to initialize.");
                 return false;
             }
         } else {

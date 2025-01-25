@@ -2,6 +2,7 @@ import {saveFileInAppStorage} from "@app/common";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 import $ from "jquery";
+import {Toast} from "@app/toast";
 
 export class StillBackground {
     constructor() {
@@ -108,7 +109,7 @@ export class StillBackground {
                 saveFileInAppStorage(Y, ac);
                 q();
             } else {
-                alert("Background already exists.");
+                Toast.error("Background Graphics", "Background already exists.");
             }
         }
 
@@ -154,7 +155,8 @@ export class StillBackground {
                 ];
                 selectBGFile.browseForOpen("Select Background", filters);
             } else {
-                alert(
+                Toast.error(
+                    "Background Graphics",
                     "VerseVIEW supports a maximum of 50 backgrounds. Please delete backgrounds to add new ones."
                 );
             }
@@ -415,7 +417,7 @@ export class StillBackground {
             if (logoFile !== "" && a()) {
                 T[0] = logoFile;
             } else {
-                alert("Add and set LOGO file in the Graphics section");
+                Toast.error("Logo", "Add and set LOGO file in the Graphics section");
                 T[0] = "./background/" + _backgrounds[0];
             }
             return T;

@@ -58,7 +58,7 @@ import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 import {console} from "@/platform/adapters/air";
 import {ngInit, songNavigator} from "@app/glc";
-import {ENGLISH_BOOKNAMES} from "@app/const";
+import {BIBLE_BOOK_NAMES, BIBLE_CHAPTER_MAP} from "@app/const";
 
 // import * as dojoDom from 'dojo/dom';
 // console.trace("dojo/dom", dojoDom);
@@ -129,7 +129,6 @@ $RvW.content2 = [];
 /* Bible chapter count mapping */
 $RvW.numofch = [
     /* BookNum: [NumChapters, ...VersesForEachChapter] */
-    // filled by loading from a bible version
 ];
 
 // TODO: build it dynamically
@@ -277,6 +276,7 @@ $RvW.launch = function(g) {
     presentationCtx.p_last_index = j;
     presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
     presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+    presentationCtx.p_logo_mode = false;
     presentationCtx.p_bkgnd_color = "blue";
     presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
     presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color2');
@@ -1015,22 +1015,23 @@ export function start(Y: YUI) {
             ...loadInstalledFonts().map((font) => font.fontName),
         ]);
 
-        $RvW.english_booknames = ENGLISH_BOOKNAMES;
+        $RvW.numofch = BIBLE_CHAPTER_MAP;
+        $RvW.english_booknames = BIBLE_BOOK_NAMES;
 
-        loadBibleInfo('en-US', function (err, data) {
-            if (err) {
-                throw new Error("[!] LoadBibleInfo: " + err);
-            }
+        $RvW.booknames = $RvW.english_booknames;
+        $RvW.default_booknames = $RvW.english_booknames;
 
-            // TODO: remove it and use a static nameSet for english
-            const [numChMap] = data;
-            $RvW.numofch = numChMap;
+        vvinit_continue();
 
-            $RvW.booknames = $RvW.english_booknames;
-            $RvW.default_booknames = $RvW.english_booknames;
-
-            vvinit_continue();
-        });
+        // loadBibleInfo('en-US', function (err, data) {
+        //     if (err) {
+        //         throw new Error("[!] LoadBibleInfo: " + err);
+        //     }
+        //
+        //     // TODO: remove it and use a static nameSet for english
+        //     const [numChMap] = data;
+        //     console.trace("NumChMap:", numChMap);
+        // });
     });
 }
 

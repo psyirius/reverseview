@@ -20,7 +20,7 @@ function notesInfo(db) {
             }
         });
         statement.addEventListener(air.SQLErrorEvent.ERROR, function(e) {
-            alert("Invalid Notes Database");
+            Toast.error("Bible Notes", "Invalid Notes Database");
         });
         statement.execute();
     });
@@ -49,6 +49,8 @@ export class NotesManager {
         var k = [];
         var d = "";
         var l;
+        var f;
+        var createStmt;
 
         m();
         o();
