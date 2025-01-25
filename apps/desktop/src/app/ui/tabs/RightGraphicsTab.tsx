@@ -3,7 +3,13 @@ import {$RvW} from "@/rvw";
 import Tabs from "@app/ui/Tabz";
 import {console} from "@/platform/adapters/air";
 import ScrollableSelect from "@app/ui/widgets/ScrollableSelect";
-import {browseAndAddVideoClip, browseAndSelectFFmpeg} from "@/graphics/videobg";
+import {
+    browseAndAddVideoClip,
+    browseAndSelectFFmpeg,
+    getNoClipPlaceholder,
+    removeBgClipAtIndex
+} from "@/graphics/videobg";
+import {getFFmpegVersion} from "@/graphics/ffmpeg";
 
 const TextColorTab = () => {
     enum ColorControl {
@@ -228,6 +234,8 @@ function BgVideoTab() {
     // $RvW.rvwPreferences.get("app.settings.background.video.type")
     // $RvW.rvwPreferences.get("app.settings.background.video.options")
 
+    const [noClipPlaceholderImage] = useState(getNoClipPlaceholder());
+
     // TODO: move it to a store
     const [videoClips, setVideoClips] = useState(
         $RvW.rvwPreferences.get("app.settings.background.video.clips", [])
@@ -260,8 +268,10 @@ function BgVideoTab() {
             }
         });
     }, [])
-    const [ffmpeg, setFFmpeg] = useState(null);
-    const ffmpegVersion = !!ffmpeg;
+    const [ffmpegPath, setFFmpegPath] = useState(
+        $RvW.rvwPreferences.get("app.settings.addons.ffmpeg.path")
+    );
+    const [ffmpegVersion, setFFmpegVersion] = useState(null);
     // (() => {
     //     if (ffmpeg) {
     //         // check if the file exists
@@ -271,33 +281,68 @@ function BgVideoTab() {
     //     return false;
     // })();
 
-    function updateBgVideoOptions(options: Record<string, any>) {
-        const bgvOptions = $RvW.rvwPreferences.get("app.settings.background.video.options", {});
-        $RvW.rvwPreferences.set("app.settings.background.video.options", {
-            ...bgvOptions,
-            ...options,
-        });
+    useEffect(() => {
+        updateFFmpegPath(ffmpegPath);
+    }, []);
+
+    useEffect(() => {
+        let val = null;
+
+        if (ffmpegPath && ffmpegVersion) {
+            val = ffmpegPath;
+        }
+
+        console.log('ffmpegPath', val);
+
+        $RvW.rvwPreferences.set("app.settings.addons.ffmpeg.path", val);
         $RvW.rvwPreferences.commit();
+    }, [ffmpegPath, ffmpegVersion]);
+
+    const [bgvOptions, setBgvOptions] = useState(
+        $RvW.rvwPreferences.get("app.settings.background.video.options", {})
+    );
+    const selectedBg = isNaN(parseInt(bgvOptions.inputIndex)) ? -1 : bgvOptions.inputIndex;
+    const selectedLogo = isNaN(parseInt(bgvOptions.logoInputIndex)) ? -1 : bgvOptions.logoInputIndex;
+
+    function updateBgVideoOptions(options: Record<string, any>) {
+        const nw = { ...bgvOptions, ...options };
+        $RvW.rvwPreferences.set("app.settings.background.video.options", nw);
+        $RvW.rvwPreferences.commit();
+
+        setBgvOptions(nw);
+    }
+
+    function onClickPreview() {
+        console.log('Preview');
+
+        // TODO: open the video clip in a new window
     }
 
     function onClickAdd() {
         console.log('Add');
 
         browseAndAddVideoClip((index, err) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            setSelectedClip(index);
             setVideoClips(
                 $RvW.rvwPreferences.get("app.settings.background.video.clips", [])
             );
-
-            if (!err) {
-                if (typeof err === 'number') {
-                    setSelectedClip(index);
-                }
-            }
         });
     }
 
     function onClickDelete() {
         console.log('Delete');
+
+        removeBgClipAtIndex(selectedClip);
+
+        const _clips = $RvW.rvwPreferences.get("app.settings.background.video.clips", []);
+        setVideoClips(_clips);
+
+        setSelectedClip(Math.min(selectedClip, _clips.length - 1));
     }
 
     function onClickSetAsBg() {
@@ -313,6 +358,7 @@ function BgVideoTab() {
 
         updateBgVideoOptions({
             input: item.clip,
+            inputIndex: selectedClip,
         });
     }
 
@@ -329,6 +375,7 @@ function BgVideoTab() {
 
         updateBgVideoOptions({
             logoInput: item.clip,
+            logoInputIndex: selectedClip,
         });
     }
     
@@ -338,15 +385,35 @@ function BgVideoTab() {
         setSelectedClip(index);
     }
 
+    function updateFFmpegPath(path: string) {
+        if (path) {
+            setFFmpegPath(path);
+
+            getFFmpegVersion(path, (vi, err) => {
+                if (vi) {
+                    console.log('FFmpeg version:', vi);
+
+                    setFFmpegVersion(vi.join('-'));
+                }
+
+                if (err) {
+                    console.error(err);
+                    setFFmpegVersion(null);
+                    return;
+                }
+            });
+        } else {
+            setFFmpegPath(null);
+            setFFmpegVersion(null);
+        }
+    }
+
     function onSelectFFmpeg() {
         browseAndSelectFFmpeg((path, err) => {
-            if (path) {
-                setFFmpeg(path);
-                return;
-            }
-
             if (err) {
                 console.error(err);
+            } else {
+                updateFFmpegPath(path);
             }
         });
     }
@@ -384,7 +451,7 @@ function BgVideoTab() {
                                                         <button
                                                             class="ui button"
                                                             data-tooltip="Set as Background"
-                                                            data-position="bottom center"
+                                                            data-position="top center"
                                                             data-inverted=""
                                                             onClick={onClickSetAsBg}
                                                         >
@@ -393,7 +460,7 @@ function BgVideoTab() {
                                                         <button
                                                             class="ui button"
                                                             data-tooltip="Set as Logo"
-                                                            data-position="bottom center"
+                                                            data-position="top center"
                                                             data-inverted=""
                                                             onClick={onClickSetAsLogo}
                                                         >
@@ -405,8 +472,21 @@ function BgVideoTab() {
                                                     <div class="ui icon buttons">
                                                         <button
                                                             class="ui button"
-                                                            data-tooltip="Add New Clip"
-                                                            data-position="bottom center"
+                                                            data-tooltip="Preview"
+                                                            data-position="top center"
+                                                            data-inverted=""
+                                                            onClick={onClickPreview}
+                                                        >
+                                                            <i class="play icon"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui icon buttons">
+                                                        <button
+                                                            class="ui button"
+                                                            data-tooltip="Add"
+                                                            data-position="top center"
                                                             data-inverted=""
                                                             onClick={onClickAdd}
                                                         >
@@ -414,9 +494,8 @@ function BgVideoTab() {
                                                         </button>
                                                         <button
                                                             class="ui red button"
-                                                            id="delStillBkgndButton"
-                                                            data-tooltip="Delete Selected Clip"
-                                                            data-position="bottom center"
+                                                            data-tooltip="Delete"
+                                                            data-position="top center"
                                                             data-inverted=""
                                                             onClick={onClickDelete}
                                                         >
@@ -448,6 +527,7 @@ function BgVideoTab() {
                                                         style={{ borderRadius: '0.28571429rem' }}
                                                         width={240} height={135} // 16:9
                                                         alt=""
+                                                        src={videoClips[selectedClip]?.preview || noClipPlaceholderImage}
                                                     />
                                                 </div>
                                                 <div class="field">
@@ -457,6 +537,7 @@ function BgVideoTab() {
                                                         style={{ borderRadius: '0.28571429rem' }}
                                                         width={240} height={135} // 16:9
                                                         alt=""
+                                                        src={videoClips[selectedBg]?.preview || noClipPlaceholderImage}
                                                     />
                                                 </div>
                                                 <div class="field">
@@ -466,6 +547,7 @@ function BgVideoTab() {
                                                         style={{ borderRadius: '0.28571429rem' }}
                                                         width={240} height={135} // 16:9
                                                         alt=""
+                                                        src={videoClips[selectedLogo]?.preview || noClipPlaceholderImage}
                                                     />
                                                 </div>
                                             </div>
@@ -488,9 +570,14 @@ function BgVideoTab() {
                                                         <input
                                                             type="text"
                                                             placeholder="path/to/ffmpeg/executable"
-                                                            value={ffmpeg}
-                                                            onChange={(e) => {
-                                                                setFFmpeg(e.currentTarget.value);
+                                                            value={ffmpegPath}
+                                                            onBlur={(e) => {
+                                                                updateFFmpegPath(e.currentTarget.value);
+                                                            }}
+                                                            onKeyUp={(e) => {
+                                                                if (e.keyCode === 13 /* Enter */) {
+                                                                    updateFFmpegPath(e.currentTarget.value);
+                                                                }
                                                             }}
                                                         />
                                                         <div className="ui button" onClick={onSelectFFmpeg}>Select</div>
@@ -537,12 +624,6 @@ function BgVideoTab() {
                                                             <div className="ui checkbox">
                                                                 <input type="checkbox"/>
                                                                 <label>Smoothing</label>
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <div className="ui checkbox">
-                                                                <input type="checkbox"/>
-                                                                <label>Transparent</label>
                                                             </div>
                                                         </div>
                                                     </div>

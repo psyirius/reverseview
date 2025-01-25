@@ -71,7 +71,7 @@
     let c2_top, c2_left, c2_height, c2_width;
     let f_top, f_left, f_height, f_width;
 
-    function playWithFFMPEG(ffmpegPath, videoPath, vid) {
+    function playWithFFMPEG(ffmpegPath, videoPath, vid, options) {
         if (!ffmpegPath.exists) {
             debug("FFMpeg not found.");
             return;
@@ -108,7 +108,10 @@
                 onCuePoint() {},
             }
             vid.attachNetStream(ns);
-            vid.smoothing = true;
+
+            if (options.smoothing) {
+                vid.smoothing = true;
+            }
 
             ns.play(null);
 
@@ -121,30 +124,39 @@
             const nsi = new NativeProcessStartupInfo();
             nsi.executable = ffmpegPath;
 
+            const loop = !!options.loop ? options.loop : true;
+            const muteAudio = !!options.mute ? options.mute : true;
+            const framerate = !!options.framerate ? options.framerate : 60;
+            const videoBitrate = !!options.bitrate ? options.bitrate : '80M';
+            const deinterlace = !!options.deinterlace ? options.deinterlace : true;
+
             const procArgs = new window.runtime['Vector.<String>']();
             procArgs.push(
-                "-stream_loop", "-1", // loop input stream
-                "-i", videoPath.nativePath,
+                ...[
+                    '-hide_banner', // hide banner
+                    ...(loop ? ["-stream_loop", "-1"] : []), // loop input stream
+                    "-i", videoPath.nativePath, // input file
 
-                "-r", "60", // output framerate
-                "-s", "1920x1080", // output resolution
-                // "-s", "3840x2160", // output resolution
-                "-b:v", "80M", // video bitrate (1M = 1mbps, 512k = 512kbps)
-                "-vf", "yadif", // de-interlace
-                // "-vcodec", "flv", // video codec
-                // "-level", "3.0", // for streaming
+                    "-r", String(framerate), // output framerate
+                    "-s", "1920x1080", // output resolution
+                    // "-s", "3840x2160", // output resolution
+                    "-b:v", videoBitrate, // video bitrate (1M = 1mbps, 512k = 512kbps)
+                    ...(deinterlace ? ["-vf", "yadif"] : []), // de-interlace
+                    // "-vcodec", "flv", // video codec
+                    // "-level", "3.0", // for streaming
 
-                "-an", // no audio
+                    ...(muteAudio ? ["-an"] : []), // no audio
 
-                // "-ar", "44100", // audio sample rate
-                // "-ac", "2", // audio channels
-                // "-ab", "192k", // audio bitrate
-                // "-acodec", "aac_mf", // audio codec
+                    // "-ar", "44100", // audio sample rate
+                    // "-ac", "2", // audio channels
+                    // "-ab", "192k", // audio bitrate
+                    // "-acodec", "aac_mf", // audio codec
 
-                "-f", "flv", // output format
-                // "-f", "h264", // output format
+                    "-f", "flv", // output format
+                    // "-f", "h264", // output format
 
-                "pipe:1" // or "-" output to stdout
+                    "pipe:1" // or "-" output to stdout
+                ]
             );
             nsi.arguments = procArgs;
 
@@ -168,7 +180,7 @@
             const stdErr = np.standardError;
             const s = stdErr.readUTFBytes(stdErr.bytesAvailable);
 
-            // stuff for finding timecodes
+            // TODO: parse logs
             debug('[FFMPEG]', s);
         }
 
@@ -216,7 +228,7 @@
             vid.height = stage.stageHeight;
         });
 
-        playWithFFMPEG(ffmpegPath, videoPath, vid);
+        playWithFFMPEG(ffmpegPath, videoPath, vid, options);
     }
 
     // INIT
@@ -387,7 +399,7 @@
             }
             case 4: { // Video
                 const {
-                    path = "D:\\Apps\\CLI\\ffmpeg\\bin\\ffmpeg.exe",
+                    path,
                     options = {},
                 } = _$.p_ffmpeg;
                 const ffmpegPath = path;
@@ -399,10 +411,7 @@
                 } = _$.p_bg_video;
                 const logoMode = mode === 'logo';
 
-                let videoPath = logoMode ? videoSourceOptions.logoInput : videoSourceOptions.input;
-                
-                // videoPath = "E:\\GYC2025\\ASSETS\\BGS\\MOTION LOOPS\\CM\\Vol 2\\Soda- Apple.mp4";
-                // videoPath = "E:\\GYC2025\\ASSETS\\BGS\\MOTION LOOPS\\overlays sampler\\Hand Drawn\\soft chalk blooms.mp4";
+                const videoPath = logoMode ? videoSourceOptions.logoInput : videoSourceOptions.input;
 
                 // TODO: Impl
 

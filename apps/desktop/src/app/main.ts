@@ -915,6 +915,10 @@ function setupVBkgnd() {
     if (!a) {
         return a;
     }
+    a = copyFile2AppStorage("assets", "assets");
+    if (!a) {
+        return a;
+    }
     return a;
 }
 
