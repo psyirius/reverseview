@@ -143,6 +143,16 @@ export default function RemoteSetupDialog({}: Props) {
         }
     }, []);
 
+    useEffect(() => {
+        if (open) {
+            loadNetworkInterfaces();
+
+            $RvW.disableHotkeys = true;
+        } else {
+            $RvW.disableHotkeys = false;
+        }
+    }, [open]);
+
     // link updater
     useEffect(() => {
         setRemoteLink(generateRemoteLink());

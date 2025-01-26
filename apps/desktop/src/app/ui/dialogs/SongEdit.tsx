@@ -209,6 +209,10 @@ export default function SongEditDialog() {
 
                 setSelectedSlide(0);
             }
+
+            $RvW.disableHotkeys = true;
+        } else {
+            $RvW.disableHotkeys = false;
         }
     }, [open]);
 

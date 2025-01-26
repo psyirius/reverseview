@@ -24,6 +24,8 @@ export default function BibleNotesEditDialog({}: Props) {
     // panel visibility
     useEffect(() => {
         if (open) {
+            $RvW.disableHotkeys = true;
+
             const vi = $RvW.notesObj.getNotesForActiveVerse();
 
             setNotesInfo(vi);
@@ -35,6 +37,8 @@ export default function BibleNotesEditDialog({}: Props) {
             setVerseContents(null);
             setVerseRefText(null);
             setNotesContent(null);
+
+            $RvW.disableHotkeys = false;
         }
     }, [open]);
 

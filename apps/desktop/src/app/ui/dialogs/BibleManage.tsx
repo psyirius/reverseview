@@ -35,6 +35,8 @@ export default function BibleManageDialog() {
 
     useEffect(() => {
         if (open) {
+            $RvW.disableHotkeys = true;
+
             setDirty(false);
 
             setVersions(
@@ -43,6 +45,8 @@ export default function BibleManageDialog() {
             setSelectedVersion(0);
 
             fillVersionPanel();
+        } else {
+            $RvW.disableHotkeys = false;
         }
     }, [open]);
 

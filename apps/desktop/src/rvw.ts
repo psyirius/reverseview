@@ -16,4 +16,6 @@ export const $RvW: any = {
     bible,
     content1,
     content2,
+
+    disableHotkeys: false,
 }

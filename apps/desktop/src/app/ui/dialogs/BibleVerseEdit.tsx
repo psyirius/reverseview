@@ -80,6 +80,10 @@ export default function BibleVerseEditDialog() {
             const vt = verseText.substr(verseText.indexOf(" ") + 1);
 
             setVerseText(vt);
+
+            $RvW.disableHotkeys = true;
+        } else {
+            $RvW.disableHotkeys = false;
         }
     }, [open]);
 

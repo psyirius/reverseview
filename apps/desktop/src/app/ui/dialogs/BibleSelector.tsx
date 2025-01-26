@@ -89,6 +89,9 @@ export default function BibleSelectorDialog() {
                     console.trace("Slider value changed:", fz);
                 },
             });
+            $RvW.disableHotkeys = true;
+        } else {
+            $RvW.disableHotkeys = false;
         }
     }, [open]);
 

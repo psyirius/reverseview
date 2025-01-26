@@ -908,7 +908,10 @@ function setupVBkgnd() {
 }
 
 function onMainWindowKeyUp(evt) {
+    if ($RvW.disableHotkeys) return;
+
     const b = $(":focus").attr("id");
+
     switch (evt.keyCode) {
         case 13: /* Enter */
             if ($RvW.enterForSearchActive) {
