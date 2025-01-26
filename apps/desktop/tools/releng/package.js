@@ -21,7 +21,8 @@ const BUILD_DIR = path.resolve(PROJECT_ROOT, ".build");
 const IGNORE_FILEPATH = path.resolve(SOURCE_ROOT, ".airignore");
 const APP_DESC_PATH = path.resolve(PROJECT_ROOT, "application.xml");
 const KEYSTORE_FILEPATH = path.resolve(KEYSTORES_ROOT, "signing-release.p12");
-const OUTPUT_FILEPATH = 'ReVerseVIEW.air';
+// const OUTPUT_FILEPATH = 'ReVerseVIEW.air';
+const OUTPUT_FILEPATH = 'ReVerseVIEW-win32.exe';
 const TSA = 'http://timestamp.digicert.com';
 
 function cacheAndCollectAppFiles() {
@@ -107,7 +108,8 @@ function makeRelease() {
         "-storepass", keystorePassword,
         "-tsa", TSA,
 
-        "-target", "air",
+        // "-target", "air",
+        "-target", "native",
 
         outputPath,
 

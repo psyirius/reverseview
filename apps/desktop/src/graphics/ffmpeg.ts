@@ -36,7 +36,7 @@ export function execFFmpeg({
     const nsi = new NativeProcessStartupInfo();
     nsi.executable = ffmpegExe;
 
-    const procArgs = new window.runtime['Vector.<String>']();
+    const procArgs = new window.runtime.Vector['<String>'](); // window.runtime["Vector.<String>"]
     procArgs.push(
         ...args,
     )
