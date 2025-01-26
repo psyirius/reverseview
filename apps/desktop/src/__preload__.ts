@@ -76,7 +76,7 @@
         break DEV;
     }
 
-// init YUI 3
+    // init YUI 3
     if (typeof (window as any).YUI !== "undefined") {
         ((YUI, config: object, modules: string[]) => {
             "use strict";

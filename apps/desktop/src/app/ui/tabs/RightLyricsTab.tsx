@@ -1,12 +1,21 @@
 import { $RvW } from "@/rvw";
 import { Toast } from "@app/toast";
-import { selectedSong } from "@stores/global";
+import {presentingLyric, selectedSong} from "@stores/global";
 import { useStoreState } from "@/utils/hooks";
 import {presenter, songNavigator} from "@app/glc";
 import { SearchFilterType } from "@/song/song-manager";
+import {useEffect, useRef, useState} from "preact/hooks";
 
 function _RightLyricsTab_({song}) {
-    const navFontSize = $RvW.vvConfigObj.get_navFontSize();
+    const [navFontSize] = useState($RvW.vvConfigObj.get_navFontSize());
+
+    const [selectedSlide, setSelectedSlide] = useState(-1);
+    const [showMeta, setShowMeta] = useState(false);
+
+    const {
+        id: presentSongId,
+        slide: presentLyricSlide,
+    } = useStoreState(presentingLyric) ?? {};
 
     const {
         name,
@@ -23,6 +32,14 @@ function _RightLyricsTab_({song}) {
     } = song || {};
 
     const lyrics = getLyrics();
+
+    useEffect(() => {
+        if (song?.id === presentSongId) {
+            setSelectedSlide(presentLyricSlide);
+        } else {
+            setSelectedSlide(-1);
+        }
+    }, [song]);
 
     function getLyrics() {
         const lyrics = [];
@@ -123,8 +140,29 @@ function _RightLyricsTab_({song}) {
         });
     }
 
+    function onClickOnSlide(e: MouseEvent, index: number) {
+        setSelectedSlide(index);
+
+        if (e.ctrlKey) {
+            presentSlide(index);
+        }
+    }
+
+    function onDoubleClickOnSlide(e: MouseEvent, index: number) {
+        setSelectedSlide(index);
+        presentSlide(index);
+    }
+
     function presentSlide(index: number) {
         presenter.presentSong(song, index);
+    }
+
+    function isActiveSlide(index: number) {
+        return selectedSlide === index;
+    }
+
+    function isPresentingSlide(index: number) {
+        return presentLyricSlide === index && presentSongId === song.id;
     }
 
     const actions = [
@@ -138,7 +176,11 @@ function _RightLyricsTab_({song}) {
             {song ? (
                 <>
                     {/* TITLE SEQUENCE */}
-                    <div class="ui vertical segment">
+                    <div class="ui vertical segment cursor-pointer"
+                        onClick={() => {
+                            setShowMeta(!showMeta);
+                        }}
+                    >
                         <div class="ui grid">
                             <div class="left floated fourteen wide column">
                                 <h3 class="ui header">
@@ -153,6 +195,86 @@ function _RightLyricsTab_({song}) {
                             </div>
                         </div>
                     </div>
+
+                    {/* ADDITIONAL INFO */}
+                    {showMeta && (
+                        <div class="flex flex-col pt-2">
+                            <div class="ui form">
+                                <div class="inline fields">
+                                    <div class="eight wide field">
+                                        <label>Category</label>
+                                        {category ? (
+                                            <a class="ui label" onClick={() => filterByCategory(category)}>
+                                                {category}
+                                            </a>
+                                        ) : null}
+                                    </div>
+                                    <div class="eight wide field">
+                                        <label>Tags</label>
+                                        {tags.map((tag, i) => (
+                                            <a key={i} class="ui label" onClick={() => filterByTag(tag)}>
+                                                {tag}
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div class="inline fields">
+                                    <div class="eight wide field">
+                                        <label>Key</label>
+                                        {key ? (
+                                            <a class="ui label" onClick={() => filterByKey(key)}>
+                                                {key}
+                                            </a>
+                                        ) : null}
+                                    </div>
+                                    <div class="eight wide field">
+                                        <label>BPM</label>
+                                        {bpm ? (
+                                            <a class="ui label">
+                                                {bpm}
+                                            </a>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div class="inline fields">
+                                    <div class="eight wide field">
+                                        <label>Author</label>
+                                        {author ? (
+                                            <a class="ui label" onClick={() => filterByAuthor(author)}>
+                                                {author}
+                                            </a>
+                                        ) : null}
+                                    </div>
+                                    <div class="eight wide field">
+                                        <label>Copyright</label>
+                                        {copyright ? (
+                                            <a class="ui label">
+                                                {copyright}
+                                            </a>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div class="inline fields">
+                                    <div class="eight wide field">
+                                        <label>Notes</label>
+                                        {notes && (
+                                            <p class="ui message">
+                                                {notes}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div class="eight wide field">
+                                        <label>Chords</label>
+                                        {chords && (
+                                            <p class="ui message">
+                                                {chords}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* BUTTONS */}
                     <div class="ui vertical segment" style={{
@@ -178,14 +300,28 @@ function _RightLyricsTab_({song}) {
                                     <div
                                         key={i}
                                         class="ui segments cursor-pointer"
-                                        role="button"
-                                        tabIndex={0}
-                                        onClick={() => presentSlide(i)}
+                                        // role="button"
+                                        // tabIndex={0}
+                                        onClick={(e) => onClickOnSlide(e, i)}
+                                        onDblClick={(e) => onDoubleClickOnSlide(e, i)}
+                                        style={{
+                                            borderStyle: 'solid',
+                                            borderWidth: '2px',
+                                            borderColor: isPresentingSlide(i) ? '#fc5c65' : (
+                                                isActiveSlide(i) ? '#45aaf2' : 'transparent'
+                                            ),
+                                        }}
                                     >
                                         <>
                                             {/*<p>Slide {k + 1}</p>*/}
                                             {slide.map(({font, content}: any, j: number) => (
-                                                <div key={j} style={{fontFamily: font}} class="ui segment">
+                                                <div
+                                                    key={j}
+                                                    class="ui segment"
+                                                    style={{
+                                                        fontFamily: font,
+                                                    }}
+                                                >
                                                     <p class="m-0" dangerouslySetInnerHTML={{
                                                         __html: content,
                                                     }}></p>
@@ -195,84 +331,6 @@ function _RightLyricsTab_({song}) {
                                         </>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* ADDITIONAL INFO */}
-                    <div class="flex flex-col pt-2">
-                    <div class="ui form">
-                            <div class="inline fields">
-                                <div class="eight wide field">
-                                    <label>Category</label>
-                                    {category ? (
-                                        <a class="ui label" onClick={() => filterByCategory(category)}>
-                                            {category}
-                                        </a>
-                                    ) : null}
-                                </div>
-                                <div class="eight wide field">
-                                    <label>Tags</label>
-                                    {tags.map((tag, i) => (
-                                        <a key={i} class="ui label" onClick={() => filterByTag(tag)}>
-                                            {tag}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                            <div class="inline fields">
-                                <div class="eight wide field">
-                                    <label>Key</label>
-                                    {key ? (
-                                        <a class="ui label" onClick={() => filterByKey(key)}>
-                                            {key}
-                                        </a>
-                                    ) : null}
-                                </div>
-                                <div class="eight wide field">
-                                    <label>BPM</label>
-                                    {bpm ? (
-                                        <a class="ui label">
-                                            {bpm}
-                                        </a>
-                                    ) : null}
-                                </div>
-                            </div>
-                            <div class="inline fields">
-                                <div class="eight wide field">
-                                    <label>Author</label>
-                                    {author ? (
-                                        <a class="ui label" onClick={() => filterByAuthor(author)}>
-                                            {author}
-                                        </a>
-                                    ) : null}
-                                </div>
-                                <div class="eight wide field">
-                                    <label>Copyright</label>
-                                    {copyright ? (
-                                        <a class="ui label">
-                                            {copyright}
-                                        </a>
-                                    ) : null}
-                                </div>
-                            </div>
-                            <div class="inline fields">
-                                <div class="eight wide field">
-                                    <label>Notes</label>
-                                    {notes && (
-                                        <p class="ui message">
-                                            {notes}
-                                        </p>
-                                    )}
-                                </div>
-                                <div class="eight wide field">
-                                    <label>Chords</label>
-                                    {chords && (
-                                        <p class="ui message">
-                                            {chords}
-                                        </p>
-                                    )}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -290,6 +348,6 @@ export default function RightLyricsTab() {
     const song = useStoreState(selectedSong);
 
     return (
-        <_RightLyricsTab_ song={song} />
+        <_RightLyricsTab_ song={song}/>
     )
 }

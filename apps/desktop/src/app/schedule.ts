@@ -19,7 +19,7 @@ interface ScheduleItem {
 }
 
 export class _Scheduler_ {
-    private readonly static DB_PATH: string = 'xml/schedules.db';
+    private readonly static DB_PATH: string = 'dbx/schedules.db';
 
     private readonly _dbConnection: air.SQLConnection;
 

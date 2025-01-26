@@ -3,6 +3,8 @@ export function withinRange(b, c, a) {
 }
 
 export const presentationCtx = {
+    p_type: null,
+    p_ref: null,
     p_text1_arr: [],
     p_text2_arr: [],
     p_text1_font: "",

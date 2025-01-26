@@ -9,7 +9,12 @@ import {
     getNoClipPlaceholder,
     removeBgClipAtIndex
 } from "@/graphics/videobg";
+import {
+    getNoImagePlaceholder,
+} from "@/graphics/imagebg";
 import {getFFmpegVersion} from "@/graphics/ffmpeg";
+import {useStoreState} from "@/utils/hooks";
+import {bgStillImageList} from "@stores/global";
 
 const TextColorTab = () => {
     enum ColorControl {
@@ -225,6 +230,260 @@ const angleToCartesianCoords = (angle: number) => {
 
     // Return formatted gradient string
     return `${startX} ${startY}, ${endX} ${endY}`;
+}
+
+function BgImageTab() {
+    const [noImagePlaceholderImage] = useState(getNoImagePlaceholder());
+
+    const bgStillList = useStoreState(bgStillImageList);
+
+    const [activeItem, setActiveItem] = useState(-1);
+
+    const [selectedBg, setSelectedBg] = useState(
+        $RvW.vvConfigObj.get_bkgndIndex()
+    );
+    const [selectedLogo, setSelectedLogo] = useState(
+        $RvW.vvConfigObj.get_logoFilename()
+    );
+
+    const [enableMotion, setEnableMotion] = useState(
+        $RvW.rvwPreferences.get("app.settings.background.still.motion", false)
+    );
+    const [enableRandom, setEnableRandom] = useState(
+        $RvW.rvwPreferences.get("app.settings.background.still.random", false)
+    );
+    const [enableShaded, setEnableShaded] = useState(
+        $RvW.rvwPreferences.get("app.settings.background.still.shaded", false)
+    );
+    const [enableTransparent, setEnableTransparent] = useState(
+        $RvW.rvwPreferences.get("app.settings.background.still.transparent", false)
+    );
+
+    useEffect(() => {
+        $RvW.rvwPreferences.set("app.settings.background.still.motion", enableMotion);
+        $RvW.rvwPreferences.set("app.settings.background.still.random", enableRandom);
+        $RvW.rvwPreferences.set("app.settings.background.still.shaded", enableShaded);
+        $RvW.rvwPreferences.set("app.settings.background.still.transparent", enableTransparent);
+        $RvW.rvwPreferences.commit();
+    }, [enableMotion, enableRandom, enableShaded, enableTransparent]);
+
+    const onBgItemClick = (index: number) => {
+        setActiveItem(index);
+    }
+
+    const onBgItemDoubleClick = (index: number) => {
+        onBgItemClick(index);
+        onSetAsBackground(index);
+    }
+
+    function onSetAsBackground(index: number | null = null) {
+        const idx = index ?? activeItem;
+
+        setSelectedBg(idx);
+
+        if (idx >= 0 && idx < bgStillList.length) {
+            $RvW.vvConfigObj.set_bkgndIndex(idx);
+            $RvW.vvConfigObj.save();
+        }
+    }
+
+    function onSetAsLogo() {
+        setSelectedLogo(activeItem);
+
+        if (activeItem >= 0 && activeItem < bgStillList.length) {
+            $RvW.vvConfigObj.set_logoFilename(activeItem);
+            $RvW.vvConfigObj.save();
+        }
+    }
+
+    function onAddNewBg() {
+        $RvW.graphicsObj.addStillBg();
+    }
+
+    function onDeleteSelected() {
+        $RvW.graphicsObj.delStillBg(activeItem);
+    }
+
+    return (
+        <div class="ui grid">
+            <div class="sixteen wide column">
+                <div class="ui segment top attached">
+                    {/* Previews */}
+                    <div class="ui form">
+                        <div class="fields">
+                            <div class="field">
+                                <label>Preview</label>
+                                <img
+                                    id="selectedx_still_id"
+                                    class="ui bordered image"
+                                    width={240} height={135} // 16:9
+                                    src={bgStillList[activeItem]?.url || noImagePlaceholderImage}
+                                    alt=""
+                                />
+                            </div>
+                            <div class="field">
+                                <label>Background</label>
+                                <img
+                                    id="selected_still_id"
+                                    class="ui bordered image"
+                                    width={240} height={135} // 16:9
+                                    src={bgStillList[selectedBg]?.url || noImagePlaceholderImage}
+                                    alt=""
+                                />
+                            </div>
+                            <div class="field">
+                                <label>Logo</label>
+                                <img
+                                    id="selected_logostill_id"
+                                    class="ui bordered image"
+                                    width={240} height={135} // 16:9
+                                    src={bgStillList[selectedLogo]?.url || noImagePlaceholderImage}
+                                    alt=""
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui divider"></div>
+
+                    {/* Controls */}
+                    <div class="ui form">
+                        <div class="fields">
+                            <div class="field">
+                                <div class="ui icon buttons">
+                                    <button
+                                        class="ui button"
+                                        data-tooltip="Set as Background"
+                                        data-position="bottom center"
+                                        data-inverted=""
+                                        onClick={() => onSetAsBackground()}
+                                    >
+                                        <i class="icon his his-photo"></i>
+                                    </button>
+                                    <button
+                                        class="ui button"
+                                        data-tooltip="Set as Logo"
+                                        data-position="bottom center"
+                                        data-inverted=""
+                                        onClick={() => onSetAsLogo()}
+                                    >
+                                        <i class="icon his his-sparkles"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="ui icon buttons">
+                                    <button
+                                        class="ui button"
+                                        data-tooltip="Add New Background"
+                                        data-position="bottom center"
+                                        data-inverted=""
+                                        onClick={onAddNewBg}
+                                    >
+                                        <i class="add icon"></i>
+                                    </button>
+                                    <button
+                                        class="ui red button"
+                                        data-tooltip="Delete Background"
+                                        data-position="bottom center"
+                                        data-inverted=""
+                                        onClick={onDeleteSelected}
+                                    >
+                                        <i class="trash icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Options */}
+                        <div class="fields">
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        name="bg-still-options"
+                                        checked={enableMotion}
+                                        onChange={(e) => {
+                                            setEnableMotion(e.currentTarget.checked);
+                                        }}
+                                    />
+                                    <label>Motion</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        name="bg-still-options"
+                                        checked={enableRandom}
+                                        onChange={(e) => {
+                                            setEnableRandom(e.currentTarget.checked);
+                                        }}
+                                    />
+                                    <label>Random</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        name="bg-still-options"
+                                        checked={enableShaded}
+                                        onChange={(e) => {
+                                            setEnableShaded(e.currentTarget.checked);
+                                        }}
+                                    />
+                                    <label>Shaded</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        name="bg-still-options"
+                                        checked={enableTransparent}
+                                        onChange={(e) => {
+                                            setEnableTransparent(e.currentTarget.checked);
+                                        }}
+                                    />
+                                    <label>Transparent</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Gallery */}
+                <div class="ui segment bottom attached">
+                    <div class="overflow-y-auto">
+                        {bgStillList.map(({url}, i) => {
+                            return (
+                                <div
+                                    key={i}
+                                    class="inline-block float-left m-[1px] cursor-pointer rounded-md"
+                                    style={{
+                                        borderWidth: '2px',
+                                        borderStyle: 'solid',
+                                        borderColor: (i === activeItem) ? '#4b7bec' : 'rgba(34, 36, 38, .15)',
+                                    }}
+                                    onClick={() => onBgItemClick(i)}
+                                    onDblClick={() => onBgItemDoubleClick(i)}
+                                >
+                                    <img
+                                        class="ui bordered image rounded-lg"
+                                        width={240} height={135} // 16:9
+                                        src={url}
+                                        alt=""
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 function BgVideoTab() {
@@ -1184,135 +1443,7 @@ const BackgroundColorTab = () => {
                         class={"ui tab" + (selectedTab === BackgroundType.STILL ? ' active' : '')}
                         style={{display: (selectedTab === BackgroundType.STILL) ? undefined : 'none'}}
                     >
-                        <div class="ui grid">
-                            <div class="sixteen wide column">
-                                <div class="ui segment top attached">
-                                    {/* Previews */}
-                                    <div class="ui form">
-                                        <div class="fields">
-                                            <div class="field">
-                                                <label>Preview</label>
-                                                <img
-                                                    id="selectedx_still_id"
-                                                    class="ui bordered image"
-                                                    width={150}
-                                                    height={100}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div class="field">
-                                                <label>Background</label>
-                                                <img
-                                                    id="selected_still_id"
-                                                    class="ui bordered image"
-                                                    width={150}
-                                                    height={100}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div class="field">
-                                                <label>Logo</label>
-                                                <img
-                                                    id="selected_logostill_id"
-                                                    class="ui bordered image"
-                                                    width={150}
-                                                    height={100}
-                                                    alt=""
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ui divider"></div>
-
-                                    {/* Controls */}
-                                    <div class="ui form">
-                                        <div class="fields">
-                                            <div class="field">
-                                                <div class="ui icon buttons">
-                                                    <button
-                                                        class="ui button"
-                                                        id="setAsBackgroundButtonID"
-                                                        data-tooltip="Set as Background"
-                                                        data-position="bottom center"
-                                                        data-inverted=""
-                                                    >
-                                                        <i class="icon his his-photo"></i>
-                                                    </button>
-                                                    <button
-                                                        class="ui button"
-                                                        id="setAsLogoButtonID"
-                                                        data-tooltip="Set as Logo"
-                                                        data-position="bottom center"
-                                                        data-inverted=""
-                                                    >
-                                                        <i class="icon his his-sparkles"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui icon buttons">
-                                                    <button
-                                                        class="ui button"
-                                                        id="addStillBkgndButtonID"
-                                                        data-tooltip="Add New Background"
-                                                        data-position="bottom center"
-                                                        data-inverted=""
-                                                    >
-                                                        <i class="add icon"></i>
-                                                    </button>
-                                                    <button
-                                                        class="ui red button"
-                                                        id="delStillBkgndButton"
-                                                        data-tooltip="Delete Selected Background"
-                                                        data-position="bottom center"
-                                                        data-inverted=""
-                                                    >
-                                                        <i class="trash icon"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="fields">
-                                            <div class="field">
-                                                <div class="ui checkbox">
-                                                    <input type="checkbox" name="bg-still-options"
-                                                           id="still_animate"/>
-                                                    <label htmlFor="still_animate">Motion</label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui checkbox">
-                                                    <input type="checkbox" name="bg-still-options"
-                                                           id="randomBackgroundID"/>
-                                                    <label htmlFor="randomBackgroundID">Random</label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui checkbox">
-                                                    <input type="checkbox" name="bg-still-options"
-                                                           id="shadedBackgroundID"/>
-                                                    <label htmlFor="shadedBackgroundID">Shaded</label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui checkbox">
-                                                    <input type="checkbox" name="bg-still-options"
-                                                           id="transparentBackgroundID"/>
-                                                    <label htmlFor="transparentBackgroundID">Transparent</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Gallery */}
-                                <div class="ui segment bottom attached">
-                                    <div id="still_bkgnd_grid" style={{overflowY: 'auto'}}>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <BgImageTab />
                     </div>
 
                     {/* Video BG */}

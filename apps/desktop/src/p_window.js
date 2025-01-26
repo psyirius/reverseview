@@ -5,7 +5,7 @@ import {
     presentationPrimaryFontOverride,
     presentationMainEnabled,
     presentationStageEnabled,
-    presentationSecondaryFontOverride
+    presentationSecondaryFontOverride, presentingBible, presentingLyric
 } from "@stores/global";
 import {loadInstalledFonts} from "@app/main";
 import {StageViewStyle} from "@app/ui/tabs/RightSettingsTab";
@@ -165,8 +165,8 @@ function passVariable(isStageView, _ = undefined) {
         _.p_showDate = $RvW.vvConfigObj.get_showDateTime();
     }
     _.p_showBranding = $RvW.vvConfigObj.get_showVVLogo() || $RvW.vvConfigObj.get_showCustomLogo();
-    _.p_shadeBackground = $RvW.graphicsObj.getShadeFlag();
-    _.p_transparentBackground = $RvW.graphicsObj.getTransparentFlag();
+    _.p_shadeBackground = $RvW.rvwPreferences.get("app.settings.background.still.shaded", false);
+    _.p_transparentBackground = $RvW.rvwPreferences.get("app.settings.background.still.transparent", false);
     _.p_ver1ScaleFactor = presentationCtx.p_ver1ScaleFactor;
     _.p_ver2ScaleFactor = presentationCtx.p_ver2ScaleFactor;
     _.p_isArabic1 = false;
@@ -197,12 +197,6 @@ function passVariable(isStageView, _ = undefined) {
         data: _,
     });
 }
-
-function getCurrentScreen() {
-    const a = air.Screen.getScreensForRectangle(window.nativeWindow.bounds);
-    return a.length > 0 ? a[0] : air.Screen.mainScreen;
-}
-
 
 export function getAvailableFonts() {
     return $RvW.systemFontList.concat([
@@ -256,13 +250,32 @@ export function getAvailableScreens() {
  * */
 export function presentation() {
     $RvW.stageView = presentationStageEnabled.get();
+    $RvW.mainView = presentationMainEnabled.get();
+
+    const p_type = presentationCtx.p_type;
+    const p_ref = presentationCtx.p_ref;
+
+    switch (p_type) {
+        case 'verse': {
+            presentingBible.set(p_ref);
+            presentingLyric.set(null);
+            break;
+        }
+        case 'lyric': {
+            presentingBible.set(null);
+            presentingLyric.set(p_ref);
+            break;
+        }
+        default: {
+            presentingBible.set(null);
+            presentingLyric.set(null);
+        }
+    }
 
     const windowInitOptions = new air.NativeWindowInitOptions();
     windowInitOptions.systemChrome = "none";
     windowInitOptions.type = "lightweight";
     windowInitOptions.transparent = true;
-
-    getCurrentScreen();
 
     const screens = air.Screen.screens;
     let presentScreenBounds;
@@ -271,12 +284,18 @@ export function presentation() {
         stageViewScreenIndex = 0;
         $RvW.rvwPreferences.set("app.settings.screen.stage.index", stageViewScreenIndex);
     }
-    $RvW.stageView = $RvW.stageView && screens[stageViewScreenIndex] != null;
+    $RvW.stageView = $RvW.stageView && !!screens[stageViewScreenIndex];
 
     let presentScreenIndex = $RvW.rvwPreferences.get("app.settings.screen.main.index", 1);
     if (screens[presentScreenIndex] == null) {
         presentScreenIndex = 0;
     }
+    $RvW.mainView = $RvW.mainView && !!screens[presentScreenIndex];
+
+    console.log({
+        mainView: $RvW.mainView,
+        stageView: $RvW.stageView,
+    })
 
     if (dualScreen && screens[presentScreenIndex] != null) {
         presentScreenBounds = screens[presentScreenIndex].bounds;
@@ -289,47 +308,72 @@ export function presentation() {
         console.trace(`p window single ${pWindowX}x${pWindowY}`);
     }
 
-    if (!$RvW.presentWindowOpen) {
-        $RvW.presentationWindow = air.HTMLLoader.createRootWindow(true, windowInitOptions, true, presentScreenBounds);
-        $RvW.presentationWindow.visible = presentationMainEnabled.get();
-        $RvW.presentationWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
+    if ($RvW.mainView) {
+        if (!$RvW.presentWindowOpen) {
+            $RvW.presentationWindow = air.HTMLLoader.createRootWindow(
+                true,
+                windowInitOptions,
+                true,
+                presentScreenBounds,
+            );
+            $RvW.presentationWindow.visible = presentationMainEnabled.get();
+            $RvW.presentationWindow.addEventListener("htmlDOMInitialize", DOMIntializeCallback);
 
-        $RvW.presentationWindow.window.nativeWindow.addEventListener(
-            air.Event.CLOSE,
-            presentWindowClosed
-        );
+            $RvW.presentationWindow.window.nativeWindow.addEventListener(
+                air.Event.CLOSE,
+                presentWindowClosed
+            );
 
-        $RvW.presentationWindow.window.nativeWindow.alwaysInFront = $RvW.vvConfigObj.get_presentationOnTop();
-        $RvW.presentationWindow.window.nativeWindow.stage.frameRate = 60;
-        $RvW.presentationWindow.load(new air.URLRequest("presentation.html"));
+            $RvW.presentationWindow.window.nativeWindow.alwaysInFront = $RvW.vvConfigObj.get_presentationOnTop();
+            $RvW.presentationWindow.window.nativeWindow.stage.frameRate = 60;
+            $RvW.presentationWindow.load(new air.URLRequest("presentation.html"));
 
-        // define the global functions in the presentation window
-        $RvW.presentationWindow.window.onWindowUnload = function () {
-            if ($RvW.stageView && $RvW.stageWindow != null) {
-                $RvW.stageWindow.window.nativeWindow.close();
+            // define the global functions in the presentation window
+            $RvW.presentationWindow.window.onWindowUnload = function () {
+                if ($RvW.stageView && $RvW.stageWindow != null) {
+                    $RvW.stageWindow.window.nativeWindow.close();
+                }
+            };
+            $RvW.presentationWindow.window.goToNextSlide = function () {
+                if ($RvW.stageView && $RvW.stageWindow != null) {
+                    $RvW.stageWindow.window.nextSlide();
+                }
+                updatePresentationContent(true);
+            };
+            $RvW.presentationWindow.window.goToPrevSlide = function () {
+                if ($RvW.stageView && $RvW.stageWindow != null) {
+                    $RvW.stageWindow.window.prevSlide();
+                }
+                updatePresentationContent(false);
+            };
+            $RvW.presentationWindow.window.log = function () {
+                const args = Array.prototype.slice.call(arguments);
+                args.unshift("[Presentation]:");
+                console.log(...args);
+            };
+
+            $RvW.presentWindowOpen = true;
+        } else  {
+            // if the window is already open, just update the content
+
+            // Presentation
+            if ($RvW.mainView && !!$RvW.presentationWindow) {
+                try {
+                    $RvW.presentationWindow.window.passVariable(0);
+                    $RvW.presentationWindow.window.updatePresentation();
+                    $RvW.presentationWindow.window.updateContent();
+                } catch (d) {
+                    console.trace("Possible double click... NewWindow is still getting ready..");
+                }
             }
-        };
-        $RvW.presentationWindow.window.goToNextSlide = function () {
-            if ($RvW.stageView && $RvW.stageWindow != null) {
-                $RvW.stageWindow.window.nextSlide();
-            }
-            updatePresentationContent(true);
-        };
-        $RvW.presentationWindow.window.goToPrevSlide = function () {
-            if ($RvW.stageView && $RvW.stageWindow != null) {
-                $RvW.stageWindow.window.prevSlide();
-            }
-            updatePresentationContent(false);
-        };
-        $RvW.presentationWindow.window.log = function () {
-            const args = Array.prototype.slice.call(arguments);
-            args.unshift("[Presentation]:");
-            console.log(...args);
-        };
-        // end of global functions
+        }
+    } else  {
+        $RvW.presentationWindow = null;
+    }
 
-        if ($RvW.stageView) {
-            const { NativeWindowInitOptions, HTMLLoader, Event, URLRequest } = air;
+    if ($RvW.stageView) {
+        if (!$RvW.stageWindow) {
+            const {NativeWindowInitOptions, HTMLLoader, Event, URLRequest} = air;
 
             const windowInitOptions = new NativeWindowInitOptions();
             const svWindow = $RvW.rvwPreferences.get("app.settings.stage.window_view");
@@ -411,60 +455,69 @@ export function presentation() {
                 args.unshift("[StageView]:");
                 console.log(...args);
             };
+
+            sv.window.nativeWindow.addEventListener(
+                air.Event.CLOSE,
+                stageWindowClosed
+            );
         } else {
-            $RvW.stageWindow = null;
-        }
-
-        $RvW.presentWindowOpen = true;
-    } else {
-        // if the window is already open, just update the content
-
-        // Presentation
-        try {
-            $RvW.presentationWindow.window.passVariable(0);
-            $RvW.presentationWindow.window.updatePresentation();
-            $RvW.presentationWindow.window.updateContent();
-        } catch (d) {
-            console.trace("Possible double click... NewWindow is still getting ready..");
-        }
-
-        // StageView
-        if ($RvW.stageView && $RvW.stageWindow != null) {
-            try {
-                $RvW.stageWindow.window.passVariable(1);
-                $RvW.stageWindow.window.updatePresentation();
-                $RvW.stageWindow.window.updateContent();
-            } catch (d) {
-                console.trace(
-                    "Possible double click... NewStageWindow is still getting ready.."
-                );
+            // StageView
+            if ($RvW.stageView && !!$RvW.stageWindow) {
+                try {
+                    $RvW.stageWindow.window.passVariable(1);
+                    $RvW.stageWindow.window.updatePresentation();
+                    $RvW.stageWindow.window.updateContent();
+                } catch (d) {
+                    console.trace(
+                        "Possible double click... NewStageWindow is still getting ready.."
+                    );
+                }
             }
         }
+    } else {
+        $RvW.stageWindow = null;
     }
 }
 
 export function call_closePresentation() {
     $RvW.webServerObj.broadcastWS({event: 'cc:close-show'});
-    if ($RvW.presentWindowOpen) {
+
+    if ($RvW.mainView && $RvW.presentationWindow) {
         $RvW.presentationWindow.window.clearPresenter();
         $RvW.presentationWindow.window.nativeWindow.close();
         $RvW.presentationWindow = null;
+
         if (!$RvW.vvConfigObj.get_mainConfigEnable()) {
             $RvW.presentWindowOpen = false;
         }
     }
-    if ($RvW.stageView && $RvW.stageWindow != null) {
+    if ($RvW.stageView && $RvW.stageWindow) {
         $RvW.stageWindow.window.nativeWindow.close();
         $RvW.stageWindow = null;
     }
+
     $RvW.presentationContent = "";
+
+    resetPresentingRefs();
+}
+
+export function resetPresentingRefs() {
+    presentingBible.set(null);
+    presentingLyric.set(null);
 }
 
 export function presentWindowClosed() {
     $RvW.presentWindowOpen = false;
     $RvW.presentationWindow = null;
+
+    resetPresentingRefs();
 }
 
+export function stageWindowClosed() {
+    $RvW.stageWindow = null;
+
+    resetPresentingRefs();
+}
 
 function DOMIntializeCallback(a) {
     $RvW.presentationWindow.window.passVariable = passVariable;
@@ -476,10 +529,13 @@ function DOMIntializeStageViewCallback(a) {
     console.trace('>>> stageWindow.htmlDOMInitialize')
 }
 
-function updatePresentationContent(b) {
+function updatePresentationContent(forward) {
     const a = presentationCtx.p_text1_arr.length;
 
-    if (b) {
+    const p_type = presentationCtx.p_type;
+    const p_ref = presentationCtx.p_ref;
+
+    if (forward) {
         index_for_presentationContent++;
         if (index_for_presentationContent >= a) {
             index_for_presentationContent = 0;
@@ -488,6 +544,30 @@ function updatePresentationContent(b) {
         index_for_presentationContent--;
         if (index_for_presentationContent < 0) {
             index_for_presentationContent = a - 1;
+        }
+    }
+
+    switch (p_type) {
+        case 'verse': {
+            const [b, c, _v] = presentingBible.get();
+            console.log('Next/Prev Slide[Verse]:', _v, index_for_presentationContent);
+            presentingBible.set([
+                b,
+                c,
+                index_for_presentationContent,
+            ]);
+            break;
+        }
+        case 'lyric': {
+            const {slide, ...rest} = presentingLyric.get();
+
+            console.log('Next/Prev Slide[Lyric]:', slide, index_for_presentationContent);
+
+            presentingLyric.set({
+                ...rest,
+                slide: index_for_presentationContent,
+            });
+            break;
         }
     }
 
@@ -502,22 +582,25 @@ function updatePresentationContent(b) {
 
 export function call_nextSlide() {
     $RvW.webServerObj.broadcastWS({event: 'cc:next-slide'});
+
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.nextSlide();
-        if ($RvW.stageView) {
-            $RvW.stageWindow.window.nextSlide();
-        }
     }
+    if ($RvW.stageView && $RvW.stageWindow) {
+        $RvW.stageWindow.window.nextSlide();
+    }
+
     updatePresentationContent(true);
 }
 
 export function call_prevSlide() {
     $RvW.webServerObj.broadcastWS({event: 'cc:prev-slide'});
-    if ($RvW.presentWindowOpen) {
+    if ($RvW.presentWindowOpen && $RvW.presentationWindow) {
         $RvW.presentationWindow.window.prevSlide();
-        if ($RvW.stageView) {
-            $RvW.stageWindow.window.prevSlide();
-        }
     }
+    if ($RvW.stageView && $RvW.stageWindow) {
+        $RvW.stageWindow.window.prevSlide();
+    }
+
     updatePresentationContent(false);
 }

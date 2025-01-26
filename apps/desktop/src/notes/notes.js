@@ -14,22 +14,16 @@ export class Notes {
         this.setVariables = setVariables;
         this.getNotes = getNotes;
 
-        this.onSave = notesSaveButton;
-        this.onCancel = notesCancelButton;
-
-        var a;
-        var e;
-        var v = null;
+        var _notesResults = null;
         var F = null;
         var t;
-        var z;
-        var B = false;
+        var _isNoteExists = false;
         var f = false;
         var I;
         var H;
-        var p = 0;
-        var j = 0;
-        var n = 0;
+        var _book = 0;
+        var _chapter = 0;
+        var _verse = 0;
         var g = null;
 
         function init(db, Q, R) {
@@ -48,51 +42,75 @@ export class Notes {
             O();
         }
 
-        function setVariables(P, R, Q) {
-            p = P;
-            j = R;
-            n = Q;
+        function setVariables(b, c, v) {
+            _book = b;
+            _chapter = c;
+            _verse = v;
         }
 
-        function b() {
-            var P = p - 1;
-            var W = j - 1;
-            var Q = n - 1;
+        function _getActiveBibleRef() {
+            const bi = _book - 1;
+            const ci = _chapter - 1;
+            const vi = _verse - 1;
 
-            var T = getPrimaryBibleVersion().selectedFont;
-            var V = getSecondaryBibleVersion().selectedFont;
+            const T = getPrimaryBibleVersion().selectedFont;
+            const V = getSecondaryBibleVersion().selectedFont;
 
-            const S = $RvW.content1[Q];
-            const R = $RvW.content2[Q];
+            const S = $RvW.content1[vi];
+            const R = $RvW.content2[vi];
 
-            let U = `<b>${$RvW.booknames[P]} ${j}:${n}</b><br>`;
+            let U = `<b>${$RvW.booknames[bi]} ${_chapter}:${_verse}</b><br>`;
             U += `<font face="${T}">${S}</font><BR><font face="${V}">${R}`;
             return U;
         }
 
-        function i() {
-            let T = "";
-            const R = n;
-            B = false;
-            if (v != null) {
-                if (v.data != null) {
-                    for (let S = 0; S < v.data.length; S++) {
-                        const P = v.data[S].verseNum;
-                        if (P === R) {
-                            T = v.data[S].noteTextFormat;
-                            B = true;
-                            break;
-                        }
+        this.getNotesForActiveVerse = function() {
+            const bi = _book - 1;
+            const ci = _chapter - 1;
+            const vi = _verse - 1;
+
+            const f1 = getPrimaryBibleVersion().selectedFont;
+            const f2 = getSecondaryBibleVersion().selectedFont;
+
+            const c1 = $RvW.content1[vi];
+            const c2 = $RvW.content2[vi];
+
+            return {
+                refText: `${$RvW.booknames[bi]} ${_chapter}:${_verse}`,
+                contents: [
+                    { font: f1, content: c1 },
+                    { font: f2, content: c2 },
+                ],
+                notes: _getActiveNoteContent(),
+            }
+        }
+
+        this.setNotesForActiveVerse = function(noteText) {
+            const noteHtml = nl2br(noteText);
+            if (_isNoteExists) {
+                updateNote(noteText, noteHtml);
+            } else {
+                insertNote(noteText, noteHtml);
+            }
+        }
+
+        function _getActiveNoteContent() {
+            _isNoteExists = false;
+
+            if (_notesResults != null && _notesResults.data != null) {
+                for (let i = 0; i < _notesResults.data.length; i++) {
+                    const P = _notesResults.data[i].verseNum;
+                    if (P === _verse) {
+                        _isNoteExists = true;
+                        return _notesResults.data[i].noteTextFormat;
                     }
                 }
             }
-            return T;
+
+            return '';
         }
 
         function showNotesPanel() {
-            document.getElementById("notesVerse").innerHTML = b();
-            z = i();
-            document.getElementById("notes_rte").value = z;
             $RvW.enterForSearchActive = false;
             showBibleNotesEditPanel.set(true);
         }
@@ -106,18 +124,18 @@ export class Notes {
             const P = t;
             g = new air.SQLConnection();
             g.addEventListener(air.SQLEvent.OPEN, function() {
-                A();
+                _onDbOpen();
             });
             g.addEventListener(air.SQLErrorEvent.ERROR, function(P) {
                 console.trace("Error message:", P.error.message);
                 console.trace("Details (create DB):", P.error.details);
             });
-            var Q = air.File.applicationStorageDirectory.resolvePath(P);
-            g.openAsync(Q);
+            const dbFile = air.File.applicationStorageDirectory.resolvePath(P);
+            g.openAsync(dbFile);
         }
 
-        function A() {
-            var S = new air.SQLStatement();
+        function _onDbOpen() {
+            const S = new air.SQLStatement();
             S.sqlConnection = g;
             S.text = "CREATE TABLE IF NOT EXISTS notesTable (noteId INTEGER PRIMARY KEY AUTOINCREMENT, noteText TEXT, noteTextFormat TEXT, bookNum INTEGER, chNum INTEGER, verseNum INTEGER )";
             S.addEventListener(air.SQLEvent.RESULT, Q);
@@ -173,7 +191,7 @@ export class Notes {
             function P() { }
         }
 
-        function E(Q, P) {
+        function insertNote(Q, P) {
             var S = new air.SQLStatement();
             S.sqlConnection = g;
             S.text = "INSERT INTO notesTable (noteText, noteTextFormat, bookNum, chNum, verseNum) VALUES (:noteText, :noteTextFormat, :b, :c, :v);";
@@ -181,14 +199,14 @@ export class Notes {
             S.addEventListener(air.SQLErrorEvent.ERROR, c);
             S.parameters[":noteText"] = Q;
             S.parameters[":noteTextFormat"] = P;
-            S.parameters[":b"] = p;
-            S.parameters[":c"] = j;
-            S.parameters[":v"] = n;
+            S.parameters[":b"] = _book;
+            S.parameters[":c"] = _chapter;
+            S.parameters[":v"] = _verse;
             S.execute();
         }
 
         function q(P) {
-            getNotes(p, j, n);
+            getNotes(_book, _chapter, _verse);
         }
 
         function c(P) {
@@ -196,7 +214,7 @@ export class Notes {
             console.trace("Details (create DB):", P.error.details);
         }
 
-        function u(S, Q) {
+        function updateNote(S, Q) {
             var U = new air.SQLStatement();
             U.sqlConnection = g;
             U.text = "UPDATE notesTable SET noteText = :noteText, noteTextFormat = :noteTextFormat WHERE bookNum = :b AND chNum = :c AND verseNum = :v;";
@@ -204,13 +222,13 @@ export class Notes {
             U.addEventListener(air.SQLErrorEvent.ERROR, R);
             U.parameters[":noteText"] = S;
             U.parameters[":noteTextFormat"] = Q;
-            U.parameters[":b"] = p;
-            U.parameters[":c"] = j;
-            U.parameters[":v"] = n;
+            U.parameters[":b"] = _book;
+            U.parameters[":c"] = _chapter;
+            U.parameters[":v"] = _verse;
             U.execute();
 
             function P(V) {
-                getNotes(p, j, n);
+                getNotes(_book, _chapter, _verse);
             }
 
             function R(V) {
@@ -239,21 +257,21 @@ export class Notes {
 
         function d() {
             var X = "No Notes for this chapter...";
-            v = F.getResult();
+            _notesResults = F.getResult();
             var P = document.getElementById("notesResultsID");
             var Q = $RvW.vvConfigObj.get_navFontSize();
             P.style.fontSize = `${Q}px`;
             P.innerHTML = "";
-            if (v != null) {
-                if (v.data != null) {
+            if (_notesResults != null) {
+                if (_notesResults.data != null) {
                     X = "";
-                    var U = v.data.length;
+                    var U = _notesResults.data.length;
                     X += "<table>";
                     for (let V = 0; V < U; V++) {
-                        var S = v.data[V].bookNum - 1;
+                        var S = _notesResults.data[V].bookNum - 1;
                         var T = $RvW.booknames[S];
-                        var R = v.data[V].chNum;
-                        var W = v.data[V].verseNum;
+                        var R = _notesResults.data[V].chNum;
+                        var W = _notesResults.data[V].verseNum;
                         X += "<tr>";
                         X += '<td class="navtd" width=30%>';
                         X += `<b>${T} ${R}:${W}</b><br>`;
@@ -261,7 +279,7 @@ export class Notes {
                         X += `<font face="${$RvW.secFontName}"> </font><br>`;
                         X += "</td>";
                         X += '<td class="navtd" width=40%>';
-                        X += `<br><span class="notes_css">${v.data[V].noteTextFormat}</span>`;
+                        X += `<br><span class="notes_css">${_notesResults.data[V].noteTextFormat}</span>`;
                         X += "</td>";
                         X += "</tr>";
                     }
@@ -276,35 +294,8 @@ export class Notes {
             console.trace("Details (displayNotes Error):", P.error.details);
         }
 
-        function notesSaveButton() {
-            var P = document.getElementById("notes_rte").value;
-            var Q = s(P);
-            if (B) {
-                u(P, Q);
-            } else {
-                E(P, Q);
-            }
-            hideNotesPanel();
-        }
-
-        function s(P) {
-            return P.replace(/(\r\n|[\r\n])/g, "<br />");
-        }
-
-        function notesCancelButton() {
-            var Q = document.getElementById("notes_rte").value;
-            if (Q != z) {
-                var P = confirm(
-                    "Are you sure you want to cancel? Any updates will be lost."
-                );
-                if (P == true) {
-                    document.getElementById("notes_rte").value = "";
-                    hideNotesPanel();
-                }
-            } else {
-                document.getElementById("notes_rte").value = "";
-                hideNotesPanel();
-            }
+        function nl2br(P) {
+            return P.replace(/(\r\n|[\r\n])/g, "<br/>");
         }
     }
 }

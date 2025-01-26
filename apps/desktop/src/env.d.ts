@@ -12,11 +12,6 @@
 //
 // declare var $dtk: DojoToolkit;
 
-interface YUI2 {
-}
-
-declare var YAHOO: YUI2;
-
 interface YUI3 {
     Promise: any;
     Panel: any;

@@ -1,4 +1,4 @@
-import {BibleVerse, ScheduleItemType, selectedBible, selectedVerseList} from "@stores/global";
+import {BibleVerse, presentingBible, ScheduleItemType, selectedBible, selectedVerseList} from "@stores/global";
 import ScrollableSelect from "@app/ui/widgets/ScrollableSelect";
 import {presentationCtx} from "@app/presentation";
 import {console} from "@/platform/adapters/air";
@@ -12,7 +12,12 @@ export default function RightVersesTab() {
         activeBook,
         activeChapter,
         activeVerse,
-    ] = useStoreState(selectedBible);
+    ] = useStoreState(selectedBible) || [-1, -1, -1];
+    const [
+       presentingBook,
+       presentingChapter,
+       presentingVerse,
+    ] = useStoreState(presentingBible) || [-1, -1, -1];
 
     const _verseList = useStoreState(selectedVerseList);
 
@@ -97,6 +102,20 @@ export default function RightVersesTab() {
     // NOTE: double click to present verse
     // NOTE: single click to select verse
 
+    function isActiveVerse(ref: number[]) {
+        const [bs, cs, vs] = ref.map(e => (e - 1));
+        const [ba, ca, va] = [activeBook, activeChapter, activeVerse];
+
+        return (bs === ba) && (cs === ca) && (vs === va);
+    }
+
+    function isPresentingVerse(ref: number[]) {
+        const [bs, cs, vs] = ref.map(e => (e - 1));
+        const [ba, ca, va] = [presentingBook, presentingChapter, presentingVerse];
+
+        return (bs === ba) && (cs === ca) && (vs === va);
+    }
+
     return (
         <>
             <div class="p-0 h-full">
@@ -106,6 +125,13 @@ export default function RightVersesTab() {
                         <div
                             key={i}
                             class={`item ${i === activeVerse ? 'active' : ''}`}
+                            style={{
+                                borderStyle: 'solid',
+                                borderWidth: '2px',
+                                borderColor: isPresentingVerse(verseList[0].ref) ? '#fc5c65' : (
+                                    isActiveVerse(verseList[0].ref) ? '#45aaf2' : 'transparent'
+                                ),
+                            }}
                             onClick={(e) => onClickListItem(e, [i, verseList[0].ref])}
                             onDblClick={(e) => onClickListItem(e, [i, verseList[0].ref], true)}
                         >
@@ -113,8 +139,10 @@ export default function RightVersesTab() {
                                 margin: 0,
                             }}>
                                 <div class="ui buttons">
-                                    <button class="ui icon button"
-                                            onClick={() => editVerseNote(i, verseList[0].ref)}>
+                                    <button
+                                        class="ui icon button"
+                                        onClick={() => editVerseNote(i, verseList[0].ref)}
+                                    >
                                         <i aria-hidden="true" class="file alternate icon"></i>
                                     </button>
                                     <button

@@ -2,86 +2,121 @@ import {useEffect, useRef, useState} from "preact/hooks";
 import {useStoreState} from "@/utils/hooks";
 import {showBibleNotesEditPanel} from "@stores/global";
 import {$RvW} from "@/rvw";
+import Modal from "@app/ui/Modal";
+import {showPrompt} from "@app/ui/Prompt";
+import {console} from "@/platform/adapters/air";
 
 export interface Props {
 
 }
 
+// TODO: migrate YUI to Preact
 export default function BibleNotesEditDialog({}: Props) {
-    const container = useRef(null);
-
     const open = useStoreState(showBibleNotesEditPanel);
 
-    const [panel, setPanel] = useState(null);
+    const [notesInfo, setNotesInfo] = useState(null);
 
-    // Init Dialog Panel
-    useEffect(() => {
-        const panel = new $Y.Panel({
-            headerContent   : 'Notes',
-            srcNode         : container.current!,
-            width           : '40%',
-            height          : 'auto',
-            zIndex          : 100,
-            centered        : true,
-            modal           : true,
-            render          : true,
-            visible         : false, // make visible explicitly with .show()
-            buttons         : {
-                header: ['close'],
-                footer: [
-                    {
-                        name  : 'save',
-                        label : 'Save',
-                        action: (e: any) => {
-                            e.preventDefault();
-                            $RvW.notesObj.onSave()
-                        },
-                    },
-                    {
-                        name  : 'close',
-                        label : 'Close',
-                        action:(e: any) => {
-                            e.preventDefault();
-                            $RvW.notesObj.onCancel()
-                        },
-                    }
-                ]
-            }
-        });
+    const [verseContents, setVerseContents] = useState(null);
+    const [verseRefText, setVerseRefText] = useState(null);
 
-        panel.on('visibleChange', function (e: any) {
-            showBibleNotesEditPanel.set(e.newVal);
-        });
-
-        setPanel(panel);
-    }, []);
+    const [notesContent, setNotesContent] = useState(null);
 
     // panel visibility
     useEffect(() => {
         if (open) {
-            panel?.show();
+            const vi = $RvW.notesObj.getNotesForActiveVerse();
+
+            setNotesInfo(vi);
+            setVerseRefText(vi.refText);
+            setVerseContents(vi.contents);
+            setNotesContent(vi.notes);
         } else {
-            panel?.hide();
+            setNotesInfo(null);
+            setVerseContents(null);
+            setVerseRefText(null);
+            setNotesContent(null);
         }
     }, [open]);
 
+    function handleCloseModal() {
+        $RvW.notesObj.hide(); // this internally updates the store
+    }
+
+    function handleSave(e: Event) {
+        e.preventDefault();
+
+        $RvW.notesObj.setNotesForActiveVerse(notesContent);
+
+        handleCloseModal();
+    }
+
+    function handleCancel(e: Event) {
+        e.preventDefault();
+
+        if (notesInfo && notesInfo.notes !== notesContent) {
+            showPrompt({
+                title: 'Unsaved Changes',
+                message: 'Are you sure you want to cancel? Any changes you made will be lost!',
+                onOk() {
+                    handleCloseModal();
+                },
+                onCancel() {}
+            });
+        } else {
+            handleCloseModal();
+        }
+    }
+
     return (
-        <div ref={container}>
-            <div class="yui3-widget-bd">
-                <div class="rbroundbox">
-                    <div class="rbtop">
-                        <div></div>
-                    </div>
-                    <div class="rbcontent">
-                        <p class="tempList" id="notesVerse"></p>
-                    </div>
-                    <div class="rbbot">
-                        <div></div>
+        <Modal
+            title="Edit Verse Note"
+            isOpen={open}
+            onClose={handleCloseModal}
+            width="40%"
+            zIndex={100}
+        >
+            <div class="ui form">
+                <div class="field">
+                    <div class="ui message">
+                        <div class="header">{verseRefText}</div>
+
+                        {verseContents && (<>
+                            <ul class="list">
+                                {verseContents.map((vc, i) => {
+                                    return (
+                                        <li key={i}>
+                                            <span style={{fontFamily: vc.font}}>
+                                                {vc.content}
+                                            </span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </>)}
                     </div>
                 </div>
 
-                <textarea id="notes_rte" rows={8} style="width: 100%"></textarea>
+                <div class="field">
+                    <label>Notes</label>
+
+                    <textarea
+                        rows={8}
+                        value={notesContent}
+                        onChange={(e) => {
+                            setNotesContent(e.currentTarget.value);
+                        }}
+                    ></textarea>
+                </div>
+
+                <div class="ui basic buttons">
+                    <button class="ui primary icon button" tabIndex={0} onClick={handleSave}>
+                        Save
+                    </button>
+                    <button class="ui secondary icon button" tabIndex={0} onClick={handleCancel}>
+                        Close
+                    </button>
+                </div>
             </div>
-        </div>
+        </Modal>
     );
 }

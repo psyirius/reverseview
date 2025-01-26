@@ -49,6 +49,8 @@ export type BibleVerse = {
 // Right Tab
 export const selectedTab: Writable<number> = writable(0);
 export const selectedBible: Writable<[number, number, number]> = writable([0, 0, 0]);
+export const presentingBible: Writable<[number, number, number]> = writable([-1, -1, -1]);
+export const presentingLyric: Writable<any | null> = writable(null);
 export const bookList: Writable<(string | string[])[]> = writable([]);
 export const chapterList: Writable<string[]> = writable([]);
 export const verseList: Writable<string[]> = writable([]);
@@ -68,6 +70,8 @@ export const selectedSong2Edit: Writable<any | null> = writable(null);
 
 export const selectedBibleVersionForVerseEdit: Writable<number> = writable(0);
 export const selectedSongForEdit: Writable<any | null> = writable(null);
+
+export const bgStillImageList: Writable<any[]> = writable([]);
 
 export const showRemotePanel: Writable<boolean> = writable(false);
 export const showSongEditPanel: Writable<boolean> = writable(false);

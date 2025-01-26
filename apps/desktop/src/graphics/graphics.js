@@ -3,8 +3,12 @@ import {StillBackground} from "./stillbkgnd";
 export class GraphicsMgr {
     still = new StillBackground();
 
-    setNumOfPicsInRow(x) {
-        this.still.setNumOfPicsInRow(x);
+    addStillBg() {
+        return this.still.addStillBg();
+    }
+
+    delStillBg(idx) {
+        return this.still.delStillBg(idx);
     }
 
     getBkgndFilename() {
@@ -13,17 +17,5 @@ export class GraphicsMgr {
 
     getLogoFilename() {
         return this.still.getLogoFilename();
-    }
-
-    getMotionFlag() {
-        return this.still.getMotionFlag();
-    }
-
-    getShadeFlag() {
-        return this.still.getShadeFlag();
-    }
-
-    getTransparentFlag() {
-        return this.still.getTransparentFlag();
     }
 }

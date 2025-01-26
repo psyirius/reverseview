@@ -2,6 +2,11 @@ import {execFFmpeg, getFFmpegPath} from "@/graphics/ffmpeg";
 import {extractFileName} from "@app/common";
 import {console} from "@/platform/adapters/air";
 
+export function getNoImagePlaceholder() {
+    const f = air.File.applicationStorageDirectory.resolvePath('assets/images/no-image-selected.jpg');
+    return f.exists ? f.url : null;
+}
+
 function generateThumbnail(imagePath: air.File, cb? : (path?: air.File, err?: any) => void) {
     const ffmpegPath = getFFmpegPath();
 

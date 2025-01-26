@@ -1,5 +1,5 @@
 import {presentationCtx} from "@app/presentation";
-import {presentation} from "@/p_window";
+import {presentation, resetPresentingRefs} from "@/p_window";
 import {Toast} from "@app/toast";
 import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
@@ -310,6 +310,8 @@ export class BibleReference {
 export function showLogoSlide() {
     $RvW.webServerObj.broadcastWS({event: 'cc:show-logo'});
 
+    presentationCtx.p_type = 'logo';
+    presentationCtx.p_ref = null;
     presentationCtx.p_text1_arr = [];
     presentationCtx.p_text2_arr = [];
     presentationCtx.p_text1_arr[0] = "";
@@ -330,13 +332,18 @@ export function showLogoSlide() {
 
 export function blankSlide() {
     $RvW.webServerObj.broadcastWS({event: 'cc:blank-screen'});
+
     if ($RvW.presentWindowOpen) {
         $RvW.presentationWindow.window.showBlankProcess();
-        if ($RvW.stageView && $RvW.stageWindow != null) {
-            $RvW.stageWindow.window.showBlankProcess();
-        }
     }
+
+    if ($RvW.stageView && $RvW.stageWindow) {
+        $RvW.stageWindow.window.showBlankProcess();
+    }
+
     $RvW.presentationContent = "";
+
+    resetPresentingRefs();
 }
 
 export function specialCategory(d) {

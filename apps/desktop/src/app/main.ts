@@ -51,9 +51,8 @@ import {
     chapterList, selectedBible,
     selectedBookRef,
     selectedTab,
-    verseList, selectedVerseList, BibleVerse, twoVersesPerSlide, bibleFont2
+    verseList, selectedVerseList, type BibleVerse, twoVersesPerSlide, bibleFont2
 } from "@stores/global";
-import {loadBibleBookNames, loadBibleInfo} from "@/bible/db";
 import {$RvW} from "@/rvw";
 import fetch from '@/utils/http/fetch';
 import {console} from "@/platform/adapters/air";
@@ -268,6 +267,8 @@ $RvW.launch = function(g) {
         }
     }
 
+    presentationCtx.p_type = 'verse';
+    presentationCtx.p_ref = [$RvW.bookIndex, $RvW.chapterIndex, $RvW.verseIndex];
     presentationCtx.p_text1_arr = b;
     presentationCtx.p_text2_arr = a;
     presentationCtx.p_text1_font = getPrimaryBibleVersion().selectedFont;
@@ -275,7 +276,7 @@ $RvW.launch = function(g) {
     presentationCtx.p_current_index = k;
     presentationCtx.p_last_index = j;
     presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
-    presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+    presentationCtx.p_bkgnd_motion = $RvW.rvwPreferences.get("app.settings.background.still.motion", false);
     presentationCtx.p_logo_mode = false;
     presentationCtx.p_bkgnd_color = "blue";
     presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
@@ -750,19 +751,6 @@ function adjustNavWindowsHeight() {
 
         // TODO: make this in css
 
-        // bg still image gallery
-        {
-            const j = windowWidth - 16;
-            const b = (j * 3) / 100;
-
-            const g = 250;
-            const e = 200;
-
-            const l = j - g - e - 3 * b;
-
-            $RvW.graphicsObj.setNumOfPicsInRow(l);
-        }
-
         // song list rows per page
         {
             const rpp = Math.round(((window.innerHeight - 360) / 36));
@@ -851,13 +839,14 @@ $RvW.processExit = function processExit() {
             presentWindowClosed
         );
         $RvW.presentationWindow.window.nativeWindow.close();
-        if ($RvW.stageView && $RvW.stageWindow != null) {
-            $RvW.stageWindow.window.nativeWindow.removeEventListener(
-                air.Event.CLOSE,
-                presentWindowClosed
-            );
-            $RvW.stageWindow.window.nativeWindow.close();
-        }
+    }
+
+    if ($RvW.stageView && $RvW.stageWindow) {
+        $RvW.stageWindow.window.nativeWindow.removeEventListener(
+            air.Event.CLOSE,
+            presentWindowClosed
+        );
+        $RvW.stageWindow.window.nativeWindow.close();
     }
 }
 function firstTimeCheck() {
@@ -868,7 +857,7 @@ function firstTimeCheck() {
         res = setupVVersion();
     }
 
-    const d = fileExist("xml/backgroundlist.xml", 1);
+    const d = fileExist("background/list.json", 1);
     if (!d) {
         res = setupVBkgnd();
     }
@@ -883,11 +872,11 @@ function firstTimeCheck() {
 }
 
 function setupVVersion() {
-    createFolder("xml");
     createFolder("bible");
     createFolder("notes");
     createFolder("song");
     createFolder("webroot");
+    createFolder("dbx"); // to store db files
 
     let a;
 
@@ -907,11 +896,7 @@ function setupVVersion() {
 }
 
 function setupVBkgnd() {
-    let a = copyFile2AppStorage("xml/backgroundlist.xml", "xml/backgroundlist.xml");
-    if (!a) {
-        return a;
-    }
-    a = copyFile2AppStorage("background", "background");
+    let a= copyFile2AppStorage("background", "background");
     if (!a) {
         return a;
     }

@@ -1188,6 +1188,8 @@ export class _Presenter_ {
     public presentSong(item: SongItem, slideIndex: number = 0) {
         $RvW.webServerObj.broadcastWS({event: 'cc:present', type: 'lyric'});
 
+        presentationCtx.p_type = 'lyric';
+        presentationCtx.p_ref = {id: item.id, slide: slideIndex};
         presentationCtx.p_text1_arr = (item.lyrics[0]?.slides || []).map(s => s.trim().replace(/\n/g, '<br>'));
 
         const secSlides = item.lyrics[1]?.slides || [];
@@ -1211,7 +1213,7 @@ export class _Presenter_ {
         presentationCtx.p_last_index = presentationCtx.p_text1_arr.length - 1;
         presentationCtx.p_bkgnd_filename = $RvW.graphicsObj.getBkgndFilename();
         presentationCtx.p_logo_mode = false;
-        presentationCtx.p_bkgnd_motion = $RvW.graphicsObj.getMotionFlag();
+        presentationCtx.p_bkgnd_motion = $RvW.rvwPreferences.get("app.settings.background.still.motion", false);
         presentationCtx.p_bkgnd_color = "blue";
         presentationCtx.p_font_color = $RvW.rvwPreferences.get('app.settings.text.color1');
         presentationCtx.p_font_color2 = $RvW.rvwPreferences.get('app.settings.text.color2')
