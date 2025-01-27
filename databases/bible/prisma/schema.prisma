@@ -7,17 +7,47 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model Version {
-    id          Int     @id @default(autoincrement())
-    name        String  @unique
-    tag         String  @unique // abbreviation of the name
+model Publisher {
+    id          Int       @id @default(autoincrement())
+    name        String    @unique
+    local_name  String    @unique
     description String?
-    author      String?
-    copyright   String?
-    locale      String // en-US, ta-IN, ml-IN, ...
-    direction   String  @default("ltr") // ltr, rtl
-    revision    Int     @default(0)
-    books       Book[]
+    website     String?
+    versions    Version[]
+
+    @@map(name: "publishers")
+}
+
+model Language {
+    id          Int       @id @default(autoincrement())
+    name        String    @unique
+    local_name  String    @unique
+    description String?
+    locale      String    @unique // en-US, ta-IN, ml-IN, ...
+    iso_639_1   String    @unique // ISO 639-1:2002 | 2-letter code, en, ta, ml, ...
+    iso_639_3   String    @unique // ISO 639-3:2007 | 3-letter code, eng, tam, mal, ...
+    direction   String // ltr, rtl
+    versions    Version[]
+
+    @@map(name: "languages")
+}
+
+model Version {
+    id             Int        @id @default(autoincrement())
+    title          String     @unique
+    local_title    String     @unique
+    abbr           String     @unique
+    local_abbr     String     @unique
+    description    String?
+    copyright      String?
+    copyright_long String?
+    edition        String?
+    revision       Int        @default(0)
+    books          Book[]
+    language       Language?  @relation(fields: [languageId], references: [id])
+    languageId     Int?
+    publisher      Publisher? @relation(fields: [publisherId], references: [id])
+    publisherId    Int?
 
     @@map(name: "versions")
 }
@@ -25,42 +55,40 @@ model Version {
 model Book {
     id          Int       @id @default(autoincrement())
     name        String    @unique
-    tag         String    @unique // common across all locales
+    usfm        String    @unique
+    subtitle    String?
     description String?
+    canon       String // ot - Old Testament, nt - New Testament, dc - Deuterocanonical
     chapters    Chapter[]
     verses      Verse[]
-
-    version   Version @relation(fields: [versionId], references: [id])
-    versionId Int
+    version     Version   @relation(fields: [versionId], references: [id])
+    versionId   Int
 
     @@map(name: "books")
 }
 
 model Chapter {
     id          Int     @id @default(autoincrement())
-    serial      Int // chapter num
+    ordinal     Int
+    usfm        String  @unique
     description String?
-
-    book   Book @relation(fields: [bookId], references: [id])
-    bookId Int
-
-    verses Verse[]
+    book        Book    @relation(fields: [bookId], references: [id])
+    bookId      Int
+    verses      Verse[]
 
     @@map(name: "chapters")
 }
 
 model Verse {
-    id     Int @id @default(autoincrement())
-    serial Int // verse num
-
-    content String // the actual verse content
-    note    String? // some notes about the verse
-
+    id        Int     @id @default(autoincrement())
+    ordinal   Int
+    usfm      String  @unique
+    content   String // the actual verse content
+    note      String? // some notes about the verse
     chapter   Chapter @relation(fields: [chapterId], references: [id])
     chapterId Int
-
-    book   Book @relation(fields: [bookId], references: [id])
-    bookId Int
+    book      Book    @relation(fields: [bookId], references: [id])
+    bookId    Int
 
     @@map(name: "verses")
 }

@@ -1,5 +1,7 @@
 ### TODO
 
+- AdobeAIR 32.0 -> Safari 5.0.3
+
 - Simplify the build system
 - Fix Lyric Edit Modal styling
 - Settings tab styling (wip)
