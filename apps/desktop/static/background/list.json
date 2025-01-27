@@ -1,11 +1,23 @@
 [
   {
+    "name": "black",
+    "filename": "black.png"
+  },
+  {
+    "name": "white",
+    "filename": "white.png"
+  },
+  {
     "name": "purplex",
     "filename": "purplex.png"
   },
   {
-    "name": "sparkles",
-    "filename": "sparkles.jpg"
+    "name": "sparkle-space",
+    "filename": "sparkle-space.jpg"
+  },
+  {
+    "name": "cosmic-space",
+    "filename": "cosmic-space.jpg"
   },
   {
     "name": "paper-wall",
@@ -14,14 +26,6 @@
   {
     "name": "scrach-board",
     "filename": "scrach-board.jpg"
-  },
-  {
-    "name": "cosmic-space",
-    "filename": "cosmic-space.jpg"
-  },
-  {
-    "name": "dual-leg-banners",
-    "filename": "dual-leg-banners.png"
   },
   {
     "name": "led-big-tv-banner",
@@ -48,24 +52,12 @@
     "filename": "evening-mountains.png"
   },
   {
-    "name": "white",
-    "filename": "white.png"
-  },
-  {
-    "name": "black",
-    "filename": "black.png"
-  },
-  {
     "name": "glit-lines",
     "filename": "glit-lines.png"
   },
   {
     "name": "cross-led-lines",
     "filename": "cross-led-lines.png"
-  },
-  {
-    "name": "Colorful Clouds Joy",
-    "filename": "Colorful Clouds Joy.png"
   },
   {
     "name": "paper-pieces",

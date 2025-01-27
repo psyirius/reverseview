@@ -457,7 +457,7 @@ function BgImageTab() {
                 {/* Gallery */}
                 <div class="ui segment bottom attached">
                     <div class="overflow-y-auto">
-                        {bgStillList.map(({url}, i) => {
+                        {bgStillList.map(({url, name}, i) => {
                             return (
                                 <div
                                     key={i}
@@ -469,6 +469,7 @@ function BgImageTab() {
                                     }}
                                     onClick={() => onBgItemClick(i)}
                                     onDblClick={() => onBgItemDoubleClick(i)}
+                                    title={name}
                                 >
                                     <img
                                         class="ui bordered image rounded-lg"

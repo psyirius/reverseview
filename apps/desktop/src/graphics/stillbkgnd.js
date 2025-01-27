@@ -167,7 +167,7 @@ export class StillBackground {
             for (let i = 0; i < _bgFilenames.length; i++) {
                 const af = V.resolvePath("./background/" + _bgFilenames[i]);
 
-                res.push({ url: af.url });
+                res.push({ name: _bgNames[i], url: af.url });
             }
 
             bgStillImageList.set(res);

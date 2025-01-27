@@ -532,9 +532,6 @@ function DOMIntializeStageViewCallback(a) {
 function updatePresentationContent(forward) {
     const a = presentationCtx.p_text1_arr.length;
 
-    const p_type = presentationCtx.p_type;
-    const p_ref = presentationCtx.p_ref;
-
     if (forward) {
         index_for_presentationContent++;
         if (index_for_presentationContent >= a) {
@@ -547,26 +544,35 @@ function updatePresentationContent(forward) {
         }
     }
 
+    const p_type = presentationCtx.p_type;
+    const p_ref = presentationCtx.p_ref;
+
     switch (p_type) {
         case 'verse': {
-            const [b, c, _v] = presentingBible.get();
-            console.log('Next/Prev Slide[Verse]:', _v, index_for_presentationContent);
-            presentingBible.set([
-                b,
-                c,
-                index_for_presentationContent,
-            ]);
+            const pb = presentingBible.get();
+            if (pb) {
+                const [b, c, _v] = pb;
+                console.log('Next/Prev Slide[Verse]:', _v, index_for_presentationContent);
+                presentingBible.set([
+                    b,
+                    c,
+                    index_for_presentationContent,
+                ]);
+            }
             break;
         }
         case 'lyric': {
-            const {slide, ...rest} = presentingLyric.get();
+            const pl = presentingLyric.get();
+            if (pl) {
+                const {slide, ...rest} = pl;
 
-            console.log('Next/Prev Slide[Lyric]:', slide, index_for_presentationContent);
+                console.log('Next/Prev Slide[Lyric]:', slide, index_for_presentationContent);
 
-            presentingLyric.set({
-                ...rest,
-                slide: index_for_presentationContent,
-            });
+                presentingLyric.set({
+                    ...rest,
+                    slide: index_for_presentationContent,
+                });
+            }
             break;
         }
     }
