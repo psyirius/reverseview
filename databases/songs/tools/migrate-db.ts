@@ -15,6 +15,7 @@ const CATEGORY_MAP = {
     'VV Nyishi Songs': 'Nyishi',
     'VV Tamil 2021': 'Tamil',
     'VV Malayalam 2021': 'Malayalam',
+    'English1': 'English',
 }
 
 db.serialize(() => {

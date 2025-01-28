@@ -3,21 +3,25 @@ import {$RvW} from "@/rvw";
 import {console} from "@/platform/adapters/air";
 
 function getVerseFromArray(d, p, f) {
-    var h = 0;
-    var n = d;
-    var l = p;
-    var o = f;
+    let h = 0;
+
+    const n = d;
+    const l = p;
+    const o = f;
+
     for (let g = 1; g < n; g++) {
         let m = $RvW.numofch[g][0];
         for (let e = 1; e <= m; e++) {
             h += $RvW.numofch[g][e];
         }
     }
+
     let m = $RvW.numofch[n][0];
     for (let a = 1; a < l; a++) {
         h += $RvW.numofch[n][a];
     }
     h += o;
+
     return h;
 }
 
