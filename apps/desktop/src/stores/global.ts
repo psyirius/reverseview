@@ -77,7 +77,6 @@ export const showRemotePanel: Writable<boolean> = writable(false);
 export const showSongEditPanel: Writable<boolean> = writable(false);
 export const showLyricEditPanel: Writable<boolean> = writable(false);
 export const showBibleNotesEditPanel: Writable<boolean> = writable(false);
-export const showColorPickerPanel: Writable<boolean> = writable(false);
 export const showBibleManagePanel: Writable<boolean> = writable(false);
 export const showBibleSelectPanel: Writable<boolean> = writable(false);
 export const showVerseEditPanel: Writable<boolean> = writable(false);

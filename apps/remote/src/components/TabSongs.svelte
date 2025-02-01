@@ -4,6 +4,7 @@
     import { Separator } from "$lib/components/ui/separator";
     import { ScrollArea } from "$lib/components/ui/scroll-area";
     import { Skeleton } from "$lib/components/ui/skeleton";
+    import { Card, Tooltip, Resizable } from "bits-ui";
     import type { PaneAPI } from "paneforge";
     import { XIcon, BookmarkPlusIcon, BookmarkCheckIcon, BookmarkMinusIcon } from "lucide-svelte";
     import { fade, fly, scale, slide } from "svelte/transition";

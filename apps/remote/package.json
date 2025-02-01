@@ -21,7 +21,7 @@
     "@types/reveal.js": "^5.0.4",
     "@types/obs-studio": "^2.17.2",
     "autoprefixer": "^10.4.20",
-    "bits-ui": "^1.0.0-next.72",
+    "bits-ui": "^1.0.0-next.83",
     "clsx": "^2.1.1",
     "formsnap": "^2.0.0",
     "jquery": "^3.7.1",

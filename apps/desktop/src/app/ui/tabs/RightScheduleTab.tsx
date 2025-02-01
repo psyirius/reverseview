@@ -1,12 +1,18 @@
 import {$RvW} from "@/rvw";
 import {useStoreState} from "@/utils/hooks";
-import {ScheduleItemType, scheduleList} from "@stores/global";
+import {ScheduleItemType, scheduleList, presentingBible, presentingLyric, selectedBible} from "@stores/global";
 import {presenter, scheduler, songManager} from "@/app/glc";
 import {console} from "@/platform/adapters/air";
 import {Component} from "preact";
 
 interface Props {
     scheduleList: any[]; // Replace 'any[]' with the actual type of scheduleList if known
+    presentingLyric: {
+        id?: number;
+        slide?: number;
+    },
+    selectedBible: [number, number, number];
+    presentingBible: [number, number, number];
 }
 
 interface State {
@@ -158,9 +164,55 @@ class _RightScheduleTab extends Component<Props, State> {
         presenter.presentSong(song, i);
     }
 
+    isActiveVerse = (ref: number[]) => {
+        const [
+            activeBook,
+            activeChapter,
+            activeVerse,
+        ] = this.props.selectedBible;
+
+        const [bs, cs, vs] = ref.map(e => (e - 1));
+        const [ba, ca, va] = [activeBook, activeChapter, activeVerse];
+
+        return (bs === ba) && (cs === ca) && (vs === va);
+    }
+
+    isPresentingVerse = (ref: number[]) => {
+        const [
+            presentingBook,
+            presentingChapter,
+            presentingVerse,
+        ] = this.props.presentingBible;
+
+        const [bs, cs, vs] = ref.map(e => (e - 1));
+        const [ba, ca, va] = [presentingBook, presentingChapter, presentingVerse];
+
+        return (bs === ba) && (cs === ca) && (vs === va);
+    }
+
+    onClickOnVerseOrSlide = (item: any, i: number) => {
+
+    }
+
+    onDoubleClickOnVerseOrSlide = (item: any, i: number) => {
+
+    }
+
+    isSlideOrVerseActive = (item: any, i: number) => {
+
+    }
+
+    isSlideOrVersePresenting = (item: any, i: number) => {
+
+    }
+
     render() {
         const { scheduleList } = this.props;
         const { selectedItem, currentItem } = this.state;
+        const {
+            id: presentSongId,
+            slide: presentLyricSlide,
+        } = this.props.presentingLyric;
         const navFontSize = $RvW.vvConfigObj.get_navFontSize();
 
         return (
@@ -274,7 +326,7 @@ class _RightScheduleTab extends Component<Props, State> {
                                         <div
                                             class="ui segments cursor-pointer"
                                             role="button"
-                                            tabIndex={0}
+                                            // tabIndex={0}
                                             onClick={() => this.presentVerse(currentItem[0])}
                                         >
                                             {currentItem[1].map(({font, content}, i: number) => (
@@ -297,7 +349,7 @@ class _RightScheduleTab extends Component<Props, State> {
                                                 key={i}
                                                 class="ui segments cursor-pointer"
                                                 role="button"
-                                                tabIndex={0}
+                                                // tabIndex={0}
                                                 onClick={() => this.presentSlide(currentItem[0], i)}
                                             >
                                                 <>
@@ -327,5 +379,16 @@ class _RightScheduleTab extends Component<Props, State> {
 export default function RightScheduleTab() {
     const scheduleItems = useStoreState(scheduleList);
 
-    return <_RightScheduleTab scheduleList={scheduleItems}/>
+    const _presentingLyric = useStoreState(presentingLyric) ?? {};
+    const _presentingBible = useStoreState(presentingBible) || [-1, -1, -1];
+    const _selectedBible = useStoreState(selectedBible) || [-1, -1, -1];
+
+    return (
+        <_RightScheduleTab
+            scheduleList={scheduleItems}
+            presentingLyric={_presentingLyric}
+            presentingBible={_presentingBible}
+            selectedBible={_selectedBible}
+        />
+    );
 }

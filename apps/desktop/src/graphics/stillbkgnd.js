@@ -200,6 +200,12 @@ export class StillBackground {
         function getLogoFilename() {
             const T = [];
 
+            let X = $RvW.vvConfigObj.get_logoFilename();
+            if (isNaN(X)) {
+                X = 0;
+            }
+            logoThumbFile = "./background/" + _bgFilenames[X];
+
             if (logoThumbFile !== "" && isLogoFileExists()) {
                 T[0] = logoThumbFile;
             } else {

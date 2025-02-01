@@ -300,7 +300,7 @@ function _RightLyricsTab_({song}) {
                                     <div
                                         key={i}
                                         class="ui segments cursor-pointer"
-                                        // role="button"
+                                        role="button"
                                         // tabIndex={0}
                                         onClick={(e) => onClickOnSlide(e, i)}
                                         onDblClick={(e) => onDoubleClickOnSlide(e, i)}

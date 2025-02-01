@@ -445,8 +445,8 @@ importers:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
       bits-ui:
-        specifier: ^1.0.0-next.72
-        version: 1.0.0-next.72(svelte@5.14.0)
+        specifier: ^1.0.0-next.83
+        version: 1.0.0-next.83(svelte@5.14.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -6098,11 +6098,11 @@ packages:
   bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
 
-  bits-ui@1.0.0-next.72:
-    resolution: {integrity: sha512-a5KlTSiju/lGmlGxA2KjVTLYYewaGos+aw1et3CXcPW2+UC/HfV/jiCiHt7SEGIJvCbEKH5RKPBrHzewBEfZlQ==}
+  bits-ui@1.0.0-next.83:
+    resolution: {integrity: sha512-WiieqVAE1MyT1DyAbmtrs+perqcZZQCtHrfTbqebgtj+iUC9trP3enFfYMRgz00rtP5+3NcgxH6lJHGJhb9J8A==}
     engines: {node: '>=18', pnpm: '>=8.7.0'}
     peerDependencies:
-      svelte: ^5.0.0-next.1
+      svelte: ^5.11.0
 
   bl@1.2.3:
     resolution: {integrity: sha512-pvcNpa0UU69UT341rO6AYy4FVAIkUHuZXRIWbq+zHnsVcRzDDjIAhGuuYoi0d//cwIwtt4pkpKycWEfjdV+vww==}
@@ -7607,9 +7607,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
-
-  esm-env@1.1.4:
-    resolution: {integrity: sha512-oO82nKPHKkzIj/hbtuDYy/JHqBHFlMIW36SDiPCVsj87ntDLcWN+sJ1erdVryd4NxODacFTsdrIE3b7IamqbOg==}
 
   esm-env@1.2.1:
     resolution: {integrity: sha512-U9JedYYjCnadUlXk7e1Kr+aENQhtUaoaV9+gZm1T8LC/YBAPJx3NSPIAurFOC0U5vrdSevnUJS2/wUVxGwPhng==}
@@ -12067,13 +12064,13 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
-  runed@0.15.3:
-    resolution: {integrity: sha512-HtayB+loDcGdqJDHW8JFdsZzGQMyVzim6+s3052MkjZnwmwDstmF+cusMeTssBe6TCdt5i9D/Tb+KYXN3L0kXA==}
-    peerDependencies:
-      svelte: ^5.0.0-next.1
-
   runed@0.19.0:
     resolution: {integrity: sha512-VxUk/Lbm5WPR/b+NDQ+Itp/anG6bUWXH+JBUNA1M/YG/lsKZ1Gn+WwvBwyE/8aTpAV7ij12aEVxh78utqi/Q4A==}
+    peerDependencies:
+      svelte: ^5.7.0
+
+  runed@0.23.2:
+    resolution: {integrity: sha512-AhHCb5/B+YQW6ar1pzhGQOQy+byfjCH63ofuhrexSWwQKhC0EbQ60Z/wMYwETLo3ZubhwlNryxBt0seOMOrVFQ==}
     peerDependencies:
       svelte: ^5.7.0
 
@@ -12939,6 +12936,12 @@ packages:
     engines: {node: '>=18', pnpm: '>=8.7.0'}
     peerDependencies:
       svelte: ^5.0.0-next.126
+
+  svelte-toolbelt@0.7.1:
+    resolution: {integrity: sha512-HcBOcR17Vx9bjaOceUvxkY3nGmbBmCBBbuWLLEWO6jtmWH8f/QoWmbyUfQZrpDINH39en1b8mptfPQT9VKQ1xQ==}
+    engines: {node: '>=18', pnpm: '>=8.7.0'}
+    peerDependencies:
+      svelte: ^5.0.0
 
   svelte2tsx@0.7.26:
     resolution: {integrity: sha512-cBGGZ3Hejuh9gYICQcGKg1zyYhrzZR04iTUdP5pD+CIbjoZiyzS4cpCi4IHh0PA2Vf6cFuwVRmDs9wnOfJotJA==}
@@ -17121,13 +17124,15 @@ snapshots:
       - '@parcel/core'
       - '@swc/helpers'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))':
+  '@parcel/cache@2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)':
     dependencies:
       '@parcel/core': 2.13.2(@swc/helpers@0.5.15)
       '@parcel/fs': 2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/cache@2.13.2(@parcel/core@2.13.2(@swc/helpers@0.5.15))':
     dependencies:
@@ -17429,7 +17434,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))
+      '@parcel/cache': 2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.13.2(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)
@@ -19653,15 +19658,15 @@ snapshots:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  bits-ui@1.0.0-next.72(svelte@5.14.0):
+  bits-ui@1.0.0-next.83(svelte@5.14.0):
     dependencies:
       '@floating-ui/core': 1.6.7
       '@floating-ui/dom': 1.6.10
       '@internationalized/date': 3.5.6
-      esm-env: 1.1.4
-      runed: 0.15.3(svelte@5.14.0)
+      esm-env: 1.2.1
+      runed: 0.23.2(svelte@5.14.0)
       svelte: 5.14.0
-      svelte-toolbelt: 0.4.6(svelte@5.14.0)
+      svelte-toolbelt: 0.7.1(svelte@5.14.0)
 
   bl@1.2.3:
     dependencies:
@@ -21594,8 +21599,6 @@ snapshots:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
-
-  esm-env@1.1.4: {}
 
   esm-env@1.2.1: {}
 
@@ -26528,12 +26531,12 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
-  runed@0.15.3(svelte@5.14.0):
+  runed@0.19.0(svelte@5.14.0):
     dependencies:
-      esm-env: 1.1.4
+      esm-env: 1.2.1
       svelte: 5.14.0
 
-  runed@0.19.0(svelte@5.14.0):
+  runed@0.23.2(svelte@5.14.0):
     dependencies:
       esm-env: 1.2.1
       svelte: 5.14.0
@@ -27453,6 +27456,13 @@ snapshots:
   svelte-toolbelt@0.5.0(svelte@5.14.0):
     dependencies:
       clsx: 2.1.1
+      style-to-object: 1.0.8
+      svelte: 5.14.0
+
+  svelte-toolbelt@0.7.1(svelte@5.14.0):
+    dependencies:
+      clsx: 2.1.1
+      runed: 0.23.2(svelte@5.14.0)
       style-to-object: 1.0.8
       svelte: 5.14.0
 
@@ -28612,7 +28622,7 @@ snapshots:
 
   vaul-svelte@1.0.0-next.3(svelte@5.14.0):
     dependencies:
-      bits-ui: 1.0.0-next.72(svelte@5.14.0)
+      bits-ui: 1.0.0-next.83(svelte@5.14.0)
       svelte: 5.14.0
       svelte-toolbelt: 0.4.6(svelte@5.14.0)
 
