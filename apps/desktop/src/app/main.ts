@@ -700,45 +700,40 @@ function vvinit_continue() {
     setupMenu();
     setupConsole();
 
-    setTimeout(function () {
-        const a = $RvW.vvConfigObj.get_bibleDBVersion();
+    const a = $RvW.vvConfigObj.get_bibleDBVersion();
 
-        if (a === 1 && !firstTimeFlag) {
-            const ok = copyFile2AppStorage("bible", "bible");
-            if (ok) {
-                $RvW.vvConfigObj.set_version1(0);
-                $RvW.vvConfigObj.set_version2(1);
+    if (a === 1 && !firstTimeFlag) {
+        const ok = copyFile2AppStorage("bible", "bible");
+        if (ok) {
+            $RvW.vvConfigObj.set_version1(0);
+            $RvW.vvConfigObj.set_version2(1);
 
-                $RvW.vvConfigObj.set_bibleDBVersion(2);
+            $RvW.vvConfigObj.set_bibleDBVersion(2);
 
-                Toast.info("ReVerseVIEW", "Bible Database update process completed.");
-            } else {
-                Toast.error(
-                    "ReVerseVIEW",
-                    "Bible Database update failed. Please create an issue on GitHub."
-                );
-            }
+            Toast.info("ReVerseVIEW", "Bible Database update process completed.");
+        } else {
+            Toast.error(
+                "ReVerseVIEW",
+                "Bible Database update failed. Please create an issue on GitHub."
+            );
         }
-        loadBibleVersions();
-        loadSQLBible($RvW.vvConfigObj.get_version1(), 0);
-        loadSQLBible($RvW.vvConfigObj.get_version2(), 1);
-        setupTabContent();
+    }
+    loadBibleVersions();
+    loadSQLBible($RvW.vvConfigObj.get_version1(), 0);
+    loadSQLBible($RvW.vvConfigObj.get_version2(), 1);
+    setupTabContent();
+
+    $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
+    $RvW.putbook();
+    window.nativeWindow.addEventListener("resize", adjustNavWindowsHeight);
+    window.nativeWindow.addEventListener("close", () => $RvW.processExit());
+    window.nativeWindow.addEventListener("closing", beforeExit);
+
+    setTimeout(function () {
+        SplashScreen.close();
 
         activateMainWindow();
-        adjustNavWindowsHeight();
-
-        $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
-        $RvW.putbook();
-        window.nativeWindow.addEventListener("resize", adjustNavWindowsHeight);
-        window.nativeWindow.addEventListener("close", () => $RvW.processExit());
-        window.nativeWindow.addEventListener("closing", beforeExit);
-
-        SplashScreen.close();
-    }, 500);
-
-    // setTimeout(function () {
-    //     window.scroll(0, 0);
-    // }, 3000);
+    }, 1000);
 }
 
 function adjustNavWindowsHeight() {
@@ -746,8 +741,6 @@ function adjustNavWindowsHeight() {
 
     {
         document.body.style.overflow = "hidden";
-
-        const windowWidth = window.nativeWindow.bounds.width;
 
         // TODO: make this in css
 
