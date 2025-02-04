@@ -44,6 +44,8 @@ function presentationContentString(d, b, f, c, a) {
 function passVariable(isStageView, _ = undefined) {
     _ ??= this.ctx; // this => is global of the holding context
 
+    const p_type = presentationCtx.p_type;
+
     $RvW.presentationContent = presentationContentString(
         presentationCtx.p_title,
         presentationCtx.p_text1_font,
@@ -55,8 +57,12 @@ function passVariable(isStageView, _ = undefined) {
     index_for_presentationContent = presentationCtx.p_current_index;
     _.p_text1_arr = presentationCtx.p_text1_arr;
     _.p_text2_arr = presentationCtx.p_text2_arr;
-    _.p_text1_font = presentationPrimaryFontOverride.get() || presentationCtx.p_text1_font;
-    _.p_text2_font = presentationSecondaryFontOverride.get() || presentationCtx.p_text2_font;
+    _.p_text1_font = p_type === 'lyric'
+        ? (presentationPrimaryFontOverride.get() || presentationCtx.p_text1_font)
+        : presentationCtx.p_text1_font;
+    _.p_text2_font = p_type === 'lyric'
+        ? (presentationSecondaryFontOverride.get() || presentationCtx.p_text2_font)
+        : presentationCtx.p_text2_font;
     _.p_title = presentationCtx.p_title;
     _.p_footnote = presentationCtx.p_footer;
     _.p_current_index = presentationCtx.p_current_index;

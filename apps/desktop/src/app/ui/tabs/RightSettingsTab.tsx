@@ -260,8 +260,8 @@ function MainPresentationSetup() {
 
         availableFontsStore.set(getAvailableFonts());
 
-        presentationPrimaryFontOverride.set($RvW.rvwPreferences.get("app.settings.font.primary.override", null));
-        presentationSecondaryFontOverride.set($RvW.rvwPreferences.get("app.settings.font.secondary.override", null));
+        presentationPrimaryFontOverride.set($RvW.rvwPreferences.get("app.settings.fonts.lyrics.override.primary", null));
+        presentationSecondaryFontOverride.set($RvW.rvwPreferences.get("app.settings.fonts.lyrics.override.secondary", null));
     }, []);
 
     useEffect(() => {
@@ -317,13 +317,13 @@ function MainPresentationSetup() {
 
     function updatePrimaryFontOverride(value: string | null) {
         presentationPrimaryFontOverride.set(value);
-        $RvW.rvwPreferences.set("app.settings.font.primary.override", value || null);
+        $RvW.rvwPreferences.set("app.settings.fonts.lyrics.override.primary", value || null);
         $RvW.rvwPreferences.commit();
     }
 
     function updateSecondaryFontOverride(value: string | null) {
         presentationSecondaryFontOverride.set(value);
-        $RvW.rvwPreferences.set("app.settings.font.secondary.override", value || null);
+        $RvW.rvwPreferences.set("app.settings.fonts.lyrics.override.secondary", value || null);
         $RvW.rvwPreferences.commit();
     }
 
@@ -334,7 +334,7 @@ function MainPresentationSetup() {
     }
 
     function refreshPrimaryFontOverride() {
-        const savedValue = $RvW.rvwPreferences.get("app.settings.font.primary.override", fontOverridePrimary);
+        const savedValue = $RvW.rvwPreferences.get("app.settings.fonts.lyrics.override.primary", fontOverridePrimary);
         console.trace('SAVED:', savedValue)
         let value = null;
         for (const f of availableFonts) {
@@ -347,7 +347,7 @@ function MainPresentationSetup() {
     }
 
     function refreshSecondaryFontOverride() {
-        const savedValue = $RvW.rvwPreferences.get("app.settings.font.secondary.override", fontOverrideSecondary);
+        const savedValue = $RvW.rvwPreferences.get("app.settings.fonts.lyrics.override.secondary", fontOverrideSecondary);
         console.trace('SAVED:', savedValue)
         let value = null;
         for (const f of availableFonts) {
