@@ -6,6 +6,7 @@
   "scripts": {
     "db:make": "tsx src/index.ts",
     "tools:migrate-db": "tsx tools/migrate-db.ts",
+    "tools:unicode-locale-detect": "tsx tools/unicode-locale-detector.ts",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
     "prisma:init": "prisma migrate dev --name init"

@@ -5,6 +5,157 @@ import { useStoreState } from "@/utils/hooks";
 import {presenter, songNavigator} from "@app/glc";
 import { SearchFilterType } from "@/song/song-manager";
 import {useEffect, useRef, useState} from "preact/hooks";
+import {console} from "@/platform/adapters/air";
+
+function SlidePreviewItem({
+    index,
+    slide,
+    onDoubleClickOnSlide,
+    onClickOnSlide,
+    isPresentingSlide,
+    isActiveSlide,
+}) {
+    const contextMenu = createContextMenu();
+
+    function showContextMenu(event: Event) {
+        event.preventDefault();
+        contextMenu.display(window.nativeWindow.stage, event.clientX, event.clientY);
+    }
+
+    function createContextMenu(){
+        const menu = new air.NativeMenu();
+
+        const editCmd = menu.addItem(new air.NativeMenuItem("Edit"));
+        editCmd.addEventListener(air.Event.SELECT, () => {
+            alert("Edit!");
+        });
+
+        const presentCmd = menu.addItem(new air.NativeMenuItem("Present"));
+        presentCmd.addEventListener(air.Event.SELECT, () => {
+            alert("Present!");
+        });
+
+        const scheduleCmd = menu.addItem(new air.NativeMenuItem("Schedule"));
+        scheduleCmd.addEventListener(air.Event.SELECT, () => {
+            alert("Schedule!");
+        });
+
+        const cleanupCmd = menu.addItem(new air.NativeMenuItem("Cleanup"));
+        cleanupCmd.addEventListener(air.Event.SELECT, () => {
+            alert("Cleanup!");
+        });
+
+        const tlMenu = new air.NativeMenu();
+
+        const twoLinesMenu = menu.addSubmenu(tlMenu, 'Two Lines');
+
+        const twoLinesSelectedCmd = tlMenu.addItem(new air.NativeMenuItem("Selected"));
+        twoLinesSelectedCmd.addEventListener(air.Event.SELECT, () => {
+            alert("Two Lines (Selected)!");
+        });
+
+        const twoLinesAllCmd = tlMenu.addItem(new air.NativeMenuItem("All"));
+        twoLinesAllCmd.addEventListener(air.Event.SELECT, () => {
+            alert("Two Lines (All)!");
+        });
+
+        return menu;
+    }
+
+    function onCommand(){
+        air.trace("Context command invoked.");
+    }
+
+    const [selectedPreview, setSelectedPreview] = useState(0);
+
+    const i = index;
+
+    useEffect(() => {
+        console.log('SlidePreviewItem:', slide);
+    }, [selectedPreview]);
+
+    return (
+        <div
+            class="inline-block float-left m-[1px] cursor-pointer rounded-md"
+            style={{
+                // width: 0, height: 0, // 3:2
+                // width: 0, height: 0, // 4:3
+                width: 352, height: 198, // 16:9
+                // width: 462, height: 198, // 21:9
+
+                borderStyle: 'solid',
+                borderWidth: '2px',
+                borderColor: isPresentingSlide(i) ? '#fc5c65' : (
+                    isActiveSlide(i) ? '#45aaf2' : 'rgba(34, 36, 38, .15)'
+                ),
+            }}
+            // onContextMenu={showContextMenu}
+            onClick={(e) => onClickOnSlide(e, i)}
+            onDblClick={(e) => onDoubleClickOnSlide(e, i)}
+        >
+            <div class="flex flex-col h-full w-full">
+                <div class="flex-1 h-full w-full relative">
+                    <div
+                        class="absolute h-full w-full cursor-pointer overflow-hidden"
+                        role="button"
+                        // tabIndex={0}
+                        // style="-khtml-user-select:auto;"
+                    >
+                        {slide[selectedPreview] ? (
+                            <div
+                                class="flex flex-col justify-center items-center text-center h-full"
+                                style={{
+                                    fontFamily: slide[selectedPreview].font,
+                                    fontSize: '1rem',
+                                }}
+                            >
+                                <p class="m-0" dangerouslySetInnerHTML={{__html: slide[selectedPreview].content}}></p>
+                            </div>
+                        ) : (
+                            <div class="flex flex-col justify-center items-center text-center h-full">
+                                <div class="ui visible message">
+                                    <p>No content</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div
+                    class="flex flex-row h-8 w-full justify-between items-center px-2 rounded-b-[3px]"
+                    style={{
+                        backgroundColor: 'rgba(34, 36, 38, .15)',
+                    }}
+                >
+                    {/* Slide Number */}
+                    <div
+                        class="ui tiny label"
+                    >
+                        {i + 1}
+                    </div>
+
+                    {/* Slide variant switcher */}
+                    <div class="">
+                        {slide.map((_: any, j: number) => (
+                            <a
+                                key={j}
+                                class={`ui tiny basic label`}
+                                onClick={() => setSelectedPreview(j)}
+                                style={(j === selectedPreview) ? {
+                                    backgroundColor: 'white',
+                                    borderColor: '#45aaf2',
+                                    color: '#45aaf2',
+                                } : {}}
+                            >
+                                {j + 1}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function _RightLyricsTab_({song}) {
     const [navFontSize] = useState($RvW.vvConfigObj.get_navFontSize());
@@ -295,41 +446,19 @@ function _RightLyricsTab_({song}) {
                             borderRadius: '0.28571429rem',
                             fontSize: navFontSize + 'px',
                         }}>
-                            <div class="ui basic segment">
+                            <div
+                                class="ui basic segment"
+                            >
                                 {lyrics.map((slide: any[], i: number) => (
-                                    <div
+                                    <SlidePreviewItem
                                         key={i}
-                                        class="ui segments cursor-pointer"
-                                        role="button"
-                                        // tabIndex={0}
-                                        onClick={(e) => onClickOnSlide(e, i)}
-                                        onDblClick={(e) => onDoubleClickOnSlide(e, i)}
-                                        style={{
-                                            borderStyle: 'solid',
-                                            borderWidth: '2px',
-                                            borderColor: isPresentingSlide(i) ? '#fc5c65' : (
-                                                isActiveSlide(i) ? '#45aaf2' : 'transparent'
-                                            ),
-                                        }}
-                                    >
-                                        <>
-                                            {/*<p>Slide {k + 1}</p>*/}
-                                            {slide.map(({font, content}: any, j: number) => (
-                                                <div
-                                                    key={j}
-                                                    class="ui segment"
-                                                    style={{
-                                                        fontFamily: font,
-                                                    }}
-                                                >
-                                                    <p class="m-0" dangerouslySetInnerHTML={{
-                                                        __html: content,
-                                                    }}></p>
-                                                </div>
-                                            ))}
-                                            <div class="ui left floating label font-mono">{i + 1}</div>
-                                        </>
-                                    </div>
+                                        index={i}
+                                        slide={slide}
+                                        onClickOnSlide={onClickOnSlide}
+                                        onDoubleClickOnSlide={onDoubleClickOnSlide}
+                                        isActiveSlide={isActiveSlide}
+                                        isPresentingSlide={isPresentingSlide}
+                                    />
                                 ))}
                             </div>
                         </div>

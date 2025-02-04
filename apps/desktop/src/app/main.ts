@@ -908,6 +908,9 @@ function setupVBkgnd() {
 }
 
 function onMainWindowKeyUp(evt) {
+    // TODO: make it proper and enable it
+    return;
+
     if ($RvW.disableHotkeys) return;
 
     const b = $(":focus").attr("id");
