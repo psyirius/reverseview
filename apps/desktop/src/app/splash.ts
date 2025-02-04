@@ -16,8 +16,8 @@ const Splash = {
             const mainScreen = Screen.mainScreen;
             const screenBounds = mainScreen.visibleBounds;
 
-            const width/*: number*/ = 540;
-            const height/*: number*/ = 140;
+            const width/*: number*/ = 640 /* content */ + 20 /* shadows */;
+            const height/*: number*/ = 400 /* content */ + 20 /* shadows */;
 
             const centeredWindowRect = new Rectangle(
                 (screenBounds.left + screenBounds.right - width) / 2,
