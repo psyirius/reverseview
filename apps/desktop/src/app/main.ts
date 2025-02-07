@@ -733,7 +733,7 @@ function vvinit_continue() {
         SplashScreen.close();
 
         activateMainWindow();
-    }, 1000);
+    }, 10000);
 }
 
 function adjustNavWindowsHeight() {

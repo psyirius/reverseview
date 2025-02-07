@@ -9,7 +9,7 @@ const toBuild = {
     'styles/app.pcss'               : '.air/css/app.css',
     'styles/main.pcss'              : '.air/css/main.css',
     'styles/fonts.pcss'             : '.air/css/fonts.css',
-    'styles/graphics.pcss'          : '.air/css/graphics.css',
+    // 'styles/graphics.pcss'          : '.air/css/graphics.css',
 
     'styles/sandbox/app.pcss'       : '.air/css/sandbox/app.css',
 

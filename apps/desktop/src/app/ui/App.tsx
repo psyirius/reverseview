@@ -6,6 +6,8 @@ import SandboxFrame from "./SandboxFrame";
 import RenderCanvas from "./RenderCanvas";
 import RemoteCanvas from "./RemoteCanvas";
 import _Test from "@app/ui/widgets/_Test";
+import {statusMessage} from "@stores/global";
+import StatusBar from "@app/ui/StatusBar";
 
 interface Props {
     dev?: boolean;
@@ -51,7 +53,7 @@ const App = ({dev}: Props) => {
             {/* App Shell */}
             <div class="x-u-i app">
                 <div class="app-content">
-                    <header class="">
+                    <header>
                         <MenuBar/>
                     </header>
 
@@ -59,8 +61,8 @@ const App = ({dev}: Props) => {
                         <ContentPane/>
                     </main>
 
-                    <footer class="h-8">
-                        {/* TODO: impl */}
+                    <footer>
+                        <StatusBar />
                     </footer>
                 </div>
 

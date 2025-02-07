@@ -7,6 +7,53 @@ import { SearchFilterType } from "@/song/song-manager";
 import {useEffect, useRef, useState} from "preact/hooks";
 import {console} from "@/platform/adapters/air";
 
+// const contextMenu = createContextMenu();
+//
+// function showContextMenu(event: Event) {
+//     event.preventDefault();
+//     contextMenu.display(window.nativeWindow.stage, event.clientX, event.clientY);
+// }
+//
+// function createContextMenu(){
+//     const menu = new air.NativeMenu();
+//
+//     const editCmd = menu.addItem(new air.NativeMenuItem("Edit"));
+//     editCmd.addEventListener(air.Event.SELECT, () => {
+//         alert("Edit!");
+//     });
+//
+//     const presentCmd = menu.addItem(new air.NativeMenuItem("Present"));
+//     presentCmd.addEventListener(air.Event.SELECT, () => {
+//         alert("Present!");
+//     });
+//
+//     const scheduleCmd = menu.addItem(new air.NativeMenuItem("Schedule"));
+//     scheduleCmd.addEventListener(air.Event.SELECT, () => {
+//         alert("Schedule!");
+//     });
+//
+//     const cleanupCmd = menu.addItem(new air.NativeMenuItem("Cleanup"));
+//     cleanupCmd.addEventListener(air.Event.SELECT, () => {
+//         alert("Cleanup!");
+//     });
+//
+//     const tlMenu = new air.NativeMenu();
+//
+//     const twoLinesMenu = menu.addSubmenu(tlMenu, 'Two Lines');
+//
+//     const twoLinesSelectedCmd = tlMenu.addItem(new air.NativeMenuItem("Selected"));
+//     twoLinesSelectedCmd.addEventListener(air.Event.SELECT, () => {
+//         alert("Two Lines (Selected)!");
+//     });
+//
+//     const twoLinesAllCmd = tlMenu.addItem(new air.NativeMenuItem("All"));
+//     twoLinesAllCmd.addEventListener(air.Event.SELECT, () => {
+//         alert("Two Lines (All)!");
+//     });
+//
+//     return menu;
+// }
+
 function SlidePreviewItem({
     index,
     slide,
@@ -15,60 +62,7 @@ function SlidePreviewItem({
     isPresentingSlide,
     isActiveSlide,
 }) {
-    const contextMenu = createContextMenu();
-
-    function showContextMenu(event: Event) {
-        event.preventDefault();
-        contextMenu.display(window.nativeWindow.stage, event.clientX, event.clientY);
-    }
-
-    function createContextMenu(){
-        const menu = new air.NativeMenu();
-
-        const editCmd = menu.addItem(new air.NativeMenuItem("Edit"));
-        editCmd.addEventListener(air.Event.SELECT, () => {
-            alert("Edit!");
-        });
-
-        const presentCmd = menu.addItem(new air.NativeMenuItem("Present"));
-        presentCmd.addEventListener(air.Event.SELECT, () => {
-            alert("Present!");
-        });
-
-        const scheduleCmd = menu.addItem(new air.NativeMenuItem("Schedule"));
-        scheduleCmd.addEventListener(air.Event.SELECT, () => {
-            alert("Schedule!");
-        });
-
-        const cleanupCmd = menu.addItem(new air.NativeMenuItem("Cleanup"));
-        cleanupCmd.addEventListener(air.Event.SELECT, () => {
-            alert("Cleanup!");
-        });
-
-        const tlMenu = new air.NativeMenu();
-
-        const twoLinesMenu = menu.addSubmenu(tlMenu, 'Two Lines');
-
-        const twoLinesSelectedCmd = tlMenu.addItem(new air.NativeMenuItem("Selected"));
-        twoLinesSelectedCmd.addEventListener(air.Event.SELECT, () => {
-            alert("Two Lines (Selected)!");
-        });
-
-        const twoLinesAllCmd = tlMenu.addItem(new air.NativeMenuItem("All"));
-        twoLinesAllCmd.addEventListener(air.Event.SELECT, () => {
-            alert("Two Lines (All)!");
-        });
-
-        return menu;
-    }
-
-    function onCommand(){
-        air.trace("Context command invoked.");
-    }
-
     const [selectedPreview, setSelectedPreview] = useState(0);
-
-    const i = index;
 
     useEffect(() => {
         console.log('SlidePreviewItem:', slide);
@@ -85,13 +79,13 @@ function SlidePreviewItem({
 
                 borderStyle: 'solid',
                 borderWidth: '2px',
-                borderColor: isPresentingSlide(i) ? '#fc5c65' : (
-                    isActiveSlide(i) ? '#45aaf2' : 'rgba(34, 36, 38, .15)'
+                borderColor: isPresentingSlide(index) ? '#fc5c65' : (
+                    isActiveSlide(index) ? '#45aaf2' : 'rgba(34, 36, 38, .15)'
                 ),
             }}
             // onContextMenu={showContextMenu}
-            onClick={(e) => onClickOnSlide(e, i)}
-            onDblClick={(e) => onDoubleClickOnSlide(e, i)}
+            onClick={(e) => onClickOnSlide(e, index)}
+            onDblClick={(e) => onDoubleClickOnSlide(e, index)}
         >
             <div class="flex flex-col h-full w-full">
                 <div class="flex-1 h-full w-full relative">
@@ -131,11 +125,11 @@ function SlidePreviewItem({
                     <div
                         class="ui tiny label"
                     >
-                        {i + 1}
+                        {index + 1}
                     </div>
 
                     {/* Slide variant switcher */}
-                    <div class="">
+                    <div class=""> {/* This div should exist for justify to always work */}
                         {slide.map((_: any, j: number) => (
                             <a
                                 key={j}
@@ -451,7 +445,7 @@ function _RightLyricsTab_({song}) {
                             >
                                 {lyrics.map((slide: any[], i: number) => (
                                     <SlidePreviewItem
-                                        key={i}
+                                        key={`${song?.id}:${i}`}
                                         index={i}
                                         slide={slide}
                                         onClickOnSlide={onClickOnSlide}

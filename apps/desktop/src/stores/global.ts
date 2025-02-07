@@ -59,6 +59,7 @@ export const bibleFont1: Writable<string> = writable('');
 export const bibleFont2: Writable<string> = writable('');
 export const selectedBookRef: Writable<string> = writable('');
 export const bibleNavSearch: Writable<string> = writable('');
+export const statusMessage: Writable<string | null> = writable(null);
 export const recentBibleRefs: Writable<BibleVerseRef[]> = writable([]);
 
 export const songCategories: Writable<string[]> = writable([]);

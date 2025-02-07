@@ -61,6 +61,17 @@ const MAIN_MENU = [
         ]
     },
     {
+        label: 'Window',
+        items: [
+            {
+                label: 'Stay on Top',
+                type: 'check',
+                toggled: false,
+                onSelect: toggleStayOnTop,
+            },
+        ]
+    },
+    {
         label: 'Help',
         items: [
             { label: 'About', onSelect: showAbout }
@@ -86,6 +97,14 @@ export function setupMenu() {
 
     // tray icon context menu
     // Menu.setAsIconMenu(vvMenu);
+}
+
+function toggleStayOnTop(e, d) {
+    d.checked = !d.checked;
+
+    const { nativeWindow } = window;
+
+    nativeWindow.alwaysInFront = d.checked;
 }
 
 function song_new_menu() {

@@ -15,6 +15,7 @@ import * as XmlUtils from "@/utils/xml";
 import {presentationCtx} from "@app/presentation";
 import {presentation} from "@/p_window";
 import {scheduler} from "@app/glc";
+import {clearStatus, setStatus} from "@app/status";
 
 type SongSlide = string; // string with newlines
 
@@ -129,6 +130,26 @@ type Optional<T> = T | undefined;
 type PaginationState = {
     page: number,
     limit: number,
+}
+
+// index based
+interface BibleVerses {
+    [book: number]: {
+        [chapter: number]: {
+            [verse: number]: string,
+        }
+    }
+}
+
+interface BibleVersion {
+    id: number,
+    name: string,
+    lang: string,
+    file: string,
+    font: string,
+    bookNames: string[],
+    verses: BibleVerses,
+    copyright: string,
 }
 
 // TODO: improve query performance
@@ -491,10 +512,14 @@ export class _SongManager_ {
 
             const selectedFile = e.target;
 
+            setStatus('Reading SongDB XML...');
+
             const fileStream = new FileStream();
             fileStream.open(selectedFile, FileMode.READ);
             const fileContents = fileStream.readMultiByte(fileStream.bytesAvailable, 'utf-8');
             fileStream.close();
+
+            setStatus('Parsing SongDB XML...');
 
             const songsDoc = XmlUtils.parse(fileContents);
 
@@ -509,29 +534,28 @@ export class _SongManager_ {
                     const rootTagName = root.getElementsByTagName("type")[0].textContent;
 
                     if (rootTagName.toLowerCase() === 'xmlsong') {
+                        setStatus('Importing from SongDB XML...');
                         const added = importSongsFromDoc(root);
-
-                        Toast.success(
-                            "Song Database",
-                            `Imported ${added} songs.`
-                        );
                     } else {
                         Toast.error(
                             "Song Database",
                             "Invalid database for VerseVIEW Songs in XML format. (Wrong type field)"
                         );
+                        clearStatus();
                     }
                 } else {
                     Toast.error(
                         "Song Database",
                         "Invalid database for VerseVIEW Songs in XML format. (Type field not present)"
                     );
+                    clearStatus();
                 }
             } else {
                 Toast.error(
                     "Song Database",
                     "Invalid database for VerseVIEW Songs in XML format. (Invalid XML format)"
                 );
+                clearStatus();
             }
         }
 
@@ -552,6 +576,17 @@ export class _SongManager_ {
             const songItems = doc.getElementsByTagName("song");
 
             console.trace('Total Songs:', songItems.length);
+
+            function onLoadComplete() {
+                Toast.success(
+                    "Song Importer",
+                    `Imported ${songs.length} songs.`
+                );
+                clearStatus();
+                self.loadSongs();
+            }
+
+            // TODO: impl a proper merging strategy with overwrite prompts when we find a conflicting entry
 
             const songs = [];
 
@@ -580,7 +615,7 @@ export class _SongManager_ {
 
                 // skip if the category already exists
                 if (existingCategories.indexOf(category) !== -1) {
-                    console.log('Skipping Import:', name);
+                    Toast.error('Skipping Import:', name);
                     continue;
                 }
 
@@ -626,16 +661,16 @@ export class _SongManager_ {
                     }
 
                     console.log('Song imported:', imported.name);
-                }, false);
 
-                // console.log('Importing Song:', song);
+                    setStatus(`Importing Songs: ${i + 1}/${songItems.length}`);
+
+                    if (i === songItems.length - 1) {
+                        onLoadComplete();
+                    }
+                }, false);
 
                 songs.push(song);
             }
-
-            self.loadSongs();
-
-            console.log('Imported Songs:', songs.length);
 
             return songs.length;
         }
@@ -1042,26 +1077,6 @@ export class _SongNavigator_ {
 
         scheduler.addSong(item.id);
     }
-}
-
-// index based
-interface BibleVerses {
-    [book: number]: {
-        [chapter: number]: {
-            [verse: number]: string,
-        }
-    }
-}
-
-interface BibleVersion {
-    id: number,
-    name: string,
-    lang: string,
-    file: string,
-    font: string,
-    bookNames: string[],
-    verses: BibleVerses,
-    copyright: string,
 }
 
 export class _BibleManager_ {
