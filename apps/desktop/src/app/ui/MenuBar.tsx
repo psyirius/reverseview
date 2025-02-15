@@ -1,7 +1,7 @@
 import {useStoreState} from "@/utils/hooks";
+import BibleRefSelect from "@app/ui/BibleRefSelect";
 import {blankSlide, showLogoSlide} from "@app/common";
 import {call_nextSlide, call_prevSlide, call_closePresentation} from "@/p_window";
-import BibleRefSelect from "@app/ui/BibleRefSelect";
 import {selectedBookRef, selectedSong, selectedTab, showRemotePanel} from "@stores/global";
 import {$RvW} from "@/rvw";
 import {Toast} from "@app/toast";
@@ -9,6 +9,7 @@ import {presenter, scheduler} from "@app/glc";
 
 const handlers = {
     present: () => {
+        // TODO: make it present the selected item in verse or song tab when the tab is selected
         if ($RvW.leftTabView.getSelectedTab() === 1) {
             const song = selectedSong.get();
 

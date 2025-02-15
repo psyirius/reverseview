@@ -1,5 +1,5 @@
 // Song Lyric Navigation
-import {Component} from "preact";
+import {Component, createRef, RefObject} from "preact";
 import {useState} from "preact/hooks";
 import {
     selectedTab,
@@ -21,6 +21,8 @@ import DataTable from "@app/ui/widgets/Datatable";
 import PaginatedList from "@app/ui/widgets/PaginatedList";
 import {songManager, songNavigator} from "@app/glc";
 import {SearchFilter, SearchFilterType} from "@/song/song-manager";
+import PaginatedSongSelect from "@app/ui/widgets/SongSelect";
+import { createResizeSensor } from "../utils/resize-observer";
 
 const Zapp = () => {
     // const columns = [
@@ -1458,6 +1460,79 @@ const MdlApp = () => {
 //     )
 // }
 
+class DynPagingList extends Component<any, any> {
+    private readonly divRef: RefObject<HTMLDivElement>;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            height: 0,
+            width: 0,
+        };
+        this.divRef = createRef(); // Create a ref to access the div element
+    }
+
+    componentDidMount() {
+        createResizeSensor(this.divRef.current, (size) => {
+            this.setState({
+                // height: this.divRef.current.clientHeight,
+                // width: this.divRef.current.clientWidth,
+                height: size.height,
+                width: size.width,
+            });
+        });
+    }
+
+    render(props, state) {
+        const items = [
+            { id: 1, name: 'Apple', category: 'Fruit', price: 0.5, available: true },
+            { id: 2, name: 'Banana', category: 'Fruit', price: 0.3, available: false },
+            { id: 3, name: 'Cherry', category: 'Fruit', price: 0.8, available: true },
+            { id: 4, name: 'Date', category: 'Fruit', price: 0.6, available: false },
+            { id: 5, name: 'Elderberry', category: 'Fruit', price: 1.2, available: true },
+            { id: 6, name: 'Fig', category: 'Fruit', price: 0.9, available: true },
+            { id: 7, name: 'Grape', category: 'Fruit', price: 0.4, available: false },
+            { id: 8, name: 'Honeydew', category: 'Fruit', price: 1.1, available: true },
+            { id: 9, name: 'Iceberg Lettuce', category: 'Vegetable', price: 0.6, available: false },
+            { id: 10, name: 'Jackfruit', category: 'Fruit', price: 1.5, available: true },
+            { id: 11, name: 'Kiwi', category: 'Fruit', price: 0.7, available: true },
+            { id: 12, name: 'Lemon', category: 'Fruit', price: 0.3, available: false },
+            { id: 13, name: 'Mango', category: 'Fruit', price: 1.0, available: true },
+            { id: 14, name: 'Nectarine', category: 'Fruit', price: 0.8, available: true },
+            { id: 15, name: 'Orange', category: 'Fruit', price: 0.5, available: false },
+            { id: 16, name: 'Papaya', category: 'Fruit', price: 0.7, available: true },
+        ];
+
+        return (
+            <div class="bg-amber flex flex-col h-full w-full">
+                {/* List */}
+                <div class="flex-[1] relative h-full w-full overflow-y-auto">
+                    <div class="absolute h-full w-full">
+                        <div class="bg-red h-full w-full" ref={this.divRef}>
+                            {/*<div>*/}
+                            {/*    <p>Height: {state.height}px</p>*/}
+                            {/*    <p>Width: {state.width}px</p>*/}
+                            {/*</div>*/}
+
+                            {items.map((item) => (
+                                <div class="flex items-center p-2 border-b border-gray-200">
+                                    <div class="flex-[1]">{item.name}</div>
+                                    <div class="flex-[1]">{item.category}</div>
+                                    <div class="flex-[1]">{item.price}</div>
+                                    <div class="flex-[1]">{item.available ? 'Yes' : 'No'}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Pagination */}
+                <div class="flex-[0] h-10 bg-blue"></div>
+            </div>
+        );
+    }
+}
+
 function DTComp({results, onSelect}) {
     const { items, perPage, total, page } = results;
 
@@ -1796,12 +1871,23 @@ class _LeftSongsTab_ extends Component<Props, State> {
                         <div class="flex-[0] h-4"></div>
 
                         {/* Song List */}
-                        {/* TODO: remove overflow auto after setting list to auto height  */}
-                        <div class="flex-[1] relative h-full w-full overflow-y-auto">
+                        {/* TODO: hide overflow after setting list to auto height  */}
+                        <div class="flex-[1] relative h-full w-full overflow-hidden overflow-y-auto">
                             <div class="absolute h-full w-full">
-                                <DTComp
-                                    results={results}
+                                {/*<DTComp*/}
+                                {/*    results={results}*/}
+                                {/*    onSelect={this.handleSelect}*/}
+                                {/*/>*/}
+                                {/*<DynPagingList*/}
+                                {/*    results={results}*/}
+                                {/*    onSelect={this.handleSelect}*/}
+                                {/*/>*/}
+                                <PaginatedSongSelect
                                     onSelect={this.handleSelect}
+                                    items={results.items}
+                                    renderItem={(item: any) => (
+                                        <span>{item.name}</span>
+                                    )}
                                 />
                             </div>
                         </div>

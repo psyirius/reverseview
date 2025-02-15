@@ -4,6 +4,7 @@ import {ScheduleItemType, scheduleList, presentingBible, presentingLyric, select
 import {presenter, scheduler, songManager} from "@/app/glc";
 import {console} from "@/platform/adapters/air";
 import {Component} from "preact";
+import SlidePreviewItem from "@app/ui/widgets/SlidePreviewItem";
 
 interface Props {
     scheduleList: any[]; // Replace 'any[]' with the actual type of scheduleList if known
@@ -17,6 +18,7 @@ interface Props {
 
 interface State {
     selectedItem: number;
+    selectedSlide: [number, number]; // [itemIndex, slideIndex]
     currentItem: any; // Replace 'any' with the actual type of currentItem if known
 }
 
@@ -25,6 +27,7 @@ class _RightScheduleTab extends Component<Props, State> {
         super(props);
         this.state = {
             selectedItem: -1,
+            selectedSlide: [-1, -1],
             currentItem: null,
         };
     }
@@ -138,7 +141,7 @@ class _RightScheduleTab extends Component<Props, State> {
                 }
             }
 
-            this.setState({ currentItem: [item, lyrics] });
+            this.setState({ currentItem: [item, lyrics, song] });
         }
     };
 
@@ -162,6 +165,16 @@ class _RightScheduleTab extends Component<Props, State> {
         }
 
         presenter.presentSong(song, i);
+    }
+
+    isActiveSlide = (index: number) => {
+        const [activeItem, activeSlide] = this.state.selectedSlide;
+
+        if (activeItem !== this.state.selectedItem) {
+            return false;
+        }
+
+        return activeSlide === index;
     }
 
     isActiveVerse = (ref: number[]) => {
@@ -206,13 +219,42 @@ class _RightScheduleTab extends Component<Props, State> {
 
     }
 
-    render() {
-        const { scheduleList } = this.props;
-        const { selectedItem, currentItem } = this.state;
+    setSelectedSlide = (index: number) => {
+        this.setState({ selectedSlide: [this.state.selectedItem, index] });
+    }
+
+    onClickOnSlide = (e: MouseEvent, index: number) => {
+        const [item] = this.state.currentItem;
+
+        this.setSelectedSlide(index);
+
+        if (e.ctrlKey) {
+            this.presentSlide(item, index);
+        }
+    }
+
+    onDoubleClickOnSlide = (e: MouseEvent, index: number) => {
+        const [item] = this.state.currentItem;
+
+        this.setSelectedSlide(index);
+
+        this.presentSlide(item, index);
+    }
+
+    isPresentingSlide = (index: number) => {
         const {
             id: presentSongId,
             slide: presentLyricSlide,
         } = this.props.presentingLyric;
+
+        const [_, __, song] = this.state.currentItem;
+
+        return presentLyricSlide === index && presentSongId === song.id;
+    }
+
+    render() {
+        const { scheduleList } = this.props;
+        const { selectedItem, currentItem } = this.state;
         const navFontSize = $RvW.vvConfigObj.get_navFontSize();
 
         return (
@@ -304,7 +346,7 @@ class _RightScheduleTab extends Component<Props, State> {
 
                 <div class="flex-1 overflow-y-auto h-full w-full relative">
                     <div
-                        class="absolute h-full w-full m-0 p-0 overflow-hidden overflow-y-auto"
+                        class="absolute h-full w-full m-0 p-2 overflow-hidden overflow-y-auto"
                         style={{
                             border: '1px solid #d4d4d5',
                             borderRadius: '0.28571429rem',
@@ -318,11 +360,11 @@ class _RightScheduleTab extends Component<Props, State> {
                                 </div>
                             </div>
                         ) : (
-                            (currentItem[0].type === ScheduleItemType.VERSE) ? (
-                                <>
-                                    <div class="ui basic segment">
-                                        <b>{currentItem[0].title}</b>
+                            <>
+                                {/*<b>{currentItem[0].title}</b>*/}
 
+                                {(currentItem[0].type === ScheduleItemType.VERSE) ? (
+                                    <>
                                         <div
                                             class="ui segments cursor-pointer"
                                             role="button"
@@ -337,37 +379,23 @@ class _RightScheduleTab extends Component<Props, State> {
                                                 </div>
                                             ))}
                                         </div>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div class="ui basic segment">
-                                        <b>{currentItem[0].title}</b>
-
+                                    </>
+                                ) : (
+                                    <>
                                         {currentItem[1].map((slide: any[], i: number) => (
-                                            <div
-                                                key={i}
-                                                class="ui segments cursor-pointer"
-                                                role="button"
-                                                // tabIndex={0}
-                                                onClick={() => this.presentSlide(currentItem[0], i)}
-                                            >
-                                                <>
-                                                    {/*<p>Slide {k + 1}</p>*/}
-                                                    {slide.map(({font, content}: any, j: number) => (
-                                                        <div key={j} style={{fontFamily: font}} class="ui segment">
-                                                            <p class="m-0" dangerouslySetInnerHTML={{
-                                                                __html: content,
-                                                            }}></p>
-                                                        </div>
-                                                    ))}
-                                                    <div class="ui left floating label font-mono">{i + 1}</div>
-                                                </>
-                                            </div>
+                                            <SlidePreviewItem
+                                                key={`${currentItem[2]?.id}:${i}`}
+                                                index={i}
+                                                slide={slide}
+                                                onClickOnSlide={this.onClickOnSlide}
+                                                onDoubleClickOnSlide={this.onDoubleClickOnSlide}
+                                                isActiveSlide={this.isActiveSlide}
+                                                isPresentingSlide={this.isPresentingSlide}
+                                            />
                                         ))}
-                                    </div>
-                                </>
-                            )
+                                    </>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

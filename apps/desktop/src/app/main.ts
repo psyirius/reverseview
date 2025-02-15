@@ -725,7 +725,8 @@ function vvinit_continue() {
 
     $RvW.loadBookNames($RvW.vvConfigObj.get_version1());
     $RvW.putbook();
-    window.nativeWindow.addEventListener("resize", adjustNavWindowsHeight);
+
+    // window.nativeWindow.addEventListener("resize", () => {});
     window.nativeWindow.addEventListener("close", () => $RvW.processExit());
     window.nativeWindow.addEventListener("closing", beforeExit);
 
@@ -733,23 +734,8 @@ function vvinit_continue() {
         SplashScreen.close();
 
         activateMainWindow();
-    }, 10000);
-}
-
-function adjustNavWindowsHeight() {
-    // Note: this function is called when the window is resized
-
-    {
-        document.body.style.overflow = "hidden";
-
-        // TODO: make this in css
-
-        // song list rows per page
-        {
-            const rpp = Math.round(((window.innerHeight - 360) / 36));
-            songNavigator.setRecordsPerPage(rpp);
-        }
-    }
+    }, 100);
+    // }, 2500);
 }
 
 function setupTabContent() {

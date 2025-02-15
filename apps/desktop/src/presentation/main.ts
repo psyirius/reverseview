@@ -1045,7 +1045,7 @@
 
     function debug(...msgs) {
         if (DEBUG_ENABLED) {
-            window.parent.log(...msgs);
+            window.parent.log?.(...msgs);
         }
     }
 
