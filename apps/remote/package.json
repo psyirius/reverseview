@@ -27,7 +27,7 @@
     "lucide-svelte": "^0.468.0",
     "mode-watcher": "^0.5.0",
     "paneforge": "^0.0.6",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.0",
     "sass-embedded": "^1.83.0",
     "svelte": "^5.14.0",
     "svelte-check": "^4.1.1",
@@ -44,7 +44,7 @@
     "typescript": "^5.7.2",
     "typescript-svelte-plugin": "^0.3.44",
     "vaul-svelte": "^1.0.0-next.3",
-    "vite": "^6.0.3",
+    "vite": "^6.0.9",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^3.24.1"
   },
