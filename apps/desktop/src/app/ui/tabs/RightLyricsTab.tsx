@@ -6,6 +6,7 @@ import {presenter, songNavigator} from "@app/glc";
 import { SearchFilterType } from "@/song/song-manager";
 import {useEffect, useRef, useState} from "preact/hooks";
 import {console} from "@/platform/adapters/air";
+import SlidePreviewItem from "@app/ui/widgets/SlidePreviewItem";
 
 // const contextMenu = createContextMenu();
 //
@@ -53,103 +54,6 @@ import {console} from "@/platform/adapters/air";
 //
 //     return menu;
 // }
-
-function SlidePreviewItem({
-    index,
-    slide,
-    onDoubleClickOnSlide,
-    onClickOnSlide,
-    isPresentingSlide,
-    isActiveSlide,
-}) {
-    const [selectedPreview, setSelectedPreview] = useState(0);
-
-    useEffect(() => {
-        console.log('SlidePreviewItem:', slide);
-    }, [selectedPreview]);
-
-    return (
-        <div
-            class="inline-block float-left m-[1px] cursor-pointer rounded-md"
-            style={{
-                // width: 0, height: 0, // 3:2
-                // width: 0, height: 0, // 4:3
-                width: 352, height: 198, // 16:9
-                // width: 462, height: 198, // 21:9
-
-                borderStyle: 'solid',
-                borderWidth: '2px',
-                borderColor: isPresentingSlide(index) ? '#fc5c65' : (
-                    isActiveSlide(index) ? '#45aaf2' : 'rgba(34, 36, 38, .15)'
-                ),
-            }}
-            // onContextMenu={showContextMenu}
-            onClick={(e) => onClickOnSlide(e, index)}
-            onDblClick={(e) => onDoubleClickOnSlide(e, index)}
-        >
-            <div class="flex flex-col h-full w-full">
-                <div class="flex-1 h-full w-full relative">
-                    <div
-                        class="absolute h-full w-full cursor-pointer overflow-hidden"
-                        role="button"
-                        // tabIndex={0}
-                        // style="-khtml-user-select:auto;"
-                    >
-                        {slide[selectedPreview] ? (
-                            <div
-                                class="flex flex-col justify-center items-center text-center h-full"
-                                style={{
-                                    fontFamily: slide[selectedPreview].font,
-                                    fontSize: '1rem',
-                                }}
-                            >
-                                <p class="m-0" dangerouslySetInnerHTML={{__html: slide[selectedPreview].content}}></p>
-                            </div>
-                        ) : (
-                            <div class="flex flex-col justify-center items-center text-center h-full">
-                                <div class="ui visible message">
-                                    <p>No content</p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <div
-                    class="flex flex-row h-8 w-full justify-between items-center px-2 rounded-b-[3px]"
-                    style={{
-                        backgroundColor: 'rgba(34, 36, 38, .15)',
-                    }}
-                >
-                    {/* Slide Number */}
-                    <div
-                        class="ui tiny label"
-                    >
-                        {index + 1}
-                    </div>
-
-                    {/* Slide variant switcher */}
-                    <div class=""> {/* This div should exist for justify to always work */}
-                        {slide.map((_: any, j: number) => (
-                            <a
-                                key={j}
-                                class={`ui tiny basic label`}
-                                onClick={() => setSelectedPreview(j)}
-                                style={(j === selectedPreview) ? {
-                                    backgroundColor: 'white',
-                                    borderColor: '#45aaf2',
-                                    color: '#45aaf2',
-                                } : {}}
-                            >
-                                {j + 1}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
 
 function _RightLyricsTab_({song}) {
     const [navFontSize] = useState($RvW.vvConfigObj.get_navFontSize());
@@ -310,9 +214,18 @@ function _RightLyricsTab_({song}) {
         return presentLyricSlide === index && presentSongId === song.id;
     }
 
+    function presentSelectedSlide() {
+        if (selectedSlide >= 0) {
+            presentSlide(selectedSlide);
+        } else {
+            setSelectedSlide(0);
+            presentSlide(0);
+        }
+    }
+
     const actions = [
         { label: 'Edit', icon: 'edit', onClick: onClickEdit },
-        { label: 'Present', icon: 'play', onClick: () => presentSlide(0) },
+        { label: 'Present', icon: 'play', onClick: presentSelectedSlide },
         { label: 'Schedule', icon: 'plus square', onClick: onClickAddToSchedule },
     ]
 
@@ -435,26 +348,22 @@ function _RightLyricsTab_({song}) {
 
                     {/* SLIDES */}
                     <div class="flex-1 h-full w-full relative">
-                        <div class="absolute h-full w-full m-0 overflow-hidden overflow-y-auto" style={{
+                        <div class="absolute h-full w-full m-0 p-2 overflow-hidden overflow-y-auto" style={{
                             border: '1px solid #d4d4d5',
                             borderRadius: '0.28571429rem',
                             fontSize: navFontSize + 'px',
                         }}>
-                            <div
-                                class="ui basic segment"
-                            >
-                                {lyrics.map((slide: any[], i: number) => (
-                                    <SlidePreviewItem
-                                        key={`${song?.id}:${i}`}
-                                        index={i}
-                                        slide={slide}
-                                        onClickOnSlide={onClickOnSlide}
-                                        onDoubleClickOnSlide={onDoubleClickOnSlide}
-                                        isActiveSlide={isActiveSlide}
-                                        isPresentingSlide={isPresentingSlide}
-                                    />
-                                ))}
-                            </div>
+                            {lyrics.map((slide: any[], i: number) => (
+                                <SlidePreviewItem
+                                    key={`${song?.id}:${i}`}
+                                    index={i}
+                                    slide={slide}
+                                    onClickOnSlide={onClickOnSlide}
+                                    onDoubleClickOnSlide={onDoubleClickOnSlide}
+                                    isActiveSlide={isActiveSlide}
+                                    isPresentingSlide={isPresentingSlide}
+                                />
+                            ))}
                         </div>
                     </div>
                 </>

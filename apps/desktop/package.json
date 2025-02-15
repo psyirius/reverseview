@@ -41,9 +41,6 @@
     "package": "pnpm run build && node tools/releng/package.js"
   },
   "devDependencies": {
-    "@stylexjs/stylex": "^0.9.3",
-    "@emotion/css": "^11.13.5",
-    "@million/lint": "^1.0.13",
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-html": "^1.0.4",
@@ -80,10 +77,7 @@
     "dojo-dstore": "^1.2.1",
     "dojox": "^1.17.3",
     "dts2as": "^0.13.0",
-    "ejs": "^3.1.10",
-    "emotion": "^11.0.0",
     "glob": "^11.0.0",
-    "handlebars": "^4.7.8",
     "ignore": "^6.0.2",
     "jquery": "^3.7.1",
     "jsdoc": "^4.0.4",
@@ -107,7 +101,6 @@
     "preact-richtextarea": "^1.2.1",
     "preact-slots": "^1.0.0",
     "prim": "^1.0.0",
-    "pug": "^3.0.3",
     "pure-utilities": "^1.4.3",
     "qrcode-generator-es": "^1.0.3",
     "recache": "^0.6.0",

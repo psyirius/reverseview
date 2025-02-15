@@ -4,7 +4,8 @@ import {console} from "@/platform/adapters/air";
 import {
     selectedBibleVersionForVerseEdit,
     selectedSong,
-    selectedSongCategory, showBibleManagePanel,
+    selectedSongCategory,
+    showBibleManagePanel,
     showBibleSelectPanel,
     showRemotePanel,
     showVerseEditPanel
